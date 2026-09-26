@@ -1,0 +1,371 @@
+{
+  id: 'personaje_id',
+  name: 'Nombre del Personaje',
+  img: 'personaje.jpg',
+
+  // Clases disponibles:
+  // 'atacante'
+  // 'defensor'
+  // 'sanador'
+  // 'soporte'
+  // 'debilitador'
+  // 'mago'
+  // 'control'
+  classes: ['atacante', 'mago'],
+
+  // Estadísticas base
+  hp: 120,
+  atk: 35,
+  def: 18,
+  spd: 20,
+
+  moves: [
+    // ============================================================
+    // HABILIDAD 1
+    // ============================================================
+    {
+      id: 'habilidad_1',
+      name: 'Nombre de habilidad',
+      power: 30,
+      acc: 0.95,
+      desc: 'Descripción de lo que hace la habilidad.',
+      baseCooldown: 1,
+      type: 'attack',
+
+      effect: {
+        type: 'debuff',
+        stat: 'def',
+        value: 6,
+        duration: 2,
+        prob: 1.0
+      }
+    },
+
+    // ============================================================
+    // HABILIDAD 2
+    // ============================================================
+    {
+      id: 'habilidad_2',
+      name: 'Nombre de habilidad',
+      power: 0,
+      acc: 1.0,
+      desc: 'Habilidad de soporte o buff.',
+      baseCooldown: 3,
+      type: 'support',
+
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 10,
+          duration: 3
+        },
+
+        {
+          type: 'tempSpd',
+          value: 6,
+          duration: 3
+        }
+      ]
+    },
+
+    // ============================================================
+    // HABILIDAD 3
+    // ============================================================
+    {
+      id: 'habilidad_3',
+      name: 'Nombre de habilidad',
+      power: 28,
+      acc: 0.94,
+      desc: 'Ataque con varios efectos.',
+      baseCooldown: 3,
+      type: 'attack',
+
+      effects: [
+        {
+          type: 'damageOverTime',
+          status: 'burn',
+          value: 8,
+          duration: 3,
+          prob: 0.9
+        },
+
+        {
+          type: 'slow',
+          value: 25,
+          duration: 2,
+          prob: 1.0
+        },
+
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 7,
+          duration: 2,
+          prob: 1.0
+        }
+      ]
+    },
+
+    // ============================================================
+    // HABILIDAD 4
+    // ============================================================
+    {
+      id: 'habilidad_4',
+      name: 'Nombre de habilidad',
+      power: 0,
+      acc: 1.0,
+      desc: 'Habilidad defensiva.',
+      baseCooldown: 4,
+      type: 'support',
+
+      effects: [
+        {
+          type: 'tempDef',
+          value: 15,
+          duration: 3
+        },
+
+        {
+          type: 'shield',
+          value: 30
+        },
+
+        {
+          type: 'reflectDamage',
+          value: 25,
+          duration: 3
+        }
+      ]
+    },
+
+    // ============================================================
+    // HABILIDAD 5
+    // ============================================================
+    {
+      id: 'habilidad_5',
+      name: 'Nombre de habilidad',
+      power: 35,
+      acc: 0.92,
+      desc: 'Ataque especial que roba vida y puede aplicar una condición.',
+      baseCooldown: 4,
+      type: 'attack',
+
+      effects: [
+        {
+          type: 'lifesteal',
+          value: 25,
+          duration: 1
+        },
+
+        {
+          type: 'critChance',
+          value: 15,
+          duration: 2
+        },
+
+        {
+          type: 'healReduction',
+          value: 40,
+          duration: 3
+        }
+      ]
+    },
+
+    // ============================================================
+    // ULTIMATE
+    // ============================================================
+    {
+      id: 'habilidad_ulti',
+      name: 'ULTI: Nombre de la Ultimate',
+      power: 75,
+      acc: 0.88,
+      desc: 'La habilidad definitiva del personaje.',
+      baseCooldown: 7,
+      type: 'attack',
+
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 12,
+          duration: 3,
+          prob: 1.0
+        },
+
+        {
+          type: 'damageOverTime',
+          status: 'bleed',
+          value: 14,
+          duration: 4,
+          prob: 1.0
+        },
+
+        {
+          type: 'lifesteal',
+          value: 40,
+          duration: 1
+        },
+
+        {
+          type: 'critChance',
+          value: 25,
+          duration: 1
+        }
+      ]
+    }
+  ]
+},
+
+
+
+------------------------------------------------------
+
+
+{
+  id: 'id_unico',
+  name: 'Nombre',
+  img: 'imagen.jpg',
+
+  classes: ['clase1', 'clase2'],
+
+  hp: 120,
+  atk: 35,
+  def: 18,
+  spd: 20,
+
+  moves: [
+
+    {
+      id: 'basic_attack',
+      name: 'Ataque Básico',
+      power: 25,
+      acc: 0.97,
+      desc: 'Ataque directo contra un enemigo.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: null
+    },
+
+    {
+      id: 'skill_1',
+      name: 'Habilidad 1',
+      power: 30,
+      acc: 0.95,
+      desc: 'Describe aquí la habilidad.',
+      baseCooldown: 2,
+      type: 'attack',
+      effect: {
+        type: 'debuff',
+        stat: 'def',
+        value: 6,
+        duration: 2,
+        prob: 1.0
+      }
+    },
+
+    {
+      id: 'skill_2',
+      name: 'Habilidad 2',
+      power: 0,
+      acc: 1.0,
+      desc: 'Buff o habilidad defensiva.',
+      baseCooldown: 3,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempDef',
+          value: 12,
+          duration: 3
+        },
+        {
+          type: 'shield',
+          value: 25
+        }
+      ]
+    },
+
+    {
+      id: 'skill_3',
+      name: 'Habilidad 3',
+      power: 35,
+      acc: 0.92,
+      desc: 'Ataque con múltiples efectos.',
+      baseCooldown: 4,
+      type: 'attack',
+      effects: [
+        {
+          type: 'damageOverTime',
+          status: 'bleed',
+          value: 10,
+          duration: 4,
+          prob: 0.9
+        },
+        {
+          type: 'slow',
+          value: 25,
+          duration: 2
+        },
+        {
+          type: 'healReduction',
+          value: 35,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'skill_4',
+      name: 'Habilidad 4',
+      power: 0,
+      acc: 1.0,
+      desc: 'Buff especial.',
+      baseCooldown: 5,
+      type: 'support',
+      effects: [
+        {
+          type: 'reflectDamage',
+          value: 30,
+          duration: 3
+        },
+        {
+          type: 'critChance',
+          value: 15,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'ultimate',
+      name: 'ULTI: Nombre',
+      power: 75,
+      acc: 0.88,
+      desc: 'Ultimate del personaje.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'lifesteal',
+          value: 40,
+          duration: 1
+        },
+        {
+          type: 'critChance',
+          value: 25,
+          duration: 1
+        },
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 12,
+          duration: 3
+        },
+        {
+          type: 'stun',
+          duration: 1,
+          prob: 0.5
+        }
+      ]
+    }
+  ]
+},

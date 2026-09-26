@@ -1,0 +1,3162 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Batalla Mejorada — 3v3 / Baneos / Muerte Súbita</title>
+  <style>
+
+    :root{
+      --bg-0:#040712;
+      --bg-1:#071124;
+      --panel:#0b1427;
+      --panel-2:#101c33;
+      --panel-3:#15233e;
+      --text:#eef4ff;
+      --muted:#94a3b8;
+      --line:rgba(148,163,184,.16);
+      --line-strong:rgba(167,139,250,.32);
+      --accent:#8b5cf6;
+      --accent-2:#a78bfa;
+      --accent-glow:rgba(139,92,246,.22);
+      --p1:#38bdf8;
+      --p2:#f472b6;
+      --hp-start:#4ade80;
+      --hp-end:#16a34a;
+      --attack-color:#fb7185;
+      --support-color:#60a5fa;
+      --gold:#fbbf24;
+      --danger:#f87171;
+      --shadow:0 18px 48px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{min-height:100%}
+
+    body{
+      margin:0;
+      padding:24px;
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(56,189,248,.10), transparent 32%),
+        radial-gradient(circle at 85% 10%, rgba(139,92,246,.14), transparent 35%),
+        radial-gradient(circle at 50% 100%, rgba(244,114,182,.07), transparent 28%),
+        linear-gradient(180deg,var(--bg-0) 0%,var(--bg-1) 52%,#050a16 100%);
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.18;
+      background-image:
+        linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+      background-size:32px 32px;
+      mask-image:linear-gradient(to bottom,black,transparent 88%);
+    }
+
+    button{
+      font:inherit;
+      color:inherit;
+    }
+
+    .container{max-width:1380px;margin:0 auto;position:relative;z-index:1}
+
+    header,
+    .game-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      padding:2px 2px 4px;
+    }
+
+    .game-header > div:first-child h1,
+    header h1{
+      margin:0;
+      font-size:clamp(22px,2.4vw,34px);
+      line-height:1.05;
+      letter-spacing:-.03em;
+      background:linear-gradient(90deg,#fff,var(--accent-2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .game-header > div:first-child .small,
+    header .small{
+      margin-top:7px;
+      max-width:760px;
+      color:#9fb0c9;
+    }
+
+    .card{
+      margin-top:16px;
+      padding:18px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.015)),
+        linear-gradient(180deg,var(--panel),rgba(7,14,28,.96));
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+    }
+
+    .small{font-size:13px;color:var(--muted)}
+    .muted{color:var(--muted)}
+
+    .selector-row{
+      display:grid !important;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      align-items:stretch;
+    }
+
+    .selector-row > div{
+      min-width:0;
+      padding:16px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;
+      background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.008));
+    }
+
+    .selector-row > div:first-child{box-shadow:inset 3px 0 0 rgba(56,189,248,.60)}
+    .selector-row > div:last-child{box-shadow:inset 3px 0 0 rgba(244,114,182,.60)}
+
+    .selector-row h3{
+      margin:0 0 10px;
+      font-size:16px;
+      letter-spacing:.01em;
+    }
+
+    .selector-row > div:first-child h3{color:#b9ecff}
+    .selector-row > div:last-child h3{color:#ffd0e6}
+
+    #p1-list,
+    #p2-list{
+      min-width:0;
+    }
+
+    #p1-list > div:first-child,
+    #p2-list > div:first-child{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:10px !important;
+    }
+
+    .char-list{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-content:flex-start;
+      padding:10px;
+      min-height:188px;
+      max-height:290px;
+      overflow:auto;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.02),transparent),
+        rgba(2,8,20,.30);
+      scrollbar-width:thin;
+      scrollbar-color:rgba(139,92,246,.65) transparent;
+    }
+
+    .char-list::-webkit-scrollbar,
+    .log::-webkit-scrollbar{width:8px;height:8px}
+    .char-list::-webkit-scrollbar-thumb,
+    .log::-webkit-scrollbar-thumb{
+      border-radius:999px;
+      background:linear-gradient(180deg,var(--accent),#5b21b6);
+    }
+
+    .char{
+      position:relative;
+      width:148px;
+      min-width:132px;
+      padding:10px 9px 12px;
+      border:1px solid rgba(148,163,184,.11);
+      border-radius:15px;
+      background:
+        radial-gradient(circle at 50% 0%,rgba(139,92,246,.13),transparent 48%),
+        linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012));
+      cursor:pointer;
+      text-align:center;
+      transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,background .18s ease;
+      overflow:hidden;
+    }
+
+    .char::after{
+      content:"";
+      position:absolute;
+      inset:auto 10px 0;
+      height:2px;
+      border-radius:99px;
+      background:linear-gradient(90deg,transparent,var(--accent),transparent);
+      opacity:.15;
+      transition:opacity .18s ease;
+    }
+
+    .char:hover{
+      transform:translateY(-5px);
+      border-color:var(--line-strong);
+      box-shadow:0 14px 28px rgba(0,0,0,.28),0 0 24px rgba(139,92,246,.10);
+    }
+
+    .char:hover::after{opacity:.9}
+
+    .char img{
+      display:block;
+      width:92px;
+      height:92px;
+      margin:0 auto;
+      object-fit:contain;
+      filter:drop-shadow(0 12px 14px rgba(0,0,0,.3));
+    }
+
+    .char strong{
+      display:block;
+      margin-top:7px !important;
+      font-size:13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .char .classes{
+      margin-top:6px;
+      color:#8998ae;
+      font-size:10px;
+      line-height:1.35;
+      min-height:27px;
+    }
+
+    .char.selected{
+      border-color:rgba(139,92,246,.72);
+      background:
+        radial-gradient(circle at 50% 0%,rgba(167,139,250,.22),transparent 50%),
+        linear-gradient(180deg,rgba(139,92,246,.09),rgba(139,92,246,.03));
+      box-shadow:0 0 0 1px rgba(139,92,246,.16),0 10px 28px rgba(76,29,149,.18);
+    }
+
+    .class-btn,
+    .back-btn{
+      padding:8px 12px;
+      border:1px solid rgba(148,163,184,.15);
+      border-radius:11px;
+      background:rgba(255,255,255,.035);
+      color:#e5e7eb;
+      cursor:pointer;
+      transition:transform .15s ease,border-color .15s ease,background .15s ease,box-shadow .15s ease;
+    }
+
+    .class-btn:hover,
+    .back-btn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(167,139,250,.42);
+      background:rgba(139,92,246,.10);
+      box-shadow:0 6px 16px rgba(0,0,0,.18);
+    }
+
+    .class-btn:disabled,
+    .back-btn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    /* ---------- Buscador de personajes ---------- */
+    .search-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:8px;
+      padding:6px 10px;
+      border:1px solid rgba(148,163,184,.16);
+      border-radius:12px;
+      background:rgba(2,8,20,.40);
+      transition:border-color .16s ease,box-shadow .16s ease;
+    }
+
+    .search-row:focus-within{
+      border-color:rgba(167,139,250,.55);
+      box-shadow:0 0 0 3px rgba(139,92,246,.12);
+    }
+
+    .search-icon{
+      font-size:13px;
+      opacity:.75;
+      line-height:1;
+    }
+
+    .search-input{
+      flex:1;
+      min-width:0;
+      padding:5px 0;
+      border:0;
+      outline:none;
+      background:transparent;
+      color:var(--text);
+      font:inherit;
+      font-size:13px;
+    }
+
+    .search-input::placeholder{color:#6f7f99}
+    .search-input:disabled{cursor:not-allowed;opacity:.5}
+
+    .search-clear{
+      flex:none;
+      width:24px;
+      height:24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:0;
+      border:1px solid rgba(148,163,184,.14);
+      border-radius:8px;
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      font-size:11px;
+      cursor:pointer;
+      transition:color .15s ease,border-color .15s ease,background .15s ease;
+    }
+
+    .search-clear:hover{
+      color:var(--text);
+      border-color:rgba(167,139,250,.42);
+      background:rgba(139,92,246,.12);
+    }
+
+    .search-clear:disabled{opacity:.4;cursor:not-allowed}
+
+    .search-count{
+      margin-bottom:6px;
+      font-size:11px;
+      color:#7d8ca4;
+      letter-spacing:.01em;
+    }
+
+    .no-results{
+      width:100%;
+      padding:34px 12px;
+      text-align:center;
+      line-height:1.7;
+      color:var(--muted);
+    }
+
+    /* ---------- Notas de parche ---------- */
+    .patchnotes-card{
+      width:min(820px,100%);
+      padding:22px;
+      border:1px solid rgba(56,189,248,.22);
+      border-radius:var(--radius);
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012)),
+        linear-gradient(180deg,var(--panel),rgba(7,14,28,.96));
+      box-shadow:var(--shadow);
+    }
+
+    .patchnotes-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .patchnotes-head h2{
+      margin:0 0 6px;
+      font-size:clamp(20px,2.2vw,28px);
+      letter-spacing:-.02em;
+    }
+
+    .patchnotes-list{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      max-height:min(64vh,640px);
+      overflow:auto;
+      padding-right:6px;
+      scrollbar-width:thin;
+      scrollbar-color:rgba(139,92,246,.65) transparent;
+    }
+
+    .patchnotes-list::-webkit-scrollbar{width:8px;height:8px}
+    .patchnotes-list::-webkit-scrollbar-thumb{
+      border-radius:999px;
+      background:linear-gradient(180deg,var(--accent),#5b21b6);
+    }
+
+    .patch-entry{
+      padding:16px;
+      border:1px solid rgba(148,163,184,.14);
+      border-radius:16px;
+      background:rgba(255,255,255,.025);
+    }
+
+    .patch-entry-header{
+      display:flex;
+      align-items:baseline;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+
+    .patch-version{
+      font-size:16px;
+      font-weight:700;
+      color:#eef4ff;
+    }
+
+    .patch-date{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .patch-summary{
+      font-size:12.5px;
+      color:#c6d0df;
+      margin:0 0 10px;
+      line-height:1.5;
+    }
+
+    .patch-change{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      padding:9px 10px;
+      margin-bottom:6px;
+      border-radius:12px;
+      background:rgba(255,255,255,.02);
+      border:1px solid rgba(148,163,184,.08);
+    }
+
+    .patch-badge{
+      flex:none;
+      padding:3px 8px;
+      border-radius:8px;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.02em;
+      white-space:nowrap;
+    }
+
+    .patch-badge.buff{background:rgba(74,222,128,.15);color:#86efac;border:1px solid rgba(74,222,128,.35)}
+    .patch-badge.nerf{background:rgba(248,113,113,.15);color:#fca5a5;border:1px solid rgba(248,113,113,.35)}
+    .patch-badge.ajuste{background:rgba(96,165,250,.15);color:#93c5fd;border:1px solid rgba(96,165,250,.35)}
+    .patch-badge.nuevo{background:rgba(251,191,36,.15);color:#fde68a;border:1px solid rgba(251,191,36,.35)}
+    .patch-badge.bug{background:rgba(148,163,184,.15);color:#cbd5e1;border:1px solid rgba(148,163,184,.35)}
+
+    .patch-change-body{flex:1;min-width:0}
+
+    .patch-change-target{
+      font-size:13px;
+      font-weight:600;
+      margin-bottom:2px;
+    }
+
+    .patch-change-desc{
+      font-size:12.5px;
+      color:#a9b6c9;
+      line-height:1.5;
+    }
+
+    .patchnotes-empty{
+      padding:34px 12px;
+      text-align:center;
+      line-height:1.7;
+      color:var(--muted);
+    }
+
+    @media (max-width:760px){
+      .patchnotes-card{padding:14px}
+    }
+
+    /* ---------- Soporte / sugerencias ---------- */
+    .support-card{position:relative}
+
+    .support-label{
+      display:block;
+      margin-top:14px;
+      font-size:11px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#9db0cc;
+    }
+
+    .support-label:first-of-type{margin-top:4px}
+
+    .support-select,
+    .support-input,
+    .support-textarea{
+      display:block;
+      width:100%;
+      margin-top:6px;
+      padding:9px 12px;
+      border:1px solid rgba(148,163,184,.18);
+      border-radius:12px;
+      background:rgba(2,8,20,.40);
+      color:var(--text);
+      font:inherit;
+      font-size:13px;
+      outline:none;
+      transition:border-color .16s ease,box-shadow .16s ease;
+    }
+
+    .support-select:focus,
+    .support-input:focus,
+    .support-textarea:focus{
+      border-color:rgba(167,139,250,.55);
+      box-shadow:0 0 0 3px rgba(139,92,246,.12);
+    }
+
+    .support-textarea{resize:vertical;min-height:100px;font-family:inherit}
+    .support-select{cursor:pointer}
+
+    /* ---------- Configuración / música ---------- */
+    .settings-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .settings-card{
+      width:min(560px,100%);
+      max-height:min(84vh,720px);
+      overflow:auto;
+      padding:22px;
+      border:1px solid rgba(167,139,250,.25);
+      border-radius:20px;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012)),
+        #0b1427;
+      box-shadow:0 28px 80px rgba(0,0,0,.52);
+    }
+
+    .settings-card h3{
+      margin:0 0 4px;
+      font-size:19px;
+    }
+
+    .settings-section{
+      margin-top:18px;
+      padding-top:16px;
+      border-top:1px solid var(--line);
+    }
+
+    .settings-section:first-of-type{border-top:0;padding-top:0}
+
+    .settings-section h4{
+      margin:0 0 10px;
+      font-size:13px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#9db0cc;
+    }
+
+    .track-list{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      max-height:266px;
+      overflow:auto;
+      padding-right:4px;
+      scrollbar-width:thin;
+      scrollbar-color:rgba(139,92,246,.65) transparent;
+    }
+
+    .track{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:10px 12px;
+      border:1px solid rgba(148,163,184,.12);
+      border-radius:13px;
+      background:rgba(255,255,255,.025);
+      cursor:pointer;
+      transition:transform .15s ease,border-color .15s ease,background .15s ease;
+    }
+
+    .track:hover{
+      transform:translateY(-1px);
+      border-color:rgba(167,139,250,.40);
+      background:rgba(139,92,246,.08);
+    }
+
+    .track.active{
+      border-color:rgba(139,92,246,.72);
+      background:linear-gradient(180deg,rgba(139,92,246,.14),rgba(139,92,246,.04));
+      box-shadow:0 0 0 1px rgba(139,92,246,.16);
+    }
+
+    .track.missing{
+      opacity:.5;
+      border-style:dashed;
+    }
+
+    .track.missing .track-file{color:var(--danger)}
+
+    .track-emoji{font-size:19px;line-height:1}
+
+    .track-main{flex:1;min-width:0}
+
+    .track-name{
+      display:block;
+      font-size:14px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .track-file{
+      display:block;
+      margin-top:2px;
+      font-size:11px;
+      color:#7d8ca4;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .track-preview{
+      flex:none;
+      padding:5px 9px;
+      border:1px solid rgba(148,163,184,.16);
+      border-radius:9px;
+      background:rgba(255,255,255,.04);
+      font-size:12px;
+      cursor:pointer;
+      transition:border-color .15s ease,background .15s ease;
+    }
+
+    .track-preview:hover{
+      border-color:rgba(167,139,250,.45);
+      background:rgba(139,92,246,.12);
+    }
+
+    .volume-row{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .volume-row input[type=range]{
+      flex:1;
+      accent-color:var(--accent);
+      cursor:pointer;
+    }
+
+    .volume-value{
+      min-width:44px;
+      text-align:right;
+      font-size:13px;
+      color:var(--muted);
+      font-variant-numeric:tabular-nums;
+    }
+
+    .switch-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-top:12px;
+      font-size:13px;
+      color:#c6d0df;
+      cursor:pointer;
+    }
+
+    .switch-row input[type=checkbox]{
+      width:16px;
+      height:16px;
+      accent-color:var(--accent);
+      cursor:pointer;
+    }
+
+    .file-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .settings-status{
+      margin-top:10px;
+      min-height:18px;
+      font-size:12px;
+      color:#8190a7;
+    }
+
+    .settings-status.error{color:var(--danger)}
+    .settings-status.ok{color:#86efac}
+
+    .settings-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      margin-top:20px;
+    }
+
+    /* ---------- Fase de baneos ---------- */
+    #ban-phase{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:24px 16px;
+      overflow:auto;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(248,113,113,.10), transparent 32%),
+        radial-gradient(circle at 85% 10%, rgba(139,92,246,.14), transparent 35%),
+        linear-gradient(180deg,var(--bg-0) 0%,var(--bg-1) 55%,#050a16 100%);
+      z-index:120;
+    }
+
+    .ban-card{
+      width:min(1180px,100%);
+      padding:22px;
+      border:1px solid rgba(248,113,113,.22);
+      border-radius:var(--radius);
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012)),
+        linear-gradient(180deg,var(--panel),rgba(7,14,28,.96));
+      box-shadow:var(--shadow);
+    }
+
+    .ban-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .ban-head h2{
+      margin:0 0 6px;
+      font-size:clamp(20px,2.2vw,28px);
+      letter-spacing:-.02em;
+    }
+
+    .ban-wait{
+      color:var(--gold);
+      min-height:18px;
+    }
+
+    .ban-p1{color:#7dd3fc;font-weight:600}
+    .ban-p2{color:#f9a8d4;font-weight:600}
+
+    .ban-teams{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      margin:16px 0 18px;
+    }
+
+    .ban-team{
+      padding:12px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.008));
+    }
+
+    .ban-teams > .ban-team:first-child{box-shadow:inset 3px 0 0 rgba(56,189,248,.60)}
+    .ban-teams > .ban-team:last-child{box-shadow:inset 3px 0 0 rgba(244,114,182,.60)}
+
+    .ban-slots{
+      display:flex;
+      gap:10px;
+      margin-top:10px;
+      flex-wrap:wrap;
+    }
+
+    .ban-slot{
+      position:relative;
+      width:72px;
+      height:72px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      text-align:center;
+      border:1px solid rgba(148,163,184,.14);
+      border-radius:14px;
+      background:#071122;
+    }
+
+    .ban-slot.empty{border-style:dashed;color:#617089}
+
+    .ban-slot.blank{
+      border-color:rgba(251,191,36,.45);
+      background:rgba(251,191,36,.07);
+      color:#fcd34d;
+      font-size:10px;
+      line-height:1.3;
+    }
+
+    .ban-slot.used img{
+      width:64px;
+      height:64px;
+      object-fit:contain;
+      filter:grayscale(.85) brightness(.7);
+    }
+
+    .ban-slot .ban-cross{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:30px;
+      color:rgba(248,113,113,.85);
+      text-shadow:0 2px 8px rgba(0,0,0,.6);
+    }
+
+    .ban-filters{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+
+    .ban-filters .class-btn.active{
+      border-color:rgba(167,139,250,.65);
+      background:rgba(139,92,246,.16);
+    }
+
+    .ban-grid{
+      max-height:340px;
+      min-height:200px;
+    }
+
+    .char.banned{
+      opacity:.34;
+      filter:grayscale(.85);
+      cursor:not-allowed;
+      border-style:dashed;
+    }
+
+    .char.locked{
+      opacity:.55;
+      cursor:default;
+    }
+
+    .char.pending-ban{
+      border-color:rgba(248,113,113,.85);
+      background:
+        radial-gradient(circle at 50% 0%,rgba(248,113,113,.22),transparent 50%),
+        linear-gradient(180deg,rgba(248,113,113,.10),rgba(248,113,113,.03));
+      box-shadow:0 0 0 1px rgba(248,113,113,.25),0 10px 28px rgba(127,29,29,.25);
+    }
+
+    .ban-badge{
+      position:absolute;
+      left:6px;
+      top:6px;
+      padding:2px 6px;
+      border-radius:4px;
+      font-size:11px;
+      background:rgba(248,113,113,.85);
+      color:#1b0505;
+      font-weight:600;
+    }
+
+    .ban-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      margin-top:14px;
+    }
+
+    .ban-confirm{
+      border-color:rgba(248,113,113,.45);
+      background:linear-gradient(180deg,rgba(248,113,113,.22),rgba(248,113,113,.08));
+    }
+
+    .ban-confirm:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+
+    .ban-log{
+      max-height:130px;
+      overflow:auto;
+      margin-top:14px;
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:12px;
+      background:rgba(2,8,20,.35);
+      font-size:12px;
+      line-height:1.8;
+      color:#c6d0df;
+    }
+
+    .ban-log-line{padding:1px 0}
+
+    .banned-banner{
+      margin-top:12px;
+      padding:10px 14px;
+      border:1px solid rgba(248,113,113,.22);
+      border-radius:12px;
+      background:rgba(248,113,113,.07);
+      line-height:1.6;
+      color:#e6ecf7;
+    }
+
+    /* ---------- Glosario de personajes ---------- */
+    #glossary-screen{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:24px 16px;
+      overflow:auto;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(56,189,248,.10), transparent 32%),
+        radial-gradient(circle at 85% 10%, rgba(139,92,246,.14), transparent 35%),
+        linear-gradient(180deg,var(--bg-0) 0%,var(--bg-1) 55%,#050a16 100%);
+      z-index:120;
+    }
+
+    .glossary-card{
+      width:min(1180px,100%);
+      padding:22px;
+      border:1px solid rgba(56,189,248,.22);
+      border-radius:var(--radius);
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012)),
+        linear-gradient(180deg,var(--panel),rgba(7,14,28,.96));
+      box-shadow:var(--shadow);
+    }
+
+    .glossary-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .glossary-head h2{
+      margin:0 0 6px;
+      font-size:clamp(20px,2.2vw,28px);
+      letter-spacing:-.02em;
+    }
+
+    .glossary-grid{
+      max-height:min(58vh,620px);
+    }
+
+    .glossary-detail-card{
+      position:relative;
+      width:min(640px,100%);
+    }
+
+    .glossary-detail-close{
+      position:absolute;
+      top:14px;
+      right:14px;
+      width:32px;
+      height:32px;
+      border:1px solid rgba(148,163,184,.16);
+      border-radius:10px;
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font-size:14px;
+      cursor:pointer;
+      transition:border-color .15s ease,background .15s ease;
+    }
+
+    .glossary-detail-close:hover{
+      border-color:rgba(167,139,250,.45);
+      background:rgba(139,92,246,.12);
+    }
+
+    .glossary-detail-header{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      margin-bottom:16px;
+    }
+
+    .glossary-detail-header img{
+      width:120px;
+      height:120px;
+      object-fit:contain;
+      border-radius:16px;
+      background:
+        radial-gradient(circle at 50% 0%,rgba(139,92,246,.18),transparent 60%),
+        rgba(255,255,255,.03);
+      filter:drop-shadow(0 12px 18px rgba(0,0,0,.35));
+      flex:none;
+    }
+
+    .glossary-detail-header h3{
+      margin:0 0 4px;
+      font-size:22px;
+    }
+
+    .glossary-detail-classes{
+      color:#8998ae;
+      font-size:12px;
+      margin-bottom:8px;
+    }
+
+    .glossary-stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:8px;
+      margin-bottom:18px;
+    }
+
+    .glossary-stat{
+      padding:8px 6px;
+      text-align:center;
+      border:1px solid rgba(148,163,184,.12);
+      border-radius:12px;
+      background:rgba(255,255,255,.025);
+    }
+
+    .glossary-stat .stat-label{
+      display:block;
+      font-size:10px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#7d8ca4;
+      margin-bottom:3px;
+    }
+
+    .glossary-stat .stat-value{
+      font-size:16px;
+      font-weight:700;
+    }
+
+    .glossary-moves h4{
+      margin:0 0 10px;
+      font-size:13px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#9db0cc;
+    }
+
+    .glossary-move{
+      padding:11px 12px;
+      margin-bottom:8px;
+      border:1px solid rgba(148,163,184,.12);
+      border-radius:13px;
+      background:rgba(255,255,255,.025);
+    }
+
+    .glossary-move-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:4px;
+    }
+
+    .glossary-move-meta{
+      font-size:11px;
+      color:#7d8ca4;
+      margin-bottom:5px;
+    }
+
+    .glossary-move-desc{
+      font-size:12.5px;
+      color:#c6d0df;
+      line-height:1.5;
+    }
+
+    @media (max-width:760px){
+      .glossary-card{padding:14px}
+      .glossary-stats{grid-template-columns:repeat(2,1fr)}
+      .glossary-detail-header{flex-direction:column;text-align:center}
+    }
+
+    /* ---------- Botón-póster del Modo Historia (menú principal) ---------- */
+    .story-poster-btn{
+      display:block;
+      position:relative;
+      width:100%;
+      height:120px;
+      margin-top:11px;
+      padding:0;
+      border:1px solid rgba(251,191,36,.35);
+      border-radius:13px;
+      background-size:cover;
+      background-position:center 20%;
+      background-color:#0b1427;
+      cursor:pointer;
+      overflow:hidden;
+      box-shadow:0 10px 24px rgba(0,0,0,.35);
+      transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+    }
+
+    .story-poster-btn:hover{
+      transform:translateY(-2px);
+      filter:brightness(1.08);
+      box-shadow:0 14px 30px rgba(0,0,0,.45);
+    }
+
+    .story-poster-overlay{
+      position:absolute;
+      inset:0;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:2px;
+      background:linear-gradient(180deg,rgba(5,8,16,.15) 0%,rgba(5,8,16,.55) 60%,rgba(5,8,16,.85) 100%);
+      text-align:center;
+      padding:8px;
+    }
+
+    .story-poster-title{
+      font-size:17px;
+      font-weight:800;
+      color:#fff;
+      text-shadow:0 2px 10px rgba(0,0,0,.6);
+      letter-spacing:.01em;
+    }
+
+    .story-poster-subtitle{
+      font-size:12px;
+      color:#fcd34d;
+      text-shadow:0 2px 8px rgba(0,0,0,.6);
+    }
+
+    /* ---------- Panel independiente del póster del Modo Historia (a la derecha del menú) ---------- */
+    .menu-layout{
+      display:flex;
+      align-items:stretch;
+      justify-content:center;
+      gap:22px;
+      width:min(920px,100%);
+    }
+
+    .menu-layout .menu-card{
+      margin:0;
+      flex:1 1 420px;
+    }
+
+    .story-poster-panel{
+      position:relative;
+      flex:0 1 300px;
+      width:min(300px,100%);
+      padding:16px;
+      border:1px solid rgba(251,191,36,.32);
+      border-radius:26px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
+      text-align:center;
+      background:
+        radial-gradient(circle at 50% 0%,rgba(251,191,36,.10),transparent 46%),
+        linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.014)),
+        #091226;
+      box-shadow:0 32px 80px rgba(0,0,0,.52),0 0 50px rgba(251,191,36,.10);
+      backdrop-filter:blur(20px);
+      cursor:pointer;
+      transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+    }
+
+    .story-poster-panel:hover{
+      transform:translateY(-3px);
+      filter:brightness(1.07);
+      box-shadow:0 36px 92px rgba(0,0,0,.58),0 0 60px rgba(251,191,36,.16);
+    }
+
+    .story-poster-frame{
+      width:100%;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(2,8,20,.45);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .story-poster-frame img{
+      display:block;
+      width:100%;
+      max-height:420px;
+      object-fit:contain;
+    }
+
+    .story-poster-panel .story-poster-title{
+      font-size:16px;
+      font-weight:800;
+      color:#fff;
+      letter-spacing:.01em;
+    }
+
+    .story-poster-panel .story-poster-subtitle{
+      font-size:12px;
+      color:#fcd34d;
+    }
+
+    .story-poster-panel .story-poster-cta{
+      display:inline-block;
+      padding:8px 16px;
+      border-radius:99px;
+      background:linear-gradient(180deg,rgba(251,191,36,.92),rgba(217,119,6,.88));
+      color:#1a1204;
+      font-weight:800;
+      font-size:13px;
+      box-shadow:0 10px 22px rgba(217,119,6,.28);
+    }
+
+    @media (max-width:900px){
+      .menu-layout{flex-direction:column;align-items:center}
+      .story-poster-panel{flex:0 1 auto;width:min(420px,100%)}
+    }
+
+    /* ---------- Pantalla del Modo Historia ---------- */
+    #story-screen{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:24px 16px;
+      overflow:auto;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(251,191,36,.10), transparent 32%),
+        radial-gradient(circle at 85% 10%, rgba(139,92,246,.14), transparent 35%),
+        linear-gradient(180deg,var(--bg-0) 0%,var(--bg-1) 55%,#050a16 100%);
+      z-index:120;
+    }
+
+    .story-card{
+      position:relative;
+      width:min(780px,100%);
+      padding:28px 26px 24px;
+      border:1px solid rgba(251,191,36,.22);
+      border-radius:calc(var(--radius) + 4px);
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012)),
+        linear-gradient(180deg,var(--panel),rgba(7,14,28,.97));
+      box-shadow:var(--shadow), 0 0 60px rgba(251,191,36,.05);
+      overflow:hidden;
+    }
+
+    .story-card::before{
+      content:"";
+      position:absolute;
+      top:0; left:0; right:0;
+      height:4px;
+      background:linear-gradient(90deg,rgba(251,191,36,.9),rgba(217,119,6,.45),rgba(139,92,246,.7));
+    }
+
+    .story-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:20px;
+      padding-bottom:14px;
+      border-bottom:1px solid rgba(148,163,184,.14);
+    }
+
+    .story-head-title{
+      font-size:clamp(18px,2vw,22px);
+      font-weight:800;
+      color:#fcd34d;
+      letter-spacing:.01em;
+    }
+
+    /* Insignia del tipo de escena: narración / combate / resultado */
+    .story-type-badge{
+      display:inline-block;
+      margin-bottom:10px;
+      padding:4px 12px;
+      border-radius:99px;
+      background:rgba(139,92,246,.14);
+      border:1px solid rgba(167,139,250,.32);
+      color:#c7b6fb;
+      font-size:11.5px;
+      font-weight:800;
+      letter-spacing:.03em;
+      text-transform:uppercase;
+    }
+
+    .story-narrative h3{
+      margin:0 0 14px;
+      font-size:clamp(19px,2.3vw,25px);
+      letter-spacing:-.01em;
+      color:#fff;
+    }
+
+    /* Progreso: insignia + capítulo + barra visual */
+    .story-progress{
+      margin-bottom:16px;
+    }
+
+    .story-progress-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:8px;
+    }
+
+    .story-progress-label{
+      color:#7d8ca4;
+      font-size:12.5px;
+      font-weight:600;
+    }
+
+    .story-progress-bar{
+      height:5px;
+      border-radius:99px;
+      background:rgba(148,163,184,.14);
+      overflow:hidden;
+    }
+
+    .story-progress-bar i{
+      display:block;
+      height:100%;
+      border-radius:99px;
+      background:linear-gradient(90deg,#fbbf24,#f59e0b);
+      transition:width .4s ease;
+    }
+
+    .story-speaker{
+      display:inline-block;
+      margin-bottom:10px;
+      padding:3px 10px;
+      border-radius:99px;
+      background:rgba(251,191,36,.12);
+      border:1px solid rgba(251,191,36,.28);
+      color:#fcd34d;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    /* Líneas de guion: narración corrida vs. diálogo con nombre */
+    .story-narrative p{
+      margin:0 0 12px;
+      line-height:1.7;
+      color:#dbe3f0;
+    }
+
+    .story-line--narration{
+      margin:0 0 13px;
+      line-height:1.75;
+      color:#dbe3f0;
+      font-size:15px;
+    }
+
+    .story-line--speech{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      margin:0 0 13px;
+      padding:10px 14px;
+      border-left:2px solid rgba(251,191,36,.4);
+      border-radius:0 10px 10px 0;
+      background:rgba(255,255,255,.025);
+    }
+
+    .story-line-speaker{
+      flex:0 0 auto;
+      font-weight:800;
+      font-size:13px;
+      color:#fcd34d;
+      white-space:nowrap;
+      padding-top:1px;
+    }
+
+    .story-line-text{
+      margin:0;
+      line-height:1.7;
+      color:#e7ecf5;
+      font-size:15px;
+      font-style:italic;
+    }
+
+    /* Aviso destacado, p.ej. "este combate hay que perderlo" */
+    .story-note{
+      margin:8px 0 0;
+      padding:10px 14px;
+      border-radius:11px;
+      border:1px solid rgba(251,191,36,.3);
+      background:rgba(251,191,36,.08);
+      color:#fde68a;
+      font-size:13.5px;
+      line-height:1.6;
+    }
+
+    /* Vista previa de combate: equipos con retratos */
+    .story-vs{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin:16px 0 6px;
+      padding:16px;
+      border:1px solid rgba(148,163,184,.14);
+      border-radius:14px;
+      background:rgba(255,255,255,.025);
+    }
+
+    .story-vs-side{
+      flex:1;
+      min-width:0;
+    }
+
+    .story-vs-label{
+      font-size:11.5px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.03em;
+      color:#8b96ab;
+      margin-bottom:8px;
+    }
+
+    .story-vs-chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .story-chip{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 10px 4px 4px;
+      border-radius:99px;
+      background:rgba(2,8,20,.5);
+      border:1px solid rgba(148,163,184,.16);
+      font-size:12.5px;
+      color:#dbe3f0;
+    }
+
+    .story-chip img{
+      width:24px;
+      height:24px;
+      border-radius:50%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .story-vs-versus{
+      flex:0 0 auto;
+      font-weight:900;
+      font-size:13px;
+      color:#fcd34d;
+      padding:6px 10px;
+      border-radius:99px;
+      background:rgba(251,191,36,.1);
+      border:1px solid rgba(251,191,36,.3);
+    }
+
+    .story-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:20px;
+    }
+
+    .story-btn-primary{
+      padding:9px 18px;
+      font-weight:800;
+      color:#1a1204;
+      border:none;
+      background:linear-gradient(180deg,rgba(251,191,36,.95),rgba(217,119,6,.9));
+      box-shadow:0 10px 22px rgba(217,119,6,.25);
+    }
+
+    .story-btn-primary:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.05);
+      box-shadow:0 12px 26px rgba(217,119,6,.32);
+    }
+
+    /* Entrada suave de cada nueva escena */
+    .story-fade{
+      animation:story-fade-in .35s ease both;
+    }
+
+    @keyframes story-fade-in{
+      from{ opacity:0; transform:translateY(6px); }
+      to{ opacity:1; transform:translateY(0); }
+    }
+
+    @media (max-width:760px){
+      .story-card{padding:18px}
+      .story-poster-btn{height:100px}
+      .story-poster-title{font-size:15px}
+      .story-vs{flex-direction:column;align-items:stretch}
+      .story-vs-versus{align-self:center}
+    }
+
+    @media (max-width:760px){
+      .ban-teams{grid-template-columns:1fr}
+      .ban-card{padding:14px}
+      .ban-actions .class-btn{flex:1}
+    }
+    .slots{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+      flex-wrap:wrap;
+    }
+
+    .slot{
+      position:relative;
+      width:88px;
+      height:88px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      border:1px solid rgba(148,163,184,.14);
+      border-radius:15px;
+      background:
+        radial-gradient(circle at 50% 20%,rgba(139,92,246,.11),transparent 62%),
+        #071122;
+      transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease,opacity .16s ease;
+    }
+
+    .slot:hover{transform:translateY(-2px);border-color:rgba(167,139,250,.4)}
+    .slot img{width:74px;height:74px;max-width:80px;max-height:80px;object-fit:contain;filter:drop-shadow(0 8px 12px rgba(0,0,0,.3))}
+    .slot.empty{color:#617089;border-style:dashed}
+    .slot.active{
+      border-color:rgba(167,139,250,.85);
+      box-shadow:0 0 0 2px rgba(139,92,246,.13),0 0 22px rgba(139,92,246,.18);
+      animation:activePulse 2s ease-in-out infinite;
+    }
+    .slot.kod{
+      opacity:.38;
+      filter:grayscale(.75);
+    }
+
+    @keyframes activePulse{
+      0%,100%{box-shadow:0 0 0 2px rgba(139,92,246,.10),0 0 16px rgba(139,92,246,.12)}
+      50%{box-shadow:0 0 0 3px rgba(139,92,246,.18),0 0 28px rgba(139,92,246,.20)}
+    }
+
+    .battle-arena,
+    .arena{
+      position:relative;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+      min-height:370px;
+      margin-top:16px;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 25% 50%,rgba(56,189,248,.08),transparent 35%),
+        radial-gradient(circle at 75% 50%,rgba(244,114,182,.08),transparent 35%),
+        linear-gradient(90deg,rgba(255,255,255,.025),transparent 48%,rgba(255,255,255,.025));
+    }
+
+    .arena::before{
+      content:"VS";
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      width:60px;
+      height:60px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(167,139,250,.35);
+      border-radius:50%;
+      background:rgba(5,9,20,.82);
+      box-shadow:0 0 28px rgba(139,92,246,.16);
+      color:#d8ccff;
+      font-size:14px;
+      font-weight:800;
+      letter-spacing:.12em;
+      z-index:2;
+    }
+
+    .team-panel{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      min-width:0;
+      padding:14px 18px;
+    }
+
+    .team-panel > .small{
+      padding:5px 10px;
+      border:1px solid rgba(148,163,184,.12);
+      border-radius:999px;
+      background:rgba(255,255,255,.025);
+      color:#b7c3d6;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .fighter-box{
+      position:relative;
+      width:min(100%,460px);
+      height:240px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(148,163,184,.10);
+      border-radius:24px;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 50% 38%,rgba(255,255,255,.07),transparent 44%),
+        linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.008));
+    }
+
+    .fighter-box::before{
+      content:"";
+      position:absolute;
+      inset:12px;
+      border:1px solid rgba(255,255,255,.045);
+      border-radius:18px;
+      pointer-events:none;
+    }
+
+    .fighter-box img{
+      position:relative;
+      z-index:1;
+      max-width:84%;
+      max-height:90%;
+      object-fit:contain;
+      filter:drop-shadow(0 26px 24px rgba(0,0,0,.34));
+      transition:transform .45s ease,filter .2s ease;
+    }
+
+    #fighter-img-p1{filter:drop-shadow(0 24px 26px rgba(14,165,233,.16))}
+    #fighter-img-p2{transform:scaleX(-1);filter:drop-shadow(0 24px 26px rgba(236,72,153,.16))}
+
+    .hpbar{
+      position:relative;
+      width:min(360px,90%);
+      height:14px;
+      margin:5px 0 0;
+      padding:2px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:999px;
+      background:#111d31;
+      box-shadow:inset 0 2px 5px rgba(0,0,0,.35);
+    }
+
+    .hpbar>i{
+      display:block;
+      width:0;
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(90deg,var(--hp-start),#22c55e 55%,var(--hp-end));
+      box-shadow:0 0 12px rgba(34,197,94,.28);
+      transition:width .28s ease;
+    }
+
+    .stats{
+      width:min(520px,94%);
+      min-height:30px;
+      text-align:center;
+      line-height:1.45;
+    }
+
+    .stats small{
+      color:#aab8cc;
+      font-size:12px;
+    }
+
+    .battle-controls{
+      display:grid !important;
+      grid-template-columns:minmax(0,2fr) minmax(300px,1fr);
+      gap:16px;
+      align-items:start;
+    }
+
+    .battle-controls > div,
+    .battle-controls > aside{
+      min-width:0;
+    }
+
+    .battle-controls h3{
+      margin:0 0 10px;
+      font-size:15px;
+      letter-spacing:.02em;
+    }
+
+    .turn-info{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin:0 0 12px;
+      padding:7px 11px;
+      border:1px solid rgba(139,92,246,.20);
+      border-radius:999px;
+      background:rgba(139,92,246,.08);
+      color:#ddd6fe;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .turn-info::before{
+      content:"◉";
+      color:#a78bfa;
+      animation:turnDot 1.6s ease-in-out infinite;
+    }
+
+    @keyframes turnDot{
+      0%,100%{opacity:.45}
+      50%{opacity:1}
+    }
+
+    .moves-area{
+      margin-top:8px;
+    }
+
+    .moves-area > strong,
+    .moves-area > div:first-child strong{
+      color:#f8fafc;
+    }
+
+    .move-btn{
+      position:relative;
+      display:block;
+      width:100%;
+      min-height:76px;
+      margin-bottom:9px;
+      padding:12px 14px;
+      border:1px solid rgba(148,163,184,.11);
+      border-radius:14px;
+      text-align:left;
+      cursor:pointer;
+      color:var(--text);
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012)),
+        rgba(6,13,26,.62);
+      box-shadow:0 8px 18px rgba(0,0,0,.14);
+      transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease,background .15s ease;
+    }
+
+    .move-btn::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:10px;
+      bottom:10px;
+      width:3px;
+      border-radius:999px;
+      background:var(--accent);
+      opacity:.4;
+    }
+
+    .move-btn:hover:not([disabled]){
+      transform:translateX(3px);
+      border-color:rgba(167,139,250,.34);
+      box-shadow:0 12px 24px rgba(0,0,0,.24);
+      background:
+        linear-gradient(180deg,rgba(139,92,246,.075),rgba(255,255,255,.012)),
+        rgba(6,13,26,.74);
+    }
+
+    .move-btn[disabled]{
+      opacity:.42;
+      cursor:not-allowed;
+      filter:saturate(.55);
+    }
+
+    .move-name{
+      font-weight:800;
+      letter-spacing:.01em;
+    }
+
+    .move-name.attack{color:#fda4af}
+    .move-name.support{color:#93c5fd}
+
+    .move-desc{
+      display:block;
+      margin-top:6px;
+      padding-right:4px;
+      color:#91a1b7;
+      font-size:11px;
+      line-height:1.45;
+    }
+
+    .cooldown-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:52px;
+      padding:4px 8px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:999px;
+      background:rgba(0,0,0,.28);
+      color:#d7deea;
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:.04em;
+    }
+
+    .swap-btn{
+      width:100%;
+      padding:11px 14px;
+      border:1px solid rgba(96,165,250,.20);
+      border-radius:13px;
+      background:linear-gradient(180deg,rgba(59,130,246,.10),rgba(59,130,246,.04));
+      color:#c8e3ff;
+      cursor:pointer;
+      font-weight:750;
+      transition:transform .15s ease,border-color .15s ease,background .15s ease;
+    }
+
+    .swap-btn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(96,165,250,.42);
+      background:linear-gradient(180deg,rgba(59,130,246,.16),rgba(59,130,246,.06));
+    }
+
+    .log{
+      height:320px;
+      overflow:auto;
+      padding:10px;
+      border:1px solid rgba(148,163,184,.10);
+      border-radius:14px;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.02),transparent),
+        rgba(2,8,18,.55);
+      font-size:12px;
+      line-height:1.55;
+      scrollbar-width:thin;
+      scrollbar-color:rgba(139,92,246,.65) transparent;
+    }
+
+    .log > div{
+      padding:7px 9px;
+      margin-bottom:5px;
+      border-radius:9px;
+      background:rgba(255,255,255,.018);
+      border-left:2px solid rgba(139,92,246,.28);
+    }
+
+    footer{
+      opacity:.9;
+    }
+
+    #main-menu{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      background:
+        radial-gradient(circle at 50% 35%,rgba(139,92,246,.13),transparent 28%),
+        radial-gradient(circle at 20% 10%,rgba(56,189,248,.08),transparent 28%),
+        linear-gradient(180deg,rgba(2,6,23,.94),rgba(2,6,23,.985));
+      z-index:90;
+    }
+
+    #main-menu::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+      background-size:36px 36px;
+      mask-image:radial-gradient(circle at center,black,transparent 80%);
+      pointer-events:none;
+    }
+
+    .menu-card{
+      position:relative;
+      width:min(560px,100%);
+      min-width:0 !important;
+      padding:34px;
+      border:1px solid rgba(167,139,250,.24);
+      border-radius:26px;
+      text-align:center;
+      background:
+        radial-gradient(circle at 50% 0%,rgba(139,92,246,.12),transparent 46%),
+        linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.014)),
+        #091226;
+      box-shadow:0 32px 80px rgba(0,0,0,.52),0 0 50px rgba(76,29,149,.12);
+      backdrop-filter:blur(20px);
+    }
+
+    .menu-card h2{
+      margin:0;
+      font-size:clamp(28px,5vw,42px);
+      letter-spacing:-.035em;
+      background:linear-gradient(90deg,#fff,#c4b5fd,#bae6fd);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .menu-card > p{
+      margin:9px 0 18px;
+      color:#9fb0c9;
+    }
+
+    .menu-card::before{
+      content:"⚔";
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:60px;
+      height:60px;
+      margin:0 auto 16px;
+      border:1px solid rgba(167,139,250,.25);
+      border-radius:18px;
+      background:rgba(139,92,246,.08);
+      color:#c4b5fd;
+      font-size:27px;
+      box-shadow:0 0 28px rgba(139,92,246,.10);
+    }
+
+    .menu-btn{
+      display:block;
+      width:100%;
+      padding:13px 14px;
+      margin-top:11px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:13px;
+      background:linear-gradient(180deg,rgba(139,92,246,.92),rgba(109,40,217,.88));
+      color:#fff;
+      font-weight:800;
+      letter-spacing:.01em;
+      cursor:pointer;
+      box-shadow:0 10px 24px rgba(76,29,149,.25);
+      transition:transform .15s ease,filter .15s ease,box-shadow .15s ease;
+    }
+
+    .menu-btn:hover{
+      transform:translateY(-2px);
+      filter:brightness(1.08);
+      box-shadow:0 14px 30px rgba(76,29,149,.34);
+    }
+
+    .menu-card .muted{
+      display:block;
+      margin-top:18px !important;
+      color:#8190a7;
+      line-height:1.6;
+    }
+
+    .menu-card .muted::first-line{color:#c6d0df}
+
+    .modal{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      background:rgba(1,5,15,.74);
+      backdrop-filter:blur(10px);
+      z-index:150;
+    }
+
+    .modal-card{
+      width:min(760px,100%);
+      max-height:min(82vh,680px);
+      overflow:auto;
+      padding:20px;
+      border:1px solid rgba(167,139,250,.25);
+      border-radius:20px;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012)),
+        #0b1427;
+      box-shadow:0 28px 80px rgba(0,0,0,.52);
+    }
+
+    .modal-card h3{
+      margin:0 0 7px;
+      font-size:18px;
+    }
+
+    .modal-card .flex{
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .modal-card .flex > div{
+      padding:7px;
+      border:1px solid rgba(148,163,184,.12);
+      border-radius:13px;
+      background:rgba(255,255,255,.025);
+      transition:transform .15s ease,border-color .15s ease;
+    }
+
+    .modal-card .flex > div:hover{
+      transform:translateY(-2px);
+      border-color:rgba(167,139,250,.38);
+    }
+
+    #modal .class-btn{
+      margin-top:12px !important;
+    }
+
+    @media (max-width:1100px){
+      .selector-row{grid-template-columns:1fr}
+      .battle-controls{grid-template-columns:1fr !important}
+      .log{height:240px}
+    }
+
+    @media (max-width:760px){
+      body{padding:12px}
+      .game-header{align-items:flex-start;flex-direction:column}
+      .game-header > div:last-child{width:100%;display:flex}
+      .game-header > div:last-child .class-btn{flex:1}
+      .selector-row{padding:12px}
+      .selector-row > div{padding:12px}
+      .char{width:calc(50% - 5px);min-width:125px}
+      .battle-arena,.arena{
+        grid-template-columns:1fr;
+        min-height:680px;
+      }
+      .arena::before{
+        width:52px;
+        height:52px;
+      }
+      .fighter-box{height:230px}
+      .team-panel{padding:12px 8px}
+      .battle-controls{padding:13px !important}
+      .move-btn{min-height:72px}
+      .menu-card{padding:26px 20px}
+    }
+
+    @media (max-width:460px){
+      .char{width:100%}
+      .slots{justify-content:center}
+      .fighter-box{height:205px}
+      .fighter-box img{max-width:92%;max-height:86%}
+      .modal{padding:12px}
+      .modal-card{padding:14px}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,
+      *::before,
+      *::after{
+        animation:none !important;
+        transition:none !important;
+        scroll-behavior:auto !important;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <audio id="battle-music" loop>
+    <source src="battle-music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Música del Modo Historia: una pista para los diálogos y otra,
+       distinta, para los combates scriptados. -->
+  <audio id="story-dialogue-music" loop></audio>
+  <audio id="story-battle-music" loop></audio>
+
+  <div id="main-menu">
+    <div class="menu-layout">
+      <div class="menu-card main-menu-card">
+        <h2>🎮 Batalla Mejorada</h2>
+        <p class="small">Elige modo de juego</p>
+        <button id="menu-pvp" class="menu-btn">🧍‍♂️ Jugador vs Jugador (3v3)</button>
+        <button id="menu-pve" class="menu-btn">🤖 Jugador vs IA (3v3)</button>
+        <button id="menu-pvp-ban" class="menu-btn">🚫 Jugador vs Jugador — con baneos (3v3)</button>
+        <button id="menu-pve-ban" class="menu-btn">🚫🤖 Jugador vs IA — con baneos (3v3)</button>
+        <button id="menu-glossary" class="menu-btn glossary-btn">📖 Glosario de personajes</button>
+        <button id="menu-patchnotes" class="menu-btn patchnotes-btn">📝 Notas de parche</button>
+        <button id="menu-support" class="menu-btn support-btn">💬 Soporte / Sugerencias</button>
+        <button id="menu-settings" class="menu-btn settings-btn">⚙️ Configuración (música)</button>
+        <div style="margin-top:12px">
+          <small class="muted">
+            ✨ Nuevas características:<br>
+            • Buffs múltiples sin duplicación<br>
+            • Modo muerte súbita tras 70 turnos<br>
+            • Modos con baneos: 4 baneos por jugador (8 en total)<br>
+            • Estados: stun, congelar, embelesar, miedo, ralentizar y sangrado<br>• IA táctica con cambios de personaje y acciones
+          </small>
+        </div>
+      </div>
+
+      <button id="menu-story" class="story-poster-panel">
+        <div class="story-poster-frame">
+          <img src="personajes/papu no filosophy.jpg" alt="Papu no Filosophy">
+        </div>
+        <span class="story-poster-title">📖 Modo Historia</span>
+        <span class="story-poster-subtitle">Papu no Filosophy</span>
+        <span class="story-poster-cta">▶ Jugar</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== Glosario de personajes ===== -->
+  <div id="glossary-screen" style="display:none">
+    <div class="glossary-card">
+      <div class="glossary-head">
+        <div>
+          <h2>📖 Glosario de personajes</h2>
+          <div class="small">Consulta las estadísticas y habilidades de cada personaje antes de entrar en combate.</div>
+        </div>
+        <button id="glossary-back" class="class-btn">⬅ Volver al menú</button>
+      </div>
+
+      <div class="search-row">
+        <span class="search-icon">🔎</span>
+        <input id="glossary-search" class="search-input" type="text" placeholder="Buscar personaje por nombre…" autocomplete="off" spellcheck="false">
+        <button id="glossary-clear" class="search-clear" title="Limpiar búsqueda">✕</button>
+      </div>
+      <div id="glossary-filters" class="ban-filters"></div>
+      <div id="glossary-count" class="search-count small"></div>
+
+      <div id="glossary-grid" class="char-list glossary-grid"></div>
+    </div>
+  </div>
+
+  <!-- ===== Ficha de personaje (glosario) ===== -->
+  <div id="glossary-detail" class="modal" style="display:none">
+    <div class="modal-card glossary-detail-card">
+      <button id="glossary-detail-close" class="glossary-detail-close" title="Cerrar">✕</button>
+      <div id="glossary-detail-body"></div>
+    </div>
+  </div>
+
+  <!-- ===== Notas de parche ===== -->
+  <div id="patchnotes-screen" style="display:none">
+    <div class="patchnotes-card">
+      <div class="patchnotes-head">
+        <div>
+          <h2>📝 Notas de parche</h2>
+          <div class="small">Historial de buffs, nerfs y ajustes aplicados a los personajes.</div>
+        </div>
+        <button id="patchnotes-back" class="class-btn">⬅ Volver al menú</button>
+      </div>
+      <div id="patchnotes-list" class="patchnotes-list"></div>
+    </div>
+  </div>
+
+  <!-- ===== Soporte / Sugerencias ===== -->
+  <div id="support-modal" class="modal" style="display:none">
+    <div class="modal-card support-card">
+      <button id="support-close" class="glossary-detail-close" title="Cerrar">✕</button>
+      <h3>💬 Soporte / Sugerencias</h3>
+      <p class="small">¿Te gustaría que bufeara, nerfeara, ajustara o añadiera algo? Cuéntamelo aquí, me llegará directamente y lo revisaré para el próximo parche.</p>
+
+      <form id="support-form" action="https://formspree.io/f/xjykorbp" method="POST">
+        <input type="hidden" name="_subject" value="Nueva sugerencia — Batalla Mejorada">
+
+        <label class="support-label" for="support-type">Tipo de solicitud</label>
+        <select id="support-type" name="Tipo" class="support-select">
+          <option value="Buff">⬆️ Buff (fortalecer)</option>
+          <option value="Nerf">⬇️ Nerf (debilitar)</option>
+          <option value="Ajuste">⚖️ Ajuste general</option>
+          <option value="Nuevo personaje / idea">✨ Nuevo personaje / idea</option>
+          <option value="Bug / error">🐞 Bug / error</option>
+          <option value="Otro">💬 Otro</option>
+        </select>
+
+        <label class="support-label" for="support-character">Personaje afectado (opcional)</label>
+        <input id="support-character" name="Personaje" type="text" class="support-input" placeholder="Ej: nombre del personaje…" autocomplete="off">
+
+        <label class="support-label" for="support-message">Tu mensaje</label>
+        <textarea id="support-message" name="Mensaje" class="support-textarea" rows="5" placeholder="Describe qué te gustaría cambiar o añadir…" required></textarea>
+
+        <label class="support-label" for="support-email">Tu contacto (opcional, por si quiero responderte)</label>
+        <input id="support-email" name="email" type="email" class="support-input" placeholder="tu-email@ejemplo.com" autocomplete="off">
+
+        <div id="support-status" class="settings-status"></div>
+
+        <div class="settings-actions">
+          <button type="submit" id="support-submit" class="class-btn">📨 Enviar sugerencia</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Modo Historia ===== -->
+  <div id="story-screen" style="display:none">
+    <div class="story-card">
+      <div class="story-head">
+        <div class="story-head-title" id="story-head-title">📖 Papu no Filosophy</div>
+        <button id="story-back" class="class-btn">⬅ Volver al menú</button>
+      </div>
+      <div id="story-body"></div>
+    </div>
+  </div>
+
+  <!-- ===== Fase de baneos (solo en los modos con baneos) ===== -->
+  <div id="ban-phase" style="display:none">
+    <div class="ban-card">
+      <div class="ban-head">
+        <div>
+          <h2 id="ban-turn-title">🚫 Fase de baneos</h2>
+          <div id="ban-turn-sub" class="small"></div>
+        </div>
+        <div id="ban-wait" class="small ban-wait"></div>
+      </div>
+
+      <div class="ban-teams">
+        <div class="ban-team">
+          <div class="small ban-p1">Baneos de Jugador 1</div>
+          <div id="ban-p1-slots" class="ban-slots"></div>
+        </div>
+        <div class="ban-team">
+          <div class="small ban-p2">Baneos de Jugador 2 / IA</div>
+          <div id="ban-p2-slots" class="ban-slots"></div>
+        </div>
+      </div>
+
+      <div class="search-row">
+        <span class="search-icon">🔎</span>
+        <input id="ban-search" class="search-input" type="text" placeholder="Buscar personaje por nombre…" autocomplete="off" spellcheck="false">
+        <button id="ban-clear" class="search-clear" title="Limpiar búsqueda">✕</button>
+      </div>
+      <div id="ban-filters" class="ban-filters"></div>
+      <div id="ban-count" class="search-count small"></div>
+
+      <div id="ban-grid" class="char-list ban-grid"></div>
+
+      <div class="ban-actions">
+        <button id="ban-blank" class="class-btn">⬜ Baneo en blanco (no banear a nadie)</button>
+        <button id="ban-confirm" class="class-btn ban-confirm" disabled>Confirmar baneo</button>
+      </div>
+
+      <div id="ban-log" class="ban-log"></div>
+      <div class="small muted" style="margin-top:10px;line-height:1.6">
+        Cada jugador tiene 4 baneos (8 en total) y se alternan por turnos. Pulsa un personaje y confirma,
+        o gasta el turno con un baneo en blanco. Los personajes baneados no podrán elegirse después.
+      </div>
+    </div>
+  </div>
+
+  <div class="container" id="game-root" style="display:none">
+    <header class="game-header">
+      <div>
+        <h1>Batalla Mejorada — Múltiples Modos</h1>
+        <div class="small">Selecciona personajes. Cambiar no consume turno. Habilidades con cooldowns.</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+        <span class="small" style="padding:7px 10px;border:1px solid rgba(148,163,184,.12);border-radius:999px;background:rgba(255,255,255,.025)">🎮 Interfaz táctica</span>
+        <button id="settingsBtn" class="class-btn settings-btn">⚙️ Configuración</button>
+        <button id="story-surrender-btn" class="class-btn" style="display:none;background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.4)">🏳️ Rendirse</button>
+        <button id="startBtn" class="class-btn" disabled>Comenzar batalla</button>
+        <button id="restartBtn" class="class-btn">Reiniciar</button>
+      </div>
+    </header>
+
+    <div id="banned-banner" class="banned-banner small" style="display:none"></div>
+
+    <section class="card selector-row">
+      <div style="flex:1">
+        <h3>Jugador 1 — Selección</h3>
+        <div style="margin-bottom:8px">
+          <button class="class-btn" onclick="setFilter('p1', null)">Ver todos</button>
+          <button class="class-btn" onclick="showClassMenu('p1')">Elegir por clase</button>
+          <span id="p1-info" class="small" style="margin-left:8px">Selecciona 3</span>
+        </div>
+        <div id="p1-list" class="char-list"></div>
+        <div class="slots" id="p1-slots"></div>
+      </div>
+
+      <div style="flex:1">
+        <h3 id="p2-title">Jugador 2 — Selección</h3>
+        <div style="margin-bottom:8px">
+          <button class="class-btn" onclick="setFilter('p2', null)">Ver todos</button>
+          <button class="class-btn" onclick="showClassMenu('p2')">Elegir por clase</button>
+          <span id="p2-info" class="small" style="margin-left:8px">Selecciona 3</span>
+        </div>
+        <div id="p2-list" class="char-list"></div>
+        <div class="slots" id="p2-slots"></div>
+      </div>
+    </section>
+
+    <main class="card arena battle-arena">
+      <div class="team-panel">
+        <div class="small">Jugador 1</div>
+        <div id="fighter-box-p1" class="fighter-box"><img id="fighter-img-p1" src=""></div>
+        <div class="hpbar" id="hpbar-p1"><i style="width:0%"></i></div>
+        <div class="stats" id="stats-p1"><small>Sin personaje</small></div>
+      </div>
+
+      <div class="team-panel">
+        <div class="small" id="enemy-label">Jugador 2</div>
+        <div id="fighter-box-p2" class="fighter-box"><img id="fighter-img-p2" src=""></div>
+        <div class="hpbar" id="hpbar-p2"><i style="width:0%"></i></div>
+        <div class="stats" id="stats-p2"><small>Sin personaje</small></div>
+      </div>
+    </main>
+
+    <section class="card battle-controls" style="display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-top:12px">
+      <div>
+        <h3>Controles</h3>
+        <div id="turnInfo" class="turn-info">Turno: selección</div>
+        <div id="moves-area" class="moves-area" style="margin-top:8px">Selecciona equipos para comenzar.</div>
+      </div>
+      <aside>
+        <h3>Registro</h3>
+        <div id="log" class="log"></div>
+      </aside>
+    </section>
+
+    <footer class="small" style="text-align:center;margin-top:12px">
+      <strong>Sistema:</strong> buffs/debuffs • estados y DoT • muerte súbita • fase de baneos • IA táctica • cambio sin consumir turno
+    </footer>
+  </div>
+
+  <div id="modal" style="display:none"></div>
+
+  <!-- ===== Panel de configuración (música de fondo) ===== -->
+  <div id="settings-modal" class="modal" style="display:none">
+    <div class="settings-card">
+      <h3>⚙️ Configuración</h3>
+      <p class="small">Elige la música de fondo que sonará durante la batalla.</p>
+
+      <div class="settings-section">
+        <h4>🎵 Música de fondo</h4>
+        <div id="track-list" class="track-list"></div>
+      </div>
+
+      <div class="settings-section">
+        <h4>🎧 Volumen</h4>
+        <div class="volume-row">
+          <span>🔈</span>
+          <input id="volume-slider" type="range" min="0" max="100" step="1" value="50">
+          <span id="volume-value" class="volume-value">50%</span>
+        </div>
+        <label class="switch-row">
+          <input id="music-enabled" type="checkbox" checked>
+          <span>Reproducir música durante la batalla</span>
+        </label>
+      </div>
+
+      <div class="settings-section">
+        <h4>📂 Archivos</h4>
+        <div class="small" style="line-height:1.7">
+          Guarda tus canciones en esta misma carpeta con los nombres
+          <strong>battle-music.mp3</strong>, <strong>battle-music1.mp3</strong> … hasta
+          <strong>battle-music10.mp3</strong> y aparecerán arriba para elegirlas.
+        </div>
+        <div id="settings-status" class="settings-status"></div>
+      </div>
+
+      <hr style="border-color:rgba(148,163,184,.15);margin:16px 0">
+
+      <h3>📖 Música del Modo Historia</h3>
+      <p class="small">Una música suena durante los diálogos y otra distinta durante los combates de la historia.</p>
+
+      <div class="settings-section">
+        <h4>🎙️ Música de los diálogos</h4>
+        <div id="story-dialogue-track-list" class="track-list"></div>
+      </div>
+
+      <div class="settings-section">
+        <h4>⚔️ Música de los combates de la historia</h4>
+        <div id="story-battle-track-list" class="track-list"></div>
+      </div>
+
+      <div class="settings-section">
+        <h4>🎧 Volumen (Modo Historia)</h4>
+        <div class="volume-row">
+          <span>🔈</span>
+          <input id="story-volume-slider" type="range" min="0" max="100" step="1" value="50">
+          <span id="story-volume-value" class="volume-value">50%</span>
+        </div>
+        <label class="switch-row">
+          <input id="story-music-enabled" type="checkbox" checked>
+          <span>Reproducir música en el Modo Historia</span>
+        </label>
+      </div>
+
+      <div class="settings-section">
+        <h4>📂 Archivos del Modo Historia</h4>
+        <div class="small" style="line-height:1.7">
+          Crea una carpeta llamada <strong>musica historia</strong> junto a este archivo y guarda ahí
+          hasta 10 canciones para los diálogos con los nombres <strong>dialogo1.mp3</strong> … <strong>dialogo10.mp3</strong>,
+          y hasta 10 canciones para los combates con los nombres <strong>combate1.mp3</strong> … <strong>combate10.mp3</strong>.
+        </div>
+        <div id="story-settings-status" class="settings-status"></div>
+      </div>
+
+      <div class="settings-actions">
+        <button id="settings-close" class="class-btn">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="personajes.js" defer></script>
+  <script src="historia.js" defer></script>
+  <script src="game.js" defer></script>
+  <script>
+    const battleMusic = document.getElementById('battle-music');
+
+    /* ============================================================
+       LISTA DE MÚSICA
+       Se genera sola a partir de los archivos que guardes en esta
+       misma carpeta:
+         battle-music.mp3   -> Pista 0
+         battle-music1.mp3  -> Pista 1
+         ...
+         battle-music10.mp3 -> Pista 10
+       Para tener más pistas solo cambia MUSIC_COUNT y añade los
+       archivos con el mismo patrón de nombre.
+       ============================================================ */
+    const MUSIC_COUNT = 10;   // última pista: battle-music10.mp3
+
+    const MUSIC_TRACKS = [];
+    for(let i = 0; i <= MUSIC_COUNT; i++){
+      MUSIC_TRACKS.push({
+        id: 'track' + i,
+        name: 'Pista ' + i,
+        src: i === 0 ? 'battle-music.mp3' : 'battle-music' + i + '.mp3',
+        emoji: '🎵'
+      });
+    }
+    MUSIC_TRACKS.push({ id:'none', name:'Sin música', src:'', emoji:'🔇' });
+
+    const musicSettings = {
+      trackId: 'track0',
+      volume: 0.5,
+      enabled: true
+    };
+
+    /* --- Guardado de preferencias (si el navegador lo permite) --- */
+    function saveSettings(){
+      try{
+        localStorage.setItem('batalla-music-config', JSON.stringify({
+          trackId: musicSettings.trackId,
+          volume: musicSettings.volume,
+          enabled: musicSettings.enabled
+        }));
+      }catch(e){ /* modo privado o file:// sin permisos: se ignora */ }
+    }
+
+    function loadSettings(){
+      try{
+        const raw = localStorage.getItem('batalla-music-config');
+        if(!raw) return;
+        const saved = JSON.parse(raw);
+        if(typeof saved.volume === 'number') musicSettings.volume = Math.min(1, Math.max(0, saved.volume));
+        if(typeof saved.enabled === 'boolean') musicSettings.enabled = saved.enabled;
+        if(saved.trackId && MUSIC_TRACKS.some(t => t.id === saved.trackId)){
+          musicSettings.trackId = saved.trackId;
+        }
+      }catch(e){ /* preferencias corruptas: se usan las de por defecto */ }
+    }
+
+    function getCurrentTrack(){
+      return MUSIC_TRACKS.find(t => t.id === musicSettings.trackId) || MUSIC_TRACKS[0];
+    }
+
+    function setStatus(msg, kind){
+      const el = document.getElementById('settings-status');
+      if(!el) return;
+      el.className = 'settings-status' + (kind ? ' ' + kind : '');
+      el.innerText = msg || '';
+    }
+
+    function playBattleMusic() {
+      const track = getCurrentTrack();
+      if(!musicSettings.enabled || !track.src){
+        stopBattleMusic();
+        return;
+      }
+      battleMusic.volume = musicSettings.volume;
+      if(battleMusic.getAttribute('src') !== track.src){
+        battleMusic.setAttribute('src', track.src);
+        battleMusic.load();
+      }
+      battleMusic.play().catch(err => {
+        console.log('Audio playback failed:', err);
+        setStatus('No se pudo reproducir «' + track.name + '». Revisa que el archivo exista.', 'error');
+      });
+    }
+    
+    function stopBattleMusic() {
+      battleMusic.pause();
+      battleMusic.currentTime = 0;
+    }
+
+    /* ============================================================
+       MÚSICA DEL MODO HISTORIA
+       Dos listas independientes de hasta 10 canciones cada una,
+       guardadas en la carpeta "musica historia":
+         musica historia/dialogo1.mp3  … dialogo10.mp3   (diálogos)
+         musica historia/combate1.mp3  … combate10.mp3   (combates)
+       Suena una u otra según si el jugador está leyendo diálogos
+       o metido en un combate scriptado del Modo Historia.
+       ============================================================ */
+    const storyDialogueMusic = document.getElementById('story-dialogue-music');
+    const storyBattleMusic = document.getElementById('story-battle-music');
+
+    const STORY_MUSIC_COUNT = 10;
+
+    const STORY_DIALOGUE_TRACKS = [];
+    for(let i = 1; i <= STORY_MUSIC_COUNT; i++){
+      STORY_DIALOGUE_TRACKS.push({
+        id: 'dialogo' + i,
+        name: 'Diálogo ' + i,
+        src: 'musica historia/dialogo' + i + '.mp3',
+        emoji: '🎙️'
+      });
+    }
+    STORY_DIALOGUE_TRACKS.push({ id:'none', name:'Sin música', src:'', emoji:'🔇' });
+
+    const STORY_BATTLE_TRACKS = [];
+    for(let i = 1; i <= STORY_MUSIC_COUNT; i++){
+      STORY_BATTLE_TRACKS.push({
+        id: 'combate' + i,
+        name: 'Combate ' + i,
+        src: 'musica historia/combate' + i + '.mp3',
+        emoji: '⚔️'
+      });
+    }
+    STORY_BATTLE_TRACKS.push({ id:'none', name:'Sin música', src:'', emoji:'🔇' });
+
+    const storyMusicSettings = {
+      dialogueTrackId: 'dialogo1',
+      battleTrackId: 'combate1',
+      volume: 0.5,
+      enabled: true
+    };
+
+    function saveStoryMusicSettings(){
+      try{
+        localStorage.setItem('batalla-story-music-config', JSON.stringify(storyMusicSettings));
+      }catch(e){ /* modo privado o file:// sin permisos: se ignora */ }
+    }
+
+    function loadStoryMusicSettings(){
+      try{
+        const raw = localStorage.getItem('batalla-story-music-config');
+        if(!raw) return;
+        const saved = JSON.parse(raw);
+        if(typeof saved.volume === 'number') storyMusicSettings.volume = Math.min(1, Math.max(0, saved.volume));
+        if(typeof saved.enabled === 'boolean') storyMusicSettings.enabled = saved.enabled;
+        if(saved.dialogueTrackId && STORY_DIALOGUE_TRACKS.some(t => t.id === saved.dialogueTrackId)){
+          storyMusicSettings.dialogueTrackId = saved.dialogueTrackId;
+        }
+        if(saved.battleTrackId && STORY_BATTLE_TRACKS.some(t => t.id === saved.battleTrackId)){
+          storyMusicSettings.battleTrackId = saved.battleTrackId;
+        }
+      }catch(e){ /* preferencias corruptas: se usan las de por defecto */ }
+    }
+
+    function getCurrentStoryDialogueTrack(){
+      return STORY_DIALOGUE_TRACKS.find(t => t.id === storyMusicSettings.dialogueTrackId) || STORY_DIALOGUE_TRACKS[0];
+    }
+    function getCurrentStoryBattleTrack(){
+      return STORY_BATTLE_TRACKS.find(t => t.id === storyMusicSettings.battleTrackId) || STORY_BATTLE_TRACKS[0];
+    }
+
+    function setStoryStatus(msg, kind){
+      const el = document.getElementById('story-settings-status');
+      if(!el) return;
+      el.className = 'settings-status' + (kind ? ' ' + kind : '');
+      el.innerText = msg || '';
+    }
+
+    function stopStoryDialogueMusic(){
+      storyDialogueMusic.pause();
+      storyDialogueMusic.currentTime = 0;
+    }
+    function stopStoryBattleMusic(){
+      storyBattleMusic.pause();
+      storyBattleMusic.currentTime = 0;
+    }
+    function stopAllStoryMusic(){
+      stopStoryDialogueMusic();
+      stopStoryBattleMusic();
+    }
+
+    /* Pone la música de diálogos (y para la de combate, si sonaba). */
+    function playStoryDialogueMusic(){
+      stopStoryBattleMusic();
+      const track = getCurrentStoryDialogueTrack();
+      if(!storyMusicSettings.enabled || !track.src){
+        stopStoryDialogueMusic();
+        return;
+      }
+      if(storyDialogueMusic.getAttribute('src') === track.src && !storyDialogueMusic.paused) return;
+      storyDialogueMusic.volume = storyMusicSettings.volume;
+      storyDialogueMusic.setAttribute('src', track.src);
+      storyDialogueMusic.load();
+      storyDialogueMusic.play().catch(err => {
+        console.log('Story dialogue music failed:', err);
+      });
+    }
+
+    /* Pone la música de combate (y para la de diálogos, si sonaba). */
+    function playStoryBattleMusic(){
+      stopStoryDialogueMusic();
+      const track = getCurrentStoryBattleTrack();
+      if(!storyMusicSettings.enabled || !track.src){
+        stopStoryBattleMusic();
+        return;
+      }
+      if(storyBattleMusic.getAttribute('src') === track.src && !storyBattleMusic.paused) return;
+      storyBattleMusic.volume = storyMusicSettings.volume;
+      storyBattleMusic.setAttribute('src', track.src);
+      storyBattleMusic.load();
+      storyBattleMusic.play().catch(err => {
+        console.log('Story battle music failed:', err);
+      });
+    }
+
+    /* Se exponen explícitamente para que game.js pueda llamarlas. */
+    window.playStoryDialogueMusic = playStoryDialogueMusic;
+    window.playStoryBattleMusic = playStoryBattleMusic;
+    window.stopAllStoryMusic = stopAllStoryMusic;
+
+    const storyTrackStatus = {};
+    let storyTracksChecked = false;
+
+    /* Comprueba qué archivos de "musica historia" existen realmente. */
+    function checkStoryTracks(){
+      if(storyTracksChecked) return;
+      storyTracksChecked = true;
+      STORY_DIALOGUE_TRACKS.concat(STORY_BATTLE_TRACKS).forEach(track => {
+        if(!track.src) return;
+        const probe = new Audio();
+        probe.preload = 'metadata';
+        probe.addEventListener('loadedmetadata', () => {
+          storyTrackStatus[track.id] = { state:'ok', duration: probe.duration };
+          renderStoryTrackList('dialogue');
+          renderStoryTrackList('battle');
+        });
+        probe.addEventListener('error', () => {
+          storyTrackStatus[track.id] = { state:'missing' };
+          renderStoryTrackList('dialogue');
+          renderStoryTrackList('battle');
+        });
+        probe.src = track.src;
+      });
+    }
+
+    /* type: 'dialogue' | 'battle' */
+    function renderStoryTrackList(type){
+      const isDialogue = type === 'dialogue';
+      const cont = document.getElementById(isDialogue ? 'story-dialogue-track-list' : 'story-battle-track-list');
+      if(!cont) return;
+      cont.innerHTML = '';
+
+      const tracks = isDialogue ? STORY_DIALOGUE_TRACKS : STORY_BATTLE_TRACKS;
+      const audioEl = isDialogue ? storyDialogueMusic : storyBattleMusic;
+      const settingsKey = isDialogue ? 'dialogueTrackId' : 'battleTrackId';
+
+      tracks.forEach(track => {
+        const info = storyTrackStatus[track.id];
+        const missing = info && info.state === 'missing';
+        const isPlaying = !!track.src && audioEl.getAttribute('src') === track.src && !audioEl.paused;
+
+        const row = document.createElement('div');
+        row.className = 'track' + (track.id === storyMusicSettings[settingsKey] ? ' active' : '') + (missing ? ' missing' : '');
+        row.onclick = () => {
+          storyMusicSettings[settingsKey] = track.id;
+          saveStoryMusicSettings();
+          renderStoryTrackList(type);
+          if(track.src){
+            setStoryStatus(missing
+              ? 'Seleccionada ' + track.name + ', pero falta el archivo «' + track.src + '».'
+              : 'Música seleccionada: ' + track.name, missing ? 'error' : 'ok');
+            if(!audioEl.paused){
+              isDialogue ? playStoryDialogueMusic() : playStoryBattleMusic();
+            }
+          } else {
+            setStoryStatus('Se jugará sin esta música.', 'ok');
+            isDialogue ? stopStoryDialogueMusic() : stopStoryBattleMusic();
+          }
+        };
+
+        const emoji = document.createElement('span');
+        emoji.className = 'track-emoji';
+        emoji.textContent = track.id === storyMusicSettings[settingsKey] ? '✅' : (missing ? '❔' : (track.emoji || '🎵'));
+        row.appendChild(emoji);
+
+        const main = document.createElement('div');
+        main.className = 'track-main';
+        const name = document.createElement('strong');
+        name.className = 'track-name';
+        name.textContent = track.name;
+        main.appendChild(name);
+        const file = document.createElement('span');
+        file.className = 'track-file';
+        file.textContent = track.src
+          ? track.src + (missing ? ' · no encontrado' : (info ? formatDuration(info.duration) : ''))
+          : 'silencio';
+        main.appendChild(file);
+        row.appendChild(main);
+
+        if(track.src){
+          const prev = document.createElement('button');
+          prev.className = 'track-preview';
+          prev.textContent = isPlaying ? '⏸ Parar' : '▶ Probar';
+          prev.onclick = (e) => {
+            e.stopPropagation();
+            audioEl.volume = storyMusicSettings.volume;
+            if(audioEl.getAttribute('src') !== track.src){
+              audioEl.setAttribute('src', track.src);
+              audioEl.load();
+            }
+            if(audioEl.paused){
+              audioEl.play()
+                .then(() => { setStoryStatus('Sonando: ' + track.name, 'ok'); renderStoryTrackList(type); })
+                .catch(() => { setStoryStatus('No se encontró el archivo «' + track.src + '».', 'error'); renderStoryTrackList(type); });
+            } else {
+              audioEl.pause();
+              setStoryStatus('Reproducción detenida.', '');
+            }
+            renderStoryTrackList(type);
+          };
+          row.appendChild(prev);
+        }
+
+        cont.appendChild(row);
+      });
+    }
+
+    /* ---------- Panel de configuración ---------- */
+    const settingsModal = document.getElementById('settings-modal');
+
+    /* Estado de cada archivo: 'ok' | 'missing' | undefined (sin comprobar) */
+    const trackStatus = {};
+    let tracksChecked = false;
+
+    function formatDuration(sec){
+      if(!isFinite(sec) || sec <= 0) return '';
+      const m = Math.floor(sec / 60), s = Math.floor(sec % 60);
+      return ' · ' + m + ':' + String(s).padStart(2, '0');
+    }
+
+    /* Comprueba qué archivos battle-music*.mp3 existen realmente. */
+    function checkTracks(){
+      if(tracksChecked) return;
+      tracksChecked = true;
+      MUSIC_TRACKS.forEach(track => {
+        if(!track.src) return;
+        const probe = new Audio();
+        probe.preload = 'metadata';
+        probe.addEventListener('loadedmetadata', () => {
+          trackStatus[track.id] = { state:'ok', duration: probe.duration };
+          renderTrackList();
+        });
+        probe.addEventListener('error', () => {
+          trackStatus[track.id] = { state:'missing' };
+          renderTrackList();
+        });
+        probe.src = track.src;
+      });
+    }
+
+    function renderTrackList(){
+      const cont = document.getElementById('track-list');
+      cont.innerHTML = '';
+
+      MUSIC_TRACKS.forEach(track => {
+        const info = trackStatus[track.id];
+        const missing = info && info.state === 'missing';
+        const isPlaying = !!track.src && battleMusic.getAttribute('src') === track.src && !battleMusic.paused;
+
+        const row = document.createElement('div');
+        row.className = 'track' + (track.id === musicSettings.trackId ? ' active' : '') + (missing ? ' missing' : '');
+        row.onclick = () => {
+          musicSettings.trackId = track.id;
+          saveSettings();
+          renderTrackList();
+          if(track.src){
+            setStatus(missing
+              ? 'Seleccionada ' + track.name + ', pero falta el archivo «' + track.src + '».'
+              : 'Música seleccionada: ' + track.name, missing ? 'error' : 'ok');
+            if(!battleMusic.paused) playBattleMusic();
+          } else {
+            setStatus('La batalla se jugará sin música.', 'ok');
+            stopBattleMusic();
+          }
+        };
+
+        const emoji = document.createElement('span');
+        emoji.className = 'track-emoji';
+        emoji.textContent = track.id === musicSettings.trackId ? '✅' : (missing ? '❔' : (track.emoji || '🎵'));
+        row.appendChild(emoji);
+
+        const main = document.createElement('div');
+        main.className = 'track-main';
+        const name = document.createElement('strong');
+        name.className = 'track-name';
+        name.textContent = track.name;
+        main.appendChild(name);
+        const file = document.createElement('span');
+        file.className = 'track-file';
+        file.textContent = track.src
+          ? track.src + (missing ? ' · no encontrado' : (info ? formatDuration(info.duration) : ''))
+          : 'silencio';
+        main.appendChild(file);
+        row.appendChild(main);
+
+        if(track.src){
+          const prev = document.createElement('button');
+          prev.className = 'track-preview';
+          prev.textContent = isPlaying ? '⏸ Parar' : '▶ Probar';
+          prev.onclick = (e) => {
+            e.stopPropagation();
+            battleMusic.volume = musicSettings.volume;
+            if(battleMusic.getAttribute('src') !== track.src){
+              battleMusic.setAttribute('src', track.src);
+              battleMusic.load();
+            }
+            if(battleMusic.paused){
+              battleMusic.play()
+                .then(() => { setStatus('Sonando: ' + track.name, 'ok'); renderTrackList(); })
+                .catch(() => { setStatus('No se encontró el archivo «' + track.src + '».', 'error'); renderTrackList(); });
+            } else {
+              battleMusic.pause();
+              setStatus('Reproducción detenida.', '');
+            }
+            renderTrackList();
+          };
+          row.appendChild(prev);
+        }
+
+        cont.appendChild(row);
+      });
+    }
+
+    function openSettings(){
+      checkTracks();
+      renderTrackList();
+      const slider = document.getElementById('volume-slider');
+      slider.value = Math.round(musicSettings.volume * 100);
+      document.getElementById('volume-value').innerText = slider.value + '%';
+      document.getElementById('music-enabled').checked = musicSettings.enabled;
+      setStatus('');
+
+      checkStoryTracks();
+      renderStoryTrackList('dialogue');
+      renderStoryTrackList('battle');
+      const storySlider = document.getElementById('story-volume-slider');
+      storySlider.value = Math.round(storyMusicSettings.volume * 100);
+      document.getElementById('story-volume-value').innerText = storySlider.value + '%';
+      document.getElementById('story-music-enabled').checked = storyMusicSettings.enabled;
+      setStoryStatus('');
+
+      settingsModal.style.display = 'flex';
+    }
+
+    let battleStarted = false;
+
+    function closeSettings(){
+      settingsModal.style.display = 'none';
+      /* Si solo estaba sonando la vista previa, se detiene al cerrar. */
+      if(!battleStarted && !battleMusic.paused) stopBattleMusic();
+
+      /* Igual para las vistas previas de música del Modo Historia:
+         si no estamos realmente en el Modo Historia, se detienen. */
+      const storyScreenVisible = document.getElementById('story-screen').style.display !== 'none';
+      const inStoryBattle = !!(window._state && window._state.storyMode);
+      if(!storyScreenVisible && !inStoryBattle){
+        if(!storyDialogueMusic.paused) stopStoryDialogueMusic();
+        if(!storyBattleMusic.paused) stopStoryBattleMusic();
+      }
+    }
+
+    document.getElementById('menu-settings').addEventListener('click', openSettings);
+    document.getElementById('settingsBtn').addEventListener('click', openSettings);
+    document.getElementById('settings-close').addEventListener('click', closeSettings);
+    settingsModal.addEventListener('click', (e) => { if(e.target === settingsModal) closeSettings(); });
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape' && settingsModal.style.display === 'flex') closeSettings();
+    });
+
+    document.getElementById('volume-slider').addEventListener('input', (e) => {
+      musicSettings.volume = Number(e.target.value) / 100;
+      document.getElementById('volume-value').innerText = e.target.value + '%';
+      battleMusic.volume = musicSettings.volume;
+      saveSettings();
+    });
+
+    document.getElementById('music-enabled').addEventListener('change', (e) => {
+      musicSettings.enabled = e.target.checked;
+      saveSettings();
+      if(!musicSettings.enabled) stopBattleMusic();
+    });
+
+    document.getElementById('story-volume-slider').addEventListener('input', (e) => {
+      storyMusicSettings.volume = Number(e.target.value) / 100;
+      document.getElementById('story-volume-value').innerText = e.target.value + '%';
+      storyDialogueMusic.volume = storyMusicSettings.volume;
+      storyBattleMusic.volume = storyMusicSettings.volume;
+      saveStoryMusicSettings();
+    });
+
+    document.getElementById('story-music-enabled').addEventListener('change', (e) => {
+      storyMusicSettings.enabled = e.target.checked;
+      saveStoryMusicSettings();
+      if(!storyMusicSettings.enabled) stopAllStoryMusic();
+    });
+
+    loadSettings();
+    battleMusic.volume = musicSettings.volume;
+
+    loadStoryMusicSettings();
+    storyDialogueMusic.volume = storyMusicSettings.volume;
+    storyBattleMusic.volume = storyMusicSettings.volume;
+
+    /* Los cuatro modos arrancan desde game.js (startMode).
+       El segundo parámetro indica si el modo usa fase de baneos. */
+    document.getElementById('menu-pvp').addEventListener('click', ()=> window.startMode('pvp', false));
+    document.getElementById('menu-pve').addEventListener('click', ()=> window.startMode('pve', false));
+    document.getElementById('menu-pvp-ban').addEventListener('click', ()=> window.startMode('pvp', true));
+    document.getElementById('menu-pve-ban').addEventListener('click', ()=> window.startMode('pve', true));
+    document.getElementById('menu-glossary').addEventListener('click', ()=> window.openGlossary());
+    document.getElementById('menu-story').addEventListener('click', ()=> window.openStoryMode());
+
+    /* ============================================================
+       NOTAS DE PARCHE
+       Añade aquí una entrada nueva cada vez que hagas un parche.
+       Pon las entradas más recientes AL PRINCIPIO del array.
+       type puede ser: 'buff' | 'nerf' | 'ajuste' | 'nuevo' | 'bug'
+       ============================================================ */
+    const PATCH_NOTES = [
+ 
+
+{
+	version: 'v1.7',
+	date: '26/09/26',
+	summary: `NUEVO PERSONAJE: ANKHA, la famosa gata de Animal Crossing, se une al plantel como un personaje especializado en control y debilitamiento. ⚔️ Habilidades:
+
+Maldición Egipcia — Ataca al enemigo y reduce su ATK.
+Mirada de Faraona — Ralentiza al enemigo y reduce temporalmente su DEF.
+Bendición del Nilo — Aumenta temporalmente el ATK y DEF de Ankha.
+ULTI: Juicio de Anubis — Un poderoso ataque que reduce la DEF, ralentiza al enemigo y permite a Ankha recuperar parte de su vida.
+
+Rol
+
+Mago / Control / Debilitador`
+},
+    
+{
+        version: 'v1.6',
+        date: '24/09/2026',
+        summary: 'Nicktula golpeaba con su ULTI en vez de curar y obtener ventajas sobre un aliado. Nerf a Stocking por su gran daño exagerado.',
+        changes: [
+          { type:'ajuste', target:'Nicktula — TÉCNICA DEFINITIVA: Y ENTONCES... ¡¡OCURRIÓ!!', desc:'Poder reducido de 30 a 0, para que se puedan aplicar estos cambios.' },
+          { type:'nerf', target:'Stocking Anarchy — Stripe I', desc:'Poder reducido de 32 a 20.' },
+          { type:'nerf', target:'Stocking Anarchy — Estadísticas base', desc:'ATQ reducido de 40 a 28.' },
+          { type:'nerf', target:'Stocking Anarchy — Dark Slash', desc:'Poder reducido de 30 a 25, efecto de sangrado reducido de 8 a 6.' },
+          { type:'nerf', target:'Stocking Anarchy — Sweet Temptation', desc:'Poder reducido de 26 a 22, slow reducido de 25 a 10.' },
+          { type:'nerf', target:'Stocking Anarchy — ULTI: Double Trouble', desc:'Poder reducido de 82 a 30, efecto de Def de 13 a 7, efecto sangrado de 12 a 6.' }
+        ]
+      },
+
+
+{
+        version: 'v1.5',
+        date: '24/09/2026',
+        summary: 'Griffith dominaba demasiado el ritmo inicial de las partidas gracias a su alta velocidad y daño consistente. Se reduce su capacidad de actuar primero, a cambio de un uso más frecuente de su golpe básico.',
+        changes: [
+          { type:'nerf', target:'Griffith — Estadísticas base', desc:'ATQ reducido de 30 a 27.' },
+          { type:'nerf', target:'Griffith — Estadísticas base', desc:'VEL reducida drásticamente de 34 a 19.' },
+          { type:'nerf', target:'Griffith — Estocada Relámpago', desc:'Poder reducido de 22 a 20.' },
+          { type:'ajuste', target:'Griffith — Estocada Relámpago', desc:'Cooldown base reducido de 2 a 0 turnos, permitiendo usarla en cada turno.' },
+          { type:'nerf', target:'Griffith — Presencia de Femto', desc:'Poder reducido de 22 a 20.' },
+          { type:'nerf', target:'Griffith — ULTI: Eclipse', desc:'La reducción de VEL aplicada al enemigo baja de 8 a 6.' }
+        ]
+      },
+
+      
+
+      // Ejemplo — puedes borrar o editar esta entrada de muestra:
+      // {
+      //   version: 'v1.4',
+      //   date: '24/09/2026',
+      //   summary: 'Ajustes de equilibrio tras la primera ronda de partidas.',
+      //   changes: [
+      //     { type:'buff',  target:'Nombre del personaje', desc:'Su ataque X ahora hace un 15% más de daño.' },
+      //     { type:'nerf',  target:'Otro personaje',       desc:'Se ha reducido la duración del stun de 2 a 1 turno.' },
+      //     { type:'ajuste',target:'Otro más',             desc:'Su curación ahora también quita "sangrado".' },
+      //     { type:'nuevo', target:'Personaje nuevo',      desc:'Se ha añadido al roster.' }
+      //   ]
+      // },
+    ];
+
+    const PATCH_BADGES = {
+      buff:   { label: '⬆️ Buff',   cls: 'buff'   },
+      nerf:   { label: '⬇️ Nerf',   cls: 'nerf'   },
+      ajuste: { label: '⚖️ Ajuste', cls: 'ajuste' },
+      nuevo:  { label: '✨ Nuevo',  cls: 'nuevo'  },
+      bug:    { label: '🐞 Fix',    cls: 'bug'    }
+    };
+
+    function renderPatchNotes(){
+      const cont = document.getElementById('patchnotes-list');
+      cont.innerHTML = '';
+
+      if(!PATCH_NOTES.length){
+        const empty = document.createElement('div');
+        empty.className = 'patchnotes-empty';
+        empty.textContent = 'Todavía no hay notas de parche publicadas. ¡Vuelve pronto!';
+        cont.appendChild(empty);
+        return;
+      }
+
+      PATCH_NOTES.forEach(patch => {
+        const entry = document.createElement('div');
+        entry.className = 'patch-entry';
+
+        const header = document.createElement('div');
+        header.className = 'patch-entry-header';
+        const version = document.createElement('span');
+        version.className = 'patch-version';
+        version.textContent = patch.version || '';
+        header.appendChild(version);
+        if(patch.date){
+          const date = document.createElement('span');
+          date.className = 'patch-date';
+          date.textContent = patch.date;
+          header.appendChild(date);
+        }
+        entry.appendChild(header);
+
+        if(patch.summary){
+          const summary = document.createElement('p');
+          summary.className = 'patch-summary';
+          summary.textContent = patch.summary;
+          entry.appendChild(summary);
+        }
+
+        (patch.changes || []).forEach(change => {
+          const row = document.createElement('div');
+          row.className = 'patch-change';
+
+          const badgeInfo = PATCH_BADGES[change.type] || { label: change.type, cls: 'ajuste' };
+          const badge = document.createElement('span');
+          badge.className = 'patch-badge ' + badgeInfo.cls;
+          badge.textContent = badgeInfo.label;
+          row.appendChild(badge);
+
+          const body = document.createElement('div');
+          body.className = 'patch-change-body';
+          if(change.target){
+            const target = document.createElement('div');
+            target.className = 'patch-change-target';
+            target.textContent = change.target;
+            body.appendChild(target);
+          }
+          const desc = document.createElement('div');
+          desc.className = 'patch-change-desc';
+          desc.textContent = change.desc || '';
+          body.appendChild(desc);
+          row.appendChild(body);
+
+          entry.appendChild(row);
+        });
+
+        cont.appendChild(entry);
+      });
+    }
+
+    function openPatchNotes(){
+      document.getElementById('main-menu').style.display = 'none';
+      document.getElementById('patchnotes-screen').style.display = 'flex';
+      renderPatchNotes();
+    }
+
+    function closePatchNotes(){
+      document.getElementById('patchnotes-screen').style.display = 'none';
+      document.getElementById('main-menu').style.display = 'flex';
+    }
+
+    document.getElementById('menu-patchnotes').addEventListener('click', openPatchNotes);
+    document.getElementById('patchnotes-back').addEventListener('click', closePatchNotes);
+
+    /* ============================================================
+       SOPORTE / SUGERENCIAS
+       El formulario se envía por Formspree directamente a tu Gmail.
+       ============================================================ */
+    const supportModal = document.getElementById('support-modal');
+
+    function openSupport(){
+      const status = document.getElementById('support-status');
+      status.textContent = '';
+      status.className = 'settings-status';
+      supportModal.style.display = 'flex';
+    }
+
+    function closeSupport(){
+      supportModal.style.display = 'none';
+    }
+
+    document.getElementById('menu-support').addEventListener('click', openSupport);
+    document.getElementById('support-close').addEventListener('click', closeSupport);
+    supportModal.addEventListener('click', (e) => { if(e.target === supportModal) closeSupport(); });
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape' && supportModal.style.display === 'flex') closeSupport();
+    });
+
+    document.getElementById('support-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const status = document.getElementById('support-status');
+      const submitBtn = document.getElementById('support-submit');
+      const message = document.getElementById('support-message').value.trim();
+
+      if(!message){
+        status.textContent = 'Escribe un mensaje antes de enviarlo.';
+        status.className = 'settings-status error';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando…';
+      status.textContent = '';
+      status.className = 'settings-status';
+
+      try{
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if(res.ok){
+          status.textContent = '✅ ¡Sugerencia enviada! Gracias, la revisaré pronto.';
+          status.className = 'settings-status ok';
+          form.reset();
+        } else {
+          throw new Error('Respuesta no válida de Formspree');
+        }
+      } catch(err){
+        status.textContent = '❌ No se pudo enviar. Comprueba tu conexión e inténtalo de nuevo.';
+        status.className = 'settings-status error';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '📨 Enviar sugerencia';
+      }
+    });
+    
+    const originalStartBtn = document.getElementById('startBtn');
+    originalStartBtn.addEventListener('click', () => {
+      battleStarted = true;
+      playBattleMusic();
+    });
+    
+    document.getElementById('restartBtn').addEventListener('click', () => {
+      battleStarted = false;
+      stopBattleMusic();
+    });
+  </script>
+</body>
+</html>

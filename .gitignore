@@ -1,0 +1,6 @@
+# Archivos locales que no deben subirse
+*.zip
+*.7z
+*.rar
+Thumbs.db
+.DS_Store
