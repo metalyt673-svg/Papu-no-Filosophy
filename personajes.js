@@ -16,6 +16,271 @@ const CHARACTERS = [
 
 
 {
+  id: 'trump',
+  name: 'Donald Trump',
+  img: 'personajes/trump.gif',
+  classes: ['atacante', 'soporte'],
+  hp: 130,
+  atk: 30,
+  def: 16,
+  spd: 14,
+
+  moves: [
+    {
+      id: 'tru1',
+      name: 'USA better than China',
+      power: 23,
+      acc: 0.98,
+      desc: 'Trump lanza una lluvia de billetes contra el enemigo.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: null
+    },
+
+    {
+      id: 'tru2',
+      name: 'Paraguas Dorado',
+      power: 0,
+      acc: 1.0,
+      desc: 'Trump abre su enorme paraguas y se protege, aumentando temporalmente su DEF.',
+      baseCooldown: 2,
+      type: 'support',
+      effect: {
+        type: 'tempDef',
+        value: 9,
+        duration: 3
+      }
+    },
+
+    {
+      id: 'tru3',
+      name: 'No votes? take my money',
+      power: 26,
+      acc: 0.92,
+      desc: 'Trump arroja una enorme cantidad de dinero al enemigo y aumenta temporalmente su ATK.',
+      baseCooldown: 3,
+      type: 'attack',
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 8,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 4,
+          prob: 0.7,
+          duration: 2
+        }
+      ]
+    },
+
+    {
+      id: 'tru4',
+      name: 'ULTI: You, DEPORTED!!',
+      power: 30,
+      acc: 0.90,
+      desc: 'Trump abre su paraguas y provoca una gigantesca lluvia de billetes que golpea al enemigo y reduce su DEF, deportándolo a su país de origen.',
+      baseCooldown: 6,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 9,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'spd',
+          value: 4,
+          prob: 0.8,
+          duration: 2
+        }
+      ]
+    }
+  ]
+},
+
+{
+  id: 'zani',
+  name: 'Zani',
+  img: 'personajes/zani.jpg',
+  classes: ['atacante', 'defensor'],
+  hp: 115,
+  atk: 25,
+  def: 25,
+  spd: 15,
+
+  moves: [
+    {
+      id: 'zan1',
+      name: 'Negociación de Rutina',
+      power: 20,
+      acc: 0.98,
+      desc: 'Zani realiza una rápida combinación de golpes con sus guanteletes.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: null
+    },
+
+    {
+      id: 'zan2',
+      name: 'Protocolo de Defensa Estándar',
+      power: 22,
+      acc: 0.95,
+      desc: 'Zani adopta una postura defensiva y contraataca, reduciendo la DEF del enemigo.',
+      baseCooldown: 2,
+      type: 'attack',
+      effect: {
+        type: 'debuff',
+        stat: 'def',
+        value: 5,
+        prob: 0.9,
+        duration: 2
+      }
+    },
+
+    {
+      id: 'zan3',
+      name: 'Ascuas Helíacas',
+      power: 0,
+      acc: 1.0,
+      desc: 'Zani concentra su energía y aumenta temporalmente su ATK y DEF.',
+      baseCooldown: 3,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 8,
+          duration: 3
+        },
+        {
+          type: 'tempDef',
+          value: 6,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'zan4',
+      name: 'ULTI: Modo Infierno',
+      power: 30,
+      acc: 0.90,
+      desc: 'Zani entra en su Modo Infierno y libera todo su poder Espectro, destruyendo las defensas del enemigo.',
+      baseCooldown: 6,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 8,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'tempAtk',
+          value: 8,
+          duration: 3
+        }
+      ]
+    }
+  ]
+},
+
+{
+  id: 'soukaku',
+  name: 'Soukaku',
+  img: 'personajes/soukaku.jpg',
+  classes: ['soporte', 'atacante'],
+  hp: 115,
+  atk: 26,
+  def: 15,
+  spd: 18,
+
+  moves: [
+    {
+      id: 'sou1',
+      name: 'Golpe de Estandarte',
+      power: 22,
+      acc: 0.98,
+      desc: 'Soukaku ataca con su arma y su estandarte, causando daño de hielo.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: null
+    },
+
+    {
+      id: 'sou2',
+      name: 'Rally!',
+      power: 25,
+      acc: 0.94,
+      desc: 'Soukaku clava su estandarte y libera una ráfaga de hielo que ralentiza al enemigo.',
+      baseCooldown: 2,
+      type: 'attack',
+      effect: {
+        type: 'debuff',
+        stat: 'spd',
+        value: 5,
+        prob: 0.9,
+        duration: 2
+      }
+    },
+
+    {
+      id: 'sou3',
+      name: '¡Hora de Comer!',
+      power: 0,
+      acc: 1.0,
+      desc: 'Soukaku se prepara para el combate y aumenta temporalmente su ATK y DEF.',
+      baseCooldown: 3,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 7,
+          duration: 3
+        },
+        {
+          type: 'tempDef',
+          value: 6,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'sou4',
+      name: 'ULTI: Jumbo Pudding Slash',
+      power: 30,
+      acc: 0.92,
+      desc: 'Soukaku desata una poderosa ráfaga de ataques de hielo con su estandarte, debilitando al enemigo.',
+      baseCooldown: 6,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 7,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'spd',
+          value: 6,
+          prob: 0.9,
+          duration: 2
+        }
+      ]
+    }
+  ]
+},
+
+{
   id: 'nihilux',
   name: 'Nihilux',
   img: 'personajes/nihilux.jpg',
@@ -3111,7 +3376,7 @@ const CHARACTERS = [
 
     {
       id: 'jeffrey2',
-      name: 'Violción de menores',
+      name: 'Violación de menores',
       power: 0,
       acc: 1.0,
       desc: 'Jeffrey manipula la situación a su favor, aumentando temporalmente su DEF y reduciendo la SPD del enemigo.',
@@ -4050,7 +4315,7 @@ const CHARACTERS = [
   classes: ['mago', 'atacante', 'debilitador'],
 
   hp: 108,
-  atk: 36,
+  atk: 28,
   def: 13,
   spd: 21,
 
@@ -4058,7 +4323,7 @@ const CHARACTERS = [
     {
       id: 'fern_zoltraak',
       name: 'Zoltraak',
-      power: 31,
+      power: 20,
       acc: 0.97,
       desc: 'Fern dispara una poderosa ráfaga de Zoltraak contra el enemigo, causando daño mágico directo.',
       baseCooldown: 0,
@@ -4078,7 +4343,7 @@ const CHARACTERS = [
         type: 'damageOverTime',
         status: 'poison',
         value: 7,
-        duration: 4,
+        duration: 3,
         prob: 0.9
       }
     },
@@ -4086,7 +4351,7 @@ const CHARACTERS = [
     {
       id: 'fern_magic_suppression',
       name: 'Supresión Mágica',
-      power: 34,
+      power: 24,
       acc: 0.93,
       desc: 'Fern lanza un hechizo preciso que atraviesa las defensas del enemigo y reduce su DEF.',
       baseCooldown: 4,
@@ -4103,7 +4368,7 @@ const CHARACTERS = [
     {
       id: 'fern_high_speed_zoltraak',
       name: 'ULTI: Zoltraak de Alta Velocidad',
-      power: 78,
+      power: 30,
       acc: 0.88,
       desc: 'Fern libera una sucesión devastadora de disparos mágicos que deja al enemigo gravemente envenenado.',
       baseCooldown: 7,
@@ -4111,7 +4376,7 @@ const CHARACTERS = [
       effect: {
         type: 'damageOverTime',
         status: 'poison',
-        value: 14,
+        value: 5,
         duration: 4,
         prob: 1.0
       }
@@ -5845,7 +6110,7 @@ const CHARACTERS = [
   img: 'personajes/marciana.jpg',
   classes: ['atacante', 'debilitador'],
   hp: 112,
-  atk: 33,
+  atk: 26,
   def: 15,
   spd: 17,
   moves: [
@@ -5867,7 +6132,7 @@ const CHARACTERS = [
     {
       id: 'marciana_plasma_burst',
       name: 'Explosión de Plasma',
-      power: 30,
+      power: 24,
       acc: 0.9,
       desc: 'Marciana dispara una poderosa descarga de plasma que impacta con gran fuerza y reduce la DEF del enemigo durante 2 turnos.',
       baseCooldown: 3,
@@ -5896,7 +6161,7 @@ const CHARACTERS = [
     {
       id: 'marciana_rapid_assault',
       name: 'Asalto Relámpago',
-      power: 37,
+      power: 22,
       acc: 0.9,
       desc: 'Marciana lanza una rápida sucesión de ataques contra el enemigo y reduce su SPD durante 2 turnos.',
       baseCooldown: 4,
@@ -5925,7 +6190,7 @@ const CHARACTERS = [
     {
       id: 'marciana_annihilation',
       name: 'Aniquilación',
-      power: 65,
+      power: 30,
       acc: 0.9,
       desc: 'Marciana concentra toda su potencia de fuego en un único objetivo y dispara una devastadora descarga. Tras el impacto, la DEF del enemigo queda reducida.',
       baseCooldown: 7,
@@ -7252,7 +7517,7 @@ const CHARACTERS = [
   hp: 124,
   atk: 24,
   def: 22,
-  spd: 38,
+  spd: 23,
 
   moves: [
     {
@@ -7302,7 +7567,7 @@ const CHARACTERS = [
     {
       id: 'eternal_idol',
       name: 'ULTI: La Idol Eterna',
-      power: 48,
+      power: 30,
       acc: 0.95,
       desc: 'Ai deslumbra con una actuación legendaria que causa un gran daño emocional y reduce la SPD del enemigo.',
       baseCooldown: 6,
@@ -7328,7 +7593,7 @@ const CHARACTERS = [
   hp: 142,
   atk: 27,
   def: 23,
-  spd: 34,
+  spd: 24,
 
   moves: [
     {
@@ -7477,7 +7742,7 @@ const CHARACTERS = [
   hp: 125,
   atk: 20,
   def: 24,
-  spd: 36,
+  spd: 26,
 
   moves: [
     {
@@ -7528,7 +7793,7 @@ const CHARACTERS = [
     {
       id: 'checkmate',
       name: 'ULTI: Jaque Mate',
-      power: 48,
+      power: 30,
       acc: 0.95,
       desc: 'Tras descubrir todas las debilidades del enemigo, L ejecuta un plan perfecto que inflige un gran daño y reduce su SPD.',
       baseCooldown: 6,
@@ -7551,7 +7816,7 @@ const CHARACTERS = [
   hp: 122,
   atk: 30,
   def: 21,
-  spd: 32,
+  spd: 18,
 
   moves: [
     {
@@ -7626,7 +7891,7 @@ const CHARACTERS = [
   hp: 128,
   atk: 30,
   def: 22,
-  spd: 31,
+  spd: 21,
 
   moves: [
     {
@@ -7698,9 +7963,9 @@ const CHARACTERS = [
   img: 'personajes/ulquiorra.gif',
   classes: ['mago', 'atacante'],
   hp: 132,
-  atk: 31,
+  atk: 28,
   def: 23,
-  spd: 34,
+  spd: 15,
 
   moves: [
     {
@@ -8057,10 +8322,10 @@ const CHARACTERS = [
   name: 'Retsu Unohana',
   img: 'personajes/unohana.gif',
   classes: ['sanador', 'atacante'],
-  hp: 150,
-  atk: 34,
-  def: 27,
-  spd: 24,
+  hp: 120,
+  atk: 24,
+  def: 22,
+  spd: 17,
 
   moves: [
     {
@@ -8109,7 +8374,7 @@ const CHARACTERS = [
     {
       id: 'minazuki',
       name: 'ULTI: Bankai - Minazuki',
-      power: 54,
+      power: 30,
       acc: 0.90,
       desc: 'Desata su Bankai, envolviendo el campo en sangre y realizando un devastador ataque mientras recupera un 20% de su vida máxima.',
       baseCooldown: 6,
@@ -8204,7 +8469,7 @@ const CHARACTERS = [
   hp: 118,
   atk: 22,
   def: 21,
-  spd: 34,
+  spd: 24,
 
   moves: [
     {
@@ -8256,7 +8521,7 @@ const CHARACTERS = [
     {
       id: 'fullbring_domain',
       name: 'ULTI: Dominio Dollhouse',
-      power: 42,
+      power: 30,
       acc: 0.90,
       desc: 'Convierte el campo de batalla en su territorio, infligiendo un gran daño y reduciendo la DEF del enemigo.',
       baseCooldown: 6,
@@ -8414,7 +8679,7 @@ const CHARACTERS = [
   img: 'personajes/zagred.gif',
   classes: ['mago', 'control'],
   hp: 130,
-  atk: 37,
+  atk: 26,
   def: 21,
   spd: 27,
 
@@ -8468,7 +8733,7 @@ const CHARACTERS = [
     {
       id: 'underworld_decree',
       name: 'ULTI: Decreto del Inframundo',
-      power: 52,
+      power: 30,
       acc: 0.90,
       desc: 'Pronuncia una orden absoluta que provoca una explosión de magia demoníaca y reduce enormemente la DEF del enemigo.',
       baseCooldown: 6,
@@ -8489,7 +8754,7 @@ const CHARACTERS = [
   img: 'personajes/liebe.gif',
   classes: ['atacante', 'debilitador'],
   hp: 128,
-  atk: 41,
+  atk: 27,
   def: 19,
   spd: 33,
 
@@ -8497,7 +8762,7 @@ const CHARACTERS = [
     {
       id: 'anti_magic_slash',
       name: 'Corte Antimagia',
-      power: 30,
+      power: 20,
       acc: 0.95,
       desc: 'Un tajo envuelto en antimagia que reduce el ATK del enemigo.',
       baseCooldown: 2,
@@ -8541,7 +8806,7 @@ const CHARACTERS = [
     {
       id: 'demon_destroyer',
       name: 'ULTI: Liberación de la Antimagia',
-      power: 56,
+      power: 30,
       acc: 0.90,
       desc: 'Liebe libera una inmensa ola de antimagia que inflige un daño devastador y reduce la DEF del enemigo.',
       baseCooldown: 6,
@@ -8562,9 +8827,9 @@ const CHARACTERS = [
   img: 'personajes/brazilian_miku.png',
   classes: ['mago', 'soporte'],
   hp: 118,
-  atk: 34,
+  atk: 30,
   def: 18,
-  spd: 36,
+  spd: 27,
 
   moves: [
     {
@@ -8613,7 +8878,7 @@ const CHARACTERS = [
     {
       id: 'festival_finale',
       name: 'ULTI: Festival Infinito',
-      power: 54,
+      power: 30,
       acc: 0.90,
       desc: 'Desata un gigantesco concierto que causa un daño masivo y reduce la DEF del enemigo.',
       baseCooldown: 6,
@@ -8636,7 +8901,7 @@ const CHARACTERS = [
   hp: 120,
   atk: 30,
   def: 22,
-  spd: 34,
+  spd: 24,
 
   moves: [
     {
@@ -8711,7 +8976,7 @@ const CHARACTERS = [
   hp: 115,
   atk: 30,
   def: 16,
-  spd: 32,
+  spd: 22,
 
   moves: [
     {
@@ -8763,7 +9028,7 @@ const CHARACTERS = [
     {
       id: 'c3',
       name: 'ULTI: C3',
-      power: 58,
+      power: 30,
       acc: 0.85,
       desc: 'Lanza una gigantesca bomba de arcilla que causa un daño devastador y reduce la DEF del enemigo.',
       baseCooldown: 6,
@@ -9575,13 +9840,13 @@ const CHARACTERS = [
   hp: 160,
   atk: 28,
   def: 35,
-  spd: 16,
+  spd: 9,
 
   moves: [
     {
       id: 'power_of_nature',
       name: 'Power of Nature',
-      power: 40,
+      power: 20,
       acc: 0.95,
       desc: 'Grock carga su hacha y libera un poderoso ataque que aumenta temporalmente su DEF.',
       baseCooldown: 0,
@@ -9603,7 +9868,7 @@ const CHARACTERS = [
     {
       id: 'wild_charge',
       name: 'Wild Charge',
-      power: 45,
+      power: 25,
       acc: 0.9,
       desc: 'Grock embiste brutalmente, causando gran daño y reduciendo la SPD del enemigo.',
       baseCooldown: 4,
@@ -9614,7 +9879,7 @@ const CHARACTERS = [
     {
       id: 'ancestors_wrath',
       name: "Ancestor's Wrath",
-      power: 50,
+      power: 30,
       acc: 1.0,
       desc: 'Grock canaliza la ira de sus ancestros, causando daño a todos y fortaleciéndose.',
       baseCooldown: 6,
@@ -11066,7 +11331,7 @@ moves: [
     {
       id: 'alb1',
       name: 'Pilar de Muspelheim',
-      power: 30,
+      power: 20,
       acc: 0.98,
       desc: 'Albedo golpea al enemigo con su guja y reduce temporalmente su velocidad.',
       baseCooldown: 0,
@@ -11083,7 +11348,7 @@ moves: [
     {
       id: 'alb2',
       name: 'Odio Verdadero',
-      power: 36,
+      power: 26,
       acc: 0.93,
       desc: 'Albedo descarga toda su fuerza física contra el enemigo, reduciendo su ATK y SPD.',
       baseCooldown: 3,
@@ -11117,7 +11382,7 @@ moves: [
       effects: [
         {
           type: 'tempDef',
-          value: 16,
+          value: 8,
           duration: 3
         },
         {
@@ -11129,36 +11394,10 @@ moves: [
 
     {
       id: 'alb4',
-      name: 'Armadura de la Guardiana',
-      power: 0,
-      acc: 1.0,
-      desc: 'Albedo refuerza su armadura y refleja parte del daño recibido durante varios turnos.',
-      baseCooldown: 5,
-      type: 'support',
-      effects: [
-        {
-          type: 'tempDef',
-          value: 12,
-          duration: 3
-        },
-        {
-          type: 'reflectDamage',
-          value: 30,
-          duration: 3
-        },
-        {
-          type: 'shield',
-          value: 25
-        }
-      ]
-    },
-
-    {
-      id: 'alb5',
       name: 'Presencia Opresiva',
       power: 28,
       acc: 0.94,
-      desc: 'La presencia de Albedo debilita al enemigo y reduce la cantidad de curación que puede recibir.',
+      desc: 'La presencia de Albedo debilita al enemigo, reduciendo su ATK, su velocidad y la cantidad de curación que puede recibir.',
       baseCooldown: 4,
       type: 'attack',
       effects: [
@@ -11183,39 +11422,18 @@ moves: [
     },
 
     {
-      id: 'alb6',
-      name: 'Corazón de Piedra',
-      power: 46,
-      acc: 0.93,
-      desc: 'Albedo concentra toda su voluntad defensiva en un poderoso ataque que también recupera parte de sus HP.',
-      baseCooldown: 5,
-      type: 'attack',
-      effects: [
-        {
-          type: 'selfHealPct',
-          value: 0.15
-        },
-        {
-          type: 'tempDef',
-          value: 10,
-          duration: 2
-        }
-      ]
-    },
-
-    {
-      id: 'alb7',
+      id: 'alb5',
       name: 'ULTI: Guerrera de la Destrucción',
-      power: 76,
+      power: 30,
       acc: 0.89,
-      desc: 'Albedo libera todo su poder como Guardiana de Nazarick, debilitando al enemigo y protegiéndose con una enorme resistencia.',
+      desc: 'Albedo libera todo su poder como Guardiana de Nazarick, debilitando al enemigo mientras se protege con una enorme resistencia.',
       baseCooldown: 7,
       type: 'attack',
       effects: [
         {
           type: 'debuff',
           stat: 'def',
-          value: 12,
+          value: 8,
           duration: 3,
           prob: 1.0
         },
@@ -11228,7 +11446,7 @@ moves: [
         },
         {
           type: 'tempDef',
-          value: 20,
+          value: 10,
           duration: 3
         },
         {
@@ -11256,7 +11474,7 @@ moves: [
   classes: ['atacante', 'mago', 'sanador'],
 
   hp: 115,
-  atk: 34,
+  atk: 30,
   def: 13,
   spd: 16,
 
@@ -11264,7 +11482,7 @@ moves: [
     {
       id: 'ver1',
       name: 'Dardo Místico',
-      power: 24,
+      power: 22,
       acc: 0.98,
       desc: 'Vermeil dispara un proyectil de magia oscura que inflige daño directo al enemigo.',
       baseCooldown: 0,
@@ -11275,7 +11493,7 @@ moves: [
     {
       id: 'ver2',
       name: 'Sombra Lacerante',
-      power: 32,
+      power: 24,
       acc: 0.94,
       desc: 'Vermeil corta al enemigo con energía demoníaca, debilitando sus defensas y absorbiendo parte de su fuerza vital.',
       baseCooldown: 2,
@@ -11365,7 +11583,7 @@ moves: [
     {
       id: 'ver6',
       name: 'Absorción Demoníaca',
-      power: 42,
+      power: 20,
       acc: 0.91,
       desc: 'Vermeil concentra una enorme cantidad de magia oscura en un ataque que drena violentamente la vida del enemigo.',
       baseCooldown: 5,
@@ -11389,7 +11607,7 @@ moves: [
     {
       id: 'ver7',
       name: 'ULTI: Fulgor Final',
-      power: 78,
+      power: 30,
       acc: 0.89,
       desc: 'Vermeil libera todo su poder demoníaco en una devastadora explosión mágica. El impacto debilita al enemigo y permite a Vermeil recuperar una gran cantidad de vida.',
       baseCooldown: 7,
