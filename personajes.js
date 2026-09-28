@@ -16,6 +16,329 @@ const CHARACTERS = [
 
 
 {
+  id: 'ibuki_douji',
+  name: 'Ibuki Douji',
+  img: 'personajes/douji.jpg',
+  classes: ['atacante', 'control'],
+  hp: 125,
+  atk: 26,
+  def: 16,
+  spd: 16,
+
+  moves: [
+    {
+      id: 'ibu1',
+      name: 'Colmillos de la Serpiente',
+      power: 22,
+      acc: 0.97,
+      desc: 'Ibuki Douji ataca con su enorme espada y deja una marca venenosa sobre el enemigo.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: {
+        type: 'debuff',
+        stat: 'atk',
+        value: 5,
+        duration: 2,
+        prob: 0.9
+      }
+    },
+
+    {
+      id: 'ibu2',
+      name: 'Aliento de la Oni',
+      power: 25,
+      acc: 0.94,
+      desc: 'Ibuki libera una poderosa energía demoníaca que debilita las defensas del enemigo.',
+      baseCooldown: 2,
+      type: 'attack',
+      effect: {
+        type: 'debuff',
+        stat: 'def',
+        value: 7,
+        duration: 3,
+        prob: 0.9
+      }
+    },
+
+    {
+      id: 'ibu3',
+      name: 'Presencia de la Montaña',
+      power: 0,
+      acc: 1.0,
+      desc: 'Ibuki libera su aura de oni, aumentando temporalmente su ATK y DEF mientras intimida al enemigo.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 9,
+          duration: 3
+        },
+        {
+          type: 'tempDef',
+          value: 7,
+          duration: 3
+        },
+        {
+          type: 'slow',
+          value: 6,
+          duration: 2,
+          prob: 0.9
+        }
+      ]
+    },
+
+    {
+      id: 'ibu4',
+      name: 'ULTI: Ibuki no Kaze',
+      power: 30,
+      acc: 0.90,
+      desc: 'Ibuki Douji desata su verdadero poder como oni divina y arrasa al enemigo con una devastadora ráfaga de energía.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 7,
+          duration: 3,
+          prob: 1.0
+        },
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 8,
+          duration: 3,
+          prob: 1.0
+        },
+        {
+          type: 'slow',
+          value: 10,
+          duration: 2,
+          prob: 0.9
+        },
+        {
+          type: 'lifesteal',
+          value: 20
+        }
+      ]
+    }
+  ]
+},
+
+{
+  id: 'sadako',
+  name: 'Sadako Yamamura',
+  img: 'personajes/sadako.jpg',
+  classes: ['control', 'debilitador'],
+  hp: 115,
+  atk: 27,
+  def: 14,
+  spd: 17,
+
+  moves: [
+    {
+      id: 'sad1',
+      name: 'Aparición',
+      power: 22,
+      acc: 0.96,
+      desc: 'Sadako aparece repentinamente frente al enemigo, causándole daño y reduciendo temporalmente su velocidad.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: {
+        type: 'slow',
+        value: 12,
+        duration: 2,
+        prob: 1.0
+      }
+    },
+
+    {
+      id: 'sad2',
+      name: 'La Cinta Maldita',
+      power: 26,
+      acc: 0.94,
+      desc: 'Sadako transmite su maldición al enemigo, reduciendo su ATK y DEF durante varios turnos.',
+      baseCooldown: 2,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 6,
+          duration: 3,
+          prob: 0.9
+        },
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 5,
+          duration: 3,
+          prob: 0.9
+        }
+      ]
+    },
+
+    {
+      id: 'sad3',
+      name: 'Televisor Maldito',
+      power: 0,
+      acc: 1.0,
+      desc: 'La pantalla del televisor se enciende y Sadako comienza a emerger de ella, aterrorizando al enemigo y protegiéndose con su presencia sobrenatural.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempDef',
+          value: 7,
+          duration: 3
+        },
+        {
+          type: 'slow',
+          value: 10,
+          duration: 3,
+          prob: 1.0
+        }
+      ]
+    },
+
+    {
+      id: 'sad4',
+      name: 'ULTI: Maldición de Sadako',
+      power: 30,
+      acc: 0.90,
+      desc: 'Sadako emerge completamente del televisor y libera toda su maldición sobre el enemigo, debilitándolo y drenando parte de su vida.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 10,
+          duration: 3,
+          prob: 1.0
+        },
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 10,
+          duration: 3,
+          prob: 1.0
+        },
+        {
+          type: 'slow',
+          value: 5,
+          duration: 3,
+          prob: 0.9
+        },
+        {
+          type: 'lifesteal',
+          value: 20,
+          duration: 1
+        }
+      ]
+    }
+  ]
+},
+
+{
+  id: 'reze',
+  name: 'Reze',
+  img: 'personajes/reze.jpg',
+  classes: ['atacante', 'control'],
+  hp: 120,
+  atk: 30,
+  def: 15,
+  spd: 16,
+
+  moves: [
+    {
+      id: 'rez1',
+      name: 'Patada Explosiva',
+      power: 22,
+      acc: 0.98,
+      desc: 'Reze potencia sus ataques físicos con una explosión, causando daño y aumentando temporalmente su velocidad.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: {
+        type: 'tempSpd',
+        value: 4,
+        duration: 2
+      }
+    },
+
+    {
+      id: 'rez2',
+      name: 'Disparo Explosivo',
+      power: 24,
+      acc: 0.93,
+      desc: 'Reze dispara una pequeña carga explosiva que detona al alcanzar al enemigo y reduce temporalmente su DEF.',
+      baseCooldown: 2,
+      type: 'attack',
+      effect: {
+        type: 'debuff',
+        stat: 'def',
+        value: 6,
+        duration: 2,
+        prob: 0.9
+      }
+    },
+
+    {
+      id: 'rez3',
+      name: 'Propulsión Explosiva',
+      power: 0,
+      acc: 1.0,
+      desc: 'Reze utiliza explosiones para impulsarse a gran velocidad, aumentando temporalmente su ATK y SPD.',
+      baseCooldown: 3,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 8,
+          duration: 3
+        },
+        {
+          type: 'tempSpd',
+          value: 4,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'rez4',
+      name: 'ULTI: Demonio Bomba',
+      power: 30,
+      acc: 0.90,
+      desc: 'Reze activa su transformación híbrida y provoca una enorme explosión. El impacto debilita al enemigo y Reze recupera parte de sus HP.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 8,
+          duration: 3,
+          prob: 1.0
+        },
+        {
+          type: 'slow',
+          value: 8,
+          duration: 2,
+          prob: 0.9
+        },
+        {
+          type: 'lifesteal',
+          value: 20,
+	  duration: 2
+        }
+      ]
+    }
+  ]
+},
+
+{
   id: 'trump',
   name: 'Donald Trump',
   img: 'personajes/trump.gif',
