@@ -16,6 +16,198 @@ const CHARACTERS = [
 
 
 {
+  id: 'saitama',
+  name: 'Saitama',
+  img: 'personajes/saitama.jpg',
+  classes: ['atacante'],
+  hp: 135,
+  atk: 30,
+  def: 18,
+  spd: 16,
+
+  moves: [
+    {
+      id: 'sai1',
+      name: 'Puñetazo Normal',
+      power: 25,
+      acc: 0.99,
+      desc: 'Saitama lanza un simple puñetazo que causa un daño considerable.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: {
+          type: 'debuff',
+          stat: 'def',
+          value: 8,
+          duration: 2,
+          prob: 1.0
+    },
+
+    },
+
+    {
+      id: 'sai2',
+      name: '¡Un Poco Más Fuerte!',
+      power: 0,
+      acc: 1.0,
+      desc: 'Saitama se prepara para golpear con más fuerza. Potencia temporalmente su ATK, haciendo que su próximo Puñetazo Normal sea mucho más poderoso.',
+      baseCooldown: 2,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 8,
+          duration: 2
+        }
+      ]
+    },
+
+    {
+      id: 'sai3',
+      name: 'Puñetazo Serio',
+      power: 0,
+      acc: 1.0,
+      desc: 'Saitama concentra una enorme cantidad de fuerza. Su próximo Puñetazo Normal obtiene un gran aumento de poder.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 15,
+          duration: 2
+        }
+      ]
+    },
+
+    {
+      id: 'sai4',
+      name: 'ULTI: Puñetazo Serio',
+      power: 38,
+      acc: 0.88,
+      desc: 'Saitama deja de contenerse y lanza un golpe devastador capaz de atravesar las defensas del enemigo.',
+      baseCooldown: 16,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 15,
+          duration: 2,
+          prob: 1.0
+        },
+        {
+          type: 'slow',
+          value: 20,
+          duration: 2,
+          prob: 1.0
+        }
+      ]
+    }
+  ]
+},
+
+{
+  id: 'emu_ootori',
+  name: 'Ootori Emu',
+  img: 'personajes/ootori emu.jpg',
+  classes: ['soporte', 'atacante'],
+  hp: 110,
+  atk: 25,
+  def: 13,
+  spd: 25,
+
+  moves: [
+    {
+      id: 'emu1',
+      name: 'Wonderhoy!',
+      power: 23,
+      acc: 0.98,
+      desc: '¡Emu salta hacia el enemigo con una enorme sonrisa y realiza un ataque acrobático!',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: {
+        type: 'tempSpd',
+        value: 4,
+        duration: 2
+      }
+    },
+
+    {
+      id: 'emu2',
+      name: 'Salto Acrobático',
+      power: 24,
+      acc: 0.94,
+      desc: 'Emu realiza una espectacular acrobacia y golpea al enemigo desde el aire, reduciendo temporalmente su DEF.',
+      baseCooldown: 2,
+      type: 'attack',
+      effect: {
+        type: 'debuff',
+        stat: 'def',
+        value: 6,
+        duration: 2,
+        prob: 0.9
+      }
+    },
+
+    {
+      id: 'emu3',
+      name: '¡Sonrisas Para Todos!',
+      power: 0,
+      acc: 1.0,
+      desc: 'Emu anima a todos con su energía y entusiasmo, aumentando temporalmente su ATK y SPD.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 8,
+          duration: 3
+        },
+        {
+          type: 'tempSpd',
+          value: 7,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'emu4',
+      name: 'ULTI: ¡Wonder Magical Showtime!',
+      power: 30,
+      acc: 0.92,
+      desc: 'Emu convierte el campo de batalla en un espectáculo lleno de energía, atacando al enemigo mientras inspira a sus aliados.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 8,
+          duration: 3,
+          prob: 1.0
+        },
+        {
+          type: 'slow',
+          value: 10,
+          duration: 2,
+          prob: 0.9
+        },
+        {
+          type: 'tempAtk',
+          value: 7,
+          duration: 3
+        },
+        {
+          type: 'tempSpd',
+          value: 4,
+          duration: 3
+        }
+      ]
+    }
+  ]
+},
+
+{
   id: 'orochimaru_f',
   name: 'Orochimaru',
   img: 'personajes/orochigirl.jpg',
@@ -4216,7 +4408,7 @@ const CHARACTERS = [
   classes: ['defensor', 'soporte', 'control'],
   hp: 175,
   atk: 18,
-  def: 20,
+  def: 30,
   spd: 11,
 
   moves: [
@@ -4251,7 +4443,7 @@ const CHARACTERS = [
         },
         {
           type: 'shield',
-          value: 18
+          value: 20
         }
       ]
     },
@@ -4290,7 +4482,7 @@ const CHARACTERS = [
       effects: [
         {
           type: 'selfHealPct',
-          value: 0.06
+          value: 0.04
         },
         {
           type: 'tempDef',
@@ -4348,7 +4540,7 @@ const CHARACTERS = [
         },
         {
           type: 'selfHealPct',
-          value: 0.06
+          value: 0.05
         }
       ]
     }
@@ -4815,7 +5007,7 @@ const CHARACTERS = [
   img: 'personajes/hsin.jpg',
   classes: ['atacante', 'mago', 'control'],
   hp: 118,
-  atk: 38,
+  atk: 26,
   def: 14,
   spd: 20,
 
@@ -4823,7 +5015,7 @@ const CHARACTERS = [
     {
       id: 'hsin_moonlight_strike',
       name: 'Moonlight Strike',
-      power: 30,
+      power: 20,
       acc: 0.95,
       desc: 'Hsin libera una descarga de energía lunar contra el enemigo, causando daño y reduciendo temporalmente su DEF.',
       baseCooldown: 2,
@@ -4839,7 +5031,7 @@ const CHARACTERS = [
     {
       id: 'hsin_burning_flare',
       name: 'Burning Flare',
-      power: 27,
+      power: 24,
       acc: 0.92,
       desc: 'Hsin concentra una intensa energía ardiente en su ataque. El impacto aplica Quemadura al enemigo.',
       baseCooldown: 2,
@@ -4847,7 +5039,7 @@ const CHARACTERS = [
       effect: {
         type: 'damageOverTime',
         status: 'burn',
-        value: 8,
+        value: 6,
         duration: 3,
         prob: 0.85
       }
@@ -4871,7 +5063,7 @@ const CHARACTERS = [
     {
       id: 'hsin_flame_pillars',
       name: 'Flame Pillars',
-      power: 38,
+      power: 25,
       acc: 0.9,
       desc: 'Hsin hace surgir columnas de energía que golpean al enemigo y prolongan la Quemadura.',
       baseCooldown: 4,
@@ -4879,7 +5071,7 @@ const CHARACTERS = [
       effect: {
         type: 'damageOverTime',
         status: 'burn',
-        value: 10,
+        value: 6,
         duration: 3,
         prob: 0.9
       }
@@ -4903,7 +5095,7 @@ const CHARACTERS = [
     {
       id: 'hsin_moon_fox_cataclysm',
       name: 'Moon Fox Cataclysm',
-      power: 82,
+      power: 30,
       acc: 0.88,
       desc: 'Hsin libera todo su poder en una devastadora ofensiva. El impacto provoca una intensa Quemadura que continúa dañando al enemigo.',
       baseCooldown: 7,
@@ -4911,7 +5103,7 @@ const CHARACTERS = [
       effect: {
         type: 'damageOverTime',
         status: 'burn',
-        value: 14,
+        value: 9,
         duration: 4,
         prob: 1.0
       }
@@ -8536,15 +8728,15 @@ const CHARACTERS = [
   img: 'personajes/shalltear.gif',
   classes: ['atacante', 'mago', 'defensor'],
   hp: 138,
-  atk: 30,
+  atk: 25,
   def: 24,
-  spd: 33,
+  spd: 18,
 
   moves: [
     {
       id: 'spuit_lance',
       name: 'Spuit Lance',
-      power: 32,
+      power: 22,
       acc: 0.96,
       desc: 'Una lanza de sangre atraviesa al enemigo. Shalltear recupera un 18% del daño que consigue infligir mediante su poder vampírico.',
       baseCooldown: 2,
@@ -8567,7 +8759,7 @@ const CHARACTERS = [
       effects: [
         {
           type: 'tempAtk',
-          value: 7,
+          value: 6,
           duration: 3
         },
         {
@@ -8603,7 +8795,7 @@ const CHARACTERS = [
     {
       id: 'blood_spear',
       name: 'Blood Spear',
-      power: 30,
+      power: 24,
       acc: 0.93,
       desc: 'Dispara varias lanzas de sangre contra el enemigo. El daño infligido alimenta directamente el cuerpo de Shalltear.',
       baseCooldown: 3,
@@ -8648,7 +8840,7 @@ const CHARACTERS = [
     {
       id: 'blood_valkyrie',
       name: 'ULTI: Valkyrie de Sangre',
-      power: 32,
+      power: 30,
       acc: 0.91,
       desc: 'Shalltear libera todo su poder como Verdadera Vampira. El ataque tiene una gran capacidad de crítico y devuelve una gran cantidad de vida según el daño infligido.',
       baseCooldown: 6,
@@ -10324,8 +10516,8 @@ const CHARACTERS = [
   classes: ['sanador', 'soporte'],
   hp: 120,
   atk: 15,
-  def: 20,
-  spd: 18,
+  def: 25,
+  spd: 19,
 
   moves: [
     {
@@ -10357,7 +10549,7 @@ const CHARACTERS = [
       baseCooldown: 3,
       type: 'support',
       effects: [
-        { type:'heal', value: 20 },
+        { type:'heal', value: 30 },
         { type:'tempSpd', value: 5, duration: 2 }
       ]
     },
@@ -10369,7 +10561,7 @@ const CHARACTERS = [
       desc: 'Desata la energía lunar suprema, curando a todo el equipo por un gran porcentaje de la vida máxima.',
       baseCooldown: 6,
       type: 'support',
-      effect: { type:'selfHealPct', value: 0.20 } 
+      effect: { type:'selfHealPct', value: 0.30 } 
     }
   ]
 },
@@ -10777,63 +10969,120 @@ const CHARACTERS = [
   ]
 },
   {
-  id: 'noelle',
+  id: 'noelle_silva',
   name: 'Noelle Silva',
-  img: 'personajes/noellesilva.png',    classes: ['mago', 'defensivo'],
-  hp: 125,
-  atk: 18,
-  def: 22,
+  img: 'personajes/noellesilva.jpg',
+  classes: ['defensor', 'soporte'],
+  hp: 155,
+  atk: 24,
+  def: 27,
   spd: 14,
 
   moves: [
     {
-      id: 'noelle1',
-      name: 'Escudo de Agua',
-      power: 0,
-      acc: 1.0,
-      desc: 'Crea un escudo que aumenta su DEF durante 2 turnos.',
-      baseCooldown: 2,
-      type: 'support',
-      effect: { type:'buff', stat:'def', value:6, duration:2 }
-    },
-
-    {
-      id: 'noelle2',
-      name: 'Marea Cortante',
-      power: 22,
-      acc: 0.95,
-      desc: 'Un corte de agua presurizada que puede reducir el ATK enemigo.',
-      baseCooldown: 1,
+      id: 'noe1',
+      name: 'Nido del Dragón Marino',
+      power: 18,
+      acc: 0.97,
+      desc: 'Noelle crea una barrera de agua alrededor de sí misma, reduciendo la velocidad del enemigo mientras se protege.',
+      baseCooldown: 0,
       type: 'attack',
-      effect: { type:'debuff', stat:'atk', value:3, duration:2 }
+      effects: [
+        {
+          type: 'slow',
+          value: 10,
+          duration: 2,
+          prob: 1.0
+        },
+        {
+          type: 'tempDef',
+          value: 5,
+          duration: 2
+        }
+      ]
     },
 
     {
-      id: 'noelle3',
-      name: 'Barrera Oceánica',
+      id: 'noe2',
+      name: 'Cuna del Dragón Marino',
       power: 0,
       acc: 1.0,
-      desc: 'Crea una barrera de 30',
+      desc: 'Noelle crea una enorme esfera de agua que la protege y absorbe una gran cantidad de daño.',
       baseCooldown: 4,
       type: 'support',
-      effect: { type:'shield', value:30 }
+      effects: [
+        {
+          type: 'shield',
+          value: 25
+        },
+        {
+          type: 'tempDef',
+          value: 7,
+          duration: 3
+        }
+      ]
     },
 
     {
-      id: 'noelle4',
-      name: 'Armadura del Torrente (ULT)',
-      power: 32,
+      id: 'noe3',
+      name: 'Robe de Valkyrie',
+      power: 0,
       acc: 1.0,
-      desc: 'Se envuelve en una armadura acuática que sube DEF y refleja parte del daño.',
-      baseCooldown: 6,
+      desc: 'Noelle se cubre con una armadura de agua, aumentando enormemente su resistencia y preparándose para proteger a sus aliados.',
+      baseCooldown: 5,
       type: 'support',
       effects: [
-        { type:'shield', value:30 },
-        { type:'reflect', value:0.25, duration:3 }
+        {
+          type: 'tempDef',
+          value: 8,
+          duration: 4
+        },
+        {
+          type: 'shield',
+          value: 27
+        },
+        {
+          type: 'tempSpd',
+          value: 5,
+          duration: 4
+        }
+      ]
+    },
+
+    {
+      id: 'noe4',
+      name: 'ULTI: Sea Dragon\'s Roar',
+      power: 30,
+      acc: 0.92,
+      desc: 'Noelle invoca un enorme dragón de agua que golpea al enemigo mientras libera una poderosa barrera que protege a Noelle.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 8,
+          duration: 3,
+          prob: 1.0
+        },
+        {
+          type: 'shield',
+          value: 28
+        },
+        {
+          type: 'tempDef',
+          value: 10,
+          duration: 3
+        },
+        {
+          type: 'lifesteal',
+          value: 12
+        }
       ]
     }
   ]
 },
+
   {
   id: 'ainz',
   name: 'Ainz',
