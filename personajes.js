@@ -16,6 +16,109 @@ const CHARACTERS = [
 
 
 {
+  id: 'orochimaru_f',
+  name: 'Orochimaru',
+  img: 'personajes/orochigirl.jpg',
+  classes: ['control', 'debilitador', 'soporte'],
+  hp: 125,
+  atk: 25,
+  def: 16,
+  spd: 20,
+
+  moves: [
+    {
+      id: 'oro1',
+      name: 'Manos de Serpientes Ocultas',
+      power: 22,
+      acc: 0.97,
+      desc: 'Orochimaru invoca numerosas serpientes que atacan al enemigo y pueden paralizarlo.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: {
+        type: 'slow',
+        value: 10,
+        duration: 2,
+        prob: 0.9
+      }
+    },
+
+    {
+      id: 'oro2',
+      name: 'Espada Kusanagi',
+      power: 24,
+      acc: 0.94,
+      desc: 'Orochimaru utiliza la legendaria Kusanagi para realizar un ataque preciso que atraviesa las defensas del enemigo.',
+      baseCooldown: 2,
+      type: 'attack',
+      effect: {
+        type: 'debuff',
+        stat: 'def',
+        value: 7,
+        duration: 3,
+        prob: 0.9
+      }
+    },
+
+    {
+      id: 'oro3',
+      name: 'Poder de la Serpiente Blanca',
+      power: 0,
+      acc: 1.0,
+      desc: 'Orochimaru regenera su cuerpo y adopta características de la Serpiente Blanca, recuperando vida y aumentando temporalmente su DEF.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        {
+          type: 'selfHealPct',
+          value: 18
+        },
+        {
+          type: 'tempDef',
+          value: 10,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'oro4',
+      name: 'ULTI: Técnica de Ocho Ramificaciones',
+      power: 30,
+      acc: 0.90,
+      desc: 'Orochimaru adopta la forma de una gigantesca serpiente de ocho cabezas y arrasa al enemigo, debilitándolo con su poder monstruoso.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 9,
+          duration: 3,
+          prob: 1.0
+        },
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 8,
+          duration: 3,
+          prob: 1.0
+        },
+        {
+          type: 'slow',
+          value: 8,
+          duration: 2,
+          prob: 0.9
+        },
+        {
+          type: 'lifesteal',
+          value: 15
+        }
+      ]
+    }
+  ]
+},
+
+{
   id: 'ibuki_douji',
   name: 'Ibuki Douji',
   img: 'personajes/douji.jpg',
