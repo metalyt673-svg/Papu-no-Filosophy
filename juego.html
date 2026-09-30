@@ -1221,6 +1221,15 @@
       .story-poster-panel{flex:0 1 auto;width:min(420px,100%)}
     }
 
+    /* El menú puede ser más alto que la pantalla (Historia + Desafío apilados):
+       permitimos scroll y centramos con margin:auto para no cortar la parte de arriba. */
+    #main-menu{overflow-y:auto}
+    #main-menu .menu-layout{margin:auto}
+
+    /* Columna Historia (arriba) + Desafío (debajo): portadas más compactas */
+    .menu-col .story-poster-frame img{max-height:200px}
+    .menu-col .story-poster-panel{padding:14px;gap:10px}
+
     /* ---------- Pantalla del Modo Historia ---------- */
     #story-screen{
       position:fixed;
@@ -2401,6 +2410,7 @@
   <script src="historia.js" defer></script>
   <script src="game.js" defer></script>
   <script src="infierno.js" defer></script>
+  <script src="desafio.js" defer></script>
   <script>
     const battleMusic = document.getElementById('battle-music');
 
