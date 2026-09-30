@@ -12,6 +12,7 @@
 const DAMAGE_MULT = 0.7;
 const BASE_CRIT_CHANCE = 0.08;
 const SUDDEN_DEATH_TURN = 70;
+const SUDDEN_DEATH_TURN_CHALLENGE = 100; // Modo Desafío (desafio.js): muerte súbita más tardía
 
 const CLASSES = [
   { key: 'atacante', label: '🗡️ Atacante' },
@@ -44,6 +45,7 @@ const state = {
   aiLastSwapTurn: -999,
   roundActed: { p1: false, p2: false },  // qué jugadores ya actuaron en la ronda actual
   storyMode: false,   // true durante una batalla scriptada del Modo Historia
+  challengeMode: false, // true durante un combate del Modo Desafío (lo activa desafio.js)
   storyIndex: 0,       // capítulo actual del Modo Historia
   moveLock: false      // true mientras se resuelve una habilidad (evita clics repetidos)
 };
@@ -1149,8 +1151,9 @@ function startBattle(){
 function startTurnActions(){
   state.turnCount++;
 
-  // Verificar muerte súbita
-  if(state.turnCount >= SUDDEN_DEATH_TURN && !state.suddenDeath){
+  // Verificar muerte súbita (el Modo Desafío la retrasa hasta el turno 100)
+  const suddenDeathTurn = state.challengeMode ? SUDDEN_DEATH_TURN_CHALLENGE : SUDDEN_DEATH_TURN;
+  if(state.turnCount >= suddenDeathTurn && !state.suddenDeath){
     state.suddenDeath = true;
     log('⚠️ ¡MUERTE SÚBITA ACTIVADA! Todos los personajes reciben 10 de daño por turno.');
   }

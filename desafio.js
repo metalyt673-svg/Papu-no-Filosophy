@@ -327,6 +327,7 @@
     window.GAME_MODE = 'pve';
     state.bansEnabled = false;
     state.storyMode = true;            // reutiliza el flujo de "combate scriptado"
+    state.challengeMode = true;         // muerte súbita a los 100 turnos (en vez de 70) en game.js
     state.moveLock = false;
     state.teams.p1 = heroes;
     state.teams.p2 = [boss];
@@ -363,6 +364,7 @@
 
     C.active = false;
     state.storyMode = false;
+    state.challengeMode = false;
     state.moveLock = false;
     byId('game-root').style.display = 'none';
     const surrender = byId('story-surrender-btn');
