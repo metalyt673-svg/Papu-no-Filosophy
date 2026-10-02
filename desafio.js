@@ -13,7 +13,7 @@
        desafio/menu.mp3      → suena mientras eliges boss/equipo (opcional)
        desafio/combate.mp3   → música de combate por defecto (opcional)
        desafio/<id>.mp3      → música propia de cada boss (opcional), por ejemplo:
-                               mckraken.mp3, reina_susurros.mp3,
+                               mckraken.mp3, lilhunter.mp3,
                                coloso_herrumbre.mp3, verdugo_carmesi.mp3,
                                emperador_vacio.mp3
    Si falta el archivo de un boss se usa combate.mp3; si tampoco está, no suena
@@ -111,24 +111,24 @@
       ]
     },
     {
-      id: 'reina_susurros',
-      name: 'Reina de los Susurros',
-      img: 'personajes/reina_susurros.jpg',
-      classes: ['mago', 'control'],
-      hp: 300, atk: 26, def: 16, spd: 22,
+      id: 'lilhunter',
+      name: 'Lil Hunter',
+      img: 'personajes/lilhunter.jpg',
+      classes: ['atacante', 'control'],
+      hp: 285, atk: 34, def: 18, spd: 25,
       moves: [
-        { id: 'rei1', name: 'Susurro Cortante', power: 23, acc: 0.98, baseCooldown: 0, type: 'attack',
-          desc: 'Una voz afilada que hiere desde dentro.', effect: null },
-        { id: 'rei2', name: 'Pesadilla Lúcida', power: 18, acc: 0.95, baseCooldown: 3, type: 'attack',
-          desc: 'Siembra el terror en el rival y debilita su ataque.',
-          effects: [{ type: 'fear', value: 0.45, duration: 2, prob: 0.5 },
-                    { type: 'debuff', stat: 'atk', value: 8, duration: 2, prob: 1.0 }] },
-        { id: 'rei3', name: 'Canto Adormecedor', power: 14, acc: 0.95, baseCooldown: 2, type: 'attack',
-          desc: 'Su melodía entorpece los movimientos del objetivo.',
-          effects: [{ type: 'slow', value: 25, duration: 2, prob: 1.0 }] },
-        { id: 'rei4', name: 'Beso Marchito', power: 27, acc: 0.95, baseCooldown: 2, type: 'attack',
-          desc: 'Drena la vitalidad del rival para curarse.',
-          effects: [{ type: 'lifesteal', value: 30 }] }
+        { id: 'rei1', name: 'Subfusil', power: 24, acc: 0.95, baseCooldown: 0, type: 'attack',
+          desc: 'Lil Hunter dispara una ráfaga de proyectiles apuntada directamente hacia el enemigo más cercano.', effect: null },
+        { id: 'rei2', name: 'Jetpack', power: 18, acc: 0.90, baseCooldown: 3, type: 'attack',
+          desc: 'Lil Hunter despega con su jetpack y cae encima del enemigo, envolviéndolo en llamas.',
+          effects: [{ type: 'damageOverTime', status: 'burn', value: 8, duration: 2, prob: 1.0 }] },            
+        { id: 'rei3', name: 'Refuerzos', power: 0, acc: 0.90, baseCooldown: 3, type: 'support',
+          desc: 'Lil Hunter alerta a unos agentes del IDPD y los sacrifica para llevarse sus provisiones.',
+          effects: [{ type: 'heal', value: 12 },
+                    { type: 'tempAtk', value: 6, duration: 2 }] },
+        { id: 'rei4', name: 'Escopeta', power: 28, acc: 0.75, baseCooldown: 6, type: 'attack', aoe: true,
+          desc: 'Lil Hunter saca su escopeta y dispara a quemarropa sin pensar, hiriendo a todo el equipo.',
+          effect: null }
       ]
     },
     {
@@ -196,12 +196,12 @@
   /* Textos y ajustes de cada boss (mismo id que arriba). El orden de esta
      lista es el orden en que se desbloquean. */
   const CHALLENGE_META = [
-    { id: 'mckraken',         emoji: '🦑', title: 'El dictador del Mundo Yo-kai',
+    { id: 'mckraken',         emoji: '🦑', title: 'El dictador del Mundo Yo-kai.',
       phase2: 'mckraken2',
       phase2Log: '💥 ¡McKraken se hincha con la energía espiritual que ha absorbido y se transforma!',
       intro: 'Quiere someter a la humanidad y absorbe toda la energía que toca con sus manos. Este es solo su primera forma.' },
-    { id: 'reina_susurros',   emoji: '🌙', title: 'La voz que nunca calla',
-      intro: 'Sus palabras no se oyen con los oídos. Se meten en la cabeza y no se van.' },
+    { id: 'lilhunter',   emoji: '🔫🤪', title: 'El cazador de mutantes que fue abandonado por su escuadrón.',
+      intro: 'Ha pasado tantos años perdido en la nieve, que se ha convertido en uno de los salvajes. Reza para que su locura sea mayor que su puntería.' },
     { id: 'coloso_herrumbre', emoji: '⚙️', title: 'Montaña de metal viejo',
       intro: 'Lento, pesado e inmune a casi todo. Pero cada golpe suyo puede acabar el combate.' },
     { id: 'verdugo_carmesi',  emoji: '🪓', title: 'El que nunca falla',

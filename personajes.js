@@ -262,7 +262,7 @@ const CHARACTERS = [
       effects: [
         {
           type: 'selfHealPct',
-          value: 18
+          value: 0.6
         },
         {
           type: 'tempDef',
@@ -4443,7 +4443,7 @@ const CHARACTERS = [
         },
         {
           type: 'shield',
-          value: 20
+          value: 28
         }
       ]
     },
@@ -4508,7 +4508,7 @@ const CHARACTERS = [
         },
         {
           type: 'shield',
-          value: 23
+          value: 35
         },
         {
           type: 'reflectDamage',
