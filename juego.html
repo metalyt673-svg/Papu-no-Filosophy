@@ -1226,6 +1226,10 @@
     #main-menu{overflow-y:auto}
     #main-menu .menu-layout{margin:auto}
 
+    /* Hueco para el chip de perfil (perfil.js) arriba a la izquierda:
+       en pantallas estrechas se reserva una franja para que no tape el menú. */
+    @media (max-width:1400px){ #main-menu{padding-top:84px} }
+
     /* Columna Historia (arriba) + Desafío (debajo): portadas más compactas */
     .menu-col .story-poster-frame img{max-height:200px}
     .menu-col .story-poster-panel{padding:14px;gap:10px}
@@ -2411,6 +2415,7 @@
   <script src="game.js" defer></script>
   <script src="infierno.js" defer></script>
   <script src="desafio.js" defer></script>
+  <script src="perfil.js" defer></script>
   <script>
     const battleMusic = document.getElementById('battle-music');
 

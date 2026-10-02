@@ -122,44 +122,27 @@ const STORY_CHAPTERS = [
   },
 
   {
-    type: 'narrative',
-    title: 'Grietas en la resistencia',
-    speaker: 'Narrador',
-    lines: [
-      'Butifarra lleva semanas sintiéndose invisible: nadie valora sus butifarras espectrales como se merece.',
-      'Papudo se acerca a él con una oferta tentadora: "Únete a mí, y serás el villano principal de la segunda parte."',
-      'Butifarra duda... pero, de momento, decide seguir luchando junto a Carlos. Todavía.',
-      'Adam, aún fiel a Papudo, decide atacar en solitario para demostrar que él sí merece ser su mano derecha.'
-    ]
-  },
-
-  {
     type: 'battle',
-    title: 'Capítulo 3 — El Guti vs la Minion',
+    title: 'Capítulo 3 — Guti vs la Minion',
     intro: [
-      'Nicktula: "Guti tu puedess, arrasa con ella!".',
-      '*empieza la pelea con la Minion muy confiada*.'
+      'Ante la remontada de Santiago, el equipo Carlos esperaba con ansías el anunciamiento de la siguiente ronda.', 'Nicktula: ¡Señoras y señores! ¡La siguiente pelea que vamos a presenciar es... ¡Guti versus la Minion! ¡JAJAJAJA, que nombre tan tonto!', 'Guti: ¿La Minion? Ese nombre es un mierdón, pero seguro eso significa que será un fuerte oponente.', 'Del otro lado del ring, Papudo replicaba.', 'Papudo: Os reís ahora, pero no habrá tanta risa cuando destruyan a vuestro compañero de color cartón. ¡LIBEREN A LA MINION!', 'De repente, una gran neblina se forma y de ella sale...', 'Guti: No puede ser...', 'Una señora con forma de Minion (y estatura también) sale de la neblina y, aunque con mucho esfuerzo de por medio, se sube al ring.', 'Minion: Te voy a derrotar sin esfuerzo. Para cuando estés en el suelo, ¡tendrás pronunciación perfecta en inglés!', 'Guti usa toda su fuerza para no explotar en risas y se une a su oponente en el ring.', 'Minion: Grrr... Fight, bitch!', 'Guti: (No puedo tomarmele en serio... le dejaré un poco de ventaja.)', 'Piensa Guti al ver a su oponente de tamaño reducido.', 'Nicktula: Sin más que comentar... ¡luchen!',
     ],
     heroIds: ['guti'],
     villainIds: ['minion'],
     victory: [
-      'Nicktula: "pero que ves mis ojos! la Minion ha sido APLASTADA de un solo golpe!".',
-      'Nicktula: "otra victoria más para Carlos, 1-2!.'
+      'La Minion al no poder hacer más que curarse a sí misma, hacia cualquier cosa por dañar a Guti.', 'Le tiraba shurikens de papel, le disparaba con una pistola de agua, le gritaba lecciones de rephrasing con un micrófono... y el único daño que salió de Guti era en sus oídos y en su paciencia.', 'Cansado de tanta compasión, Guti se preparó para tirar un golpe en serio.', 'Guti: Está bien... ¡ahí voy!', 'Guti: ¡OSTIA!', 'Guti no logró medir su fuerza correctamente y accidentalmente aplastó a la Minion, dejando tan solo una marca roja en el suelo.', 'Nicktula: ¡JAJAJAJAJAJA! ¡VAYA PELEA! ¡Vamos 2-1, ganando el equipo Carlos!', 'Los chicos celebraban la segunda victoria mientras Papudo se enfadaba y gritaba a su equipo.', 'Papudo: ¡JODER! ¡¿Quién ha pensado que era buena idea reclutar a esa para el combate?!', '???: Pues has sido tú, mierdecilla.', '???: Has sido tú, profe.', '???: ¿Me puedo tomar unas vacaciones ya?', 'Papudo: ¡C-Cállense! Si no ganais para mí, ¡arruinaré vuestras vidas!', 'Del otro lado, Carlos animaba a su equipo.', 'Carlos: Parece que no le está yendo tan bien a Robert, jeje... ¡seguid así, chicos!',
     ],
     defeat: [
-      'Adam se lo juega todo y gana. Vuelve con Papudo con la cabeza bien alta.',
-      'Carlos sabe que tendrán que volver a intentarlo.'
+      'La Minion daba todo su esfuerzo y potencial en tirar cualquier cosa a Guti, hasta que uno de sus shurikens le da en el ojo y se le clava.', 'Guti: ¡AHHHH! ¡QUITENMELO!', 'En un intento de quitarse el arma de papel del ojo, Guti accidentalmente le prende fuego con sus poderes y, entre gritos de dolor, se quema vivo.', 'Carlos: ...¿Será subnormal el Robin?', 'Minion: ¡Jijijiji! Such a weak opponent!', '...¿HAS PERDIDO A PROPÓSITO, VERDAD? INTÉNTALO DE NUEVO, ANDA.',
     ]
   },
 
   {
     type: 'narrative',
-    title: 'El sabotaje',
+    title: 'Un nuevo sentimiento...',
     speaker: 'Narrador',
     lines: [
-      'Carlos celebra con su equipos las dos victorias en racha, pero a lo lejos se ve a una silueta muy alta con intenciones negativas.',
-      'Se trata de Guijarro, un profesor de lengua que quiere sabotear a Carlos para que el Papudo se halce con su victoria.',
-      'Guijarro: "con este poema, no podrá resistirse y crearé una brecha en el equipo de Carlos".'
+      'Guti se alegraba de ver a sus amigos y compañeros celebrar su victoria, pero cuando volteaba a ver los restos de la Minion, no sentía repulsión... de hecho, sentía cierta atracción hacia esa destrucción que causó con sus propias manos...', 'No podía dejar de mirarlo fijamente...', 'Santi: Guti, ¿qué miras?', 'Guti volvió a la realidad del tirón.', 'Guti: ¿Eh? Ah, nada, nada...', 'Guti decidió ignorar esa satisfacción... por ahora.',
     ]
   },
 

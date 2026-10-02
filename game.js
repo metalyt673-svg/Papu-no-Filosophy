@@ -9,9 +9,11 @@
    - IA táctica con decisiones por vida, daño, estados, buffs, debuffs y cambios gratuitos
 */
 
+console.log('[game.js] habilidades de area corregidas (v3)');
 const DAMAGE_MULT = 0.7;
 const BASE_CRIT_CHANCE = 0.08;
 const SUDDEN_DEATH_TURN = 70;
+const SUDDEN_DEATH_TURN_CHALLENGE = 100; // Modo Desafío (desafio.js): muerte súbita más tardía
 
 const CLASSES = [
   { key: 'atacante', label: '🗡️ Atacante' },
@@ -44,6 +46,7 @@ const state = {
   aiLastSwapTurn: -999,
   roundActed: { p1: false, p2: false },  // qué jugadores ya actuaron en la ronda actual
   storyMode: false,   // true durante una batalla scriptada del Modo Historia
+  challengeMode: false, // true durante un combate del Modo Desafío (lo activa desafio.js)
   storyIndex: 0,       // capítulo actual del Modo Historia
   moveLock: false      // true mientras se resuelve una habilidad (evita clics repetidos)
 };
@@ -1149,8 +1152,9 @@ function startBattle(){
 function startTurnActions(){
   state.turnCount++;
 
-  // Verificar muerte súbita
-  if(state.turnCount >= SUDDEN_DEATH_TURN && !state.suddenDeath){
+  // Verificar muerte súbita (el Modo Desafío la retrasa hasta el turno 100)
+  const suddenDeathTurn = state.challengeMode ? SUDDEN_DEATH_TURN_CHALLENGE : SUDDEN_DEATH_TURN;
+  if(state.turnCount >= suddenDeathTurn && !state.suddenDeath){
     state.suddenDeath = true;
     log('⚠️ ¡MUERTE SÚBITA ACTIVADA! Todos los personajes reciben 10 de daño por turno.');
   }
@@ -1282,7 +1286,7 @@ function getNormalMoveTargets(playerKey, actor, move){
 
   // Embelesado: los ataques se redirigen a un aliado aleatorio.
   if(isCharmed(actor) && move.type === 'attack'){
-    const allies = getAliveTeam(playerKey).filter(c => c !== actor);
+    const allies = getAliveChars(playerKey).filter(c => c !== actor);
     const target = chooseRandomAlive(allies) || actor;
 
     log(`💕 ${actor.name} está embelesado y ${move.name} se dirige contra ${target.name}.`);
@@ -1290,7 +1294,8 @@ function getNormalMoveTargets(playerKey, actor, move){
   }
 
   if(move.aoe){
-    return getAliveTeam(enemyKey);
+    // Personajes REALES vivos del equipo enemigo (no copias), para que el daño y los estados se apliquen de verdad.
+    return getAliveChars(enemyKey);
   }
 
   const target = getActive(enemyKey);
@@ -1355,6 +1360,12 @@ async function resolveMove(playerKey, moveId){
     if(move.baseCooldown) move.cd = move.baseCooldown;
     endTurn(actor);
     return;
+  }
+
+  // El cooldown se aplica antes de resolver los efectos: así, pase lo que pase
+  // al aplicarlos, la habilidad nunca queda disponible para usarse sin límite.
+  if(move.baseCooldown && move.baseCooldown > 0){
+    move.cd = move.baseCooldown;
   }
 
   const effects = getMoveEffects(move);
@@ -1428,7 +1439,12 @@ async function resolveMove(playerKey, moveId){
 function applyEffect(actor, target, move) {
   if (!move.effect && !move.effects) return;
 
-  const effects = move.effects || (move.effect ? [move.effect] : []);
+  // Los llamadores pasan { ...move, effect: e } para aplicar UN solo efecto.
+  // Como el spread conserva también move.effects (el array completo), antes
+  // se aplicaban TODOS los efectos de la habilidad una vez por cada efecto:
+  // curas, escudos y buffs salían duplicados en habilidades con 2+ efectos.
+  // Por eso, si viene un 'effect' suelto, manda sobre 'effects'.
+  const effects = move.effect ? [move.effect] : (move.effects || []);
 
   for (const e of effects) {
     if (e.type === 'heal') {
@@ -1851,6 +1867,7 @@ function applyControlEffect(actor, target, effect){
 
 function applyStatusEffect(actor, target, effect){
   if(!target || target.hp <= 0 || !effect) return;
+  if(!getKeyOfTarget(target)) return;
 
   if(effect.type === 'healReduction'){
     applySpecialEffect(actor, target, effect);
@@ -2016,6 +2033,8 @@ function processEndOfTurnEffects(target){
 /* apply damage */
 function applyDamage(actor, target, move){
   if(!target) return;
+  // Solo se daña a personajes reales de un equipo (nunca a copias sueltas).
+  if(!getKeyOfTarget(target)) return;
 
   const effectiveAtk = getEffectiveStat(actor, 'atk');
   const effectiveDef = getEffectiveStat(target, 'def');
@@ -2143,6 +2162,8 @@ function getKeyOfTarget(target){
   } 
   return null; 
 }
+// Devuelve los objetos de personaje reales (no copias) que siguen vivos.
+function getAliveChars(player){ return state.teams[player].filter(c => c && c.hp > 0); }
 function getAliveTeam(player){ return state.teams[player].map((c,idx)=>({ idx, name:c.name, hp:c.hp, alive:c.hp>0 })); }
 
 function checkKO(){
@@ -2267,7 +2288,9 @@ function animateAttack(player){
 }
 
 function flashHit(playerKey){ 
+  if(!playerKey) return;
   const img = $(`fighter-img-${playerKey}`); 
+  if(!img) return;
   img.style.filter = 'brightness(1.6) saturate(1.6) hue-rotate(-20deg)'; 
   setTimeout(()=>{ 
     img.style.filter = ''; 
@@ -2606,6 +2629,10 @@ async function aiExecuteAction(action){
     log(`IA intentó ${move.name}... ¡Falló!`);
     if(move.baseCooldown) move.cd = move.baseCooldown;
     return true;
+  }
+
+  if(move.baseCooldown && move.baseCooldown > 0){
+    move.cd = move.baseCooldown;
   }
 
   const effects = getMoveEffects(move);

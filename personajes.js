@@ -12627,6 +12627,72 @@ moves: [
       ]
     }
   ]
+},
+
+{
+  id: 'rades_spirito',
+  name: 'Rades Spirito',
+  img: 'personajes/rades.jpg',
+  classes: ['tanque', 'defensor'],
+  hp: 125,
+  atk: 24,
+  def: 45,
+  spd: 28,
+
+  moves: [
+    {
+      id: 'rades1',
+      name: 'Cadáver Nº4: Jimmy',
+      power: 18,
+      acc: 0.95,
+      desc: 'Rades invoca un espectro que dispara una bala maldita al enemigo. Puede envenenarlo.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: [
+        { type: 'damageOverTime', status: 'poison', value: 4, duration: 2, prob: 0.5 }
+      ]
+    },
+    {
+      id: 'rades2',
+      name: 'Cadáver Nº3: David',
+      power: 14,
+      acc: 0.92,
+      desc: 'Un espectro escupe agua fangosa y venenosa sobre todo el equipo enemigo, con buena probabilidad de envenenarlos.',
+      baseCooldown: 4,
+      type: 'attack',
+      aoe: true,
+      effects: [
+        { type: 'damageOverTime', status: 'poison', value: 5, duration: 3, prob: 0.75 }
+      ]
+    },
+    {
+      id: 'rades3',
+      name: 'Cadáver Nº1: Carl',
+      power: 0,
+      acc: 1.0,
+      desc: 'Carl levanta un escudo de magia espiritual que protege a un aliado y refuerza su DEF durante 2 turnos.',
+      baseCooldown: 3,
+      type: 'support',
+      effects: [
+        { type: 'shield', value: 45 },
+        { type: 'tempDef', value: 8, duration: 2 }
+      ]
+    },
+    {
+      id: 'rades4',
+      name: 'ULTI: Muralla de los Muertos',
+      power: 0,
+      acc: 1.0,
+      desc: 'Rades convoca a todos sus cadáveres para formar una muralla: un aliado recibe un gran escudo y mucha DEF durante 3 turnos, y Rades recupera parte de su vida.',
+      baseCooldown: 9,
+      type: 'support',
+      effects: [
+        { type: 'shield', value: 60 },
+        { type: 'tempDef', value: 12, duration: 3 },
+        { type: 'selfHealPct', value: 0.15 }
+      ]
+    }
+  ]
 }
 ];
 

@@ -19,9 +19,14 @@
    Si falta el archivo de un boss se usa combate.mp3; si tampoco está, no suena
    nada. Volumen y "música activada" se toman de la Configuración del juego.
 
+   Un boss con segunda fase (campo "phase2" en CHALLENGE_META) reutiliza por
+   defecto la música de la primera fase: la canción no se corta ni se reinicia.
+   Si una fase necesita otra canción, ponle "music: '<archivo sin .mp3>'".
+
    IMÁGENES:
        personajes/desafio.jpg   → portada del panel del menú (opcional)
        personajes/<id>.jpg      → retrato de cada boss (mismo id que arriba)
+       personajes/mckraken2.jpg → retrato de la segunda fase de McKraken
 
    DÓNDE AJUSTAR COSAS:
      - Bosses (stats y habilidades):  CHALLENGE_ONLY_CHARACTERS
@@ -69,8 +74,8 @@
           desc: 'Los agujeros de sus manos absorben la energía del rival y McKraken se queda con parte.',
           effects: [{ type: 'lifesteal', value: 3 }] },
         { id: 'mck2', name: 'Absorción de Energía', power: 0, acc: 1, baseCooldown: 3, type: 'support',
-          desc: 'Absorbe energía espiritual del ambiente: recupera vida y gana escudo.',
-          effects: [{ type: 'selfHealPct', value: 0.05 }, { type: 'shield', value: 10 }] },
+          desc: 'Absorbe energía espiritual del ambiente y recupera vida.',
+          effects: [{ type: 'selfHealPct', value: 0.08 }] },
         { id: 'mck3', name: 'Manos Endemoniadas', power: 20, acc: 0.95, baseCooldown: 2, type: 'attack',
           desc: 'Sus manos poseen al rival: le debilitan el ataque y pueden ralentizarlo.',
           effects: [{ type: 'debuff', stat: 'atk', value: 8, duration: 2, prob: 1.0 },
@@ -78,6 +83,31 @@
         { id: 'mck4', name: 'Descarga del Reino Yo-kai', power: 38, acc: 0.9, baseCooldown: 4, type: 'attack',
           desc: 'Tras acumular energía, la libera de golpe y quiebra la defensa del objetivo.',
           effects: [{ type: 'debuff', stat: 'def', value: 8, duration: 2, prob: 1.0 }] }
+      ]
+    },
+    /* Segunda fase de McKraken. NO está en CHALLENGE_META (no sale en la lista):
+       aparece sola al vencer a la primera fase. Comparte canción con ella. */
+    {
+      id: 'mckraken2',
+      name: 'Squiddilius McKraken (hinchado de energía)',
+      img: 'personajes/mckraken2.jpg',
+      music: 'mckraken',
+      classes: ['mago', 'control'],
+      hp: 280, atk: 28, def: 22, spd: 16,
+      moves: [
+        { id: 'mk21', name: 'Zarpazo Hinchado', power: 26, acc: 0.97, baseCooldown: 0, type: 'attack',
+          desc: 'Un zarpazo cargado de energía espiritual que le devuelve parte de la vida.',
+          effects: [{ type: 'lifesteal', value: 15 }] },
+        { id: 'mk22', name: 'Sobrecarga Espiritual', power: 0, acc: 1, baseCooldown: 4, type: 'support',
+          desc: 'Se hincha aún más con la energía que ha absorbido: gana escudo y ataque.',
+          effects: [{ type: 'shield', value: 40 }, { type: 'tempAtk', value: 10, duration: 3 }] },
+        { id: 'mk23', name: 'Estallido de Manos', power: 24, acc: 0.95, baseCooldown: 2, type: 'attack',
+          desc: 'Decenas de manos golpean a la vez: quiebran la defensa y pueden ralentizar.',
+          effects: [{ type: 'debuff', stat: 'def', value: 8, duration: 2, prob: 1.0 },
+                    { type: 'slow', value: 20, duration: 2, prob: 0.6 }] },
+        { id: 'mk24', name: 'Cataclismo Yo-kai', power: 44, acc: 0.88, baseCooldown: 4, type: 'attack',
+          desc: 'Libera toda la energía acumulada de golpe. Puede aturdir al objetivo.',
+          effects: [{ type: 'stun', prob: 0.25, duration: 1 }] }
       ]
     },
     {
@@ -167,6 +197,8 @@
      lista es el orden en que se desbloquean. */
   const CHALLENGE_META = [
     { id: 'mckraken',         emoji: '🦑', title: 'El dictador del Mundo Yo-kai',
+      phase2: 'mckraken2',
+      phase2Log: '💥 ¡McKraken se hincha con la energía espiritual que ha absorbido y se transforma!',
       intro: 'Quiere someter a la humanidad y absorbe toda la energía que toca con sus manos. Este es solo su primera forma.' },
     { id: 'reina_susurros',   emoji: '🌙', title: 'La voz que nunca calla',
       intro: 'Sus palabras no se oyen con los oídos. Se meten en la cabeza y no se van.' },
@@ -291,7 +323,11 @@
   /* =========================================================
      COMBATE
      ========================================================= */
-  const C = { active: false, bossId: null, level: 1, teamIds: [] };
+  const C = { active: false, bossId: null, level: 1, teamIds: [], phase: 1 };
+
+  // Canción del boss: desafio/<id>.mp3, o la de "music" si la fase la declara
+  // (así la segunda fase de McKraken sigue con mckraken.mp3 sin reiniciarla).
+  const bossTrack = id => `${MUSIC_DIR}/${(bossBase(id) || {}).music || id}.mp3`;
 
   const baseHero = id => {
     if (typeof findBaseById === 'function') return findBaseById(id);
@@ -320,6 +356,7 @@
 
     C.active = true;
     C.bossId = bossId;
+    C.phase = 1;
     C.level = lvl;
     C.teamIds = teamIds.slice();
 
@@ -327,6 +364,7 @@
     window.GAME_MODE = 'pve';
     state.bansEnabled = false;
     state.storyMode = true;            // reutiliza el flujo de "combate scriptado"
+    state.challengeMode = true;         // muerte súbita a los 100 turnos (en vez de 70) en game.js
     state.moveLock = false;
     state.teams.p1 = heroes;
     state.teams.p2 = [boss];
@@ -347,8 +385,7 @@
     const surrender = byId('story-surrender-btn');
     if (surrender) surrender.style.display = 'inline-block';
 
-    const bossTrack = `${MUSIC_DIR}/${bossId}.mp3`;
-    playChMusic(bossTrack, MUSIC_DEFAULT_BATTLE);
+    playChMusic(bossTrack(bossId), MUSIC_DEFAULT_BATTLE);
 
     state.phase = 'battle';
     startBattle();
@@ -357,12 +394,46 @@
     if (boss.shield > 0) safeLog(`🛡️ ${boss.name} empieza con ${boss.shield} de escudo.`);
   }
 
+  /* Segunda fase: si el boss tiene "phase2" y acaba de caer la primera fase,
+     el combate NO termina. Se cambia al boss de la fase 2 (mismos multiplicadores
+     del nivel), se mantiene el estado del equipo y se reanuda el turno. */
+  function startPhase2() {
+    const meta = bossMeta(C.bossId);
+    const boss2 = buildBoss(meta.phase2, C.level);
+    C.phase = 2;
+
+    state.teams.p2 = [boss2];
+    state.activeIndex.p2 = 0;
+    byId('p2-title').innerText = 'Boss: ' + boss2.name;
+
+    // La canción no cambia si la fase 2 declara la misma (playChMusic no la reinicia).
+    playChMusic(bossTrack(meta.phase2), MUSIC_DEFAULT_BATTLE);
+
+    state.phase = 'battle';
+    safeLog(meta.phase2Log || `💥 ¡${boss2.name} entra en su segunda fase!`);
+    if (boss2.shield > 0) safeLog(`🛡️ ${boss2.name} empieza con ${boss2.shield} de escudo.`);
+
+    // Reanuda el flujo de turnos como en una ronda nueva.
+    state.roundActed = { p1: false, p2: false };
+    const initiative = decideRoundInitiative();
+    state.turnOwner = initiative.owner;
+    startTurnActions();
+    updateTurnInfo();
+    updateArena();
+    if (state.phase === 'battle' && state.turnOwner === 'p2') setTimeout(() => aiTakeTurn(), 900);
+  }
+
   function challengeOnBattleEnd(result) {
+    if (result === 'win' && C.phase === 1 && bossMeta(C.bossId).phase2 && bossBase(bossMeta(C.bossId).phase2)) {
+      return startPhase2();
+    }
+
     const bossId = C.bossId, lvl = C.level, teamIds = C.teamIds.slice();
     const turns = state.turnCount || 0;
 
     C.active = false;
     state.storyMode = false;
+    state.challengeMode = false;
     state.moveLock = false;
     byId('game-root').style.display = 'none';
     const surrender = byId('story-surrender-btn');
