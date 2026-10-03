@@ -16,6 +16,129 @@ const CHARACTERS = [
 
 
 {
+  id: 'vexoria',
+  name: 'Vexoria the Sun Eater',
+  img: 'personajes/vexoria.jpg',
+  classes: ['atacante', 'control'],
+  hp: 125,
+  atk: 26,
+  def: 16,
+  spd: 19,
+
+  moves: [
+    {
+      id: 'vex1',
+      name: 'Mordida Solar',
+      power: 22,
+      acc: 0.97,
+      desc: 'Vexoria ordena a sus serpientes atacar al enemigo mientras absorben parte de su energía.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 5,
+          duration: 2,
+          prob: 0.9
+        },
+        {
+          type: 'selfHealPct',
+          value: 5
+        }
+      ]
+    },
+
+    {
+      id: 'vex2',
+      name: 'Eclipse de la Serpiente',
+      power: 25,
+      acc: 0.94,
+      desc: 'Vexoria cubre al enemigo con una sombra solar que reduce su DEF y SPD.',
+      baseCooldown: 2,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 7,
+          duration: 3,
+          prob: 0.95
+        },
+        {
+          type: 'slow',
+          value: 15,
+          duration: 2,
+          prob: 0.9
+        }
+      ]
+    },
+
+    {
+      id: 'vex3',
+      name: 'Devoradora del Sol',
+      power: 0,
+      acc: 1.0,
+      desc: 'Vexoria absorbe energía solar para fortalecerse, aumentando temporalmente su ATK y recuperando parte de sus HP.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 10,
+          duration: 3
+        },
+        {
+          type: 'tempDef',
+          value: 6,
+          duration: 3
+        },
+        {
+          type: 'selfHealPct',
+          value: 0.04
+        }
+      ]
+    },
+
+    {
+      id: 'vex4',
+      name: 'ULTI: Sun Eater',
+      power: 30,
+      acc: 0.90,
+      desc: 'Vexoria desata su poder de Devoradora del Sol, envolviendo al enemigo en una gigantesca explosión solar mientras absorbe su energía.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 10,
+          duration: 3,
+          prob: 1.0
+        },
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 12,
+          duration: 3,
+          prob: 1.0
+        },
+        {
+          type: 'slow',
+          value: 20,
+          duration: 3,
+          prob: 0.9
+        },
+        {
+          type: 'selfHealPct',
+          value: 0.08
+        }
+      ]
+    }
+  ]
+},
+
+{
   id: 'saitama',
   name: 'Saitama',
   img: 'personajes/saitama.jpg',
@@ -11862,9 +11985,9 @@ const CHARACTERS = [
         duration: 2}
     } ]
 },
-     { id: 'goku', name: 'Goku',  img: 'personajes/goku.jpg',  classes: ['atacante'], hp: 100, atk: 32, def: 9, spd: 12,
+     { id: 'goku', name: 'Goku',  img: 'personajes/goku.jpg',  classes: ['atacante'], hp: 100, atk: 30, def: 9, spd: 12,
   moves: [
-    { id: 'gok1', name: 'Puños poderosos', power: 25, acc: 0.70, desc: 'Ataque básico', 
+    { id: 'gok1', name: 'Puños poderosos', power: 23, acc: 0.70, desc: 'Ataque básico', 
       baseCooldown: 0, type: 'attack', effect: null
     },
     { id: 'gok2', name: 'super saiyan', power: 0, acc: 1.0, desc: 'buff para atk y spd (2 turnos)', 
@@ -11874,10 +11997,10 @@ const CHARACTERS = [
         { type:'tempSpd', value:4, duration:2 } 
       ]
     },
-    { id: 'gok3', name: 'Poder del guión', power: 33, acc: 0.90, desc: 'Ataque muy potente', 
+    { id: 'gok3', name: 'Poder del guión', power: 25, acc: 0.90, desc: 'Ataque muy potente', 
       baseCooldown: 2, type: 'attack'
     },
-    { id: 'gok4', name: 'HAMEAMEHA', power: 44, acc: 0.80, desc: 'Ataque extremadamente potente', 
+    { id: 'gok4', name: 'HAMEAMEHA', power: 30, acc: 0.80, desc: 'Ataque extremadamente potente', 
       baseCooldown: 6, type: 'attack', effect: null
     } ]
     },
