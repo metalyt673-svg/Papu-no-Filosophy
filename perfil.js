@@ -855,5 +855,23 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 
-  window.PERFIL = { open: openPerfil, load: loadProfile, recordMultiplayer };
+  /* Versión PÚBLICA del perfil (la usa amigos.js para compartirla con tus amigos).
+     Solo datos de juego: nada de claves ni de almacenamiento interno. */
+  function snapshot() {
+    const g = gather();
+    return {
+      name: P.name, avatar: P.avatar, favs: P.favs.slice(),
+      points: g.points,
+      rank: { name: g.rank.cur.name, icon: g.rank.cur.icon, rgb: g.rank.cur.rgb, pct: g.rank.pct,
+        nextName: g.rank.next ? g.rank.next.name : '', nextIcon: g.rank.next ? g.rank.next.icon : '', nextMin: g.rank.next ? g.rank.next.min : 0 },
+      freeWins: g.freeWins, freePlayed: g.freePlayed,
+      free: FREE_MODES.map(m => Object.assign({ icon: m.icon, name: m.name }, P.free[m.id])),
+      mp: Object.assign({}, P.mp),
+      story: { reached: g.story.reached, total: g.story.total },
+      medals: { n: g.desafio.medals, max: g.desafio.maxMedals },
+      hell: { highest: g.hell.highest, floors: g.hell.floors, bestTurns: g.hell.bestTurns }
+    };
+  }
+
+  window.PERFIL = { open: openPerfil, load: loadProfile, recordMultiplayer, snapshot, charById };
 })();

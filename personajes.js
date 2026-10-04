@@ -16,6 +16,110 @@ const CHARACTERS = [
 
 
 {
+  id: 'shinra',
+  name: 'Shinra Kusakabe',
+  img: 'personajes/shinra.jpg',
+  classes: ['atacante', 'mago'],
+  hp: 120,
+  atk: 29,
+  def: 14,
+  spd: 14,
+
+  moves: [
+    {
+      id: 'shi1',
+      name: 'Llamas del Infierno',
+      power: 24,
+      acc: 0.97,
+      desc: 'Shinra utiliza las llamas de sus pies para propulsarse a gran velocidad y golpear al enemigo con una poderosa patada ígnea.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: {
+        type: 'tempSpd',
+        value: 5,
+        duration: 2
+      }
+    },
+
+    {
+      id: 'shi2',
+      name: 'Adolla Burst',
+      power: 25,
+      acc: 0.93,
+      desc: 'Shinra libera el poder de su Adolla Burst, envolviendo sus piernas en llamas intensas y realizando un ataque devastador.',
+      baseCooldown: 3,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 5,
+          duration: 3,
+          prob: 0.9
+        },
+        {
+          type: 'tempSpd',
+          value: 7,
+          duration: 2
+        }
+      ]
+    },
+
+    {
+      id: 'shi3',
+      name: 'Superfuego',
+      power: 0,
+      acc: 1.0,
+      desc: 'Shinra concentra sus llamas y aumenta enormemente la potencia de sus ataques durante un corto periodo de tiempo.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 7,
+          duration: 3
+        },
+        {
+          type: 'tempSpd',
+          value: 6,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'shi4',
+      name: 'ULTI: Corna',
+      power: 30,
+      acc: 0.88,
+      desc: 'Shinra utiliza una velocidad sobrehumana para ejecutar Corna, lanzándose contra el enemigo envuelto en llamas y causando un impacto devastador.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 5,
+          duration: 3,
+          prob: 1.0
+        },
+        {
+          type: 'slow',
+          value: 2,
+          duration: 2,
+          prob: 1.0
+        },
+        {
+          type: 'tempSpd',
+          value: 5,
+          duration: 2
+        }
+      ]
+    }
+  ]
+},
+
+{
   id: 'vexoria',
   name: 'Vexoria the Sun Eater',
   img: 'personajes/vexoria.jpg',
@@ -4893,7 +4997,7 @@ const CHARACTERS = [
       id: 'pun_atk2',
       name: 'Oyasumi',
       power: 18,
-      acc: 0.9,
+      acc: 0.95,
       desc: 'Punpun se va a dormir, reduciendo la velocidad y el ataque del enemigo.',
       baseCooldown: 3,
       type: 'attack',
@@ -4917,7 +5021,7 @@ const CHARACTERS = [
       id: 'punatk_3',
       name: 'Aiko...',
       power: 24,
-      acc: 0.97,
+      acc: 0.95,
       desc: 'Punpun extraña a Aiko, hace daño a su enemigo e inflige quemadura.',
       baseCooldown: 2,
       type: 'attack',
@@ -4926,7 +5030,7 @@ const CHARACTERS = [
         status: 'burn',
         value: 8,
         duration: 3,
-        prob: 0.8
+        prob: 1
       }
     },
 
@@ -4934,7 +5038,7 @@ const CHARACTERS = [
       id: 'punatk_ult',
       name: 'Kamisama Kamisama, Chinkuru Hoi',
       power: 30,
-      acc: 0.98,
+      acc: 0.95,
       desc: 'Punpun habla con Dios, aturde al enemigo e inflige daño.',
       baseCooldown: 5,
       type: 'attack',

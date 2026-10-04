@@ -54,7 +54,7 @@
   const LEVELS = [
     { n: 1, name: 'Normal',    icon: '🥉', hp: 1.00, atk: 1.00, def: 1.00, spd: 1.00, shield: 0    },
     { n: 2, name: 'Difícil',   icon: '🥈', hp: 1.25, atk: 1.10, def: 1.12, spd: 1.05, shield: 0    },
-    { n: 3, name: 'Pesadilla', icon: '🥇', hp: 1.50, atk: 1.22, def: 1.25, spd: 1.10, shield: 0.15 }
+    { n: 3, name: 'Pesadilla', icon: '🥇', hp: 1.50, atk: 1.22, def: 1.25, spd: 1.10, shield: 0.10 }
   ];
 
   /* ---------------------------------------------------------
@@ -68,7 +68,7 @@
       name: 'Squiddilius McKraken',
       img: 'personajes/mckraken.jpg',
       classes: ['mago', 'control'],
-      hp: 340, atk: 24, def: 20, spd: 14,
+      hp: 220, atk: 20, def: 14, spd: 12,
       moves: [
         { id: 'mck1', name: 'Mano Succionadora', power: 22, acc: 0.98, baseCooldown: 0, type: 'attack',
           desc: 'Los agujeros de sus manos absorben la energía del rival y McKraken se queda con parte.',
@@ -93,19 +93,19 @@
       img: 'personajes/mckraken2.jpg',
       music: 'mckraken',
       classes: ['mago', 'control'],
-      hp: 280, atk: 28, def: 22, spd: 16,
+      hp: 200, atk: 22, def: 16, spd: 14,
       moves: [
         { id: 'mk21', name: 'Zarpazo Hinchado', power: 26, acc: 0.97, baseCooldown: 0, type: 'attack',
           desc: 'Un zarpazo cargado de energía espiritual que le devuelve parte de la vida.',
-          effects: [{ type: 'lifesteal', value: 15 }] },
+          effects: [{ type: 'lifesteal', value: 3 }] },
         { id: 'mk22', name: 'Sobrecarga Espiritual', power: 0, acc: 1, baseCooldown: 4, type: 'support',
           desc: 'Se hincha aún más con la energía que ha absorbido: gana escudo y ataque.',
-          effects: [{ type: 'shield', value: 40 }, { type: 'tempAtk', value: 10, duration: 3 }] },
+          effects: [{ type: 'shield', value: 15 }, { type: 'tempAtk', value: 5, duration: 3 }] },
         { id: 'mk23', name: 'Estallido de Manos', power: 24, acc: 0.95, baseCooldown: 2, type: 'attack',
           desc: 'Decenas de manos golpean a la vez: quiebran la defensa y pueden ralentizar.',
           effects: [{ type: 'debuff', stat: 'def', value: 8, duration: 2, prob: 1.0 },
                     { type: 'slow', value: 20, duration: 2, prob: 0.6 }] },
-        { id: 'mk24', name: 'Cataclismo Yo-kai', power: 44, acc: 0.88, baseCooldown: 4, type: 'attack',
+        { id: 'mk24', name: 'Cataclismo Yo-kai', power: 30, acc: 0.88, baseCooldown: 4, type: 'attack',
           desc: 'Libera toda la energía acumulada de golpe. Puede aturdir al objetivo.',
           effects: [{ type: 'stun', prob: 0.25, duration: 1 }] }
       ]
@@ -357,6 +357,7 @@
     C.active = true;
     C.bossId = bossId;
     C.phase = 1;
+    C.phase1Turns = 0;
     C.level = lvl;
     C.teamIds = teamIds.slice();
 
@@ -402,6 +403,15 @@
     const boss2 = buildBoss(meta.phase2, C.level);
     C.phase = 2;
 
+    // Los turnos vuelven a 0 en la segunda fase (solo el contador: la vida, los
+    // escudos y los efectos del equipo se mantienen). Al resetear también se
+    // apaga la muerte súbita, que se activa por número de turnos y volverá a
+    // contar desde cero. Se guardan los turnos de la fase 1 para el récord total.
+    C.phase1Turns = state.turnCount || 0;
+    state.turnCount = 0;
+    state.suddenDeath = false;
+    state.aiLastSwapTurn = undefined;
+
     state.teams.p2 = [boss2];
     state.activeIndex.p2 = 0;
     byId('p2-title').innerText = 'Boss: ' + boss2.name;
@@ -429,7 +439,8 @@
     }
 
     const bossId = C.bossId, lvl = C.level, teamIds = C.teamIds.slice();
-    const turns = state.turnCount || 0;
+    // Turnos totales del combate: los de la fase 1 (si hubo) + los de la fase actual.
+    const turns = (C.phase1Turns || 0) + (state.turnCount || 0);
 
     C.active = false;
     state.storyMode = false;
