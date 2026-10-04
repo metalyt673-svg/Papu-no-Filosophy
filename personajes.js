@@ -3171,11 +3171,12 @@ const CHARACTERS = [
     {
       id: 'papudo1',
       name: 'Ondas De Papada',
-      power: 22,
+      power: 18,
       acc: 0.97,
       desc: 'Papudo utiliza su papada para crear unas ondas que destabilizan a su oponente por su movimiento y volúmen.',
       baseCooldown: 0,
       type: 'attack',
+      aoe: true,
       effect: null
     },
 
@@ -4246,7 +4247,7 @@ const CHARACTERS = [
   img: 'personajes/mint.jpg',
   classes: ['atacante', 'control'],
   hp: 116,
-  atk: 33,
+  atk: 27,
   def: 14,
   spd: 22,
 
@@ -4254,7 +4255,7 @@ const CHARACTERS = [
     {
       id: 'mint1',
       name: 'Perfect Containment',
-      power: 27,
+      power: 24,
       acc: 0.97,
       desc: 'Mint realiza una rápida sucesión de golpes contra el enemigo.',
       baseCooldown: 0,
@@ -4265,7 +4266,7 @@ const CHARACTERS = [
     {
       id: 'mint2',
       name: 'Justice from Above',
-      power: 32,
+      power: 22,
       acc: 0.94,
       desc: 'Mint se lanza sobre el enemigo desde arriba, causando un fuerte impacto y ralentizando sus movimientos.',
       baseCooldown: 2,
@@ -4283,7 +4284,7 @@ const CHARACTERS = [
     {
       id: 'mint3',
       name: 'Caramel Crisp',
-      power: 36,
+      power: 25,
       acc: 0.91,
       desc: 'Mint aprovecha una apertura para realizar un rápido contraataque con mayor probabilidad de golpe crítico.',
       baseCooldown: 3,
@@ -4307,7 +4308,7 @@ const CHARACTERS = [
     {
       id: 'mint4',
       name: 'ULTI: Thunderous Whirlwind Slash',
-      power: 68,
+      power: 30,
       acc: 0.89,
       desc: 'Mint desata una enorme ráfaga de ataques giratorios que ralentiza al enemigo y reduce temporalmente su defensa.',
       baseCooldown: 7,
@@ -5277,12 +5278,13 @@ const CHARACTERS = [
     {
       id: 'harribel_la_gota',
       name: 'La Gota',
-      power: 27,
+      power: 20,
       acc: 0.9,
       desc: 'Harribel concentra una gran cantidad de agua y la dispara con enorme fuerza, debilitando las defensas del enemigo.',
       baseCooldown: 4,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 9, duration: 3 }
+      aoe: true,
+      effect: { type: 'debuff', stat: 'def', value: 3, duration: 3 }
     },
     {
       id: 'harribel_poder_del_tiburon',
@@ -5297,12 +5299,13 @@ const CHARACTERS = [
     {
       id: 'harribel_cascada_final',
       name: 'Cascada Suprema',
-      power:30,
+      power: 25,
       acc: 0.88,
       desc: 'Harribel desata una gigantesca corriente de agua con todo el poder de su Resurrección, devastando al enemigo y dejando sus defensas gravemente debilitadas.',
       baseCooldown: 7,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 13, duration: 3 }
+      aoe: true,
+      effect: { type: 'debuff', stat: 'def', value: 5, duration: 3 }
     }
   ]
 },
@@ -9715,7 +9718,7 @@ const CHARACTERS = [
   img: 'personajes/deidara.gif',
   classes: ['atacante', 'debilitador'],
   hp: 115,
-  atk: 30,
+  atk: 28,
   def: 16,
   spd: 22,
 
@@ -9723,11 +9726,12 @@ const CHARACTERS = [
     {
       id: 'clay_bird',
       name: 'Pájaro de Arcilla',
-      power: 22,
+      power: 18,
       acc: 0.95,
       desc: 'Lanza un ave explosiva que reduce la DEF del enemigo.',
-      baseCooldown: 2,
+      baseCooldown: 0,
       type: 'attack',
+      aoe: true,
       effect: {
         type: 'debuff',
         stat: 'def',
@@ -9769,15 +9773,16 @@ const CHARACTERS = [
     {
       id: 'c3',
       name: 'ULTI: C3',
-      power: 30,
+      power: 28,
       acc: 0.85,
       desc: 'Lanza una gigantesca bomba de arcilla que causa un daño devastador y reduce la DEF del enemigo.',
       baseCooldown: 6,
       type: 'attack',
+      aoe: true,
       effect: {
         type: 'debuff',
         stat: 'def',
-        value: 8,
+        value: 4,
         prob: 1.0,
         duration: 3
       }
@@ -9971,15 +9976,16 @@ const CHARACTERS = [
     {
       id: 'konjiki_ashisogi_jizo',
       name: 'ULTI: Konjiki Ashisogi Jizō',
-      power: 34,
+      power: 30,
       acc: 0.95,
       desc: 'Libera a su Bankai, inundando el campo con un veneno letal que reduce enormemente la DEF del enemigo.',
       baseCooldown: 6,
       type: 'attack',
+      aoe: true,
       effect: {
         type: 'debuff',
         stat: 'def',
-        value: 10,
+        value: 6,
         prob: 1.0,
         duration: 3
       }
@@ -10568,8 +10574,9 @@ const CHARACTERS = [
       desc: 'Guinevere libera energía explosiva en un área, causando gran daño mágico y aumentando su ATK temporalmente.',
       baseCooldown: 6,
       type: 'attack',
+      aoe: true,
       effects: [
-        { type:'tempAtk', value: 10, duration: 2 }
+        { type:'tempAtk', value: 5, duration: 2 }
       ]
     }
   ]
@@ -11352,12 +11359,13 @@ const CHARACTERS = [
     {
       id: 'elec2',
       name: 'Electrocutar',
-      power: 32,
+      power: 25,
       acc: 0.9,
       desc: 'Daño moderado eléctrico que reduce SPD del objetivo.',
       baseCooldown: 2,
       type: 'attack',
-      effect: { type:'debuff', stat:'spd', value:4, prob:1.0, duration:2 }
+      aoe: true,
+      effect: { type:'debuff', stat:'spd', value:2, prob:1.0, duration:2 }
     },
     {
       id: 'elec3',
@@ -11375,7 +11383,7 @@ const CHARACTERS = [
     {
       id: 'elec4',
       name: 'Tormenta de Relámpagos (ULT)',
-      power: 42,
+      power: 30,
       acc: 0.88,
       desc: 'Ataque en área que puede paralizar a todos los enemigos.',
       baseCooldown: 6,
@@ -11584,15 +11592,16 @@ const CHARACTERS = [
     {
       id: 'hos2',
       name: 'Corte Relámpago',
-      power: 25,
+      power: 18,
       acc: 0.95,
       desc: 'Miyabi ejecuta un corte veloz que reduce temporalmente la DEF del enemigo.',
       baseCooldown: 2,
       type: 'attack',
+      aoe: true,
       effect: {
         type: 'debuff',
         stat: 'def',
-        value: 6,
+        value: 4,
         duration: 2,
         prob: 1.0
       }
@@ -11601,11 +11610,12 @@ const CHARACTERS = [
     {
       id: 'hos3',
       name: 'Danza Mortal',
-      power: 25,
+      power: 18,
       acc: 0.91,
       desc: 'Miyabi encadena varios cortes con gran precisión. El último golpe reduce la velocidad del enemigo.',
       baseCooldown: 3,
       type: 'attack',
+      aoe: true,
       effects: [
         {
           type: 'debuff',
@@ -12798,7 +12808,7 @@ moves: [
       baseCooldown: 3,
       type: 'support',
       effects: [
-        { type: 'shield', value: 45 },
+        { type: 'shield', value: 35 },
         { type: 'tempDef', value: 8, duration: 2 }
       ]
     },
@@ -12811,7 +12821,7 @@ moves: [
       baseCooldown: 9,
       type: 'support',
       effects: [
-        { type: 'shield', value: 60 },
+        { type: 'shield', value: 50 },
         { type: 'tempDef', value: 12, duration: 3 },
         { type: 'selfHealPct', value: 0.15 }
       ]
