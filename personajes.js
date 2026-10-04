@@ -152,7 +152,7 @@ const CHARACTERS = [
     {
       id: 'sai1',
       name: 'Puñetazo Normal',
-      power: 25,
+      power: 22,
       acc: 0.99,
       desc: 'Saitama lanza un simple puñetazo que causa un daño considerable.',
       baseCooldown: 0,
@@ -10301,11 +10301,12 @@ const CHARACTERS = [
     {
       id: 'kyoka',
       name: 'Kyōka Suigetsu',
-      power: 0,
+      power: 25,
       acc: 1,
       desc: 'Reduce DEF y ATK del enemigo.',
       baseCooldown: 3,
       type: 'attack',
+      aoe: true,
       effects: [
         { type:'debuff', stat:'def', value:2, prob:0.89 },
         { type:'debuff', stat:'atk', value:3, prob:0.98 }

@@ -2417,6 +2417,7 @@
   <script src="desafio.js" defer></script>
   <script src="historia2.js" defer></script>
   <script src="perfil.js" defer></script>
+  <script src="multijugador.js" defer></script>
   <script>
     const battleMusic = document.getElementById('battle-music');
 
@@ -2948,6 +2949,39 @@
        ============================================================ */
     const PATCH_NOTES = [
  
+{
+  version: 'v1.9',
+  date: '04/10/26',
+  summary: 'Aizen recibe daño AoE, balance general y nuevas funciones multijugador',
+  changes: [
+    {
+      type: 'ajuste',
+      target: 'Aizen',
+      desc: 'Aizen ahora cuenta con daño AoE (área de efecto), permitiéndole golpear a varios enemigos con sus habilidades.'
+    },
+    {
+      type: 'ajuste',
+      target: 'Balance general',
+      desc: 'Se han balanceado varios personajes de forma general, ajustando estadísticas, daño, defensas, cooldowns y efectos de diferentes habilidades.'
+    },
+    {
+      type: 'nuevo',
+      target: 'Perfil de jugador',
+      desc: 'Ahora cada jugador cuenta con su propio perfil, preparado para mostrar información y estadísticas del jugador.'
+    },
+    {
+      type: 'nuevo',
+      target: 'Modo Multijugador',
+      desc: 'Se ha añadido un nuevo modo Multijugador que permite enfrentarse a otros jugadores en combates PvP.'
+    },
+    {
+      type: 'ajuste',
+      target: 'Sistema de combate',
+      desc: 'Se han realizado mejoras generales en el sistema de combate y en la sincronización de las partidas multijugador.'
+    }
+  ]
+},
+
 {
   version: 'v1.8',
   date: '27/09/26',

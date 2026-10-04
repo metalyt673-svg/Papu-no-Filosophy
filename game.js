@@ -10,6 +10,14 @@
 */
 
 console.log('[game.js] habilidades de area corregidas (v3)');
+
+/* Aleatoriedad del combate. En el modo Multijugador (multijugador.js) los dos
+   navegadores comparten una semilla (window.__mpRng) para que todas las tiradas
+   (precisión, críticos, estados...) salgan iguales en ambos. Fuera de ese modo
+   usa Math.random() como siempre. */
+function gameRandom(){
+  return (typeof window !== 'undefined' && typeof window.__mpRng === 'function') ? window.__mpRng() : Math.random();
+}
 const DAMAGE_MULT = 0.7;
 const BASE_CRIT_CHANCE = 0.08;
 const SUDDEN_DEATH_TURN = 70;
@@ -1097,7 +1105,7 @@ function decideRoundInitiative(){
   const c2 = getActive('p2');
   const s1 = c1 ? getEffectiveStat(c1, 'spd') : 0;
   const s2 = c2 ? getEffectiveStat(c2, 'spd') : 0;
-  return { owner: s1 > s2 ? 'p1' : (s2 > s1 ? 'p2' : (Math.random() < 0.5 ? 'p1' : 'p2')), s1, s2 };
+  return { owner: s1 > s2 ? 'p1' : (s2 > s1 ? 'p2' : (gameRandom() < 0.5 ? 'p1' : 'p2')), s1, s2 };
 }
 
 function startBattle(){
@@ -1233,7 +1241,7 @@ function startTurnActions(){
     if(fear){
       const failChance = Math.max(0, Math.min(1, Number(fear.failChance) || 0.5));
 
-      if(Math.random() < failChance){
+      if(gameRandom() < failChance){
         log(`😨 ${actor.name} está aterrorizado y no puede actuar este turno.`);
         endTurn(actor);
         return;
@@ -1278,7 +1286,7 @@ function isCharmed(target){
 function chooseRandomAlive(list){
   const alive = list.filter(c => c && c.hp > 0);
   if(alive.length === 0) return null;
-  return alive[Math.floor(Math.random() * alive.length)];
+  return alive[Math.floor(gameRandom() * alive.length)];
 }
 
 function getNormalMoveTargets(playerKey, actor, move){
@@ -1355,7 +1363,7 @@ async function resolveMove(playerKey, moveId){
   await animateAttack(playerKey);
   if(state.phase !== 'battle') return;   // la batalla terminó/se abandonó durante la animación
 
-  if(move.acc && Math.random() > move.acc){
+  if(move.acc && gameRandom() > move.acc){
     log(`${actor.name} intentó ${move.name}... ¡Falló!`);
     if(move.baseCooldown) move.cd = move.baseCooldown;
     endTurn(actor);
@@ -1641,7 +1649,7 @@ function applySpecialEffect(actor, target, effect){
     ? 1
     : Math.max(0, Math.min(1, Number(effect.prob) || 0));
 
-  if(Math.random() > prob){
+  if(gameRandom() > prob){
     log(`${actor.name} intentó aplicar ${effect.type}, pero no surtió efecto sobre ${target.name}.`);
     return;
   }
@@ -1712,7 +1720,7 @@ function applyDebuff(actor, target, effect){
   if(!['atk', 'def', 'spd'].includes(stat)) return;
 
   const prob = effect.prob == null ? 1 : effect.prob;
-  if(Math.random() > prob){
+  if(gameRandom() > prob){
     log(`${actor.name} intentó reducir ${stat.toUpperCase()} de ${target.name}, pero no surtió efecto.`);
     return;
   }
@@ -1857,7 +1865,7 @@ function applyControlEffect(actor, target, effect){
   if(!target || target.hp <= 0 || !effect) return;
 
   const prob = effect.prob == null ? 1 : Math.max(0, Math.min(1, Number(effect.prob) || 0));
-  if(Math.random() > prob){
+  if(gameRandom() > prob){
     log(`${actor.name} intentó aplicar ${getStatusLabel(effect.type)} a ${target.name}, pero no surtió efecto.`);
     return;
   }
@@ -1877,7 +1885,7 @@ function applyStatusEffect(actor, target, effect){
   const prob = effect.prob == null ? 1 : Math.max(0, Math.min(1, Number(effect.prob) || 0));
 
   if(effect.type === 'stun'){
-    if(Math.random() > prob){
+    if(gameRandom() > prob){
       log(`${actor.name} intentó aturdir a ${target.name}, pero no surtió efecto.`);
       return;
     }
@@ -2045,7 +2053,7 @@ function applyDamage(actor, target, move){
   const critChance = getCritChance(actor);
   let isCrit = false;
 
-  if(Math.random() < critChance){
+  if(gameRandom() < critChance){
     damage = Math.round(damage * 1.5);
     isCrit = true;
   }
@@ -2059,7 +2067,7 @@ function applyDamage(actor, target, move){
     log(`${target.name} absorbió ${absorbed} con su escudo.`);
   }
 
-  const variance = 0.85 + Math.random()*0.3;
+  const variance = 0.85 + gameRandom()*0.3;
   damage = Math.max(0, Math.round(damage * variance));
 
   const hpBefore = target.hp;

@@ -115,7 +115,8 @@
   function defaults() {
     const free = {};
     FREE_MODES.forEach(m => { free[m.id] = { played: 0, w: 0, l: 0, streak: 0, best: 0 }; });
-    return { name: '', avatar: null, favs: [null, null, null], free, storyBest: 0 };
+    return { name: '', avatar: null, favs: [null, null, null], free, storyBest: 0,
+      mp: { played: 0, w: 0, l: 0, streak: 0, best: 0 } };
   }
 
   function loadProfile() {
@@ -130,6 +131,7 @@
         if (s) Object.keys(d.free[m.id]).forEach(k => { d.free[m.id][k] = Number(s[k]) || 0; });
       });
       d.storyBest = Number(p.storyBest) || 0;
+      if (p.mp && typeof p.mp === 'object') Object.keys(d.mp).forEach(k => { d.mp[k] = Number(p.mp[k]) || 0; });
     }
     return d;
   }
@@ -147,6 +149,16 @@
     if (!t) return;
     t.played++;
     if (!p1Lost) { t.w++; t.streak++; t.best = Math.max(t.best, t.streak); }
+    else { t.l++; t.streak = 0; }
+    saveProfile();
+  }
+
+  /* Multijugador online: lo llama multijugador.js al terminar una partida. */
+  function recordMultiplayer(won) {
+    P = loadProfile();
+    const t = P.mp;
+    t.played++;
+    if (won) { t.w++; t.streak++; t.best = Math.max(t.best, t.streak); }
     else { t.l++; t.streak = 0; }
     saveProfile();
   }
@@ -612,6 +624,20 @@
     </div>`;
   }
 
+  function mpCardHTML() {
+    const s = P.mp;
+    const pct = s.played ? Math.round(s.w / s.played * 100) : 0;
+    return `<div class="pf-rec pf-rec-wide" style="--r:74,222,128">
+      <h4><em>🌐</em>Multijugador online</h4>
+      <div class="pf-fr">
+        <div class="pf-fr-top">1 contra 1 por internet<span>${s.played} partidas</span></div>
+        <div class="pf-wl"><span><b class="pf-w">${s.w}</b> victorias</span><span><b class="pf-l">${s.l}</b> derrotas</span>
+          <span><b>${pct}%</b> winrate</span><span>🔥 racha <b>${s.streak}</b> · mejor <b>${s.best}</b></span></div>
+        <div class="pf-bar${s.played ? '' : ' is-empty'}"><i style="width:${pct}%"></i></div>
+      </div>
+    </div>`;
+  }
+
   function freeCardHTML() {
     const rows = FREE_MODES.map(m => {
       const s = P.free[m.id];
@@ -669,6 +695,7 @@
       <div class="pf-h">🏆 Récords</div>
       <div class="pf-records">
         ${freeCardHTML()}
+        ${mpCardHTML()}
         ${storyCardHTML(g)}
         ${hellCardHTML(g)}
         ${desafioCardHTML(g)}
@@ -828,5 +855,5 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 
-  window.PERFIL = { open: openPerfil, load: loadProfile };
+  window.PERFIL = { open: openPerfil, load: loadProfile, recordMultiplayer };
 })();
