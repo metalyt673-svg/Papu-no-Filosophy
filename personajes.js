@@ -16,6 +16,406 @@ const CHARACTERS = [
 
 
 {
+  id: 'ryuk',
+  name: 'Ryuk',
+  img: 'personajes/ryuk.jpg',
+  classes: ['control', 'debilitador'],
+  hp: 110,
+  atk: 24,
+  def: 16,
+  spd: 17,
+
+  moves: [
+    {
+      id: 'ryu1',
+      name: 'Mirada del Shinigami',
+      power: 18,
+      acc: 0.97,
+      desc: 'Ryuk observa fijamente al enemigo con una mirada aterradora, reduciendo su ATK y provocándole miedo.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 7,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'fear',
+          duration: 1,
+          prob: 0.45
+        }
+      ]
+    },
+
+    {
+      id: 'ryu2',
+      name: 'Risa Macabra',
+      power: 0,
+      acc: 1.0,
+      desc: 'Ryuk comienza a reír de forma aterradora, sembrando el miedo en el enemigo y reduciendo temporalmente su DEF y SPD.',
+      baseCooldown: 3,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 8,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'spd',
+          value: 7,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'fear',
+          duration: 1,
+          prob: 0.6
+        }
+      ]
+    },
+
+    {
+      id: 'ryu3',
+      name: 'Manzana del Más Allá',
+      power: 0,
+      acc: 1.0,
+      desc: 'Ryuk utiliza una manzana para recuperar fuerzas mientras deja al enemigo debilitado y vulnerable.',
+      baseCooldown: 4,
+      type: 'attack',
+      effects: [
+        {
+          type: 'tempSpd',
+          value: 8,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 5,
+          prob: 1.0,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'ryu4',
+      name: 'ULTI: Death Note',
+      power: 30,
+      acc: 0.9,
+      desc: 'Ryuk escribe el nombre del enemigo en el Death Note, provocando un ataque aterrador que reduce enormemente sus capacidades y puede dejarlo paralizado por el miedo.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 6,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 6,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'spd',
+          value: 4,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'fear',
+          duration: 2,
+          prob: 0.8
+        }
+      ]
+    }
+  ]
+},
+
+{
+  id: 'blizzaria',
+  name: 'Blizzaria',
+  img: 'personajes/blizzaria.jpg',
+  classes: ['mago', 'control'],
+  hp: 105,
+  atk: 27,
+  def: 17,
+  spd: 18,
+  moves: [
+    {
+      id: 'bli1',
+      name: 'Derribo',
+      power: 24,
+      acc: 0.95,
+      desc: 'Blizzaria lanza una ráfaga de aire gélido que daña al enemigo y tiene una probabilidad de congelarlo.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'spd',
+          value: 7,
+          prob: 1.0,
+          duration: 2
+        },
+        {
+          type: 'freeze',
+          duration: 1,
+          prob: 0.35
+        }
+      ]
+    },
+
+    {
+      id: 'bli2',
+      name: 'Entumecer',
+      power: 18,
+      acc: 0.9,
+      desc: 'Blizzaria encierra al enemigo en una prisión de hielo, impidiéndole actuar durante un breve periodo.',
+      baseCooldown: 3,
+      type: 'attack',
+      effect: {
+        type: 'freeze',
+        duration: 1,
+        prob: 0.75
+      }
+    },
+
+    {
+      id: 'bli3',
+      name: 'Ventisca',
+      power: 0,
+      acc: 1.0,
+      desc: 'Blizzaria desata una poderosa ventisca que ralentiza al enemigo y aumenta temporalmente su propia velocidad.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'spd',
+          value: 5,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'tempSpd',
+          value: 7,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'bli4',
+      name: 'ULTI: Ventisca brillante',
+      power: 30,
+      acc: 0.9,
+      desc: 'Blizzaria cubre el campo de hielo y golpea al enemigo con una enorme explosión de frío. Tiene una gran probabilidad de congelarlo.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'freeze',
+          duration: 2,
+          prob: 0.85
+        },
+        {
+          type: 'debuff',
+          stat: 'spd',
+          value: 8,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 8,
+          prob: 0.8,
+          duration: 2
+        }
+      ]
+    }
+  ]
+},
+
+{
+  id: 'doblilete',
+  name: 'Doblilete',
+  img: 'personajes/doblilete.jpg',
+  classes: ['atacante', 'control'],
+  hp: 105,
+  atk: 28,
+  def: 16,
+  spd: 19,
+
+  moves: [
+    {
+      id: 'dob1',
+      name: 'Terradestruktor',
+      power: 23,
+      acc: 0.97,
+      desc: 'Doblilete ataca al enemigo con un rápido golpe que puede encadenarse gracias a su estilo de combate.',
+      baseCooldown: 0,
+      type: 'attack'
+    },
+
+    {
+      id: 'dob2',
+      name: 'Cascada',
+      power: 20,
+      acc: 0.94,
+      desc: 'Doblilete confunde al enemigo con movimientos rápidos, reduciendo temporalmente su capacidad ofensiva.',
+      baseCooldown: 2,
+      type: 'attack',
+      effect: {
+        type: 'debuff',
+        stat: 'atk',
+        value: 7,
+        duration: 3,
+        prob: 0.9
+      }
+    },
+
+    {
+      id: 'dob3',
+      name: 'Golpe de suerte',
+      power: 0,
+      acc: 1.0,
+      desc: 'Doblilete potencia su propio ritmo de combate, aumentando temporalmente su velocidad y ataque.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 9,
+          duration: 3
+        },
+        {
+          type: 'tempSpd',
+          value: 7,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'dob4',
+      name: 'ULTI: ¡DOBLETE!',
+      power: 888,
+      acc: 0.05,
+      desc: 'Doblilete libera toda su fuerza y lanza una brutal sucesión de ataques contra el enemigo, dejándolo debilitado.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 6,
+          duration: 3,
+          prob: 1.0
+        },
+        {
+          type: 'slow',
+          value: 15,
+          duration: 2,
+          prob: 1.0
+        }
+      ]
+    }
+  ]
+},
+
+{
+  id: 'yv',
+  name: 'Yung Venuz',
+  img: 'personajes/yv.gif',
+  classes: ['atacante'],
+  hp: 125,
+  atk: 28,
+  def: 18,
+  spd: 22,
+
+  moves: [
+    {
+      id: 'yv1',
+      name: 'Pop Pop',
+      power: 24,
+      acc: 0.97,
+      desc: 'Y.V dispara su revólver dos veces, hiriendo a su oponente.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: null
+    },
+
+    {
+      id: 'yv2',
+      name: 'Ima Gun God',
+      power: 0,
+      acc: 0.95,
+      desc: 'Y.V desbloquea su verdadero potencial, aumentando su daño y su probabilidad de críticos.',
+      baseCooldown: 3,
+      type: 'support',
+      effects: [
+        {
+          type: 'critChance',
+          value: 15,
+          duration: 3
+        },
+        {
+          type: 'tempAtk',
+          value: 6,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'yv3',
+      name: 'Throne Butt: Brrrap',
+      power: 28,
+      acc: 0.95,
+      desc: 'Y.V cambia de arma a su ballesta y dispara 4 veces, haciendo un daño brutal a su oponente.',
+      baseCooldown: 5,
+      type: 'attack',
+      effects: null
+    },
+
+    {
+      id: 'yv4',
+      name: 'Back 2 Bizniz',
+      power: 25,
+      acc: 0.90,
+      desc: 'Y.V cambia de arma a su lanzacohetes y dispara 3 veces, haciendo daño considerable y envolviendo en llamas a todos sus oponentes.',
+      baseCooldown: 8,
+      aoe: true,
+      type: 'attack',
+      effects: [
+        {
+          type: 'damageOverTime',
+          status: 'burn',
+          value: 6,
+          duration: 3,
+          prob: 1.0
+        }
+      ]
+    }
+  ]
+},
+
+{
   id: 'shinra',
   name: 'Shinra Kusakabe',
   img: 'personajes/shinra.jpg',
@@ -2876,7 +3276,7 @@ const CHARACTERS = [
   classes: ['atacante', 'defensor', 'control'],
 
   hp: 140,
-  atk: 31,
+  atk: 30,
   def: 20,
   spd: 14,
 
@@ -5713,7 +6113,7 @@ const CHARACTERS = [
   img: 'personajes/mudrock.jpg',
   classes: ['defensor', 'atacante'],
   hp: 155,
-  atk: 31,
+  atk: 27,
   def: 27,
   spd: 9,
   moves: [
@@ -5730,7 +6130,7 @@ const CHARACTERS = [
     {
       id: 'mudrock_crag_splitter',
       name: 'Crag Splitter',
-      power: 34,
+      power: 28,
       acc: 0.92,
       desc: 'Mudrock golpea violentamente con su martillo y recupera parte de sus fuerzas mientras debilita la DEF del enemigo.',
       baseCooldown: 3,
@@ -5750,7 +6150,7 @@ const CHARACTERS = [
     {
       id: 'mudrock_heavy_slam',
       name: 'Golpe Demoledor',
-      power: 40,
+      power: 28,
       acc: 0.9,
       desc: 'Mudrock descarga toda la fuerza de su enorme martillo sobre el enemigo, reduciendo su ATK durante varios turnos.',
       baseCooldown: 4,
@@ -5770,7 +6170,7 @@ const CHARACTERS = [
     {
       id: 'mudrock_bloodline',
       name: 'Bloodline of Desecrated Earth',
-      power: 70,
+      power: 30,
       acc: 0.9,
       desc: 'Mudrock libera todo el poder de la tierra, fortaleciendo enormemente su cuerpo y descargando un devastador golpe que debilita gravemente al enemigo.',
       baseCooldown: 7,
@@ -6520,7 +6920,7 @@ const CHARACTERS = [
   img: 'personajes/aoki.jpg',
   classes: ['mago', 'atacante'],
   hp: 112,
-  atk: 33,
+  atk: 29,
   def: 13,
   spd: 18,
   moves: [
@@ -6537,7 +6937,7 @@ const CHARACTERS = [
     {
       id: 'ruki_oni_fire',
       name: 'Fuego del Oni',
-      power: 32,
+      power: 27,
       acc: 0.9,
       desc: 'Ruki libera una intensa energía demoníaca que quema al enemigo y reduce temporalmente su DEF.',
       baseCooldown: 3,
@@ -6557,7 +6957,7 @@ const CHARACTERS = [
     {
       id: 'ruki_flame_burst',
       name: 'Explosión Ígnea',
-      power: 36,
+      power: 28,
       acc: 0.9,
       desc: 'Ruki concentra una gran cantidad de fuego en su bastón y la libera contra el enemigo, reduciendo su SPD.',
       baseCooldown: 4,
@@ -6577,7 +6977,7 @@ const CHARACTERS = [
     {
       id: 'ruki_oni_hellfire',
       name: 'Infierno del Oni',
-      power: 70,
+      power: 30,
       acc: 0.88,
       desc: 'Ruki desata todo el poder de sus llamas demoníacas en una devastadora explosión que deja al enemigo con sus defensas gravemente debilitadas.',
       baseCooldown: 7,
@@ -7159,29 +7559,24 @@ const CHARACTERS = [
   img: 'personajes/w.jpg',
   classes: ['atacante', 'debilitador'],
   hp: 110,
-  atk: 34,
+  atk: 28,
   def: 13,
   spd: 17,
   moves: [
     {
       id: 'w_grenade',
       name: 'Granada',
-      power: 22,
+      power: 20,
       acc: 0.95,
-      desc: 'W lanza una granada explosiva contra el enemigo, reduciendo su ATK durante 2 turnos.',
-      baseCooldown: 2,
+      desc: 'W lanza una granada explosiva contra el enemigo.',
+      baseCooldown: 0,
       type: 'attack',
-      effect: {
-        type: 'debuff',
-        stat: 'atk',
-        value: 5,
-        duration: 2
-      }
+      effect: null
     },
     {
       id: 'w_mine',
       name: 'Mina Oculta',
-      power: 28,
+      power: 25,
       acc: 0.9,
       desc: 'W coloca una mina que explota bajo el enemigo. La explosión reduce su DEF durante 2 turnos.',
       baseCooldown: 3,
@@ -7211,7 +7606,7 @@ const CHARACTERS = [
     {
       id: 'w_bombardment',
       name: 'Bombardeo',
-      power: 36,
+      power: 27,
       acc: 0.9,
       desc: 'W lanza una serie de explosivos contra el enemigo. Inflige daño adicional si el objetivo ya está debilitado.',
       baseCooldown: 4,
@@ -7225,7 +7620,7 @@ const CHARACTERS = [
     {
       id: 'w_explosive_trap',
       name: 'Trampa Explosiva',
-      power: 32,
+      power: 28,
       acc: 0.85,
       desc: 'W deja una trampa explosiva extremadamente peligrosa. La explosión debilita gravemente al enemigo y reduce su SPD durante 3 turnos.',
       baseCooldown: 5,
@@ -7240,7 +7635,7 @@ const CHARACTERS = [
     {
       id: 'w_d12',
       name: 'D12',
-      power: 65,
+      power: 30,
       acc: 0.9,
       desc: 'W desata una enorme explosión y convierte el campo de batalla en un caos absoluto. Inflige daño masivo y obtiene daño adicional contra enemigos debilitados.',
       baseCooldown: 7,
@@ -7362,29 +7757,24 @@ const CHARACTERS = [
   img: 'personajes/ibuki.jpg',
   classes: ['atacante', 'soporte'],
   hp: 120,
-  atk: 32,
+  atk: 28,
   def: 17,
   spd: 13,
   moves: [
     {
       id: 'ibuki_tormenta_de_cuchillas',
       name: 'Tormenta de Cuchillas',
-      power: 24,
+      power: 22,
       acc: 0.95,
-      desc: 'Ibuki realiza una rápida sucesión de cortes contra un enemigo, causando daño y reduciendo su ATK durante 2 turnos.',
-      baseCooldown: 2,
+      desc: 'Ibuki realiza una rápida sucesión de cortes contra un enemigo.',
+      baseCooldown: 0,
       type: 'attack',
-      effect: {
-        type: 'debuff',
-        stat: 'atk',
-        value: 5,
-        duration: 2
-      }
+      effect: null
     },
     {
       id: 'ibuki_loto_ardiente',
       name: 'Loto Ardiente',
-      power: 30,
+      power: 25,
       acc: 0.9,
       desc: 'Ibuki libera una poderosa energía espiritual que envuelve al enemigo en llamas. Reduce su DEF durante 2 turnos.',
       baseCooldown: 3,
@@ -7414,7 +7804,7 @@ const CHARACTERS = [
     {
       id: 'ibuki_danza_de_las_llamas',
       name: 'Danza de las Llamas',
-      power: 38,
+      power: 27,
       acc: 0.9,
       desc: 'Ibuki combina sus ataques con energía espiritual y ejecuta una poderosa danza ofensiva. Inflige daño adicional contra enemigos debilitados.',
       baseCooldown: 4,
@@ -7426,27 +7816,9 @@ const CHARACTERS = [
       }
     },
     {
-      id: 'ibuki_espiritu_del_loto',
-      name: 'Espíritu del Loto',
-      power: 0,
-      acc: 1.0,
-      desc: 'Ibuki concentra su energía espiritual y recupera parte de sus fuerzas. Obtiene además +5 DEF durante 2 turnos.',
-      baseCooldown: 5,
-      type: 'support',
-      effect: {
-        type: 'selfHealPct',
-        value: 0.15,
-        secondary: {
-          type: 'tempDef',
-          value: 5,
-          duration: 2
-        }
-      }
-    },
-    {
       id: 'ibuki_hana_kaze',
       name: 'Hana Kaze',
-      power: 62,
+      power: 30,
       acc: 0.9,
       desc: 'Ibuki libera toda su energía espiritual en un devastador ataque final. Si el enemigo está debilitado, el ataque inflige daño adicional.',
       baseCooldown: 7,
@@ -7681,7 +8053,7 @@ const CHARACTERS = [
   classes: ['atacante', 'debilitador'],
 
   hp: 105,
-  atk: 30,
+  atk: 29,
   def: 12,
   spd: 21,
 
@@ -7690,23 +8062,18 @@ const CHARACTERS = [
     {
       id: 'ayame_kikoku',
       name: 'Kikoku',
-      power: 22,
+      power: 20,
       acc: 0.95,
-      desc: 'Ayame realiza un rápido corte con su espada, infligiendo daño y aplicando una Herida Demoníaca durante 2 turnos.',
-      baseCooldown: 2,
+      desc: 'Ayame realiza un rápido corte con su espada.',
+      baseCooldown: 0,
       type: 'attack',
-      effect: {
-        type: 'debuff',
-        stat: 'atk',
-        value: 3,
-        duration: 2
-      }
+      effect: null
     },
 
     {
       id: 'ayame_dual_slash',
       name: 'Doble Corte Oni',
-      power: 30,
+      power: 25,
       acc: 0.9,
       desc: 'Ayame ataca con ambas espadas en una sucesión de cortes. Si el enemigo está debilitado, inflige daño adicional.',
       baseCooldown: 3,
@@ -7723,13 +8090,13 @@ const CHARACTERS = [
       name: 'Paso del Oni',
       power: 0,
       acc: 1.0,
-      desc: 'Ayame se mueve a gran velocidad y adopta una postura ofensiva. Obtiene +7 SPD y +4 ATK durante 2 turnos.',
+      desc: 'Ayame se mueve a gran velocidad y adopta una postura ofensiva. Obtiene +5 SPD y +4 ATK durante 2 turnos.',
       baseCooldown: 4,
       type: 'support',
       effect: {
         type: 'selfBuff',
         atk: 4,
-        spd: 7,
+        spd: 5,
         duration: 2
       }
     },
@@ -7737,7 +8104,7 @@ const CHARACTERS = [
     {
       id: 'ayame_demon_blade',
       name: 'Demon Blade',
-      power: 38,
+      power: 26,
       acc: 0.9,
       desc: 'Ayame concentra su poder demoníaco en sus espadas y ejecuta un poderoso corte. Reduce la DEF del enemigo durante 2 turnos.',
       baseCooldown: 4,
@@ -7745,7 +8112,7 @@ const CHARACTERS = [
       effect: {
         type: 'debuff',
         stat: 'def',
-        value: 7,
+        value: 6,
         duration: 2
       }
     },
@@ -7753,7 +8120,7 @@ const CHARACTERS = [
     {
       id: 'ayame_oni_fury',
       name: 'Furia del Oni',
-      power: 45,
+      power: 25,
       acc: 0.85,
       desc: 'Ayame libera su poder demoníaco y lanza una ráfaga de cortes. Si el enemigo tiene un debuff, el ataque inflige daño adicional.',
       baseCooldown: 5,
@@ -7768,7 +8135,7 @@ const CHARACTERS = [
     {
       id: 'ayame_yume_no_yo',
       name: 'Yume no Yo',
-      power: 62,
+      power: 28,
       acc: 0.9,
       desc: 'Ayame desata todo su poder como oni y ejecuta un ataque devastador. Si el enemigo tiene un debuff, consume sus efectos y aumenta considerablemente el daño.',
       baseCooldown: 7,
@@ -7908,10 +8275,10 @@ const CHARACTERS = [
     {
       id: 'selena_swimsuit_abyssal_arrow',
       name: 'Flecha Abisal',
-      power: 28,
-      acc: 0.8,
+      power: 25,
+      acc: 0.55,
       desc: 'Selena lanza una flecha de energía abisal que aturde al enemigo durante 1 turno si impacta.',
-      baseCooldown: 3,
+      baseCooldown: 0,
       type: 'attack',
       effect: {
         type: 'stun',
@@ -7925,12 +8292,12 @@ const CHARACTERS = [
       power: 12,
       acc: 0.95,
       desc: 'Selena coloca una trampa abisal bajo el enemigo. La trampa reduce su DEF y aplica una Marca Abisal durante 2 turnos.',
-      baseCooldown: 3,
+      baseCooldown: 2,
       type: 'attack',
       effect: {
         type: 'debuff',
         stat: 'def',
-        value: 6,
+        value: 5,
         duration: 2,
         mark: true
       }
@@ -7942,28 +8309,12 @@ const CHARACTERS = [
       power: 25,
       acc: 0.95,
       desc: 'Selena concentra energía abisal y golpea al enemigo. Inflige daño adicional si el objetivo posee una Marca Abisal.',
-      baseCooldown: 2,
+      baseCooldown: 3,
       type: 'attack',
       effect: {
         type: 'conditionalDamage',
         condition: 'marked',
         value: 15
-      }
-    },
-
-    {
-      id: 'selena_swimsuit_summer_wave',
-      name: 'Ola del Abismo',
-      power: 32,
-      acc: 0.9,
-      desc: 'Selena crea una enorme ola de energía que golpea al enemigo y reduce temporalmente su SPD.',
-      baseCooldown: 4,
-      type: 'attack',
-      effect: {
-        type: 'debuff',
-        stat: 'spd',
-        value: 5,
-        duration: 2
       }
     },
 
@@ -7989,7 +8340,7 @@ const CHARACTERS = [
     {
       id: 'selena_swimsuit_primal_darkness',
       name: 'Oscuridad Primigenia',
-      power: 42,
+      power: 28,
       acc: 0.9,
       desc: 'Selena desata todo el poder del Abismo. Si el enemigo está marcado, consume la Marca Abisal para infligir daño adicional.',
       baseCooldown: 6,
@@ -7997,7 +8348,7 @@ const CHARACTERS = [
       effect: {
         type: 'conditionalDamage',
         condition: 'marked',
-        value: 25,
+        value: 20,
         consumeMark: true
       }
     }
@@ -8024,7 +8375,7 @@ const CHARACTERS = [
       power: 22,
       acc: 0.95,
       desc: 'Hirara libera una ráfaga de su abanico en forma de arco. Aplica una Marca Carmesí al enemigo durante 3 turnos.',
-      baseCooldown: 2,
+      baseCooldown: 0,
       type: 'attack',
       effect: {
         type: 'mark',
@@ -8036,7 +8387,7 @@ const CHARACTERS = [
     {
       id: 'hirara_meisen_e',
       name: 'Meisen-e',
-      power: 20,
+      power: 24,
       acc: 0.95,
       desc: 'Hirara se desplaza rápidamente hacia el enemigo y lo golpea con su abanico. Aplica una Marca de Muerte durante 3 turnos.',
       baseCooldown: 2,
@@ -8051,7 +8402,7 @@ const CHARACTERS = [
     {
       id: 'hirara_infernal_torrent',
       name: 'Infernal Torrent',
-      power: 42,
+      power: 28,
       acc: 0.9,
       desc: 'Combina Kaerazu y Meisen-e en un ataque giratorio. Si el enemigo posee una Marca Carmesí, queda inmovilizado durante 1 turno.',
       baseCooldown: 4,
@@ -8060,20 +8411,6 @@ const CHARACTERS = [
         type: 'conditionalControl',
         condition: 'crimson',
         control: 'stun',
-        duration: 1
-      }
-    },
-
-    {
-      id: 'hirara_falling_maple',
-      name: 'Falling Maple',
-      power: 50,
-      acc: 0.9,
-      desc: 'Hirara entra en un estado evasivo durante 1 turno, durante el cual no puede ser objetivo de ataques. Después libera una devastadora explosión de hojas carmesí.',
-      baseCooldown: 5,
-      type: 'attack',
-      effect: {
-        type: 'untargetable',
         duration: 1
       }
     },
@@ -8096,7 +8433,7 @@ const CHARACTERS = [
     {
       id: 'hirara_momijigari',
       name: 'Forbidden Jutsu: Momijigari',
-      power: 65,
+      power: 32,
       acc: 0.85,
       desc: 'Hirara libera todo el poder de sus dos abanicos y atraviesa al enemigo con una sucesión de ataques. Si posee ambas Marcas, el daño aumenta y las consume.',
       baseCooldown: 7,
@@ -8104,7 +8441,7 @@ const CHARACTERS = [
       effect: {
         type: 'conditionalDamage',
         condition: 'crimson_and_death',
-        value: 30,
+        value: 20,
         consumeMarks: true
       }
     }
@@ -9910,7 +10247,7 @@ const CHARACTERS = [
       power: 20,
       acc: 0.95,
       desc: 'Concentra chakra en su mano y golpea al enemigo con una poderosa esfera de energía.',
-      baseCooldown: 2,
+      baseCooldown: 0,
       type: 'attack',
       effect: null
     },
@@ -9965,7 +10302,7 @@ const CHARACTERS = [
   img: 'personajes/yoruichi.png',
   classes: ['atacante', 'soporte'],
   hp: 115,
-  atk: 30,
+  atk: 28,
   def: 18,
   spd: 42,
 
@@ -9976,7 +10313,7 @@ const CHARACTERS = [
       power: 22,
       acc: 1.0,
       desc: 'Se mueve a una velocidad imperceptible y golpea al enemigo.',
-      baseCooldown: 1,
+      baseCooldown: 0,
       type: 'attack',
       effect: null
     },
@@ -10187,10 +10524,10 @@ const CHARACTERS = [
     {
       id: 'getsuga_tensho',
       name: 'Getsuga Tenshō',
-      power: 23,
+      power: 21,
       acc: 0.95,
       desc: 'Lanza una poderosa onda de energía con Zangetsu.',
-      baseCooldown: 2,
+      baseCooldown: 0,
       type: 'attack',
       effect: null
     },
@@ -10313,8 +10650,8 @@ const CHARACTERS = [
   name: 'Peter Griffin',
   img: 'personajes/peter.png',
   classes: ['atacante', 'debilitador'],
-  hp: 145,
-  atk: 34,
+  hp: 135,
+  atk: 31,
   def: 24,
   spd: 14,
 
@@ -10322,10 +10659,10 @@ const CHARACTERS = [
     {
       id: 'chicken_fight',
       name: 'Pelea con el Pollo',
-      power: 28,
+      power: 20,
       acc: 0.90,
       desc: 'Golpea brutalmente al enemigo y tiene un 40% de reducir su DEF.',
-      baseCooldown: 2,
+      baseCooldown: 0,
       type: 'attack',
       effect: {
         type: 'debuff',
@@ -10337,8 +10674,8 @@ const CHARACTERS = [
     },
     {
       id: 'road_house',
-      name: '¡Road House!',
-      power: 20,
+      name: 'Road House!',
+      power: 25,
       acc: 1.0,
       desc: 'Peter entra en modo pelea, aumentando su ATK durante 2 turnos.',
       baseCooldown: 3,
@@ -10353,7 +10690,7 @@ const CHARACTERS = [
       id: 'beer_break',
       name: 'Descanso con Cerveza',
       power: 0,
-      acc: 1.0,
+      acc: 0.90,
       desc: 'Se toma una cerveza y recupera un 20% de su vida máxima.',
       baseCooldown: 4,
       type: 'support',
@@ -10365,7 +10702,7 @@ const CHARACTERS = [
     {
       id: 'giant_chicken_final',
       name: 'ULTI: Guerra Infinita contra el Pollo',
-      power: 48,
+      power: 30,
       acc: 0.85,
       desc: 'Desata una pelea épica causando un enorme daño y reduciendo el ATK del enemigo.',
       baseCooldown: 6,
@@ -10571,18 +10908,18 @@ const CHARACTERS = [
   {
   id: 'minotauro',
   name: 'Minotauro',
-  img: 'personajes/minotaur.png', // reemplázalo con la ruta real
+  img: 'personajes/minotaur.png',
   classes: ['atacante', 'defensor'],
-  hp: 150,
-  atk: 38,
-  def: 28,
+  hp: 155,
+  atk: 25,
+  def: 24,
   spd: 14,
 
   moves: [
     {
       id: 'embestida_brutal',
       name: 'Embestida Brutal',
-      power: 45,
+      power: 26,
       acc: 0.9,
       desc: 'El Minotauro embiste con su fuerza descomunal, dañando y rompiendo la defensa del enemigo.',
       baseCooldown: 3,
@@ -10595,15 +10932,15 @@ const CHARACTERS = [
       name: 'Fuerza Desatada',
       power: 0,
       acc: 1.0,
-      desc: 'Canaliza su furia interior, aumentando enormemente su ATK durante algunos turnos.',
+      desc: 'Canaliza su furia interior, aumentando su ATK durante algunos turnos.',
       baseCooldown: 0,
       type: 'support',
-      effect: { type:'tempAtk', value: 12, duration: 2 }
+      effect: { type:'tempAtk', value: 4, duration: 2 }
     },
     {
       id: 'golpe_terremoto',
       name: 'Golpe Terremoto',
-      power: 40,
+      power: 26,
       acc: 0.95,
       desc: 'Golpea el suelo con tanta fuerza que ralentiza al enemigo.',
       baseCooldown: 3,
@@ -10614,13 +10951,13 @@ const CHARACTERS = [
     {
       id: 'ira_del_laberinto',
       name: 'Ira del Laberinto',
-      power: 60,
+      power: 29,
       acc: 1.0,
       desc: 'El Minotauro libera toda su furia, causando enorme daño y reforzándose con un escudo.',
       baseCooldown: 6,
       type: 'attack',
       effects: [
-        { type:'shield', value: 40 }
+        { type:'shield', value: 15 }
       ]
     }
   ]
@@ -10689,7 +11026,7 @@ const CHARACTERS = [
   id: 'grock',
   name: 'Grock',
   img: 'personajes/grock.png', 
-  classes: ['defensor', 'tanque'],
+  classes: ['defensor'],
   hp: 160,
   atk: 28,
   def: 35,
@@ -10983,19 +11320,19 @@ const CHARACTERS = [
   img: 'personajes/cici.png',
   classes: ['atacante', 'soporte'],
   hp: 115,
-  atk: 30,
+  atk: 28,
   def: 18,
   spd: 28,
   moves: [
     {
       id: 'El deleite del intérprete',
       name: 'Lluvia de Cintas',
-      power: 35,
+      power: 23,
       acc: 0.95,
       desc: 'Ataca múltiples veces con sus cintas causando daño y reduciendo levemente la DEF del enemigo.',
       baseCooldown: 0,
       type: 'attack',
-      effect: { type:'debuff', stat:'def', value:5, prob:1.0 ,
+      effect: { type:'debuff', stat:'def', value:4, prob:1.0 ,
         duration: 2}
     },
 
@@ -11013,20 +11350,20 @@ const CHARACTERS = [
     {
       id: 'Rebote flotante',
       name: 'Rebote Travieso',
-      power: 30,
+      power: 26,
       acc: 1.0,
       desc: 'Cici rebota entre enemigos, dañando al objetivo y curándose un poco.',
-      baseCooldown: 2,
+      baseCooldown: 4,
       type: 'attack',
-      effect: { type:'selfHealPct', value:0.08 } // se cura 8% del HP máx
+      effect: { type:'selfHealPct', value:0.08 } 
     },
 
     {
       id: 'Llamada de cortina',
       name: 'Danza Final',
-      power: 45,
+      power: 30,
       acc: 0.9,
-      desc: 'Ataque giratorio poderoso que golpea a todos los enemigos y aumenta ligeramente la SPD de todos los aliados.',
+      desc: 'Ataque giratorio poderoso que golpea al enemigo y aumenta ligeramente la SPD de todos los aliados.',
       baseCooldown: 5,
       type: 'attack',
       effect: { type:'tempSpd', value:5, duration:1 }
@@ -11184,11 +11521,11 @@ const CHARACTERS = [
       name: 'Contra Oscura',
       power: 0,
       acc: 1.0,
-      desc: 'Adopta una postura que devuelve parte del daño recibido.',
+      desc: 'Pierde su turno adoptando una postura de contraataque: durante los próximos 2 turnos del rival, cada vez que reciba daño responde con un ataque básico.',
       baseCooldown: 4,
       type: 'support',
-      effect: { type:'reflect', value:0.30, duration:2 } 
-      // Refleja 30% del daño recibido
+      effect: { type:'counter', duration:3 }
+      // Contraataque: duration 3 = cubre 2 turnos del rival (se descuenta al acabar el turno de Yami)
     },
 
     {
@@ -11386,7 +11723,7 @@ const CHARACTERS = [
   img: 'personajes/asta.jpg', 
   classes: ['atacante', 'antimagia'],
   hp: 130,
-  atk: 34,
+  atk: 30,
   def: 16,
   spd: 18,
 
@@ -11394,17 +11731,17 @@ const CHARACTERS = [
     {
       id: 'ast1',
       name: 'Golpe Antienergía',
-      power: 26,
+      power: 24,
       acc: 0.96,
-      desc: 'Un ataque físico que rompe escudos y elimina energía residual.',
-      baseCooldown: 1,
+      desc: 'Un ataque físico que hace mucho daño.',
+      baseCooldown: 0,
       type: 'attack',
-      effect: { type:'removeShield', value:true }
+      effect: null
     },
     {
       id: 'ast2',
       name: 'Carga Determinada',
-      power: 30,
+      power: 26,
       acc: 0.9,
       desc: 'Embiste al enemigo, reduciendo su ATK durante 2 turnos.',
       baseCooldown: 2,
@@ -11427,7 +11764,7 @@ const CHARACTERS = [
     {
       id: 'ast4',
       name: 'Corte Anulador (ULT)',
-      power: 44,
+      power: 30,
       acc: 0.87,
       desc: 'Un tajo devastador que elimina buffs y puede reducir la SPD.',
       baseCooldown: 6,
@@ -11501,7 +11838,7 @@ const CHARACTERS = [
   id: 'musculitos',
   name: 'Musculitos',
   img: 'personajes/musculitos.jpg',
-  classes: ['atacante', 'tanque'],
+  classes: ['atacante', 'defensor'],
   hp: 140,
   atk: 30,
   def: 20,
@@ -11560,7 +11897,8 @@ const CHARACTERS = [
   {
   id: 'chansin',
   name: 'Chansin',
-  img: 'personajes/chansin.png',  classes: ['soporte', 'atacante'],
+  img: 'personajes/chansin.png',
+  classes: ['soporte', 'atacante'],
   hp: 120,
   atk: 25,
   def: 15,
@@ -11569,49 +11907,101 @@ const CHARACTERS = [
     {
       id: 'viento_cortante',
       name: 'Combo Uno-Dos',
-      power: 30,
+      power: 25,
       acc: 0.95,
-      desc: 'Básico, baja spd',
+      desc: 'Básico rápido que tiene una alta probabilidad de asestar un golpe crítico y reduce la SPD del enemigo.',
       baseCooldown: 1,
       type: 'attack',
-      effect: { type:'debuff', stat:'spd', value:5, prob:1.0 ,
-        duration: 2}    },
+      effects: [
+        {
+          type: 'critChance',
+          value: 20,
+          duration: 1
+        },
+        {
+          type: 'debuff',
+          stat: 'spd',
+          value: 5,
+          prob: 1.0,
+          duration: 2
+        }
+      ]
+    },
+
     {
-      id: 'todo o nada',
+      id: 'todo_o_nada',
       name: 'Todo o nada',
       power: 0,
       acc: 1.0,
-      desc: 'Da un escudo de 25',
+      desc: 'Chansin se arriesga para protegerse, obteniendo un escudo y aumentando temporalmente su probabilidad de golpe crítico.',
       baseCooldown: 3,
       type: 'support',
-      effect: { type:'shield', value:25 }
+      effects: [
+        {
+          type: 'shield',
+          value: 25
+        },
+        {
+          type: 'critChance',
+          value: 25,
+          duration: 3
+        }
+      ]
     },
+
     {
       id: 'cha3',
       name: 'Órdago',
       power: 0,
       acc: 1.0,
-      desc: 'Aumenta temporalmente ATK y SPD de un aliado.',
+      desc: 'Aumenta temporalmente el ATK, SPD y la probabilidad de crítico de un aliado.',
       baseCooldown: 4,
       type: 'support',
       effects: [
-        { type:'tempAtk', value:5, duration:2 },
-        { type:'tempSpd', value:5, duration:2 }
+        {
+          type: 'tempAtk',
+          value: 5,
+          duration: 2
+        },
+        {
+          type: 'tempSpd',
+          value: 5,
+          duration: 2
+        },
+        {
+          type: 'critChance',
+          value: 20,
+          duration: 2
+        }
       ]
     },
+
     {
       id: 'Ascuas',
       name: 'Ascuas',
-      power: 40,
+      power: 30,
       acc: 0.9,
-      desc: 'daño muy fuerte, aplica reducción de DEF por 2 turnos.',
+      desc: 'Un poderoso ataque de alto riesgo. Si consigue un crítico, inflige un golpe devastador y reduce la DEF del enemigo.',
       baseCooldown: 5,
       type: 'attack',
-      effect: { type:'debuff', stat:'def', value:8, prob:1.0 ,
-        duration: 2}
+      effects: [
+        {
+          type: 'critChance',
+          value: 30,
+          duration: 1
+        },
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 8,
+          prob: 1.0,
+          duration: 2
+        }
+      ]
     }
   ]
 },
+
   {
   id: 'mimosa',
   name: 'Mimosa Vermillion',
@@ -11920,7 +12310,7 @@ const CHARACTERS = [
     { id: 'tru3', name: 'Holy Melody', power: 0, acc: 1, desc: 'Cura muy potente', 
       baseCooldown: 3, type: 'support', effect: { type:'heal', value:33 }
     },
-    { id: 'tru4', name: 'Evil Melody', power: 6666, acc: 0.33, desc: 'Instakill, muy baja precisión', 
+    { id: 'tru4', name: 'Evil Melody', power: 6666, acc: 0.25, desc: 'Instakill, muy baja precisión', 
       baseCooldown: 5, type: 'attack', effect: null
     } ]
 },
@@ -12161,7 +12551,7 @@ const CHARACTERS = [
       baseCooldown: 6, type: 'support', effect: { type:'heal', value:50 }
     }, ]
 },
-   { id: 'richard', name: 'el Richard Cachas',  img: 'personajes/richard.jpg',  classes: ['defensor'], hp: 140, atk: 29, def: 20, spd: 5,
+   { id: 'richard', name: 'Richard Cachas',  img: 'personajes/richard.jpg',  classes: ['defensor'], hp: 140, atk: 29, def: 20, spd: 5,
   moves: [
     { id: 'ric1', name: 'Ostión', power: 20, acc: 0.98, desc: 'Ataque básico', 
       baseCooldown: 0, type: 'attack', effect: null
@@ -12871,7 +13261,7 @@ moves: [
   id: 'rades_spirito',
   name: 'Rades Spirito',
   img: 'personajes/rades.jpg',
-  classes: ['tanque', 'defensor'],
+  classes: ['defensor' , 'debilitador'],
   hp: 125,
   atk: 24,
   def: 45,

@@ -1062,6 +1062,8 @@ function updateArena(){
     imgEl.src = active.img; const percent = Math.max(0, Math.round((active.hp / active.maxHp) * 100)); hpBar.style.width = percent + '%';
     
     let stunIndicator = active.stunned > 0 ? ` 😵 STUN(${active.stunned})` : '';
+    const counterFx = getSpecialEffect(active, 'counter');
+    if(counterFx) stunIndicator += ` ↩️ CONTRA(${counterFx.remaining})`;
 
     let statusIndicator = Array.isArray(active.statusEffects) && active.statusEffects.length
       ? ` · ${active.statusEffects.map(s => {
@@ -1174,6 +1176,8 @@ function startTurnActions(){
         if(char.hp > 0){
           const suddenDeathDmg = 10;
 
+          // La muerte súbita es lo único que sí respeta el escudo:
+          // el escudo absorbe el daño y solo el resto pasa a la vida.
           if(char.shield > 0){
             const absorbed = Math.min(char.shield, suddenDeathDmg);
             char.shield -= absorbed;
@@ -1384,7 +1388,8 @@ async function resolveMove(playerKey, moveId){
 
   if(isSupport){
     const targets = getAliveTeam(playerKey);
-    const chosen = await openTargetModal(playerKey, targets);
+    const selfOnly = effects.length > 0 && effects.every(e => e && e.type === 'counter');
+    const chosen = selfOnly ? null : await openTargetModal(playerKey, targets);
     const targetChar = chosen == null ? actor : state.teams[playerKey][chosen];
 
     effects.forEach(e =>
@@ -1431,6 +1436,8 @@ async function resolveMove(playerKey, moveId){
         }
       });
     });
+
+    applyAttackSelfEffects(actor, move, effects);
   }
 
   if(move.baseCooldown && move.baseCooldown>0){
@@ -1441,6 +1448,20 @@ async function resolveMove(playerKey, moveId){
   if(checkKO()) return;
 
   endTurn(actor);
+}
+
+// Efectos que una habilidad de ataque aplica sobre el propio lanzador
+// (buffs, curas, escudo, contraataque). Antes solo se aplicaban los efectos
+// dirigidos al rival (debuffs/estados), por lo que un ataque que debilitaba
+// al enemigo y a la vez bufaba al lanzador (p. ej. Ryuk) ignoraba el buff.
+const ATTACK_SELF_EFFECT_TYPES = ['heal','shield','tempDef','tempSpd','tempAtk','selfHealPct','counter'];
+function applyAttackSelfEffects(actor, move, effects){
+  if(!actor || actor.hp <= 0) return;
+  (effects || []).forEach(e => {
+    if(e && ATTACK_SELF_EFFECT_TYPES.includes(e.type)){
+      applyEffect(actor, actor, { ...move, effect: e });
+    }
+  });
 }
 
 /* apply effects - CORREGIDO PARA EVITAR DUPLICACIÓN */
@@ -1501,6 +1522,19 @@ function applyEffect(actor, target, move) {
         target.tempEffects.push({ type:'tempAtk', value: e.value, remaining: e.duration });
         log(`${actor.name} aumentó ATK de ${target.name} en ${e.value} por ${e.duration} turnos.`);
       }
+    }
+
+    else if (e.type === 'counter') {
+      // Contraataque: siempre afecta al propio lanzador.
+      const duration = Math.max(1, Number(e.duration) || 1);
+      if(!Array.isArray(actor.specialEffects)) actor.specialEffects = [];
+      const existing = actor.specialEffects.find(x => x.type === 'counter');
+      if(existing){
+        existing.remaining = Math.max(existing.remaining, duration);
+      }else{
+        actor.specialEffects.push({ type:'counter', value:100, remaining:duration });
+      }
+      log(`🛡️↩️ ${actor.name} adopta una postura de contraataque: responderá con un ataque básico cada vez que reciba daño.`);
     }
 
     else if (e.type === 'selfHealPct') {
@@ -1688,6 +1722,7 @@ function processSpecialEffects(target){
         effect.type === 'reflectDamage' ? 'Reflejo de daño' :
         effect.type === 'critChance' ? 'Probabilidad de crítico' :
         effect.type === 'healReduction' ? 'Reducción de curación' :
+        effect.type === 'counter' ? 'Contraataque' :
         effect.type;
       log(`${label} terminó en ${target.name}.`);
       return false;
@@ -1940,19 +1975,11 @@ function applyStatusDamage(target, amount, status){
   let damage = Math.max(0, Math.round(amount));
   if(damage <= 0) return;
 
-  // El escudo también protege contra daño continuo.
-  if(target.shield > 0){
-    const absorbed = Math.min(target.shield, damage);
-    target.shield -= absorbed;
-    damage -= absorbed;
-    if(absorbed > 0){
-      log(`${target.name} absorbió ${absorbed} de ${getStatusLabel(status)} con su escudo.`);
-    }
-  }
-
+  // El daño continuo ignora el escudo: va directo a la vida.
   if(damage > 0){
     target.hp = Math.max(0, target.hp - damage);
-    log(`${target.name} recibió ${damage} de daño por ${getStatusLabel(status)}.`);
+    if(target.hp <= 0) target.shield = 0;
+    log(`${target.name} recibió ${damage} de daño por ${getStatusLabel(status)} (ignora escudo).`);
   }
 }
 
@@ -2038,6 +2065,11 @@ function processEndOfTurnEffects(target){
   processSpecialEffects(target);
 }
 
+// ¿La habilidad ignora escudos? (effect/effects con type 'ignoreShield')
+function moveIgnoresShield(move){
+  return getMoveEffects(move).some(e => e && e.type === 'ignoreShield');
+}
+
 /* apply damage */
 function applyDamage(actor, target, move){
   if(!target) return;
@@ -2058,7 +2090,10 @@ function applyDamage(actor, target, move){
     isCrit = true;
   }
 
-  if(target.shield>0){
+  // IGNORAR ESCUDO: el daño va directo a la vida y el escudo no se toca.
+  const ignoresShield = moveIgnoresShield(move);
+
+  if(target.shield>0 && !ignoresShield){
     const prev = target.shield;
     const after = Math.max(0, prev - damage);
     const absorbed = prev - after;
@@ -2073,6 +2108,15 @@ function applyDamage(actor, target, move){
   const hpBefore = target.hp;
   target.hp = Math.max(0, target.hp - damage);
   const hpDamage = Math.max(0, hpBefore - target.hp);
+
+  if(ignoresShield && target.shield > 0){
+    if(target.hp <= 0){
+      // Murió con escudo restante: cuenta como KO y el escudo desaparece.
+      target.shield = 0;
+    }else if(hpDamage > 0){
+      log(`🗡️ ${move.name} ignoró el escudo de ${target.name} y dañó directamente su vida.`);
+    }
+  }
 
   if(isCrit){
     log(`⚡ ¡Golpe CRÍTICO! ${actor.name} usó ${move.name} y causó ${hpDamage} a ${target.name}.`);
@@ -2100,6 +2144,19 @@ function applyDamage(actor, target, move){
     }
   }
 
+  // CONTRAATAQUE: si el objetivo está en postura de contraataque, responde
+  // con su ataque básico (primera habilidad con daño). Un contraataque no
+  // provoca otro contraataque.
+  if(!move._isCounter && hpDamage > 0 && target.hp > 0 && actor.hp > 0
+     && actor !== target && getKeyOfTarget(actor) !== getKeyOfTarget(target)
+     && getSpecialEffect(target, 'counter')){
+    const basic = (target.moves || []).find(m => m && m.power > 0);
+    if(basic){
+      log(`↩️ ${target.name} contraataca a ${actor.name}!`);
+      applyDamage(target, actor, { ...basic, _isCounter: true });
+    }
+  }
+
   flashHit(getKeyOfTarget(target));
 }
 
@@ -2121,7 +2178,28 @@ function performSwap(player, newIndex, consumeTurn=false){
 
   if(consumeTurn){
     endTurn(oldActor);
+    return true;
   }
+
+  // Un cambio gratuito no pasa por startTurnActions(): si el personaje que
+  // entra está aturdido o congelado, debe perder el turno igual que si
+  // hubiera empezado su turno así. Al terminar su turno se descuenta la
+  // duración del estado; sin esto el stun/congelación no bajaba nunca y
+  // el jugador quedaba bloqueado indefinidamente.
+  const incoming = team[newIndex];
+  if(state.phase === 'battle' && state.turnOwner === player && incoming.hp > 0){
+    if(incoming.stunned > 0){
+      log(`${incoming.name} entra aturdido y pierde su turno.`);
+      endTurn(incoming);
+      return true;
+    }
+    if(hasControlEffect(incoming, 'freeze')){
+      log(`❄️ ${incoming.name} entra congelado y pierde su turno.`);
+      endTurn(incoming);
+      return true;
+    }
+  }
+  return false;
 }
 
 /* end turn */
@@ -2441,6 +2519,8 @@ function aiScoreMove(actor, move, enemy, team){
         score += 20 + normalizePercentValue(e.value) * 0.25;
       }else if(e.type === 'critChance'){
         score += 20 + normalizePercentValue(e.value) * 0.35;
+      }else if(e.type === 'counter'){
+        score += enemy ? 38 : 0;
       }
     }
 
@@ -2469,6 +2549,10 @@ function aiScoreMove(actor, move, enemy, team){
   if(enemy && move.power > 0){
     const estimate = aiEstimateDamage(actor, enemy, move);
     score += estimate;
+
+    if(moveIgnoresShield(move) && enemy.shield > 0){
+      score += Math.min(enemy.shield, estimate) * 0.5;
+    }
 
     if(estimate >= enemy.hp){
       score += 130;
@@ -2694,6 +2778,8 @@ async function aiExecuteAction(action){
         }
       });
     });
+
+    applyAttackSelfEffects(actor, move, effects);
   }
 
   if(move.baseCooldown && move.baseCooldown > 0){
@@ -2719,7 +2805,7 @@ async function aiTakeTurn(){
     const aliveIdx = state.teams.p2.findIndex(c=>c.hp>0);
 
     if(aliveIdx !== -1){
-      performSwap('p2', aliveIdx, false);
+      if(performSwap('p2', aliveIdx, false)) return;   // el reemplazo perdió el turno (stun/congelado)
       actor = getActive('p2');
     }
 
@@ -2752,8 +2838,9 @@ async function aiTakeTurn(){
   await new Promise(r=>setTimeout(r, 650));
 
   if(action.type === 'swap'){
-    performSwap('p2', action.idx, false);
+    const swapLostTurn = performSwap('p2', action.idx, false);
     state.aiLastSwapTurn = state.turnCount;
+    if(swapLostTurn) return;   // el turno ya terminó (entró aturdido/congelado)
 
     actor = getActive('p2');
 
