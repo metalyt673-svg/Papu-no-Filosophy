@@ -16,6 +16,12 @@
        <script src="amigos.js" defer></script>
    (perfil.js debe ser la versión que trae  PERFIL.snapshot ; viene incluida.)
 
+   SALÓN DE LA FAMA (fama.js)
+     Este archivo también guarda los LIKES y los perfiles "conocidos" y los expone en
+     window.AMIGOS.fame. Los likes viajan por la misma conexión directa: se entregan
+     cuando el otro jugador está conectado (si no, quedan pendientes y se reintentan).
+     Tus amigos conectados te pasan, además, los perfiles que ellos conocen.
+
    LÍMITES (por no usar servidor)
      - Solo puedes ver datos nuevos de un amigo cuando está conectado.
      - Los nombres no son únicos: si alguien usa el mismo nombre que tu amigo
@@ -41,6 +47,10 @@
   const TICK_MS = 4000;          // revisa cambios de tu perfil y de tu nombre
   const RETRY_EVERY = 5;         // cada 5 ticks (~20 s) reintenta con los amigos desconectados
   const CONNECT_TIMEOUT = 8000;
+  const KNOWN_MAX = 40;          // perfiles de no-amigos que se recuerdan para el salón de la fama
+  const LIKES_MAX = 5000;
+  const FAME_EVERY = 15;         // cada 15 ticks (~60 s) se vuelve a compartir la lista de conocidos
+  const UID_RE = /^[a-z0-9]{8,40}$/;
 
   /* ---------------- utilidades ---------------- */
   const byId = id => document.getElementById(id);
@@ -73,13 +83,27 @@
   function loadData() {
     let d = {};
     try { d = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { d = {}; }
-    const out = { uid: typeof d.uid === 'string' && d.uid ? d.uid : randomUid(), online: d.online !== false, friends: [] };
+    const out = { uid: typeof d.uid === 'string' && d.uid ? d.uid : randomUid(), online: d.online !== false, fameOn: d.fameOn !== false,
+      friends: [], likedBy: {}, liked: {}, known: [] };
     (Array.isArray(d.friends) ? d.friends : []).forEach(f => {
       if (!f || typeof f.key !== 'string' || !f.key) return;
       out.friends.push({
         key: f.key, name: cleanName(f.name) || f.key, uid: typeof f.uid === 'string' ? f.uid : '',
         snap: cleanSnap(f.snap), seen: Number(f.seen) || 0, warn: !!f.warn
       });
+    });
+    if (d.likedBy && typeof d.likedBy === 'object') {
+      Object.keys(d.likedBy).slice(0, LIKES_MAX).forEach(u => { if (UID_RE.test(u)) out.likedBy[u] = 1; });
+    }
+    if (d.liked && typeof d.liked === 'object') {
+      Object.keys(d.liked).forEach(k => {
+        const v = d.liked[k];
+        if (k && v && typeof v === 'object') out.liked[k] = { on: v.on !== false, sent: !!v.sent, base: Number(v.base) || 0 };
+      });
+    }
+    (Array.isArray(d.known) ? d.known : []).slice(0, KNOWN_MAX).forEach(f => {
+      const sn = cleanSnap(f && f.snap);
+      if (sn) out.known.push({ key: keyOf(sn.name), snap: sn, at: Number(f.at) || 0 });
     });
     return out;
   }
@@ -88,7 +112,9 @@
   save();
 
   /* ---------------- perfil público: enviar y recibir ---------------- */
-  function mySnap() { return Object.assign(PERFIL.snapshot(), { uid: A.uid }); }
+  function mySnap() {
+    return Object.assign(PERFIL.snapshot(), { uid: A.uid, likes: Object.keys(A.likedBy).length, fame: A.fameOn });
+  }
 
   /* Todo lo que llega de otra persona se reconstruye campo a campo (nunca se usa tal cual). */
   function cleanSnap(r) {
@@ -105,7 +131,7 @@
       uid: /^[a-z0-9]{8,40}$/.test(r.uid) ? r.uid : '',
       name, avatar: id(r.avatar),
       favs: [0, 1, 2].map(i => id(Array.isArray(r.favs) ? r.favs[i] : null)),
-      points: n(r.points),
+      points: n(r.points), likes: n(r.likes), fame: r.fame !== false,
       rank: { name: s(rk.name, 20), icon: s(rk.icon, 6), rgb, pct: Math.min(100, n(rk.pct)),
         nextName: s(rk.nextName, 20), nextIcon: s(rk.nextIcon, 6), nextMin: n(rk.nextMin) },
       freeWins: n(r.freeWins), freePlayed: n(r.freePlayed),
@@ -216,8 +242,11 @@
         if (s) { conn.__k = keyOf(s.name); inc[conn.__k] = conn; gotSnap(conn.__k, m.snap); }
         subs.add(conn);
         try { conn.send({ t: 'snap', snap: mySnap() }); } catch (e) { /* ignorar */ }
+        if (conn.__k) sendFame(conn, conn.__k);
       } else if (m.t === 'snap' && conn.__k) {
         gotSnap(conn.__k, m.snap);
+      } else if (conn.__k) {
+        handleExtra(conn.__k, m);
       }
     });
     const gone = () => {
@@ -261,7 +290,12 @@
     timer = setTimeout(() => { if (!conn.open || !live[key]) fin(false); }, CONNECT_TIMEOUT);
     conn.on('open', () => { try { conn.send({ t: 'hi', snap: mySnap() }); } catch (e) { /* ignorar */ } });
     conn.on('data', m => {
-      if (m && m.t === 'snap') { gotSnap(key, m.snap); fin(true); }
+      if (!m || typeof m !== 'object') return;
+      if (m.t === 'snap') {
+        gotSnap(key, m.snap);
+        if (!conn.__fs) { conn.__fs = 1; sendFame(conn, key); }
+        fin(true);
+      } else handleExtra(key, m);
     });
     const closed = () => {
       if (conns[key] === conn) { delete conns[key]; markSeen(key); }
@@ -276,7 +310,9 @@
   function gotSnap(key, raw) {
     const s = cleanSnap(raw);
     if (!s || keyOf(s.name) !== key) return;     // el nombre debe corresponder a su conexión
+    const firstContact = !live[key];
     live[key] = { snap: s, at: Date.now() };
+    if (firstContact) scheduleFame();           // alguien nuevo: en un momento se lo cuento a los demás
     const f = A.friends.find(x => x.key === key);
     if (f) {
       if (f.uid && s.uid && f.uid !== s.uid) {
@@ -286,7 +322,8 @@
         if (!f.uid) f.uid = s.uid;
       }
       save();
-    }
+    } else noteKnown(s, false);
+    deliverLikes(false);
     refresh();
   }
 
@@ -306,7 +343,10 @@
     startPeer();                                  // también reacciona a cambios de nombre
     if (status === 'ready') {
       pushIfChanged();
-      if (++tickN % RETRY_EVERY === 0) A.friends.forEach(f => { if (!isOnline(f.key)) connectFriend(f); });
+      tickN++;
+      deliverLikes(tickN % RETRY_EVERY === 0);
+      if (tickN % FAME_EVERY === 0) broadcastFame();
+      if (tickN % RETRY_EVERY === 0) A.friends.forEach(f => { if (!isOnline(f.key)) connectFriend(f); });
     }
   }
 
@@ -325,6 +365,7 @@
       if (ok && live[key]) {
         const s = live[key].snap;
         A.friends.push({ key, name: s.name, uid: s.uid, snap: s, seen: Date.now(), warn: false });
+        A.known = A.known.filter(k => k.key !== key);
         save();
         const inp = byId('am-input'); if (inp) inp.value = '';
         setMsg(`✅ ${esc(s.name)} añadido a tus amigos.`, 'ok');
@@ -345,6 +386,144 @@
     if (conns[key]) { try { conns[key].close(); } catch (e) { /* ignorar */ } delete conns[key]; }
     if (ui.view === key) ui.view = null;
     save(); refresh();
+  }
+
+  /* ---------------- likes, perfiles conocidos y salón de la fama ---------------- */
+  const listeners = [];
+  const emit = () => listeners.forEach(fn => { try { fn(); } catch (e) { /* ignorar */ } });
+
+  function sendTo(key, msg) {
+    const c = (conns[key] && conns[key].open && conns[key]) || (inc[key] && inc[key].open && inc[key]);
+    if (!c) return false;
+    try { c.send(msg); return true; } catch (e) { return false; }
+  }
+
+  /* Recuerda el perfil de alguien que NO es amigo (contacto directo o por un amigo).
+     Lo que llega "de oído" (gossip) nunca pisa datos directos ni datos con más puntos. */
+  function noteKnown(s, gossip) {
+    const key = keyOf(s.name);
+    if (!key || key === keyOf(PERFIL.load().name) || (s.uid && s.uid === A.uid)) return;
+    if (A.friends.some(f => f.key === key)) return;
+    const i = A.known.findIndex(k => k.key === key);
+    if (gossip && i >= 0 && A.known[i].snap.points > s.points) return;
+    const rec = { key, snap: s, at: Date.now() };
+    if (i >= 0) A.known[i] = rec; else A.known.push(rec);
+    if (A.known.length > KNOWN_MAX) { A.known.sort((a, b) => b.at - a.at); A.known.length = KNOWN_MAX; }
+    save();
+  }
+
+  /* Los perfiles que yo conozco y quiero compartir (los que han elegido no aparecer, no se reenvían). */
+  function topFame(excludeKey) {
+    const pool = [];
+    A.friends.forEach(f => { if (f.snap && !f.warn && f.snap.fame !== false) pool.push(f.snap); });
+    A.known.forEach(k => { if (k.snap.fame !== false) pool.push(k.snap); });
+    return pool.filter(s => keyOf(s.name) !== excludeKey)
+      .sort((a, b) => (b.likes - a.likes) || (b.points - a.points)).slice(0, 10);
+  }
+  function sendFame(conn, key) {
+    try { if (conn && conn.open) conn.send({ t: 'fame', list: topFame(key) }); } catch (e) { /* ignorar */ }
+  }
+  function broadcastFame() {
+    Object.keys(conns).forEach(k => { if (conns[k] && conns[k].open) sendFame(conns[k], k); });
+    Object.keys(inc).forEach(k => { if (inc[k] && inc[k].open) sendFame(inc[k], k); });
+  }
+  let fameT = null;
+  function scheduleFame() {
+    if (fameT) return;
+    fameT = setTimeout(() => { fameT = null; broadcastFame(); }, 1500);
+  }
+  function gotFame(list) {
+    if (!Array.isArray(list)) return;
+    const myKey = keyOf(PERFIL.load().name);
+    let changed = false;
+    list.slice(0, 12).forEach(raw => {
+      const s = cleanSnap(raw);
+      if (!s || s.fame === false) return;
+      const key = keyOf(s.name);
+      if (!key || key === myKey || A.friends.some(f => f.key === key) || isOnline(key)) return;
+      noteKnown(s, true); changed = true;
+    });
+    if (changed) refresh();
+  }
+
+  /* Mensajes que no son "perfil": like y lista de conocidos. */
+  function handleExtra(key, m) {
+    if (m.t === 'fame') return gotFame(m.list);
+    if (m.t !== 'like') return;
+    const uid = typeof m.uid === 'string' && UID_RE.test(m.uid) ? m.uid : '';
+    if (!uid || uid === A.uid) return;
+    if (!live[key] || live[key].snap.uid !== uid) return;   // el uid debe ser el de quien está al otro lado
+    const had = !!A.likedBy[uid];
+    if (m.on === false) delete A.likedBy[uid];
+    else if (had || Object.keys(A.likedBy).length < LIKES_MAX) A.likedBy[uid] = 1;
+    if (had !== !!A.likedBy[uid]) { save(); lastPushed = ''; pushIfChanged(); refresh(); }
+  }
+
+  /* Entrega los likes pendientes; con retry=true también intenta conectar con quien esté desconectado. */
+  function deliverLikes(retry) {
+    Object.keys(A.liked).forEach(key => {
+      const l = A.liked[key];
+      if (l.sent) { if (!l.on) { delete A.liked[key]; save(); } return; }
+      if (sendTo(key, { t: 'like', uid: A.uid, on: l.on })) { l.sent = true; save(); }
+      else if (retry && status === 'ready') connectFriend({ key });
+    });
+  }
+
+  function snapOf(key) {
+    if (live[key]) return live[key].snap;
+    const f = A.friends.find(x => x.key === key);
+    if (f && f.snap) return f.snap;
+    const k = A.known.find(x => x.key === key);
+    return k ? k.snap : null;
+  }
+
+  function fameEntry(key, snap, friend, seen) {
+    const l = A.liked[key], liked = !!(l && l.on);
+    return { key, snap, me: false, friend, online: isOnline(key), liked,
+      likes: liked ? Math.max(snap.likes, (l.base || 0) + 1) : snap.likes, seen };
+  }
+
+  function fameList() {
+    const me = mySnap(), myKey = keyOf(me.name), out = [];
+    if (myKey) out.push({ key: myKey, snap: me, me: true, friend: false, online: true, liked: false, likes: me.likes, seen: Date.now() });
+    A.friends.forEach(f => { if (f.snap) out.push(fameEntry(f.key, f.snap, true, f.seen)); });
+    A.known.forEach(k => { if (k.snap.fame !== false) out.push(fameEntry(k.key, k.snap, false, k.at)); });
+    return out;
+  }
+
+  function fameLike(key) {
+    const sn = snapOf(key);
+    if (!key || !sn || key === keyOf(PERFIL.load().name)) return false;
+    const on = !(A.liked[key] && A.liked[key].on);
+    A.liked[key] = { on, sent: false, base: sn.likes };
+    save();
+    deliverLikes(true);
+    refresh();
+    return on;
+  }
+
+  function fameAdd(key) {
+    if (A.friends.some(f => f.key === key)) return false;
+    const sn = snapOf(key);
+    if (!sn) return false;
+    A.friends.push({ key, name: sn.name, uid: live[key] ? sn.uid : '', snap: sn, seen: Date.now(), warn: false });
+    A.known = A.known.filter(k => k.key !== key);
+    save();
+    connectFriend({ key });
+    refresh();
+    return true;
+  }
+
+  function fameSetOn(v) {
+    A.fameOn = !!v; save();
+    lastPushed = ''; pushIfChanged();
+    refresh();
+  }
+
+  function connectAll() {
+    startPeer();
+    A.friends.forEach(f => { if (!isOnline(f.key)) connectFriend(f); });
+    deliverLikes(true);
   }
 
   /* ---------------- interfaz ---------------- */
@@ -561,6 +740,7 @@
   let refreshT = null;
   function refresh() {
     updateMenuBtn();
+    emit();
     if (!ui.open) return;
     clearTimeout(refreshT);
     refreshT = setTimeout(render, 80);
@@ -652,7 +832,8 @@
     // Sin Infierno: al final de la columna de Historia (la crea desafio.js) o del menú
     const story = byId('menu-story');
     const col = (story && story.parentElement && story.parentElement.classList.contains('menu-col')) ? story.parentElement : layout;
-    if (panel.parentElement !== col || panel.nextElementSibling) col.appendChild(panel);
+    const nx = panel.nextElementSibling;
+    if (panel.parentElement !== col || (nx && nx.id !== 'menu-fama')) col.appendChild(panel);
   }
 
   function injectMarkup() {
@@ -712,5 +893,13 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 
-  window.AMIGOS = { open: openAmigos };
+  window.AMIGOS = {
+    open: openAmigos,
+    fame: {
+      list: fameList, like: fameLike, add: fameAdd, connectAll,
+      isOn: () => A.fameOn, setOn: fameSetOn,
+      status: () => status,
+      onChange: fn => { if (typeof fn === 'function') listeners.push(fn); }
+    }
+  };
 })();
