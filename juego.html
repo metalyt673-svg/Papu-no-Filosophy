@@ -2422,6 +2422,9 @@
   <script src="amigos.js" defer></script>
   <script src="fama.js" defer></script>
   <script src="multijugador.js" defer></script>
+  <script src="comparador.js" defer></script>
+  <script src="equipos.js" defer></script>
+  <script src="registro.js" defer></script>
   <script>
     const battleMusic = document.getElementById('battle-music');
 
@@ -2953,6 +2956,75 @@
        ============================================================ */
     const PATCH_NOTES = [
  
+
+{
+  version: 'v1.10',
+  date: '06/10/26',
+  summary: 'REWORK a varios personajes "magos" que hacían daño excesivo y nerf directo a otros personajes. NUEVOS PERSONAJES Y NUEVAS MECÁNICAS.',
+  changes: [
+    {
+      type: 'ajuste',
+      target: 'Implacable',
+      desc: 'Daño reducido y buffs aumentados para encajar más en el rol de soporte.'
+    },
+    {
+      type: 'ajuste',
+      target: 'Dizzy',
+      desc: 'Ahora sus habilidades pueden congelar al coste de menos daño.'
+    },
+    {
+      type: 'ajuste',
+      target: 'Hsin',
+      desc: 'Más habilidades con quemadura al coste de menos daño.'
+    },
+    {
+      type: 'ajuste',
+      target: 'Ellie',
+      desc: 'La habilidad "Miedo Despertado" ya no hace daño, ahora aplica el estado de miedo al oponente.'
+    },
+    {
+      type: 'ajuste',
+      target: 'Isaac',
+      desc: 'Ataque reducido y más cooldown en su habilidad "Urano", al coste de poder usar su habilidad "Tecla R" más de una vez por partida.'
+    },
+    {
+      type: 'nuevo',
+      target: 'Nuevos personajes',
+      desc: 'Nueva tanda de personajes: Y.V, Doblilete, Blizzaria, Ryuk, Pifiasus, Cantonio, Tyrat, Buhu, Horror, entre otros.'
+    },
+    {
+      type: 'nuevo',
+      target: 'Desafío: Equipo Temático',
+      desc: 'Nuevo modo de juego en el modo desafío: equipo temático. Solo puedes escoger tu equipo de un grupo determinado de personajes.'
+    },
+    {
+      type: 'nuevo',
+      target: 'Nuevo modo de juego: Torneo',
+      desc: 'En el torneo, podrás enfrentarte continuamente a varios bots que aprenden de tu forma de jugar e incrementar en dificultad entre más lejos llegues.'
+    },
+    {
+      type: 'nuevo',
+      target: 'Registro mejorado',
+      desc: 'Ahora el registro de batalla es mucho más claro. Puedes filtrar por tus acciones, las acciones del enemigo, los momentos clave, y hasta compartir tu registro con quien quieras.'
+    },
+    {
+      type: 'nuevo',
+      target: 'Previsualización de daño',
+      desc: 'Ahora, todas las habilidades que hagan daño al oponente te enseñarán el daño estimado que harán, la precisión de estos, y si este ataque matará al enemigo.'
+    },
+    {
+      type: 'nuevo',
+      target: 'Comparar personajes',
+      desc: 'Hay una nueva opción en el glosario para comparar dos personajes de tu elección, ves sus stats lado a lado y decides cuál te gusta más.'
+    },
+    {
+      type: 'nuevo',
+      target: 'Equipos',
+      desc: 'Puedes guardar tus equipos favoritos para las batallas y ponertelos rápidamente cuando quieras.'
+    }
+  ]
+},
+
 {
   version: 'v1.9',
   date: '04/10/26',

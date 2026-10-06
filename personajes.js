@@ -14,6 +14,173 @@
 
 const CHARACTERS = [
 
+
+{
+  id: 'chel',
+  name: 'Chel',
+  img: 'personajes/chel.png',
+  classes: ['soporte', 'debilitador'],
+  hp: 112,
+  atk: 22,
+  def: 15,
+  spd: 22,
+
+  moves: [
+    {
+      id: 'chel1',
+      name: 'Truco de Timadora',
+      power: 18,
+      acc: 0.97,
+      desc: 'Chel engaña al rival con una artimaña callejera y le reduce ligeramente la DEF.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: [
+        { type: 'debuff', stat: 'def', value: 4, duration: 2, prob: 0.6 }
+      ]
+    },
+    {
+      id: 'chel2',
+      name: 'Ojo de Ladrona',
+      power: 0,
+      acc: 1.0,
+      desc: 'Chel señala el punto débil del rival y guía a un aliado: aumenta su precisión un 25% durante 3 turnos.',
+      baseCooldown: 3,
+      type: 'support',
+      effects: [
+        { type: 'accuracyUp', value: 10, duration: 3 }
+      ]
+    },
+    {
+      id: 'chel3',
+      name: 'Hierbas de El Dorado',
+      power: 0,
+      acc: 1.0,
+      desc: 'Chel prepara un remedio con hierbas que elimina hasta 2 debufos de un aliado y le otorga un pequeño escudo.',
+      baseCooldown: 3,
+      type: 'support',
+      effects: [
+        { type: 'cleanse', target: 'ally', count: 2 },
+        { type: 'shield', value: 18 }
+      ]
+    },
+    {
+      id: 'chel4',
+      name: 'Gran Farsa Dorada',
+      power: 0,
+      acc: 0.95,
+      desc: 'Chel monta una gran farsa: elimina hasta 2 bufos del rival, reduce su precisión un 25% durante 3 turnos y limpia 1 debufo de cada aliado.',
+      baseCooldown: 5,
+      type: 'attack',
+      effects: [
+        { type: 'purgeBuffs', count: 2 },
+        { type: 'accuracyDown', value: 5, duration: 3 },
+        { type: 'cleanse', target: 'team', count: 1 }
+      ]
+    }
+  ]
+},
+
+
+{
+  id: 'gorilla_villaje',
+  name: 'Gorilla Village',
+  img: 'personajes/gorilla_villaje.png',
+  classes: ['soporte', 'sanador'],
+  hp: 140,
+  atk: 0,
+  def: 22,
+  spd: 13,
+
+  moves: [
+    {
+      id: 'gori1',
+      name: 'Running in the street',
+      power: 0,
+      acc: 1.0,
+      desc: 'Gorilla Village protege a un aliado mientras corre por las calles, otorgándole un escudo y aumentando temporalmente su DEF.',
+      baseCooldown: 1,
+      type: 'support',
+      effects: [
+        {
+          type: 'shield',
+          value: 20
+        },
+        {
+          type: 'tempDef',
+          value: 6,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'gori2',
+      name: 'Equipment for hunter Maka Monsters',
+      power: 0,
+      acc: 1.0,
+      desc: 'Gorilla Village comparte equipamiento con un aliado para cazar Maka Monsters y recupera una gran cantidad de sus PS.',
+      baseCooldown: 4,
+      type: 'support',
+      effect: {
+        type: 'heal',
+        value: 25
+      }
+    },
+
+    {
+      id: 'gori3',
+      name: 'After 50 min running',
+      power: 0,
+      acc: 1.0,
+      desc: 'Gorilla Village inspira a un aliado haciéndole correr 50 minutos, aumentando temporalmente su ATK, DEF y SPD.',
+      baseCooldown: 6,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 7,
+          duration: 3
+        },
+        {
+          type: 'tempDef',
+          value: 7,
+          duration: 3
+        },
+        {
+          type: 'tempSpd',
+          value: 5,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'gori4',
+      name: 'ULTI: After 1 hour destroyed the farm',
+      power: 0,
+      acc: 1.0,
+      desc: 'Gorilla Village se prepara para luchar contra Maka Monster y salvar su granja, curando a todos los aliados y otorgándoles un poderoso escudo.',
+      baseCooldown: 8,
+      type: 'support',
+      effects: [
+        {
+          type: 'heal',
+          value: 45
+        },
+        {
+          type: 'shield',
+          value: 35
+        },
+        {
+          type: 'tempDef',
+          value: 10,
+          duration: 3
+        }
+      ]
+    }
+  ]
+},
+
 {
   id: 'horror',
   name: 'Horror',
@@ -717,30 +884,30 @@ const CHARACTERS = [
   img: 'personajes/blizzaria.jpg',
   classes: ['mago', 'control'],
   hp: 105,
-  atk: 27,
+  atk: 26,
   def: 17,
   spd: 18,
   moves: [
     {
       id: 'bli1',
       name: 'Derribo',
-      power: 24,
+      power: 22,
       acc: 0.95,
-      desc: 'Blizzaria lanza una ráfaga de aire gélido que daña al enemigo y tiene una probabilidad de congelarlo.',
+      desc: 'Blizzaria lanza una ráfaga de aire gélido que daña al enemigo y tiene una pequeña probabilidad de congelarlo.',
       baseCooldown: 0,
       type: 'attack',
       effects: [
         {
           type: 'debuff',
           stat: 'spd',
-          value: 7,
-          prob: 1.0,
+          value: 5,
+          prob: 0.85,
           duration: 2
         },
         {
           type: 'freeze',
           duration: 1,
-          prob: 0.35
+          prob: 0.20
         }
       ]
     },
@@ -748,15 +915,15 @@ const CHARACTERS = [
     {
       id: 'bli2',
       name: 'Entumecer',
-      power: 18,
+      power: 25,
       acc: 0.9,
-      desc: 'Blizzaria encierra al enemigo en una prisión de hielo, impidiéndole actuar durante un breve periodo.',
+      desc: 'Blizzaria encierra al enemigo en una prisión de hielo con una posibilidad considerable de congelarlo.',
       baseCooldown: 3,
       type: 'attack',
       effect: {
         type: 'freeze',
         duration: 1,
-        prob: 0.75
+        prob: 0.5
       }
     },
 
@@ -787,7 +954,7 @@ const CHARACTERS = [
     {
       id: 'bli4',
       name: 'ULTI: Ventisca brillante',
-      power: 30,
+      power: 28,
       acc: 0.9,
       desc: 'Blizzaria cubre el campo de hielo y golpea al enemigo con una enorme explosión de frío. Tiene una gran probabilidad de congelarlo.',
       baseCooldown: 7,
@@ -795,8 +962,8 @@ const CHARACTERS = [
       effects: [
         {
           type: 'freeze',
-          duration: 2,
-          prob: 0.85
+          duration: 1,
+          prob: 0.9
         },
         {
           type: 'debuff',
@@ -808,7 +975,7 @@ const CHARACTERS = [
         {
           type: 'debuff',
           stat: 'def',
-          value: 8,
+          value: 7,
           prob: 0.8,
           duration: 2
         }
@@ -5841,18 +6008,18 @@ const CHARACTERS = [
   name: 'Isaac Moriah',
   img: 'personajes/isac.png',
 
-  classes: ['mago', 'debilitador'],
+  classes: ['mago', 'atacante', 'debilitador'],
 
   hp: 150,
-  atk: 37,
+  atk: 30,
   def: 12,
   spd: 17,
 
   moves: [
     {
       id: 'isac_basic',
-      name: 'Lágrima básica',
-      power: 21,
+      name: 'Lágrima Básica',
+      power: 20,
       acc: 1,
       desc: 'Lanza lágrimas a su enemigo.',
       baseCooldown: 0,
@@ -5862,8 +6029,8 @@ const CHARACTERS = [
 
     {
       id: 'isaac_poison_tear',
-      name: 'Galleta arcoíris',
-      power: 24,
+      name: 'Galleta Arcoíris',
+      power: 25,
       acc: 0.95,
       desc: 'Isaac dispara una lágrima venenosa que envenena al enemigo y ralentiza sus movimientos.',
       baseCooldown: 3,
@@ -5877,9 +6044,10 @@ const CHARACTERS = [
           prob: 1.0
         },
         {
-          type: 'slow',
-          value: 18,
-          duration: 3
+          type: 'debuff',
+          stat: 'spd',
+          value: 7,
+          duration: 2,
         }
       ]
     },
@@ -5887,21 +6055,21 @@ const CHARACTERS = [
     {
       id: 'isaac_ice_tear',
       name: 'Urano',
-      power: 28,
+      power: 24,
       acc: 0.95,
       desc: 'Isaac dispara una lágrima helada que ralentiza al enemigo y puede congelarlo temporalmente.',
-      baseCooldown: 2,
+      baseCooldown: 5,
       type: 'attack',
       effects: [
         {
           type: 'slow',
-          value: 9,
+          value: 8,
           duration: 3
         },
         {
           type: 'freeze',
           duration: 1,
-          prob: 0.4
+          prob: 0.5
         }
       ]
     },
@@ -5912,7 +6080,7 @@ const CHARACTERS = [
       power: 0,
       acc: 1.0,
       desc: 'Isaac recibe una enorme curación y crea un poderoso escudo que absorbe daño (usable en aliados).',
-      baseCooldown: 99,
+      baseCooldown: 67,
       type: 'support',
       effects: [
         {
@@ -6202,7 +6370,7 @@ const CHARACTERS = [
   classes: ['atacante', 'mago', 'control'],
   hp: 118,
   atk: 26,
-  def: 14,
+  def: 16,
   spd: 20,
 
   moves: [
@@ -6211,21 +6379,16 @@ const CHARACTERS = [
       name: 'Moonlight Strike',
       power: 20,
       acc: 0.95,
-      desc: 'Hsin libera una descarga de energía lunar contra el enemigo, causando daño y reduciendo temporalmente su DEF.',
-      baseCooldown: 2,
+      desc: 'Hsin libera una descarga de energía lunar contra el enemigo, causando daño.',
+      baseCooldown: 0,
       type: 'attack',
-      effect: {
-        type: 'debuff',
-        stat: 'def',
-        value: 6,
-        duration: 2
-      }
+      effect: null
     },
 
     {
       id: 'hsin_burning_flare',
       name: 'Burning Flare',
-      power: 24,
+      power: 23,
       acc: 0.92,
       desc: 'Hsin concentra una intensa energía ardiente en su ataque. El impacto aplica Quemadura al enemigo.',
       baseCooldown: 2,
@@ -6235,22 +6398,7 @@ const CHARACTERS = [
         status: 'burn',
         value: 6,
         duration: 3,
-        prob: 0.85
-      }
-    },
-
-    {
-      id: 'hsin_answering_heart',
-      name: 'Answering Heart',
-      power: 0,
-      acc: 1.0,
-      desc: 'Hsin concentra su energía y aumenta considerablemente su ATK durante varios turnos.',
-      baseCooldown: 4,
-      type: 'support',
-      effect: {
-        type: 'tempAtk',
-        value: 12,
-        duration: 3
+        prob: 0.87
       }
     },
 
@@ -6289,7 +6437,7 @@ const CHARACTERS = [
     {
       id: 'hsin_moon_fox_cataclysm',
       name: 'Moon Fox Cataclysm',
-      power: 30,
+      power: 27,
       acc: 0.88,
       desc: 'Hsin libera todo su poder en una devastadora ofensiva. El impacto provoca una intensa Quemadura que continúa dañando al enemigo.',
       baseCooldown: 7,
@@ -6298,7 +6446,7 @@ const CHARACTERS = [
         type: 'damageOverTime',
         status: 'burn',
         value: 9,
-        duration: 4,
+        duration: 3,
         prob: 1.0
       }
     }
@@ -6384,51 +6532,31 @@ const CHARACTERS = [
   id: 'shylily',
   name: 'Shylily',
   img: 'personajes/lily.jpg',
-  classes: ['mago', 'soporte', 'control'],
+  classes: ['mago', 'atacante'],
   hp: 110,
-  atk: 27,
-  def: 14,
+  atk: 28,
+  def: 16,
   spd: 17,
   moves: [
     {
       id: 'shylily_ocean_blast',
       name: 'Ocean Blast',
-      power: 27,
+      power: 24,
       acc: 0.95,
-      desc: 'Shylily libera una poderosa ráfaga de energía oceánica que reduce temporalmente el ATK del enemigo.',
-      baseCooldown: 2,
+      desc: 'Shylily libera una poderosa ráfaga de energía oceánica.',
+      baseCooldown: 0,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'atk', value: 6, duration: 2 }
-    },
-    {
-      id: 'shylily_orca_dash',
-      name: 'Orca Dash',
-      power: 29,
-      acc: 0.92,
-      desc: 'Shylily se mueve con rapidez como una orca y golpea al enemigo, reduciendo su SPD.',
-      baseCooldown: 3,
-      type: 'attack',
-      effect: { type: 'debuff', stat: 'spd', value: 7, duration: 3 }
-    },
-    {
-      id: 'shylily_oceanic_power',
-      name: 'Oceanic Power',
-      power: 0,
-      acc: 1.0,
-      desc: 'Shylily canaliza la energía del océano para aumentar considerablemente su ATK durante varios turnos.',
-      baseCooldown: 4,
-      type: 'support',
-      effect: { type: 'tempAtk', value: 11, duration: 3 }
+      effect: null
     },
     {
       id: 'shylily_tidal_wave',
       name: 'Tidal Wave',
-      power: 34,
+      power: 26,
       acc: 0.9,
       desc: 'Shylily invoca una enorme ola que golpea al enemigo y reduce considerablemente su DEF.',
       baseCooldown: 4,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 8, duration: 3 }
+      effect: { type: 'debuff', stat: 'def', value: 7, duration: 2 }
     },
     {
       id: 'shylily_ocean_recovery',
@@ -6443,12 +6571,12 @@ const CHARACTERS = [
     {
       id: 'shylily_womp_womp',
       name: 'Womp Womp',
-      power: 72,
+      power: 28,
       acc: 0.88,
       desc: 'Shylily libera todo su poder oceánico en un devastador ataque que deja al enemigo gravemente debilitado.',
       baseCooldown: 7,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 12, duration: 3 }
+      effect: { type: 'debuff', stat: 'def', value: 9, duration: 3 }
     }
   ]
 },
@@ -6457,71 +6585,51 @@ const CHARACTERS = [
   id: 'implacable_azur_lane',
   name: 'Implacable',
   img: 'personajes/implacable.jpg',
-  classes: ['mago', 'control', 'soporte'],
-  hp: 135,
-  atk: 30,
-  def: 17,
+  classes: ['mago', 'soporte'],
+  hp: 125,
+  atk: 20,
+  def: 18,
   spd: 14,
   moves: [
     {
       id: 'implacable_air_strike',
       name: 'Air Strike',
-      power: 22,
-      acc: 0.94,
-      desc: 'Implacable lanza un poderoso ataque aéreo que golpea al enemigo y reduce considerablemente su DEF.',
-      baseCooldown: 2,
-      type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 7, duration: 2 }
-    },
-    {
-      id: 'implacable_no_escape',
-      name: 'No Escape',
-      power: 25,
+      power: 18,
       acc: 0.95,
-      desc: 'Implacable controla el campo de batalla y ralentiza al enemigo, reduciendo considerablemente su SPD durante varios turnos.',
-      baseCooldown: 3,
+      desc: 'Implacable lanza un poderoso ataque aéreo que golpea al enemigo y reduce su DEF.',
+      baseCooldown: 0,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'spd', value: 9, duration: 3 }
+      effect: { type: 'debuff', stat: 'def', value: 5, duration: 2 }
     },
     {
       id: 'implacable_cruel_mercy',
       name: 'Cruel Mercy',
       power: 0,
       acc: 1.0,
-      desc: 'Implacable acumula poder para su siguiente ofensiva, aumentando considerablemente su ATK durante varios turnos.',
+      desc: 'Implacable acumula poder para la siguiente ofensiva, aumentando considerablemente su ATK (o el de un aliado) durante varios turnos.',
       baseCooldown: 4,
       type: 'support',
-      effect: { type: 'tempAtk', value: 13, duration: 3 }
-    },
-    {
-      id: 'implacable_slowing_field',
-      name: 'Slowing Field',
-      power: 20,
-      acc: 0.92,
-      desc: 'Una poderosa interferencia ralentiza al enemigo y reduce su capacidad para actuar con rapidez.',
-      baseCooldown: 4,
-      type: 'attack',
-      effect: { type: 'debuff', stat: 'spd', value: 11, duration: 3 }
+      effect: { type: 'tempAtk', value: 7, duration: 3 }
     },
     {
       id: 'implacable_royal_protection',
       name: 'Royal Protection',
       power: 0,
-      acc: 1.0,
-      desc: 'Implacable utiliza su resistencia de portaaviones acorazado para reforzar temporalmente sus defensas.',
+      acc: 0.97,
+      desc: 'Implacable utiliza su resistencia de portaaviones acorazado para reforzar temporalmente sus defensas (o las de un aliado).',
       baseCooldown: 5,
       type: 'support',
-      effect: { type: 'tempDef', value: 12, duration: 3 }
+      effect: { type: 'tempDef', value: 9, duration: 3 }
     },
     {
       id: 'implacable_unforgiving_airstrike',
       name: 'Unforgiving Airstrike',
-      power: 30,
-      acc: 0.88,
+      power: 26,
+      acc: 0.9,
       desc: 'Implacable desata una devastadora ofensiva aérea que golpea con enorme fuerza y deja las defensas del enemigo gravemente debilitadas.',
       baseCooldown: 7,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 13, duration: 3 }
+      effect: { type: 'debuff', stat: 'def', value: 8, duration: 4 }
     }
   ]
 },
@@ -6604,71 +6712,54 @@ const CHARACTERS = [
   id: 'dizzy_guilty_gear',
   name: 'Dizzy',
   img: 'personajes/dizzy.jpg',
-  classes: ['mago', 'control', 'soporte'],
-  hp: 125,
-  atk: 34,
+  classes: ['mago', 'control'],
+  hp: 130,
+  atk: 23,
   def: 16,
   spd: 15,
   moves: [
     {
       id: 'dizzy_ice_field',
       name: 'Ice Field',
-      power: 27,
+      power: 21,
       acc: 0.92,
-      desc: 'Dizzy congela el terreno alrededor del enemigo con el poder de Undine, reduciendo su SPD durante varios turnos.',
-      baseCooldown: 2,
+      desc: 'Dizzy congela el terreno alrededor del enemigo con el poder de Undine, reduciendo su SPD durante dos turnos.',
+      baseCooldown: 0,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'spd', value: 8, duration: 3 }
+      effect: { type: 'debuff', stat: 'spd', value: 5, duration: 2 }
     },
     {
       id: 'dizzy_necro_attack',
       name: 'Necro',
-      power: 32,
+      power: 24,
       acc: 0.93,
       desc: 'Necro libera su poder oscuro contra el enemigo, debilitando su capacidad ofensiva.',
       baseCooldown: 3,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'atk', value: 7, duration: 2 }
-    },
-    {
-      id: 'dizzy_undine',
-      name: 'Undine',
-      power: 0,
-      acc: 1.0,
-      desc: 'Dizzy canaliza el poder de Undine para protegerse y aumentar temporalmente su DEF.',
-      baseCooldown: 4,
-      type: 'support',
-      effect: { type: 'tempDef', value: 12, duration: 3 }
+      effect: { type: 'debuff', stat: 'atk', value: 6, duration: 2 }
     },
     {
       id: 'dizzy_michael_sword',
       name: 'Michael Sword',
-      power: 38,
+      power: 24,
       acc: 0.9,
-      desc: 'Dizzy invoca la espada de energía y descarga un poderoso ataque que reduce considerablemente la DEF del enemigo.',
-      baseCooldown: 4,
-      type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 9, duration: 3 }
-    },
-    {
-      id: 'dizzy_queen_compassion',
-      name: 'Queen of Compassion',
-      power: 0,
-      acc: 1.0,
-      desc: 'Dizzy utiliza sus poderes para recuperar parte de sus fuerzas y continuar protegiendo a quienes considera su familia.',
+      desc: 'Dizzy invoca la espada de energía y descarga un poderoso ataque que tiene posibilidad de congelar.',
       baseCooldown: 5,
-      type: 'support',
-      effect: { type: 'selfHealPct', value: 0.22 }
+      type: 'attack',
+      effect: { type: 'freeze', duration: 1, prob: 0.45 }
     },
     {
       id: 'dizzy_wings_of_light',
       name: 'Wings of Light',
-      power: 76,
+      power: 28,
       acc: 0.88,
-      desc: 'Dizzy libera una enorme cantidad de energía luminosa que arrasa al enemigo y deja sus defensas gravemente debilitadas.',
-      baseCooldown: 7,
+      desc: 'Dizzy libera una enorme cantidad de energía luminosa que arrasa al enemigo y lo congela.',
+      baseCooldown: 8,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 13, duration: 3 }
+      effects: [
+        { type: 'debuff', stat: 'def', value: 8, duration: 3 },
+        { type: 'freeze', duration: 1, prob: 1 }
+      ]
     }
   ]
 },
@@ -6823,21 +6914,21 @@ const CHARACTERS = [
   id: 'lucy_kushinada',
   name: 'Lucy Kushinada',
   img: 'personajes/lucy.jpg',
-  classes: ['mago', 'control', 'debilitador'],
-  hp: 105,
-  atk: 33,
+  classes: ['mago', 'debilitador'],
+  hp: 120,
+  atk: 27,
   def: 12,
   spd: 20,
   moves: [
     {
       id: 'lucy_quickhack',
       name: 'Quickhack',
-      power: 28,
+      power: 22,
       acc: 0.96,
-      desc: 'Lucy invade los sistemas del enemigo y provoca una sobrecarga digital que reduce temporalmente su ATK.',
-      baseCooldown: 2,
+      desc: 'Lucy invade los sistemas del enemigo y provoca una sobrecarga digital.',
+      baseCooldown: 0,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'atk', value: 7, duration: 2 }
+      effect: null
     },
     {
       id: 'lucy_reboot_optics',
@@ -6845,49 +6936,29 @@ const CHARACTERS = [
       power: 25,
       acc: 0.95,
       desc: 'Lucy interfiere con los sistemas sensoriales del enemigo, dificultando sus movimientos y reduciendo su SPD.',
-      baseCooldown: 3,
-      type: 'attack',
-      effect: { type: 'debuff', stat: 'spd', value: 8, duration: 3 }
-    },
-    {
-      id: 'lucy_net_runner',
-      name: 'Netrunner',
-      power: 0,
-      acc: 1.0,
-      desc: 'Lucy entra en un estado de concentración absoluta y aumenta temporalmente su ATK y su capacidad para ejecutar ataques digitales.',
       baseCooldown: 4,
-      type: 'support',
-      effect: { type: 'tempAtk', value: 12, duration: 3 }
+      type: 'attack',
+      effect: { type: 'debuff', stat: 'spd', value: 8, duration: 2 }
     },
     {
       id: 'lucy_system_corruption',
       name: 'System Corruption',
-      power: 35,
+      power: 26,
       acc: 0.9,
       desc: 'Lucy corrompe los sistemas del enemigo, provocando una importante reducción de su DEF.',
       baseCooldown: 4,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 9, duration: 3 }
-    },
-    {
-      id: 'lucy_deep_dive',
-      name: 'Deep Dive',
-      power: 0,
-      acc: 1.0,
-      desc: 'Lucy se concentra profundamente en la red para recuperar parte de sus fuerzas antes de volver al combate.',
-      baseCooldown: 5,
-      type: 'support',
-      effect: { type: 'selfHealPct', value: 0.18 }
+      effect: { type: 'debuff', stat: 'def', value: 7, duration: 3 }
     },
     {
       id: 'lucy_blackwall',
       name: 'Blackwall',
-      power: 74,
+      power: 30,
       acc: 0.88,
-      desc: 'Lucy libera una poderosa descarga de la red que atraviesa las defensas digitales del enemigo y lo deja gravemente debilitado.',
+      desc: 'Lucy libera una poderosa descarga de la red que atraviesa las defensas digitales del enemigo.',
       baseCooldown: 7,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 12, duration: 3 }
+      effect: null
     }
   ]
 },
@@ -6896,7 +6967,7 @@ const CHARACTERS = [
   id: 'athena_asamiya_kof',
   name: 'Athena Asamiya',
   img: 'personajes/asamiya.jpg',
-  classes: ['mago', 'soporte', 'control'],
+  classes: ['mago', 'control'],
   hp: 112,
   atk: 30,
   def: 15,
@@ -6905,37 +6976,27 @@ const CHARACTERS = [
     {
       id: 'athena_psycho_ball',
       name: 'Psycho Ball',
-      power: 28,
+      power: 21,
       acc: 0.95,
-      desc: 'Athena concentra su poder psíquico en una esfera de energía y la lanza contra el enemigo, reduciendo su DEF.',
-      baseCooldown: 2,
+      desc: 'Athena concentra su poder psíquico en una esfera de energía y la lanza contra el enemigo.',
+      baseCooldown: 0,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 6, duration: 2 }
+      effect: null
     },
     {
       id: 'athena_psycho_sword',
       name: 'Psycho Sword',
-      power: 34,
+      power: 26,
       acc: 0.92,
       desc: 'Athena se eleva envuelta en energía psíquica y golpea al enemigo con una poderosa descarga.',
       baseCooldown: 3,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'atk', value: 6, duration: 2 }
-    },
-    {
-      id: 'athena_psycho_reflector',
-      name: 'Psycho Reflector',
-      power: 0,
-      acc: 1.0,
-      desc: 'Athena crea una barrera de energía psíquica que aumenta considerablemente su DEF durante varios turnos.',
-      baseCooldown: 4,
-      type: 'support',
-      effect: { type: 'tempDef', value: 11, duration: 3 }
+      effect: { type: 'debuff', stat: 'atk', value: 5, duration: 2 }
     },
     {
       id: 'athena_psycho_teleport',
       name: 'Psycho Teleport',
-      power: 25,
+      power: 26,
       acc: 0.9,
       desc: 'Athena se teletransporta alrededor del enemigo y aparece en un instante para golpearlo, reduciendo temporalmente su SPD.',
       baseCooldown: 4,
@@ -6943,24 +7004,14 @@ const CHARACTERS = [
       effect: { type: 'debuff', stat: 'spd', value: 7, duration: 2 }
     },
     {
-      id: 'athena_psycho_heal',
-      name: 'Psycho Heal',
-      power: 0,
-      acc: 1.0,
-      desc: 'Athena utiliza sus poderes psíquicos para recuperar parte de sus fuerzas.',
-      baseCooldown: 5,
-      type: 'support',
-      effect: { type: 'selfHealPct', value: 0.22 }
-    },
-    {
       id: 'athena_shining_crystal_bit',
       name: 'Shining Crystal Bit',
-      power: 70,
+      power: 29,
       acc: 0.9,
       desc: 'Athena concentra una enorme cantidad de energía psíquica a su alrededor y libera todo su poder en un devastador ataque.',
       baseCooldown: 7,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'atk', value: 9, duration: 3 }
+      effect: { type: 'debuff', stat: 'atk', value: 8, duration: 3 }
     }
   ]
 },
@@ -6969,7 +7020,7 @@ const CHARACTERS = [
   id: 'ellie_omniheroes',
   name: 'Ellie',
   img: 'personajes/eli.png',
-  classes: ['mago', 'debilitador', 'control'],
+  classes: ['mago', 'debilitador'],
   hp: 108,
   atk: 26,
   def: 12,
@@ -6980,40 +7031,33 @@ const CHARACTERS = [
       name: 'Profligate',
       power: 22,
       acc: 0.92,
-      desc: 'Ellie y Mister Rabbit combinan sus poderes para lanzar un devastador ataque mágico que debilita la capacidad ofensiva del enemigo.',
-      baseCooldown: 2,
+      desc: 'Ellie y Mister Rabbit combinan sus poderes para lanzar un devastador ataque mágico.',
+      baseCooldown: 0,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'atk', value: 7, duration: 2 }
+      effect: null
     },
     {
       id: 'ellie_awakened_fear',
       name: 'Miedo Despertado',
-      power: 25,
+      power: 0,
       acc: 0.9,
       desc: 'Mister Rabbit libera un poderoso rugido oscuro que aterroriza al enemigo y reduce su SPD durante varios turnos.',
-      baseCooldown: 3,
-      type: 'attack',
-      effect: { type: 'debuff', stat: 'spd', value: 7, duration: 3 }
-    },
-    {
-      id: 'ellie_nightmare',
-      name: 'Pesadilla',
-      power: 0,
-      acc: 1.0,
-      desc: 'Ellie desata el poder de Mister Rabbit, aumentando temporalmente su ATK para aprovechar las debilidades del enemigo.',
       baseCooldown: 4,
-      type: 'support',
-      effect: { type: 'tempAtk', value: 12, duration: 3 }
+      type: 'attack',
+      effects: [
+      { type: 'debuff', stat: 'spd', value: 10, duration: 3 },
+      { type: 'fear', failChance: 0.5, duration: 2, prob: 0.85 }
+      ]
     },
     {
       id: 'ellie_dark_rabbit',
       name: 'Mister Rabbit',
-      power: 26,
+      power: 25,
       acc: 0.9,
       desc: 'Mister Rabbit ataca violentamente al enemigo y reduce considerablemente su DEF.',
-      baseCooldown: 4,
+      baseCooldown: 3,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 9, duration: 3 }
+      effect: { type: 'debuff', stat: 'def', value: 6, duration: 2 }
     },
     {
       id: 'ellie_revenge',
@@ -7028,12 +7072,12 @@ const CHARACTERS = [
     {
       id: 'ellie_endless_nightmare',
       name: 'Pesadilla Eterna',
-      power: 32,
+      power: 30,
       acc: 0.88,
       desc: 'Ellie y Mister Rabbit liberan todo su poder oscuro en un ataque mágico devastador que deja al enemigo gravemente debilitado.',
       baseCooldown: 7,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 12, duration: 3 }
+      effect: { type: 'debuff', stat: 'def', value: 8, duration: 3 }
     }
   ]
 },
@@ -7052,24 +7096,18 @@ const CHARACTERS = [
     {
       id: 'emily_sorrowful_rose',
       name: 'Rosa del Dolor',
-      power: 23,
+      power: 20,
       acc: 0.95,
-      desc: 'Emily invoca rosas oscuras que desgarran al enemigo y reducen ligeramente su defensa.',
-      baseCooldown: 2,
+      desc: 'Emily invoca rosas oscuras que desgarran al enemigo.',
+      baseCooldown: 0,
       type: 'attack',
-      effect: {
-        type: 'debuff',
-        stat: 'def',
-        value: 5,
-        duration: 2,
-        prob: 1.0
-      }
+      effect: null
     },
 
     {
       id: 'emily_silent_lament',
       name: 'Lamento Silencioso',
-      power: 25,
+      power: 24,
       acc: 0.91,
       desc: 'Enredaderas de rosas espectrales atacan al enemigo y reducen temporalmente su poder ofensivo.',
       baseCooldown: 3,
@@ -7108,7 +7146,7 @@ const CHARACTERS = [
       effect: {
         type: 'debuff',
         stat: 'def',
-        value: 10,
+        value: 8,
         duration: 3,
         prob: 1.0
       }
@@ -7120,30 +7158,30 @@ const CHARACTERS = [
   name: 'Anshurii',
   img: 'personajes/anshuri.jpg',
   classes: ['mago', 'control', 'debilitador'],
-  hp: 108,
-  atk: 34,
+  hp: 110,
+  atk: 26,
   def: 12,
   spd: 18,
   moves: [
     {
       id: 'unknown_oni_dark_seal',
       name: 'Sello Oscuro',
-      power: 25,
+      power: 21,
       acc: 0.95,
       desc: 'La hechicera invoca un sello maldito que debilita el poder ofensivo del enemigo.',
-      baseCooldown: 2,
+      baseCooldown: 0,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'atk', value: 6, duration: 2 }
+      effect: { type: 'debuff', stat: 'atk', value: 4, duration: 2 }
     },
     {
       id: 'unknown_oni_cursed_hands',
       name: 'Manos Malditas',
-      power: 30,
+      power: 25,
       acc: 0.9,
       desc: 'Canaliza energía oscura a través de sus manos, dañando al enemigo y debilitando su DEF.',
       baseCooldown: 3,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 7, duration: 2 }
+      effect: { type: 'debuff', stat: 'def', value: 6, duration: 2 }
     },
     {
       id: 'unknown_oni_ritual',
@@ -7153,37 +7191,17 @@ const CHARACTERS = [
       desc: 'Realiza un antiguo ritual que despierta temporalmente su poder sobrenatural.',
       baseCooldown: 4,
       type: 'support',
-      effect: { type: 'tempAtk', value: 11, duration: 3 }
-    },
-    {
-      id: 'unknown_oni_chain_curse',
-      name: 'Cadena Maldita',
-      power: 33,
-      acc: 0.88,
-      desc: 'Una cadena de energía sobrenatural envuelve al enemigo y ralentiza sus movimientos.',
-      baseCooldown: 4,
-      type: 'attack',
-      effect: { type: 'debuff', stat: 'spd', value: 8, duration: 3 }
-    },
-    {
-      id: 'unknown_oni_soul_drain',
-      name: 'Drenaje Espiritual',
-      power: 0,
-      acc: 1.0,
-      desc: 'Absorbe parte de la energía sobrenatural del campo para recuperar sus fuerzas.',
-      baseCooldown: 5,
-      type: 'support',
-      effect: { type: 'selfHealPct', value: 0.2 }
+      effect: { type: 'tempAtk', value: 6, duration: 3 }
     },
     {
       id: 'unknown_oni_forbidden_ritual',
       name: 'Ritual de la Condenación',
-      power: 72,
+      power: 30,
       acc: 0.88,
       desc: 'Libera toda la energía acumulada en un ritual devastador que destroza las defensas del enemigo.',
       baseCooldown: 7,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 11, duration: 3 }
+      effect: { type: 'debuff', stat: 'def', value: 8, duration: 3 }
     }
   ]
 },
@@ -7194,29 +7212,19 @@ const CHARACTERS = [
   img: 'personajes/hela.jpg',
   classes: ['mago', 'debilitador', 'control'],
   hp: 115,
-  atk: 33,
+  atk: 25,
   def: 14,
   spd: 17,
   moves: [
     {
       id: 'hela_dark_magic',
       name: 'Magia Oscura',
-      power: 27,
+      power: 22,
       acc: 0.95,
       desc: 'Hela concentra energía oscura y lanza un ataque mágico que reduce el ATK del enemigo.',
-      baseCooldown: 2,
+      baseCooldown: 0,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'atk', value: 6, duration: 2 }
-    },
-    {
-      id: 'hela_cursed_gaze',
-      name: 'Mirada Maldita',
-      power: 29,
-      acc: 0.9,
-      desc: 'La mirada sobrenatural de Hela debilita al enemigo, reduciendo considerablemente su DEF.',
-      baseCooldown: 3,
-      type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 7, duration: 2 }
+      effect: { type: 'debuff', stat: 'atk', value: 4, duration: 2 }
     },
     {
       id: 'hela_oni_power',
@@ -7226,12 +7234,12 @@ const CHARACTERS = [
       desc: 'Hela libera parte de su verdadero poder y aumenta temporalmente su ATK.',
       baseCooldown: 4,
       type: 'support',
-      effect: { type: 'tempAtk', value: 11, duration: 3 }
+      effect: { type: 'tempAtk', value: 5, duration: 3 }
     },
     {
       id: 'hela_shadow_bind',
       name: 'Atadura de Sombras',
-      power: 34,
+      power: 26,
       acc: 0.88,
       desc: 'Sombras oscuras envuelven al enemigo y dificultan sus movimientos, reduciendo su SPD.',
       baseCooldown: 4,
@@ -7251,12 +7259,12 @@ const CHARACTERS = [
     {
       id: 'hela_underworld',
       name: 'Reino del Inframundo',
-      power: 70,
+      power: 28,
       acc: 0.9,
       desc: 'Hela manifiesta todo su poder y desata una devastadora oleada de energía oscura que destroza las defensas del enemigo.',
       baseCooldown: 7,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 11, duration: 3 }
+      effect: { type: 'debuff', stat: 'def', value: 7, duration: 3 }
     }
   ]
 },
@@ -7267,29 +7275,29 @@ const CHARACTERS = [
   img: 'personajes/nitocris.jpg',
   classes: ['mago', 'control', 'debilitador'],
   hp: 110,
-  atk: 30,
+  atk: 29,
   def: 13,
   spd: 16,
   moves: [
     {
       id: 'nitocris_sand_magic',
       name: 'Magia de Arena',
-      power: 25,
+      power: 20,
       acc: 0.95,
       desc: 'Nitocris manipula la arena para atacar al enemigo y reducir temporalmente su SPD.',
-      baseCooldown: 2,
+      baseCooldown: 0,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'spd', value: 6, duration: 2 }
+      effect: { type: 'debuff', stat: 'spd', value: 4, duration: 2 }
     },
     {
       id: 'nitocris_ankh_magic',
       name: 'Magia del Ankh',
-      power: 28,
+      power: 23,
       acc: 0.9,
       desc: 'Nitocris canaliza el poder de su ankh y lanza una poderosa descarga de energía que debilita la DEF enemiga.',
       baseCooldown: 3,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 7, duration: 2 }
+      effect: { type: 'debuff', stat: 'def', value: 6, duration: 2 }
     },
     {
       id: 'nitocris_egyptian_mystery',
@@ -7299,17 +7307,7 @@ const CHARACTERS = [
       desc: 'Nitocris invoca antiguos misterios egipcios para aumentar temporalmente su poder mágico.',
       baseCooldown: 4,
       type: 'support',
-      effect: { type: 'tempAtk', value: 10, duration: 3 }
-    },
-    {
-      id: 'nitocris_kingdom_of_the_dead',
-      name: 'Reino de los Muertos',
-      power: 36,
-      acc: 0.88,
-      desc: 'Nitocris abre un portal hacia el reino de los muertos, debilitando considerablemente el ATK del enemigo.',
-      baseCooldown: 4,
-      type: 'attack',
-      effect: { type: 'debuff', stat: 'atk', value: 8, duration: 3 }
+      effect: { type: 'tempAtk', value: 6, duration: 3 }
     },
     {
       id: 'nitocris_divine_protection',
@@ -7324,12 +7322,12 @@ const CHARACTERS = [
     {
       id: 'nitocris_anpu_neteru',
       name: 'Anpu Neteru',
-      power: 68,
+      power: 29,
       acc: 0.9,
       desc: 'Nitocris invoca el poder de Anubis y libera una devastadora oleada de espíritus que destroza las defensas del enemigo.',
       baseCooldown: 7,
       type: 'attack',
-      effect: { type: 'debuff', stat: 'def', value: 11, duration: 3 }
+      effect: { type: 'debuff', stat: 'def', value: 8, duration: 3 }
     }
   ]
 },
@@ -9417,7 +9415,7 @@ const CHARACTERS = [
   img: 'personajes/urahara.gif',
   classes: ['mago', 'soporte'],
   hp: 130,
-  atk: 30,
+  atk: 27,
   def: 24,
   spd: 31,
 
@@ -9425,15 +9423,15 @@ const CHARACTERS = [
     {
       id: 'benihime',
       name: 'Benihime',
-      power: 28,
+      power: 24,
       acc: 0.95,
       desc: 'Dispara un potente rayo de energía carmesí que reduce la DEF del enemigo.',
-      baseCooldown: 2,
+      baseCooldown: 0,
       type: 'attack',
       effect: {
         type: 'debuff',
         stat: 'def',
-        value: 5,
+        value: 4,
         prob: 0.90,
         duration: 2
       }
@@ -9469,7 +9467,7 @@ const CHARACTERS = [
     {
       id: 'kannonbiraki_benihime_aratame',
       name: 'ULTI: Kannonbiraki Benihime Aratame',
-      power: 30,
+      power: 28,
       acc: 0.90,
       desc: 'Libera su Bankai para reconstruir y destrozar el cuerpo del enemigo, infligiendo un enorme daño y reduciendo su ATK.',
       baseCooldown: 6,
@@ -13888,6 +13886,7 @@ moves: [
     }
   ]
 }
+
 ];
 
 /* =========================================================

@@ -1093,8 +1093,11 @@ function updateArena(){
       ? ` · ${active.debuffEffects.map(d => `⬇️${d.stat.toUpperCase()}-${d.value}(${d.remaining})`).join(' ')}`
       : '';
 
+    const accMod = getAccuracyModifier(active);
+    const accIndicator = accMod !== 0 ? ` · ${accMod > 0 ? '🎯+' : '👁️‍🗨️'}${accMod}% PRE` : '';
+
     $(`stats-${p}`).innerHTML =
-      `<small>HP: ${active.hp}/${active.maxHp} · Escudo: ${active.shield} · ATK:${getEffectiveStat(active,'atk')} DEF:${getEffectiveStat(active,'def')} SPD:${getEffectiveStat(active,'spd')}${stunIndicator}${statusIndicator}${controlIndicator}${debuffIndicator}</small>`;
+      `<small>HP: ${active.hp}/${active.maxHp} · Escudo: ${active.shield} · ATK:${getEffectiveStat(active,'atk')} DEF:${getEffectiveStat(active,'def')} SPD:${getEffectiveStat(active,'spd')}${stunIndicator}${statusIndicator}${controlIndicator}${debuffIndicator}${accIndicator}</small>`;
   });
   renderSlots('p1'); renderSlots('p2'); renderMovesArea();
 }
@@ -1367,7 +1370,7 @@ async function resolveMove(playerKey, moveId){
   await animateAttack(playerKey);
   if(state.phase !== 'battle') return;   // la batalla terminó/se abandonó durante la animación
 
-  if(move.acc && gameRandom() > move.acc){
+  if(gameRandom() > getEffectiveAcc(actor, move)){
     log(`${actor.name} intentó ${move.name}... ¡Falló!`);
     if(move.baseCooldown) move.cd = move.baseCooldown;
     endTurn(actor);
@@ -1388,7 +1391,7 @@ async function resolveMove(playerKey, moveId){
 
   if(isSupport){
     const targets = getAliveTeam(playerKey);
-    const selfOnly = effects.length > 0 && effects.every(e => e && e.type === 'counter');
+    const selfOnly = effects.length > 0 && effects.every(e => e && (e.type === 'counter' || (e.type === 'cleanse' && e.target !== 'ally')));
     const chosen = selfOnly ? null : await openTargetModal(playerKey, targets);
     const targetChar = chosen == null ? actor : state.teams[playerKey][chosen];
 
@@ -1430,6 +1433,8 @@ async function resolveMove(playerKey, moveId){
           e.type === 'fear' ||
           e.type === 'slow' ||
           e.type === 'healReduction' ||
+          e.type === 'accuracyDown' ||
+          e.type === 'purgeBuffs' ||
           e.type === 'damageOverTime'
         ){
           applyStatusEffect(actor, target, e);
@@ -1454,7 +1459,7 @@ async function resolveMove(playerKey, moveId){
 // (buffs, curas, escudo, contraataque). Antes solo se aplicaban los efectos
 // dirigidos al rival (debuffs/estados), por lo que un ataque que debilitaba
 // al enemigo y a la vez bufaba al lanzador (p. ej. Ryuk) ignoraba el buff.
-const ATTACK_SELF_EFFECT_TYPES = ['heal','shield','tempDef','tempSpd','tempAtk','selfHealPct','counter'];
+const ATTACK_SELF_EFFECT_TYPES = ['heal','shield','tempDef','tempSpd','tempAtk','selfHealPct','counter','accuracyUp','cleanse'];
 function applyAttackSelfEffects(actor, move, effects){
   if(!actor || actor.hp <= 0) return;
   (effects || []).forEach(e => {
@@ -1537,6 +1542,19 @@ function applyEffect(actor, target, move) {
       log(`🛡️↩️ ${actor.name} adopta una postura de contraataque: responderá con un ataque básico cada vez que reciba daño.`);
     }
 
+    else if (e.type === 'cleanse') {
+      // target: 'self' (por defecto) · 'ally' (aliado elegido) · 'team' (todo el equipo vivo)
+      const mode = e.target || 'self';
+      if(mode === 'team'){
+        const key = getKeyOfTarget(actor);
+        (key ? getAliveChars(key) : [actor]).forEach(c => cleanseDebuffs(c, e, actor));
+      }else if(mode === 'ally'){
+        cleanseDebuffs(target || actor, e, actor);
+      }else{
+        cleanseDebuffs(actor, e, actor);
+      }
+    }
+
     else if (e.type === 'selfHealPct') {
       const amount = Math.round(actor.maxHp * (e.value||0));
       applyHealing(actor, actor, amount, move.name);
@@ -1546,7 +1564,9 @@ function applyEffect(actor, target, move) {
       e.type === 'lifesteal' ||
       e.type === 'reflectDamage' ||
       e.type === 'critChance' ||
-      e.type === 'healReduction'
+      e.type === 'healReduction' ||
+      e.type === 'accuracyUp' ||
+      e.type === 'accuracyDown'
     ) {
       applySpecialEffect(actor, target, e);
     }
@@ -1577,7 +1597,8 @@ function moveHasTargetableEffect(move){
     e.type === 'selfHealPct' ||
     e.type === 'lifesteal' ||
     e.type === 'reflectDamage' ||
-    e.type === 'critChance'
+    e.type === 'critChance' ||
+    e.type === 'accuracyUp'
   ));
 }
 
@@ -1587,6 +1608,146 @@ function getDebuffTotal(target, stat){
   return target.debuffEffects
     .filter(e => e.stat === stat)
     .reduce((sum, e) => sum + Math.max(0, Number(e.value) || 0), 0);
+}
+
+/* ---------- Precisión (accuracyUp / accuracyDown) y purga de bufos ---------- */
+// accuracyUp  -> suma puntos porcentuales a la precisión de las habilidades del portador.
+// accuracyDown-> los resta (incluso en habilidades que normalmente no fallan).
+// Ambos se acumulan entre sí (neto) y la precisión final queda entre 5% y 100%.
+function getAccuracyModifier(target){
+  return Math.round(getSpecialEffectPercent(target, 'accuracyUp') - getSpecialEffectPercent(target, 'accuracyDown'));
+}
+
+function getEffectiveAcc(actor, move){
+  const base = (move && move.acc != null) ? Number(move.acc) : 1;
+  const mod = getAccuracyModifier(actor);
+  if(!mod) return base >= 1 ? 1 : base;
+  return Math.max(0.05, Math.min(1, base + mod / 100));
+}
+
+// Bufos purgables: stats temporales y efectos especiales positivos del propio portador.
+const PURGEABLE_SPECIAL_BUFFS = ['lifesteal','reflectDamage','critChance','counter','accuracyUp'];
+
+function listBuffs(target){
+  if(!target) return [];
+  const out = [];
+  (Array.isArray(target.tempEffects) ? target.tempEffects : []).forEach(e => out.push({ kind:'temp', ref:e }));
+  (Array.isArray(target.specialEffects) ? target.specialEffects : [])
+    .filter(e => PURGEABLE_SPECIAL_BUFFS.includes(e.type))
+    .forEach(e => out.push({ kind:'special', ref:e }));
+  return out;
+}
+
+function countBuffs(target){ return listBuffs(target).length; }
+
+function buffLabel(e){
+  const labels = {
+    tempAtk:'ATK', tempDef:'DEF', tempSpd:'SPD',
+    lifesteal:'Robo de vida', reflectDamage:'Reflejo de daño', critChance:'Prob. crítico',
+    counter:'Contraataque', accuracyUp:'Precisión'
+  };
+  return labels[e.type] || e.type;
+}
+
+// Elimina hasta `count` bufos del objetivo (los más antiguos primero).
+// effect: { type:'purgeBuffs', count:2, prob:1 }  (count >= 99 -> todos)
+function purgeBuffs(actor, target, effect){
+  if(!actor || !target || target.hp <= 0 || !effect) return 0;
+
+  const prob = effect.prob == null ? 1 : Math.max(0, Math.min(1, Number(effect.prob) || 0));
+  if(gameRandom() > prob){
+    log(`${actor.name} intentó purgar los bufos de ${target.name}, pero no surtió efecto.`);
+    return 0;
+  }
+
+  const count = Math.max(1, Math.round(Number(effect.count ?? effect.value) || 1));
+  const buffs = listBuffs(target);
+  if(!buffs.length){
+    log(`${actor.name} intentó purgar bufos de ${target.name}, pero no tenía ninguno.`);
+    return 0;
+  }
+
+  const removed = [];
+  buffs.slice(0, count).forEach(({ kind, ref }) => {
+    if(kind === 'temp'){
+      // Revertir el stat temporal y quitar la entrada.
+      if(ref.type === 'tempDef') target.tempDef = Math.max(0, (target.tempDef || 0) - ref.value);
+      if(ref.type === 'tempSpd') target.tempSpd = Math.max(0, (target.tempSpd || 0) - ref.value);
+      if(ref.type === 'tempAtk') target.tempAtk = Math.max(0, (target.tempAtk || 0) - ref.value);
+      target.tempEffects = target.tempEffects.filter(x => x !== ref);
+    }else{
+      target.specialEffects = target.specialEffects.filter(x => x !== ref);
+    }
+    removed.push(buffLabel(ref));
+  });
+
+  log(`✨ ${actor.name} purgó ${removed.length} bufo(s) de ${target.name}: ${removed.join(', ')}.`);
+  return removed.length;
+}
+
+/* ---------- Limpiar debufos propios (cleanse) ---------- */
+// effect: { type:'cleanse', count:2 }  (count >= 99 -> todos). Siempre afecta al lanzador.
+// Orden de limpieza: aturdimiento y control duro, daño continuo, debuffs de stats,
+// y por último ralentización, reducción de curación y penalización de precisión.
+function listDebuffs(target){
+  if(!target) return [];
+  const out = [];
+  if(target.stunned > 0) out.push({ kind:'stun', label:'Aturdimiento' });
+
+  const control = Array.isArray(target.controlEffects) ? target.controlEffects : [];
+  control.filter(e => e.type !== 'slow').forEach(e => out.push({ kind:'control', ref:e, label:getStatusLabel(e.type) }));
+
+  (Array.isArray(target.statusEffects) ? target.statusEffects : [])
+    .forEach(e => out.push({ kind:'status', ref:e, label:getStatusLabel(e.status) }));
+
+  (Array.isArray(target.debuffEffects) ? target.debuffEffects : [])
+    .forEach(e => out.push({ kind:'debuff', ref:e, label:`${String(e.stat).toUpperCase()} reducido` }));
+
+  control.filter(e => e.type === 'slow').forEach(e => out.push({ kind:'control', ref:e, label:getStatusLabel('slow') }));
+
+  (Array.isArray(target.specialEffects) ? target.specialEffects : [])
+    .filter(e => e.type === 'healReduction' || e.type === 'accuracyDown')
+    .forEach(e => out.push({
+      kind:'special', ref:e,
+      label: e.type === 'healReduction' ? '🚫 Curación reducida' : '👁️‍🗨️ Precisión reducida'
+    }));
+
+  return out;
+}
+
+function countDebuffs(target){ return listDebuffs(target).length; }
+
+function cleanseDebuffs(actor, effect, source){
+  source = source || actor;
+  if(!actor || actor.hp <= 0 || !effect) return 0;
+
+  const prob = effect.prob == null ? 1 : Math.max(0, Math.min(1, Number(effect.prob) || 0));
+  if(gameRandom() > prob){
+    log(`${source.name} intentó limpiar debufos de ${actor.name}, pero no surtió efecto.`);
+    return 0;
+  }
+
+  const count = Math.max(1, Math.round(Number(effect.count ?? effect.value) || 1));
+  const debuffs = listDebuffs(actor);
+  if(!debuffs.length){
+    log(`${actor.name} no tenía debufos que limpiar.`);
+    return 0;
+  }
+
+  const removed = [];
+  debuffs.slice(0, count).forEach(d => {
+    if(d.kind === 'stun') actor.stunned = 0;
+    else if(d.kind === 'control') actor.controlEffects = actor.controlEffects.filter(x => x !== d.ref);
+    else if(d.kind === 'status') actor.statusEffects = actor.statusEffects.filter(x => x !== d.ref);
+    else if(d.kind === 'debuff') actor.debuffEffects = actor.debuffEffects.filter(x => x !== d.ref);
+    else if(d.kind === 'special') actor.specialEffects = actor.specialEffects.filter(x => x !== d.ref);
+    removed.push(d.label);
+  });
+
+  log(source === actor
+    ? `🧼 ${actor.name} se limpió ${removed.length} debufo(s): ${removed.join(', ')}.`
+    : `🧼 ${source.name} limpió ${removed.length} debufo(s) de ${actor.name}: ${removed.join(', ')}.`);
+  return removed.length;
 }
 
 function getEffectiveStat(target, stat){
@@ -1671,6 +1832,8 @@ function upsertSpecialEffect(actor, target, effect){
     effect.type === 'reflectDamage' ? `↩️ Reflejo de daño ${value}%` :
     effect.type === 'critChance' ? `🎯 Prob. crítico +${value}%` :
     effect.type === 'healReduction' ? `🚫 Curación recibida -${value}%` :
+    effect.type === 'accuracyUp' ? `🎯 Precisión +${value}%` :
+    effect.type === 'accuracyDown' ? `👁️‍🗨️ Precisión -${value}%` :
     effect.type;
 
   log(`${actor.name} aplicó ${label} a ${target.name} durante ${duration} turno(s).`);
@@ -1723,6 +1886,8 @@ function processSpecialEffects(target){
         effect.type === 'critChance' ? 'Probabilidad de crítico' :
         effect.type === 'healReduction' ? 'Reducción de curación' :
         effect.type === 'counter' ? 'Contraataque' :
+        effect.type === 'accuracyUp' ? 'Bonus de precisión' :
+        effect.type === 'accuracyDown' ? 'Penalización de precisión' :
         effect.type;
       log(`${label} terminó en ${target.name}.`);
       return false;
@@ -1912,8 +2077,13 @@ function applyStatusEffect(actor, target, effect){
   if(!target || target.hp <= 0 || !effect) return;
   if(!getKeyOfTarget(target)) return;
 
-  if(effect.type === 'healReduction'){
+  if(effect.type === 'healReduction' || effect.type === 'accuracyDown' || effect.type === 'accuracyUp'){
     applySpecialEffect(actor, target, effect);
+    return;
+  }
+
+  if(effect.type === 'purgeBuffs'){
+    purgeBuffs(actor, target, effect);
     return;
   }
 
@@ -2456,9 +2626,26 @@ function aiEffectBonus(actor, target, move){
     if(e.type === 'reflectDamage') score += 20 + normalizePercentValue(e.value) * 0.25;
     if(e.type === 'critChance') score += 20 + normalizePercentValue(e.value) * 0.35;
     if(e.type === 'healReduction') score += 28 + normalizePercentValue(e.value) * 0.45;
+    if(e.type === 'accuracyDown') score += 14 + normalizePercentValue(e.value) * 0.3;
+    if(e.type === 'cleanse') score += aiCleanseValue(actor, e) * 16;
+    if(e.type === 'purgeBuffs'){
+      const n = Math.min(countBuffs(target), Math.max(1, Number(e.count) || 1));
+      score += n * 14;
+    }
   }
 
   return score;
+}
+
+// Debufos que realmente limpiaría un efecto 'cleanse' (según target: self / ally / team).
+function aiCleanseValue(actor, e){
+  const key = getKeyOfTarget(actor) || 'p2';
+  const cap = Math.max(1, Number(e.count ?? e.value) || 1);
+  const per = c => Math.min(countDebuffs(c), cap);
+  const alive = getAliveChars(key);
+  if(e.target === 'team') return alive.reduce((sum, c) => sum + per(c), 0);
+  if(e.target === 'ally') return alive.reduce((best, c) => Math.max(best, per(c)), 0);
+  return per(actor);
 }
 
 function aiChooseSupportTarget(team, actor, move){
@@ -2472,6 +2659,11 @@ function aiChooseSupportTarget(team, actor, move){
   if(effects.some(e => e.type === 'heal')){
     const target = allies.slice().sort((a,b) => a.pct - b.pct)[0];
     if(target && target.c.hp < target.c.maxHp * 0.92) return target.idx;
+  }
+
+  if(effects.some(e => e.type === 'cleanse' && e.target === 'ally')){
+    const worst = allies.slice().sort((a,b) => countDebuffs(b.c) - countDebuffs(a.c))[0];
+    if(worst && countDebuffs(worst.c) > 0) return worst.idx;
   }
 
   // Los buffs se priorizan sobre el personaje activo, salvo que exista
@@ -2519,6 +2711,11 @@ function aiScoreMove(actor, move, enemy, team){
         score += 20 + normalizePercentValue(e.value) * 0.25;
       }else if(e.type === 'critChance'){
         score += 20 + normalizePercentValue(e.value) * 0.35;
+      }else if(e.type === 'accuracyUp'){
+        score += 14 + normalizePercentValue(e.value) * 0.25;
+      }else if(e.type === 'cleanse'){
+        const n = aiCleanseValue(actor, e);
+        score += n > 0 ? 20 + n * 18 : -20;
       }else if(e.type === 'counter'){
         score += enemy ? 38 : 0;
       }
@@ -2717,7 +2914,7 @@ async function aiExecuteAction(action){
 
   await animateAttack('p2');
 
-  if(move.acc && Math.random() > move.acc){
+  if(Math.random() > getEffectiveAcc(actor, move)){
     log(`IA intentó ${move.name}... ¡Falló!`);
     if(move.baseCooldown) move.cd = move.baseCooldown;
     return true;
@@ -2772,6 +2969,8 @@ async function aiExecuteAction(action){
           e.type === 'fear' ||
           e.type === 'slow' ||
           e.type === 'healReduction' ||
+          e.type === 'accuracyDown' ||
+          e.type === 'purgeBuffs' ||
           e.type === 'damageOverTime'
         ){
           applyStatusEffect(actor, target, e);

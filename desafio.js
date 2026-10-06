@@ -14,7 +14,7 @@
        desafio/combate.mp3   → música de combate por defecto (opcional)
        desafio/<id>.mp3      → música propia de cada boss (opcional), por ejemplo:
                                mckraken.mp3, lilhunter.mp3,
-                               coloso_herrumbre.mp3, verdugo_carmesi.mp3,
+                               castelo-vandana.mp3, verdugo_carmesi.mp3,
                                emperador_vacio.mp3
    Si falta el archivo de un boss se usa combate.mp3; si tampoco está, no suena
    nada. Volumen y "música activada" se toman de la Configuración del juego.
@@ -141,38 +141,53 @@
       classes: ['atacante', 'control'],
       hp: 285, atk: 34, def: 18, spd: 25,
       moves: [
-        { id: 'rei1', name: 'Subfusil', power: 24, acc: 0.95, baseCooldown: 0, type: 'attack',
+        { id: 'lil1', name: 'Subfusil', power: 24, acc: 0.95, baseCooldown: 0, type: 'attack',
           desc: 'Lil Hunter dispara una ráfaga de proyectiles apuntada directamente hacia el enemigo más cercano.', effect: null },
-        { id: 'rei2', name: 'Jetpack', power: 18, acc: 0.90, baseCooldown: 3, type: 'attack',
+        { id: 'lil2', name: 'Jetpack', power: 18, acc: 0.90, baseCooldown: 3, type: 'attack',
           desc: 'Lil Hunter despega con su jetpack y cae encima del enemigo, envolviéndolo en llamas.',
           effects: [{ type: 'damageOverTime', status: 'burn', value: 8, duration: 2, prob: 1.0 }] },            
-        { id: 'rei3', name: 'Refuerzos', power: 0, acc: 0.90, baseCooldown: 3, type: 'support',
+        { id: 'lil3', name: 'Refuerzos', power: 0, acc: 0.90, baseCooldown: 3, type: 'support',
           desc: 'Lil Hunter alerta a unos agentes del IDPD y los sacrifica para llevarse sus provisiones.',
           effects: [{ type: 'heal', value: 12 },
                     { type: 'tempAtk', value: 6, duration: 2 }] },
-        { id: 'rei4', name: 'Escopeta', power: 28, acc: 0.75, baseCooldown: 6, type: 'attack', aoe: true,
+        { id: 'lil4', name: 'Escopeta', power: 28, acc: 0.75, baseCooldown: 6, type: 'attack', aoe: true,
           desc: 'Lil Hunter saca su escopeta y dispara a quemarropa sin pensar, hiriendo a todo el equipo.',
           effect: null }
       ]
     },
     {
-      id: 'coloso_herrumbre',
-      name: 'Coloso de Herrumbre',
-      img: 'personajes/coloso_herrumbre.jpg',
-      classes: ['defensor', 'atacante'],
-      hp: 400, atk: 23, def: 26, spd: 9,
+      id: 'castelo-vandana',
+      name: 'Castello-Vandanna',
+      img: 'personajes/castelo-vandana.png',
+      classes: ['atacante', 'mago', 'debilitador'],
+      hp: 300, atk: 29, def: 20, spd: 18,
       moves: [
-        { id: 'col1', name: 'Puño de Hierro', power: 24, acc: 0.97, baseCooldown: 0, type: 'attack',
-          desc: 'Un puñetazo lento pero demoledor.', effect: null },
-        { id: 'col2', name: 'Eco Metálico', power: 0, acc: 1, baseCooldown: 3, type: 'support',
-          desc: 'Su armadura devuelve parte del daño recibido.',
-          effects: [{ type: 'reflectDamage', value: 25, duration: 2 }] },
-        { id: 'col3', name: 'Aplastamiento', power: 36, acc: 0.88, baseCooldown: 3, type: 'attack',
-          desc: 'Desploma todo su peso sobre el rival y le quiebra la defensa.',
-          effects: [{ type: 'debuff', stat: 'def', value: 8, duration: 2, prob: 1.0 }] },
-        { id: 'col4', name: 'Óxido Corrosivo', power: 15, acc: 0.95, baseCooldown: 2, type: 'attack',
-          desc: 'Una nube de óxido que hace sangrar y corroe.',
-          effects: [{ type: 'damageOverTime', status: 'bleed', value: 6, duration: 3, prob: 0.9 }] }
+        { id: 'cast1', name: 'Pickle Farm Whip', power: 24, acc: 0.97, baseCooldown: 0, type: 'attack',
+          desc: 'Castello azota su látigo contra el oponente más cercano.', effect: null },
+        { id: 'cast2', name: 'The Transformation Potion', power: 0, acc: 0.95, baseCooldown: 6, type: 'support',
+          desc: 'Castello bebe su poción maldita para adquirir buffs temporales y reflejar daño por 3 turnos.',
+          effects: [{ type: 'reflectDamage', value: 10, duration: 3 },
+                    { type: 'tempDef', value: 6, duration: 3, prob: 0.9 },
+                    { type: 'tempSpd', value: 6, duration: 3, prob: 0.95 }
+                   ]
+        },
+        { id: 'cast3', name: 'The Hunter Of Monster', power: 28, acc: 0.9, baseCooldown: 6, type: 'attack',
+          desc: 'Castello saca su vehículo favorito, una motocicleta personalizada fabricada en su Hunter Garage, y arrolla a su oponente.',
+          effects: [{ type: 'debuff', stat: 'def', value: 6, duration: 3, prob: 1.0 }] },
+        { id: 'cast4', name: 'Blood From The Castello Garage', power: 26, acc: 0.92, baseCooldown: 8, type: 'attack',
+          desc: 'Castello apuñala a su oponente con un cuchillo oxidado, causandole sangrado y, posiblemente, veneno.',
+          effects: [{ type: 'damageOverTime', status: 'bleed', value: 6, duration: 3, prob: 1 },
+                    { type: 'damageOverTime', status: 'poison', value: 6, duration: 3, prob: 0.88 }
+             ]
+         },
+        { id: 'cast5', name: 'The King Of Pickle', power: 0, acc: 0.95, baseCooldown: 20, type: 'support',
+          desc: 'Castello utiliza todo el poder de los pepinillos para darse todo tipo de buffs y volverse "invencible" por 3 turnos.',
+          effects: [{ type: 'reflectDamage', value: 100000, duration: 3, prob: 1.0 },
+                    { type: 'tempAtk', value: 8, duration: 3, prob: 0.88 },
+                    { type: 'tempDef', value: 8, duration: 3, prob: 0.9 },
+                    { type: 'tempSpd', value: 8, duration: 3, prob: 0.95 }
+          ] 
+        },
       ]
     },
     {
@@ -228,9 +243,9 @@
     { id: 'lilhunter',   emoji: '🔫🤪', title: 'El cazador de mutantes que fue abandonado por su escuadrón.',
       intro: 'Ha pasado tantos años perdido en la nieve, que se ha convertido en uno de los salvajes. Reza para que su locura sea mayor que su puntería.',
       themeTeam: ['yv']  },
-    { id: 'coloso_herrumbre', emoji: '⚙️', title: 'Montaña de metal viejo',
-      intro: 'Lento, pesado e inmune a casi todo. Pero cada golpe suyo puede acabar el combate.',
-      themeTeam: [] },
+    { id: 'castelo-vandana', emoji: '🥒', title: 'The Only Pickle King Who Kill Maka Monsters.',
+      intro: 'Era una fría y oscura noche de Halloween... El famosísimo pepinillo cazador de Maka Monsters busca venganza y piensa conseguirla aunque tenga que arrasar con todo a su camino.',
+      themeTeam: ['gorilla_villaje', 'kevin', 'maka' ] },
     { id: 'verdugo_carmesi',  emoji: '🪓', title: 'El que nunca falla',
       intro: 'Frágil como el cristal y rápido como un rayo. El que golpea primero, gana.',
       themeTeam: [] },
@@ -743,7 +758,7 @@
       const best = p.best[ui.bossId + '_tema'];
       themeBtn = `<button class="ch-level ch-level-theme${isThemeLevel(ui.level) ? ' active' : ''}${open ? '' : ' locked'}" data-lvl="${THEME_LEVEL.key}" ${open ? '' : 'disabled'}>
         <b>${THEME_LEVEL.icon} ${THEME_LEVEL.name}</b>
-        <small>${open ? (done ? `Superado${best ? ` · Récord: ${best} turnos` : ''}` : 'Tienes un róster limitado de personajes. Dificultad media.') : '🔒 Supera el Nivel 1 primero'}</small>
+        <small>${open ? (done ? `${best ? `  Récord: ${best} turnos` : ''}` : 'Tienes un róster limitado de personajes. Dificultad media.') : '🔒 Supera el Nivel 1 primero'}</small>
       </button>`;
     }
 

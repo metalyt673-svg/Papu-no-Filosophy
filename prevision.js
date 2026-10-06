@@ -113,7 +113,7 @@
     const ignores = moveIgnoresShield(move);
     const rows = targets.map(t => estimateOne(actor, t, move, crit, ignores));
     const dots = effects.filter(e => e && e.type === 'damageOverTime' && Number(e.value) > 0);
-    return { move, rows, crit, acc: move.acc && move.acc < 1 ? move.acc : 1, dots, enemyKey };
+    return { move, rows, crit, acc: (typeof getEffectiveAcc === 'function' ? getEffectiveAcc(actor, move) : (move.acc && move.acc < 1 ? move.acc : 1)), dots, enemyKey };
   }
 
   /* ---------- render ---------- */
@@ -131,23 +131,23 @@
   function buildHTML(est) {
     if (est.charmed) {
       return `<div class="dt-title">${esc(est.move.name)}</div>
-        <div class="dt-warn">💕 Embelesado: este ataque se dirigirá contra un aliado al azar.</div>`;
+        <div class="dt-warn">💕 Embelesado: Este ataque se dirigirá contra un aliado al azar.</div>`;
     }
-    let h = `<div class="dt-title">${esc(est.move.name)} · daño estimado</div>`;
+    let h = `<div class="dt-title">${esc(est.move.name)} · Daño estimado</div>`;
     est.rows.forEach(r => {
       const range = r.max <= 0 ? '0' : (r.min === r.max ? `${r.max}` : `${r.min}–${r.max}`);
       h += `<div class="dt-row">
         <div class="dt-name">${esc(r.target.name)} · ${r.hp}/${r.target.maxHp} HP</div>
         <div class="dt-dmg">−${range}</div>`;
       if (est.crit > 0 && r.critMax > r.max)
-        h += `<div class="dt-crit">⚡ Crítico (${Math.round(est.crit * 100)}%): hasta −${r.critMax}</div>`;
+        h += `<div class="dt-crit">⚡ Crítico (${Math.round(est.crit * 100)}%): Hasta −${r.critMax}</div>`;
       if (r.shield > 0)
         h += `<div class="dt-note">${r.ignoresShield ? '🗡️ Ignora su escudo de ' + r.shield
                                                       : '🛡️ Su escudo (' + r.shield + ') absorbe daño'}</div>`;
       h += killBadge(r) + '</div>';
     });
     const notes = [];
-    if (est.acc < 1) notes.push(`🎯 Precisión ${Math.round(est.acc * 100)}%: puede fallar`);
+    if (est.acc < 1) notes.push(`🎯 Precisión ${Math.round(est.acc * 100)}%: Podría fallar`);
     est.dots.forEach(e => notes.push(
       `${getStatusLabel(e.status || 'burn')}: ${Math.round(e.value)}/turno × ${Math.max(1, Number(e.duration) || 1)}`));
     if (notes.length) h += `<div class="dt-row dt-note">${notes.map(esc).join('<br>')}</div>`;
