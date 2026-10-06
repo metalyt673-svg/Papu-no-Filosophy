@@ -43,7 +43,7 @@ const CHARACTERS = [
       name: 'Ojo de Ladrona',
       power: 0,
       acc: 1.0,
-      desc: 'Chel señala el punto débil del rival y guía a un aliado: aumenta su precisión un 25% durante 3 turnos.',
+      desc: 'Chel señala el punto débil del rival y guía a un aliado: aumenta su precisión un 10% durante 3 turnos.',
       baseCooldown: 3,
       type: 'support',
       effects: [
