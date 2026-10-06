@@ -199,15 +199,24 @@
     if (D && typeof D.loadProgress === 'function') {
       const prog = D.loadProgress();
       const levels = D.levels || [];
+      const metaList = D.meta || [];
+      const teamSize = D.teamSize || 3;
       const bosses = (D.bosses || []).filter(b => !b.music);        // las fases 2 no cuentan como boss
       bosses.forEach(b => {
         const cleared = Number(prog.cleared[b.id]) || 0;
         const bests = levels.map(L => Number(prog.best[b.id + '_' + L.n]) || 0);
-        g.desafio.bosses.push({ base: b, cleared, bests });
-        g.desafio.medals += cleared;
+        // Equipo temático (4º modo, opcional por boss): solo cuenta si ese
+        // boss tiene un roster configurado en desafio.js (ver CHALLENGE_META).
+        const meta = metaList.find(m => m.id === b.id) || {};
+        const themeAvailable = Array.isArray(meta.themeTeam) && meta.themeTeam.length >= teamSize;
+        const themeDone = themeAvailable && !!(prog.themeCleared || {})[b.id];
+        const themeBest = themeAvailable ? Number(prog.best[b.id + '_tema']) || 0 : 0;
+        g.desafio.bosses.push({ base: b, cleared, bests, themeAvailable, themeDone, themeBest });
+        g.desafio.medals += cleared + (themeDone ? 1 : 0);   // la estrella del Equipo temático cuenta como 1 medalla más
+        if (themeAvailable) g.desafio.maxMedals += 1;
       });
       g.desafio.levels = levels;
-      g.desafio.maxMedals = bosses.length * levels.length;
+      g.desafio.maxMedals += bosses.length * levels.length;
     }
 
     // Infierno
@@ -594,12 +603,14 @@
     const d = g.desafio;
     if (!d.bosses.length) return '';
     const rows = d.bosses.map(b => {
-      const meds = d.levels.map(L => (b.cleared >= L.n ? L.icon : '▫️')).join('');
-      const bests = d.levels.map((L, i) => (b.bests[i] ? `${L.icon} ${b.bests[i]}t` : null)).filter(Boolean).join(' · ');
+      const meds = d.levels.map(L => (b.cleared >= L.n ? L.icon : '▫️')).join('')
+        + (b.themeAvailable ? (b.themeDone ? ' ⭐' : ' ☆') : '');
+      const bests = d.levels.map((L, i) => (b.bests[i] ? `${L.icon} ${b.bests[i]}t` : null)).filter(Boolean);
+      if (b.themeAvailable && b.themeBest) bests.push(`⭐ ${b.themeBest}t`);
       return `<div class="pf-boss${b.cleared ? ' done' : ''}">
         <div class="pf-boss-img">${imgTag(b.base.img, b.base.name, '👹')}</div>
         <div style="min-width:0"><div class="pf-boss-name">${b.cleared ? esc(b.base.name) : '???'}</div>
-          <div class="pf-boss-best">${bests ? 'Mejor: ' + bests : (b.cleared ? '' : 'Sin vencer')}</div></div>
+          <div class="pf-boss-best">${bests.length ? 'Mejor: ' + bests.join(' · ') : (b.cleared ? '' : 'Sin vencer')}</div></div>
         <div class="pf-boss-medals">${meds}</div>
       </div>`;
     }).join('');

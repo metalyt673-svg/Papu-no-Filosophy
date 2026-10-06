@@ -14,6 +14,572 @@
 
 const CHARACTERS = [
 
+{
+  id: 'horror',
+  name: 'Horror',
+  img: 'personajes/horror.jpg',
+  classes: ['sanador', 'debilitador'],
+  hp: 110,
+  atk: 17,
+  def: 18,
+  spd: 20,
+
+  moves: [
+    {
+      id: 'horror1',
+      name: 'Rayo de Radiación',
+      power: 0,
+      acc: 0.97,
+      desc: 'Horror dispara un pequeño rayo de radiación que debilita ligeramente al oponente.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: [
+       { 
+         type: 'debuff',
+         stat: 'def',
+         value: 4,
+         duration: 3,
+         prob: 1.0,
+       },
+       { 
+         type: 'debuff',
+         stat: 'atk',
+         value: 4,
+         duration: 3,
+         prob: 1.0,
+       },
+       { 
+         type: 'debuff',
+         stat: 'spd',
+         value: 4,
+         duration: 3,
+         prob: 1.0,
+       },
+
+      ]
+    },
+
+    {
+      id: 'horror2',
+      name: 'Anomaly',
+      power: 0,
+      acc: 1.0,
+      desc: 'Horror usa su radiación para curar a un aliado.',
+      baseCooldown: 2,
+      type: 'support',
+      effect: [
+        {
+          type: 'heal',
+          value: 18
+        }
+      ]
+    },
+
+    {
+      id: 'horror3',
+      name: 'Stalker',
+      power: 0,
+      acc: 0.97,
+      desc: 'Horror cura un poco más a un aliado y le proporciona un aumento en su DEF.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        {
+          type: 'heal',
+          value: 25
+        },
+        {
+          type: 'tempDef',
+          value: 8,
+          duration: 3
+        },
+      ]
+    },
+
+    {
+      id: 'horror4',
+      name: 'Throne Butt: Wide Ray',
+      power: 25,
+      acc: 0.9,
+      desc: 'Horror dispara un rayo más grande y más radioactivo hacia su oponente, debilitándolo, haciéndole daño y envenenándolo.',
+      baseCooldown: 6,
+      type: 'attack',
+      effects: [
+        {
+          type: 'damageOverTime',
+          status: 'poison',
+          value: 8,
+          duration: 3,
+          prob: 1.0,
+        },
+        { 
+         type: 'debuff',
+         stat: 'def',
+         value: 8,
+         duration: 3,
+         prob: 0.9,
+       },
+       { 
+         type: 'debuff',
+         stat: 'atk',
+         value: 6,
+         duration: 3,
+         prob: 0.9,
+       },
+      ]
+    },
+{
+      id: 'horror5',
+      name: 'ULTRA: Meltdown',
+      power: 0,
+      acc: 1.0,
+      desc: 'Horror proporciona una gran cura a un aliado y a sí mismo.',
+      baseCooldown: 7,
+      type: 'support',
+      effects: [
+        {
+          type: 'heal',
+          value: 42
+        },
+        {
+          type: 'selfHealPct',
+          value: 20,
+        }
+      ]
+    }
+  ]
+},
+
+{
+  id: 'buhu',
+  name: 'Buhu',
+  img: 'personajes/buhu.jpg',
+  classes: ['soporte', 'control'],
+  hp: 115,
+  atk: 22,
+  def: 18,
+  spd: 18,
+
+  moves: [
+    {
+      id: 'buh1',
+      name: 'Pelmapunzadas',
+      power: 21,
+      acc: 0.95,
+      desc: 'Buhu golpea al enemigo con sus alas y reduce temporalmente su SPD.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: {
+        type: 'debuff',
+        stat: 'spd',
+        value: 5,
+        prob: 1.0,
+        duration: 2
+      }
+    },
+
+    {
+      id: 'buh2',
+      name: 'Torbellino',
+      power: 0,
+      acc: 1.0,
+      desc: 'Buhu hipnotiza al enemigo, reduciendo su ATK y dejándolo vulnerable durante varios turnos.',
+      baseCooldown: 3,
+      type: 'support',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 8,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 6,
+          prob: 1.0,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'buh3',
+      name: 'Abatimiento',
+      power: 0,
+      acc: 1.0,
+      desc: 'Buhu entona una extraña melodía que aumenta temporalmente la SPD y DEF de un aliado.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempSpd',
+          value: 4,
+          duration: 3
+        },
+        {
+          type: 'tempDef',
+          value: 6,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'buh4',
+      name: 'ULTI: Explosión Ayay',
+      power: 30,
+      acc: 0.9,
+      desc: 'Buhu envuelve al enemigo en una oscura noche que reduce enormemente sus capacidades de combate.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 5,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 6,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'spd',
+          value: 5,
+          prob: 1.0,
+          duration: 3
+        }
+      ]
+    }
+  ]
+},
+
+{
+  id: 'tyrat',
+  name: 'Tyrat',
+  img: 'personajes/tyrat.jpg',
+  classes: ['atacante', 'debilitador'],
+  hp: 115,
+  atk: 25,
+  def: 17,
+  spd: 16,
+
+  moves: [
+    {
+      id: 'tyr1',
+      name: 'Mordisco',
+      power: 23,
+      acc: 0.95,
+      desc: 'Tyrat golpea con fuerza al enemigo y reduce temporalmente su DEF.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: {
+        type: 'debuff',
+        stat: 'def',
+        value: 6,
+        prob: 1.0,
+        duration: 2
+      }
+    },
+
+    {
+      id: 'tyr2',
+      name: 'Absorción',
+      power: 0,
+      acc: 1.0,
+      desc: 'Tyrat intimida al enemigo, reduciendo su ATK y SPD durante varios turnos.',
+      baseCooldown: 3,
+      type: 'support',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 8,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'spd',
+          value: 6,
+          prob: 1.0,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'tyr3',
+      name: 'El infiltrado',
+      power: 0,
+      acc: 1.0,
+      desc: 'Tyrat entra en un estado de furia, aumentando su ATK y SPD temporalmente.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 7,
+          duration: 3
+        },
+        {
+          type: 'tempSpd',
+          value: 6,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'tyr4',
+      name: 'ULTI: Yo, yo y yo',
+      power: 30,
+      acc: 0.88,
+      desc: 'Tyrat libera toda su fuerza en un ataque devastador que deja al enemigo gravemente debilitado.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 10,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 12,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'spd',
+          value: 6,
+          prob: 1.0,
+          duration: 3
+        }
+      ]
+    }
+  ]
+},
+
+{
+  id: 'cantonio',
+  name: 'Cantonio',
+  img: 'personajes/manjimutt.jpg',
+  classes: ['defensor', 'soporte'],
+  hp: 150,
+  atk: 16,
+  def: 28,
+  spd: 11,
+
+  moves: [
+    {
+      id: 'can1',
+      name: 'Mordisco',
+      power: 23,
+      acc: 0.95,
+      desc: 'Cantonio golpea al enemigo con fuerza y reduce temporalmente su ATK.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: {
+        type: 'debuff',
+        stat: 'atk',
+        value: 6,
+        prob: 1.0,
+        duration: 2
+      }
+    },
+
+    {
+      id: 'can2',
+      name: 'Ascuas',
+      power: 0,
+      acc: 1.0,
+      desc: 'Cantonio se interpone para proteger a sus aliados, aumentando su propia DEF y obteniendo un escudo.',
+      baseCooldown: 3,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempDef',
+          value: 8,
+          duration: 3
+        },
+        {
+          type: 'shield',
+          value: 30
+        }
+      ]
+    },
+
+    {
+      id: 'can3',
+      name: 'Confusión',
+      power: 0,
+      acc: 1.0,
+      desc: 'Cantonio anima a su equipo, aumentando temporalmente el ATK y la DEF de un aliado.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 5,
+          duration: 3
+        },
+        {
+          type: 'tempDef',
+          value: 6,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'can4',
+      name: 'ULTI: Bocado repulsivo',
+      power: 30,
+      acc: 0.9,
+      desc: 'Cantonio reúne toda su fuerza y lanza un brutal ataque que deja al enemigo debilitado y vulnerable.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 6,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 5,
+          prob: 1.0,
+          duration: 3
+        }
+      ]
+    }
+  ]
+},
+
+{
+  id: 'pifiasus',
+  name: 'Pifiasus',
+  img: 'personajes/pifiasus.jpg',
+  classes: ['defensor', 'debilitador'],
+  hp: 155,
+  atk: 17,
+  def: 30,
+  spd: 10,
+
+  moves: [
+    {
+      id: 'pif1',
+      name: 'Mordisco',
+      power: 22,
+      acc: 0.95,
+      desc: 'Pifiasus golpea al enemigo de forma torpe pero contundente, reduciendo su ATK.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: {
+        type: 'debuff',
+        stat: 'atk',
+        value: 5,
+        prob: 1.0,
+        duration: 3
+      }
+    },
+
+    {
+      id: 'pif2',
+      name: 'Relincho maldito',
+      power: 0,
+      acc: 1.0,
+      desc: 'Pifiasus provoca al enemigo con sus movimientos desastrosos, reduciendo su SPD y DEF.',
+      baseCooldown: 3,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'spd',
+          value: 4,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 6,
+          prob: 1.0,
+          duration: 3
+        }
+      ]
+    },
+
+    {
+      id: 'pif3',
+      name: 'Absorción',
+      power: 0,
+      acc: 1.0,
+      desc: 'Pifiasus se prepara para recibir los golpes enemigos, aumentando enormemente su resistencia.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempDef',
+          value: 7,
+          duration: 3
+        },
+        {
+          type: 'shield',
+          value: 30
+        }
+      ]
+    },
+
+    {
+      id: 'pif4',
+      name: 'ULTI: Caballo negro',
+      power: 30,
+      acc: 0.9,
+      desc: 'Pifiasus provoca un enorme desastre alrededor del enemigo, dañándolo y dejándolo completamente debilitado.',
+      baseCooldown: 7,
+      type: 'attack',
+      effects: [
+        {
+          type: 'debuff',
+          stat: 'atk',
+          value: 7,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 6,
+          prob: 1.0,
+          duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'spd',
+          value: 8,
+          prob: 1.0,
+          duration: 3
+        }
+      ]
+    }
+  ]
+},
 
 {
   id: 'ryuk',
@@ -395,8 +961,8 @@ const CHARACTERS = [
 
     {
       id: 'yv4',
-      name: 'Back 2 Bizniz',
-      power: 25,
+      name: 'ULTRA: Back 2 Bizniz',
+      power: 20,
       acc: 0.90,
       desc: 'Y.V cambia de arma a su lanzacohetes y dispara 3 veces, haciendo daño considerable y envolviendo en llamas a todos sus oponentes.',
       baseCooldown: 8,

@@ -28,10 +28,20 @@
        personajes/<id>.jpg      → retrato de cada boss (mismo id que arriba)
        personajes/mckraken2.jpg → retrato de la segunda fase de McKraken
 
+   Además de los 3 niveles de dificultad (Normal/Difícil/Pesadilla), cada boss
+   puede tener un 4º modo opcional: "Equipo temático". Usa SIEMPRE los mismos
+   multiplicadores que el nivel Difícil, pero solo deja elegir personajes de
+   una lista fija (el "roster temático" de ese boss). Se desbloquea al superar
+   el Nivel 1 (Normal) de ese boss, y al vencerlo concede una marca de ⭐
+   (tanto en este menú como en el perfil).
+
    DÓNDE AJUSTAR COSAS:
      - Bosses (stats y habilidades):  CHALLENGE_ONLY_CHARACTERS
      - Textos / música / orden:       CHALLENGE_META
      - Dificultad de cada nivel:      LEVELS
+     - Equipo temático de cada boss:  campo "themeTeam" dentro de CHALLENGE_META
+       (lista de ids de personajes; déjalo como [] para desactivar ese modo
+       en ese boss en concreto — necesita al menos TEAM_SIZE ids para activarse)
    Para añadir un boss: añade su personaje en CHALLENGE_ONLY_CHARACTERS y su
    entrada en CHALLENGE_META (con el mismo id). Nada más.
    ------------------------------------------------------------------------- */
@@ -56,6 +66,20 @@
     { n: 2, name: 'Difícil',   icon: '🥈', hp: 1.25, atk: 1.10, def: 1.12, spd: 1.05, shield: 0    },
     { n: 3, name: 'Pesadilla', icon: '🥇', hp: 1.50, atk: 1.22, def: 1.25, spd: 1.10, shield: 0.10 }
   ];
+
+  /* ---------------------------------------------------------
+     4º MODO: "Equipo temático". No es un nivel más en la escala de
+     dificultad: usa SIEMPRE los mismos multiplicadores que "Difícil"
+     (LEVELS[1]) — si ajustas esos números, este modo los sigue solo.
+     Lo que lo diferencia es el equipo permitido (ver themeTeam en
+     CHALLENGE_META, más abajo).
+     --------------------------------------------------------- */
+  const THEME_LEVEL = {
+    key: 'tema', name: 'Equipo Temático', icon: '⭐',
+    hp: LEVELS[1].hp, atk: LEVELS[1].atk, def: LEVELS[1].def, spd: LEVELS[1].spd, shield: LEVELS[1].shield
+  };
+  const isThemeLevel = lvl => lvl === THEME_LEVEL.key;
+  const levelInfo = lvl => isThemeLevel(lvl) ? THEME_LEVEL : LEVELS[lvl - 1];
 
   /* ---------------------------------------------------------
      BOSSES = PERSONAJES EXCLUSIVOS DEL DESAFÍO
@@ -199,15 +223,20 @@
     { id: 'mckraken',         emoji: '🦑', title: 'El dictador del Mundo Yo-kai.',
       phase2: 'mckraken2',
       phase2Log: '💥 ¡McKraken se hincha con la energía espiritual que ha absorbido y se transforma!',
-      intro: 'Quiere someter a la humanidad y absorbe toda la energía que toca con sus manos. Este es solo su primera forma.' },
+      intro: 'Quiere someter a la humanidad y absorbe toda la energía que toca con sus manos. Este es solo su primera forma.',
+      themeTeam: ['tyrat', 'pifiasus', 'cantonio', 'buhu', 'blizzaria', 'doblilete', 'chansin'] },
     { id: 'lilhunter',   emoji: '🔫🤪', title: 'El cazador de mutantes que fue abandonado por su escuadrón.',
-      intro: 'Ha pasado tantos años perdido en la nieve, que se ha convertido en uno de los salvajes. Reza para que su locura sea mayor que su puntería.' },
+      intro: 'Ha pasado tantos años perdido en la nieve, que se ha convertido en uno de los salvajes. Reza para que su locura sea mayor que su puntería.',
+      themeTeam: ['yv']  },
     { id: 'coloso_herrumbre', emoji: '⚙️', title: 'Montaña de metal viejo',
-      intro: 'Lento, pesado e inmune a casi todo. Pero cada golpe suyo puede acabar el combate.' },
+      intro: 'Lento, pesado e inmune a casi todo. Pero cada golpe suyo puede acabar el combate.',
+      themeTeam: [] },
     { id: 'verdugo_carmesi',  emoji: '🪓', title: 'El que nunca falla',
-      intro: 'Frágil como el cristal y rápido como un rayo. El que golpea primero, gana.' },
+      intro: 'Frágil como el cristal y rápido como un rayo. El que golpea primero, gana.',
+      themeTeam: [] },
     { id: 'emperador_vacio',  emoji: '🌌', title: 'Señor del último abismo',
-      intro: 'Al final del camino espera él. Si caes aquí, puedes volver a intentarlo cuando quieras.' }
+      intro: 'Al final del camino espera él. Si caes aquí, puedes volver a intentarlo cuando quieras.',
+      themeTeam: [] }
   ];
 
   /* ---------------------------------------------------------
@@ -248,11 +277,12 @@
   // cleared[bossId] = nivel más alto superado (0-3) · best[bossId_nivel] = menos turnos
   function loadProgress() {
     const p = loadJSON(PROGRESS_KEY, {});
-    return { cleared: p.cleared || {}, best: p.best || {} };
+    return { cleared: p.cleared || {}, best: p.best || {}, themeCleared: p.themeCleared || {} };
   }
   function saveProgress(p) { saveJSON(PROGRESS_KEY, p); }
 
   const clearedLevel = (p, id) => Number(p.cleared[id]) || 0;
+  const themeIsCleared = (p, id) => !!p.themeCleared[id];
 
   function bossUnlocked(p, index) {
     if (index === 0) return true;
@@ -260,11 +290,32 @@
   }
   const levelUnlocked = (p, id, lvl) => lvl <= clearedLevel(p, id) + 1;
 
+  // Roster permitido del Equipo temático de un boss (solo ids que existen de
+  // verdad); "disponible" exige tener al menos TEAM_SIZE personajes válidos.
+  const themeTeamFor = id => (bossMeta(id).themeTeam || []).filter(cid => !!baseHero(cid));
+  const themeAvailable = id => themeTeamFor(id).length >= TEAM_SIZE;
+  // El Equipo temático se desbloquea al superar el Nivel 1 (Normal) de ese boss.
+  const themeUnlocked = (p, id) => themeAvailable(id) && clearedLevel(p, id) >= 1;
+
   function recordWin(id, lvl, turns) {
     const p = loadProgress();
     const wasNew = lvl > clearedLevel(p, id);
     if (wasNew) p.cleared[id] = lvl;
     const k = id + '_' + lvl;
+    const prev = p.best[k];
+    const record = !prev || (turns > 0 && turns < prev);
+    if (record && turns > 0) p.best[k] = turns;
+    saveProgress(p);
+    return { wasNew, record: record && turns > 0 };
+  }
+
+  // Igual que recordWin pero para el Equipo temático: no es un nivel numérico,
+  // así que se guarda aparte (p.themeCleared) y el récord usa la clave "<id>_tema".
+  function recordThemeWin(id, turns) {
+    const p = loadProgress();
+    const wasNew = !themeIsCleared(p, id);
+    if (wasNew) p.themeCleared[id] = true;
+    const k = id + '_tema';
     const prev = p.best[k];
     const record = !prev || (turns > 0 && turns < prev);
     if (record && turns > 0) p.best[k] = turns;
@@ -335,7 +386,7 @@
   };
 
   function buildBoss(bossId, lvl) {
-    const L = LEVELS[lvl - 1];
+    const L = levelInfo(lvl);
     const b = cloneCharacter(bossBase(bossId));
     b.maxHp = Math.round(b.maxHp * L.hp);  b.hp = b.maxHp;
     b.atk   = Math.round(b.atk * L.atk);
@@ -349,6 +400,13 @@
     if (!bossBase(bossId)) { alert('Boss no encontrado: ' + bossId); return; }
     const heroBases = teamIds.map(baseHero).filter(Boolean);
     if (heroBases.length !== TEAM_SIZE) { alert(`Elige exactamente ${TEAM_SIZE} personajes.`); return; }
+    if (isThemeLevel(lvl)) {
+      const allowed = themeTeamFor(bossId);
+      if (!heroBases.every(h => allowed.includes(h.id))) {
+        alert('En el Equipo temático solo puedes usar los personajes de su roster.');
+        return;
+      }
+    }
 
     const heroes = heroBases.map(b => cloneCharacter(b));
     const boss = buildBoss(bossId, lvl);
@@ -364,8 +422,8 @@
     state.mode = 'pve';
     window.GAME_MODE = 'pve';
     state.bansEnabled = false;
-    state.storyMode = true;            // reutiliza el flujo de "combate scriptado"
-    state.challengeMode = true;         // muerte súbita a los 100 turnos (en vez de 70) en game.js
+    state.storyMode = true;            
+    state.challengeMode = true;         
     state.moveLock = false;
     state.teams.p1 = heroes;
     state.teams.p2 = [boss];
@@ -380,7 +438,7 @@
     if (banner) banner.style.display = 'none';
     const logEl = byId('log');
     if (logEl) logEl.innerHTML = '';
-    const hellBanner = byId('hell-banner');       // por si el Infierno dejó su cartel
+    const hellBanner = byId('hell-banner');       
     if (hellBanner) hellBanner.style.display = 'none';
 
     const surrender = byId('story-surrender-btn');
@@ -391,7 +449,8 @@
     state.phase = 'battle';
     startBattle();
 
-    safeLog(`${meta.emoji || '⚔️'} ${TITLE}: ${boss.name} — Nivel ${lvl} (${LEVELS[lvl - 1].name})`);
+    const levelLabel = isThemeLevel(lvl) ? `${THEME_LEVEL.icon} ${THEME_LEVEL.name}` : `Nivel ${lvl} (${LEVELS[lvl - 1].name})`;
+    safeLog(`${meta.emoji || '⚔️'} ${TITLE}: ${boss.name} — ${levelLabel}`);
     if (boss.shield > 0) safeLog(`🛡️ ${boss.name} empieza con ${boss.shield} de escudo.`);
   }
 
@@ -454,7 +513,7 @@
     playChMusic(MUSIC_MENU, '');
 
     if (result === 'win') {
-      const info = recordWin(bossId, lvl, turns);
+      const info = isThemeLevel(lvl) ? recordThemeWin(bossId, turns) : recordWin(bossId, lvl, turns);
       renderResult(bossId, lvl, true, { turns, teamIds, ...info });
     } else {
       renderResult(bossId, lvl, false, { turns, teamIds });
@@ -521,6 +580,8 @@
     .ch-level{flex:1 1 150px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:inherit;font:inherit;cursor:pointer;text-align:left}
     .ch-level.active{border-color:#fbbf24;box-shadow:0 0 0 1px #fbbf24 inset;background:rgba(251,191,36,.08)}
     .ch-level.locked{opacity:.4;cursor:not-allowed}
+    .ch-level-theme{border-style:dashed;border-color:rgba(251,191,36,.55)}
+    .ch-level-theme.active{border-style:solid}
     .ch-level small{display:block;color:#c4b5d9;margin-top:2px}
     .ch-detail{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin-bottom:8px}
     .ch-detail img,.ch-detail .ch-boss-fb{width:170px;height:170px;object-fit:cover;border-radius:14px;flex:0 0 auto}
@@ -624,7 +685,11 @@
   }
 
   const body = () => byId('ch-body');
-  const medals = (p, id) => LEVELS.map(L => (clearedLevel(p, id) >= L.n ? L.icon : '▫️')).join('');
+  const medals = (p, id) => {
+    const base = LEVELS.map(L => (clearedLevel(p, id) >= L.n ? L.icon : '▫️')).join('');
+    if (!themeAvailable(id)) return base;                      // boss sin Equipo temático configurado
+    return base + (themeIsCleared(p, id) ? ' ⭐' : ' ☆');
+  };
 
   /* ---------- Vista 1: lista de bosses ---------- */
   function renderList() {
@@ -657,7 +722,7 @@
     ui.view = 'setup';
     const p = loadProgress();
     const b = bossBase(ui.bossId), m = bossMeta(ui.bossId);
-    const L = LEVELS[ui.level - 1];
+    const L = levelInfo(ui.level);
 
     const levelBtns = LEVELS.map(l => {
       const open = levelUnlocked(p, ui.bossId, l.n);
@@ -668,8 +733,28 @@
       </button>`;
     }).join('');
 
+    // 4º modo opcional: Equipo temático (mismos multiplicadores que Difícil,
+    // pero con un roster de personajes limitado). Solo aparece si el boss
+    // tiene un "themeTeam" configurado con al menos TEAM_SIZE personajes.
+    let themeBtn = '';
+    if (themeAvailable(ui.bossId)) {
+      const open = themeUnlocked(p, ui.bossId);
+      const done = themeIsCleared(p, ui.bossId);
+      const best = p.best[ui.bossId + '_tema'];
+      themeBtn = `<button class="ch-level ch-level-theme${isThemeLevel(ui.level) ? ' active' : ''}${open ? '' : ' locked'}" data-lvl="${THEME_LEVEL.key}" ${open ? '' : 'disabled'}>
+        <b>${THEME_LEVEL.icon} ${THEME_LEVEL.name}</b>
+        <small>${open ? (done ? `Superado${best ? ` · Récord: ${best} turnos` : ''}` : 'Tienes un róster limitado de personajes. Dificultad media.') : '🔒 Supera el Nivel 1 primero'}</small>
+      </button>`;
+    }
+
     const stat = (k, v) => `<span class="ch-stat">${k} <b>${v}</b></span>`;
     const moves = b.moves.map(mv => `<div class="ch-move"><b>${esc(mv.name)}</b> — ${esc(mv.desc)}</div>`).join('');
+
+    // En Equipo temático, el buscador de personajes se filtra a este roster.
+    const themeIds = isThemeLevel(ui.level) ? themeTeamFor(ui.bossId) : null;
+    const themeNote = themeIds
+      ? `<div class="ch-note" style="margin:6px 0 0">Solo puedes usar a ${themeIds.map(id => esc((baseHero(id) || { name: id }).name)).join(', ')}.</div>`
+      : '';
 
     body().innerHTML = `
       <div class="ch-row" style="margin-bottom:10px"><button id="ch-tolist" class="class-btn">◀ Bosses</button></div>
@@ -687,8 +772,9 @@
           <div class="ch-moves">${moves}</div>
         </div>
       </div>
-      <div class="ch-levels">${levelBtns}</div>
+      <div class="ch-levels">${levelBtns}${themeBtn}</div>
       <h4 style="margin:14px 0 4px">👥 Tu equipo (${TEAM_SIZE})</h4>
+      ${themeNote}
       <div id="ch-team" class="ch-team"></div>
       <input id="ch-search" class="ch-search" type="text" placeholder="Buscar personaje por nombre…" autocomplete="off" spellcheck="false" value="${esc(ui.search)}">
       <div id="ch-grid" class="ch-grid"></div>
@@ -697,7 +783,16 @@
     wireImageFallbacks(body());
     byId('ch-tolist').addEventListener('click', renderList);
     body().querySelectorAll('.ch-level:not(.locked)').forEach(el =>
-      el.addEventListener('click', () => { ui.level = Number(el.dataset.lvl); renderSetup(); }));
+      el.addEventListener('click', () => {
+        ui.level = el.dataset.lvl === THEME_LEVEL.key ? THEME_LEVEL.key : Number(el.dataset.lvl);
+        // Al entrar/salir del Equipo temático, se descarta de la selección
+        // actual cualquier personaje que no pertenezca al roster permitido.
+        if (isThemeLevel(ui.level)) {
+          const allowed = themeTeamFor(ui.bossId);
+          ui.selected = ui.selected.filter(id => allowed.includes(id));
+        }
+        renderSetup();
+      }));
     byId('ch-search').addEventListener('input', e => { ui.search = e.target.value; renderHeroGrid(); });
     byId('ch-start').addEventListener('click', () => startChallenge(ui.bossId, ui.level, ui.selected));
     renderTeamChips();
@@ -727,7 +822,11 @@
     const grid = byId('ch-grid');
     if (!grid) return;
     const q = norm(ui.search);
-    const list = CHARACTERS.filter(c => !q || norm(c.name).includes(q));
+    // Equipo temático: solo se puede elegir entre el roster fijo de ese boss.
+    const pool = isThemeLevel(ui.level)
+      ? CHARACTERS.filter(c => themeTeamFor(ui.bossId).includes(c.id))
+      : CHARACTERS;
+    const list = pool.filter(c => !q || norm(c.name).includes(q));
     grid.innerHTML = list.length ? list.map(c => `
       <button class="ch-hero${ui.selected.includes(c.id) ? ' sel' : ''}" data-id="${esc(c.id)}">
         ${imgOrFallback(c.img, c.name, '👤', 'ch-boss-fb')}
@@ -744,16 +843,20 @@
     const b = bossBase(bossId), m = bossMeta(bossId);
     const p = loadProgress();
     const idx = CHALLENGE_META.findIndex(x => x.id === bossId);
-    const nextLevel = lvl < LEVELS.length;
+    const nextLevel = !isThemeLevel(lvl) && lvl < LEVELS.length;
     const nextBoss = idx >= 0 && idx < CHALLENGE_META.length - 1 && bossUnlocked(p, idx + 1) ? CHALLENGE_META[idx + 1].id : null;
+    const modeLabel = isThemeLevel(lvl) ? `${THEME_LEVEL.icon} ${THEME_LEVEL.name}` : `Nivel ${lvl} · ${LEVELS[lvl - 1].name}`;
+    const firstClearNote = isThemeLevel(lvl)
+      ? '🎉 ¡Primera vez que superas a este boss en el Equipo temático!'
+      : `🎉 Nivel superado por primera vez.${nextLevel ? ' Se ha desbloqueado el siguiente nivel.' : ' ¡Has completado este boss en su máxima dificultad!'}${nextBoss && lvl === 1 ? ' Además, se ha desbloqueado un nuevo boss.' : ''}`;
 
     let html;
     if (won) {
       html = `<div class="ch-result">
-        <div style="font-size:54px">🏆</div>
+        <div style="font-size:54px">${isThemeLevel(lvl) ? '⭐' : '🏆'}</div>
         <h3 class="ch-win">¡${esc(b.name)} derrotado!</h3>
-        <div class="ch-sub">Nivel ${lvl} · ${LEVELS[lvl - 1].name} — ${info.turns} turnos</div>
-        ${info.wasNew ? `<div class="ch-note">🎉 Nivel superado por primera vez.${nextLevel ? ' Se ha desbloqueado el siguiente nivel.' : ' ¡Has completado este boss en su máxima dificultad!'}${nextBoss && lvl === 1 ? ' Además, se ha desbloqueado un nuevo boss.' : ''}</div>` : ''}
+        <div class="ch-sub">${modeLabel} — ${info.turns} turnos</div>
+        ${info.wasNew ? `<div class="ch-note">${firstClearNote}</div>` : ''}
         ${info.record ? `<div class="ch-note">⏱️ ¡Nuevo récord de turnos!</div>` : ''}
         <div class="ch-row" style="justify-content:center;margin-top:16px">
           ${nextLevel ? `<button id="ch-next" class="class-btn ch-primary">▶ Nivel ${lvl + 1}</button>` : ''}
@@ -765,7 +868,7 @@
       html = `<div class="ch-result">
         <div style="font-size:54px">💀</div>
         <h3 class="ch-lose">Has caído ante ${esc(b.name)}</h3>
-        <div class="ch-sub">Nivel ${lvl} · ${LEVELS[lvl - 1].name} — ${info.turns} turnos</div>
+        <div class="ch-sub">${modeLabel} — ${info.turns} turnos</div>
         <div class="ch-note">Prueba otro equipo o cambia de estrategia: puedes intentarlo las veces que quieras.</div>
         <div class="ch-row" style="justify-content:center;margin-top:16px">
           <button id="ch-again" class="class-btn ch-primary">↻ Reintentar con el mismo equipo</button>
@@ -796,5 +899,8 @@
   else init();
 
   // API mínima para depurar desde la consola
-  window.DESAFIO = { open: openDesafio, bosses: CHALLENGE_ONLY_CHARACTERS, levels: LEVELS, loadProgress };
+  window.DESAFIO = {
+    open: openDesafio, bosses: CHALLENGE_ONLY_CHARACTERS, meta: CHALLENGE_META,
+    levels: LEVELS, themeLevel: THEME_LEVEL, teamSize: TEAM_SIZE, loadProgress
+  };
 })();

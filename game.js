@@ -1269,7 +1269,7 @@ function renderMovesArea(){
   
   actor.moves.forEach(m=>{
     const btn = document.createElement('button'); btn.className='move-btn';
-    const nameClass = (m.type==='support' || (m.effect && (m.effect.type==='heal' || m.effect.type==='shield' || m.effect.type.startsWith('temp')))) ? 'support' : 'attack';
+    const nameClass = (m.type==='support' || getMoveEffects(m).some(e => e && (e.type==='heal' || e.type==='shield' || (typeof e.type==='string' && e.type.startsWith('temp'))))) ? 'support' : 'attack';
     btn.innerHTML = `<div><span class="move-name ${nameClass}">${m.name}</span><span style="float:right" class="cooldown-badge">${m.cd>0?('CD:'+m.cd):'Listo'}</span></div><div class="move-desc">${m.desc}</div>`;
     if(m.cd>0 || actor.hp<=0 || actor.stunned > 0 || (state.mode==='pve' && owner==='p2')) btn.disabled = true;
     btn.onclick = () => onUseMove(owner, m.id);
