@@ -9,7 +9,8 @@
        · Modo Historia: capítulo más lejano alcanzado.
        · Desafío: medallas y mejor marca (turnos) de cada boss y nivel.
        · Infierno Infinito: piso más alto, pisos superados, mejor marca.
-   - Rango según los "puntos de gloria" que acumulas en todos los modos.
+   - Rango según los "puntos de gloria" que acumulas en todos los modos
+     (incluida la gloria de las cajas del Inventario, ver inventario.js).
 
    INSTALACIÓN (un solo archivo, no hay que tocar game.js ni los demás):
      En juego.html, DESPUÉS de desafio.js:
@@ -242,9 +243,15 @@
     return g;
   }
 
-  /* 1 por victoria libre · 3 por capítulo · 6 por medalla del Desafío · 4 por piso del Infierno */
+  /* Gloria ganada abriendo cajas del Inventario (inventario.js). Si ese archivo no está, 0. */
+  function bonusGlory() {
+    try { return window.INVENTARIO && typeof window.INVENTARIO.bonusGlory === 'function' ? (Number(window.INVENTARIO.bonusGlory()) || 0) : 0; }
+    catch (e) { return 0; }
+  }
+
+  /* 1 por victoria libre · 3 por capítulo · 6 por medalla del Desafío · 4 por piso del Infierno · 1-50 por caja abierta */
   function computePoints(g) {
-    return g.freeWins + g.story.reached * 3 + g.desafio.medals * 6 + g.hell.floors * 4;
+    return g.freeWins + g.story.reached * 3 + g.desafio.medals * 6 + g.hell.floors * 4 + bonusGlory();
   }
 
   function rankFor(points) {
@@ -529,7 +536,7 @@
         </div>
         <div class="pf-xp"><i id="pf-xp-fill" style="width:${reduceMotion() ? pct : 0}%" data-pct="${pct}"></i></div>
         <div class="pf-xp-label">${next ? `${g.points} / ${next.min} para ser ${next.icon} ${esc(next.name)}` : '¡Has alcanzado el rango máximo!'}</div>
-        <div class="pf-hint">Ganas gloria con victorias en batalla libre (1), capítulos de Historia (3), medallas del Desafío (6) y pisos del Infierno (4).</div>
+        <div class="pf-hint">Ganas gloria con victorias en batalla libre (1), capítulos de Historia (3), medallas del Desafío (6), pisos del Infierno (4) y cajas del Inventario (1-50 cada una).</div>
       </div>
     </section>`;
   }

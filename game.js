@@ -82,7 +82,73 @@ function cloneCharacter(base){
   // Compatibilidad con habilidades existentes que usan stun.
   c.stunned = 0;
 
+  // Nº de veces que ha revivido en ESTA batalla (pasiva "revivir"; ver más abajo).
+  c.reviveCount = 0;
+
   return c;
+}
+
+/* ---------------------------------------------------------------------
+   PASIVA: "Revivir". Se activa sola, sin gastar turno ni botón: cualquier
+   personaje puede tener en su ficha de personajes.js un campo opcional
+
+     passive: {
+       type: 'revive',
+       name: 'Segunda Oportunidad',   // nombre que se muestra en el glosario
+       desc: 'Texto libre para el glosario (opcional; si se omite se genera uno).',
+       chance: 0.5,        // probabilidad de revivir la 1ª vez que cae a 0 HP (50%)
+       decay: 0.2,         // cuánto baja esa probabilidad CADA VEZ QUE REVIVE,
+                            // en puntos porcentuales (0.2 = 50%→30%→10%→0%)
+       healPercent: 0.5    // % de la vida máxima con la que vuelve (por defecto 50%)
+     }
+
+   Los personajes sin este campo no se ven afectados en nada. No hace falta
+   tocar personajes.js para que el motor funcione: solo hay que añadirle este
+   campo a los personajes que quieras que lo tengan.
+   --------------------------------------------------------------------- */
+function getRevivePassive(ch){
+  return (ch && ch.passive && ch.passive.type === 'revive') ? ch.passive : null;
+}
+
+// Probabilidad ACTUAL de revivir de un personaje en esta batalla, ya con el
+// descuento por cada vez que ha revivido antes. Nunca baja de 0.
+function currentReviveChance(ch){
+  const passive = getRevivePassive(ch);
+  if(!passive) return 0;
+  const base = Math.max(0, Math.min(1, Number(passive.chance) != null ? Number(passive.chance) : 0.5));
+  const decay = Math.max(0, Number(passive.decay) || 0);
+  const used = ch.reviveCount || 0;
+  return Math.max(0, base - decay * used);
+}
+
+// Se llama justo cuando la vida de un personaje acaba de llegar a 0. Si tiene
+// la pasiva de revivir, tira el dado con la probabilidad actual; si sale bien,
+// vuelve con parte de su vida máxima y la probabilidad baja para la próxima
+// vez (si sale mal, NO cuenta como "uso": puede volver a intentarlo igual de
+// fuerte la próxima vez que caiga).
+function tryPassiveRevive(target){
+  if(!target || target.hp > 0) return false;
+  const passive = getRevivePassive(target);
+  if(!passive) return false;
+
+  const chance = currentReviveChance(target);
+  if(chance <= 0) return false;
+
+  if(gameRandom() >= chance){
+    log(`💔 ${target.name} intenta activar su pasiva «${passive.name || 'Segunda Oportunidad'}», pero no revive.`);
+    return false;
+  }
+
+  target.reviveCount = (target.reviveCount || 0) + 1;
+  const healPercent = passive.healPercent != null ? Math.max(0, Math.min(1, Number(passive.healPercent))) : 0.5;
+  target.hp = Math.max(1, Math.round(target.maxHp * healPercent));
+  target.shield = 0;     // vuelve sin el escudo que tuviera antes de caer
+
+  const nextChance = Math.round(currentReviveChance(target) * 100);
+  const nextTxt = nextChance > 0 ? ` (próxima vez: ${nextChance}%)` : ' (ya no podrá volver a revivir)';
+  log(`✨ ¡${target.name} activa su pasiva «${passive.name || 'Segunda Oportunidad'}» y revive con ${target.hp} HP!${nextTxt}`);
+  updateArena();
+  return true;
 }
 /* Busca un personaje por id. Además de CHARACTERS (batalla libre) también mira
    en STORY_ONLY_CHARACTERS (personajes exclusivos del Modo Historia), para que
@@ -333,6 +399,13 @@ function renderBannedBanner(){
 state.glossarySearch = '';
 state.glossaryFilter = null;
 
+function passiveBadgeHTML(ch){
+  const passive = getRevivePassive(ch);
+  if(!passive) return '';
+  const title = `${passive.name || 'Pasiva'}: revive con ${Math.round((passive.healPercent != null ? passive.healPercent : 0.5) * 100)}% de vida (empieza al ${Math.round((passive.chance != null ? passive.chance : 0.5) * 100)}%)`;
+  return `<div class="passive-badge" title="${title.replace(/"/g,'&quot;')}">✨</div>`;
+}
+
 function getGlossaryCandidates(){
   let chars = CHARACTERS;
   if(state.glossaryFilter) chars = chars.filter(c => c.classes.includes(state.glossaryFilter));
@@ -405,7 +478,7 @@ function renderGlossaryGrid(){
   chars.forEach(ch => {
     const el = document.createElement('div');
     el.className = 'char';
-    el.innerHTML = `<img src="${ch.img}" alt=""><strong style="display:block;margin-top:6px">${ch.name}</strong>
+    el.innerHTML = `${passiveBadgeHTML(ch)}<img src="${ch.img}" alt=""><strong style="display:block;margin-top:6px">${ch.name}</strong>
                     <div class="classes">${ch.classes.join(', ')}</div>`;
     el.onclick = () => openCharacterDetail(ch.id);
     wrap.appendChild(el);
@@ -447,6 +520,23 @@ function openCharacterDetail(id){
       </div>`;
   }).join('');
 
+  const revivePassive = getRevivePassive(ch);
+  const passiveHtml = revivePassive ? `
+    <div class="glossary-passive">
+      <h4>Pasiva</h4>
+      <div class="glossary-passive-card">
+        <div class="glossary-passive-top">
+          <span class="passive-name">✨ ${revivePassive.name || 'Segunda Oportunidad'}</span>
+        </div>
+        <div class="glossary-passive-desc">${revivePassive.desc || 'Si la vida del personaje llega a 0, tiene un chance de revivir.'}</div>
+        <div class="glossary-passive-meta">
+          Probabilidad inicial: ${Math.round((revivePassive.chance != null ? revivePassive.chance : 0.5) * 100)}%
+          · Baja ${Math.round((revivePassive.decay != null ? revivePassive.decay : 0) * 100)} puntos cada vez que revive.
+          · Vuelve con ${Math.round((revivePassive.healPercent != null ? revivePassive.healPercent : 0.5) * 100)}% de su vida máxima.
+        </div>
+      </div>
+    </div>` : '';
+
   body.innerHTML = `
     <div class="glossary-detail-header">
       <img src="${ch.img}" alt="">
@@ -456,6 +546,7 @@ function openCharacterDetail(id){
       </div>
     </div>
     <div class="glossary-stats">${statsHtml}</div>
+    ${passiveHtml}
     <div class="glossary-moves">
       <h4>Habilidades</h4>
       ${movesHtml}
@@ -936,7 +1027,7 @@ function renderCharGrid(player){
 
   chars.forEach(ch => {
     const el = document.createElement('div'); el.className='char';
-    el.innerHTML = `<img src="${ch.img}" alt=""><strong style="display:block;margin-top:6px">${ch.name}</strong>
+    el.innerHTML = `${passiveBadgeHTML(ch)}<img src="${ch.img}" alt=""><strong style="display:block;margin-top:6px">${ch.name}</strong>
                     <div class="classes">${ch.classes.join(', ')}</div>`;
     
     const inCurrentTeam = isCharInTeam(player, ch.id);
@@ -1096,8 +1187,14 @@ function updateArena(){
     const accMod = getAccuracyModifier(active);
     const accIndicator = accMod !== 0 ? ` · ${accMod > 0 ? '🎯+' : '👁️‍🗨️'}${accMod}% PRE` : '';
 
+    const revivePassive = getRevivePassive(active);
+    const reviveChancePct = Math.round(currentReviveChance(active) * 100);
+    const reviveIndicator = revivePassive
+      ? (reviveChancePct > 0 ? ` · ✨ Revivir: ${reviveChancePct}%` : ' · ✨ Revivir: agotado')
+      : '';
+
     $(`stats-${p}`).innerHTML =
-      `<small>HP: ${active.hp}/${active.maxHp} · Escudo: ${active.shield} · ATK:${getEffectiveStat(active,'atk')} DEF:${getEffectiveStat(active,'def')} SPD:${getEffectiveStat(active,'spd')}${stunIndicator}${statusIndicator}${controlIndicator}${debuffIndicator}${accIndicator}</small>`;
+      `<small>HP: ${active.hp}/${active.maxHp} · Escudo: ${active.shield} · ATK:${getEffectiveStat(active,'atk')} DEF:${getEffectiveStat(active,'def')} SPD:${getEffectiveStat(active,'spd')}${stunIndicator}${statusIndicator}${controlIndicator}${debuffIndicator}${accIndicator}${reviveIndicator}</small>`;
   });
   renderSlots('p1'); renderSlots('p2'); renderMovesArea();
 }
@@ -1178,6 +1275,7 @@ function startTurnActions(){
       state.teams[p].forEach(char => {
         if(char.hp > 0){
           const suddenDeathDmg = 10;
+          const hpBefore = char.hp;
 
           // La muerte súbita es lo único que sí respeta el escudo:
           // el escudo absorbe el daño y solo el resto pasa a la vida.
@@ -1189,6 +1287,8 @@ function startTurnActions(){
           }else{
             char.hp = Math.max(0, char.hp - suddenDeathDmg);
           }
+
+          if(hpBefore > 0 && char.hp <= 0) tryPassiveRevive(char);
         }
       });
     });
@@ -1909,7 +2009,9 @@ function applyReflectedDamage(source, target, amount){
   }
 
   if(reflected > 0){
+    const hpBefore = target.hp;
     target.hp = Math.max(0, target.hp - reflected);
+    if(hpBefore > 0 && target.hp <= 0) tryPassiveRevive(target);
   }
 }
 
@@ -2145,12 +2247,16 @@ function applyStatusDamage(target, amount, status){
   let damage = Math.max(0, Math.round(amount));
   if(damage <= 0) return;
 
+  const hpBefore = target.hp;
+
   // El daño continuo ignora el escudo: va directo a la vida.
   if(damage > 0){
     target.hp = Math.max(0, target.hp - damage);
     if(target.hp <= 0) target.shield = 0;
     log(`${target.name} recibió ${damage} de daño por ${getStatusLabel(status)} (ignora escudo).`);
   }
+
+  if(hpBefore > 0 && target.hp <= 0) tryPassiveRevive(target);
 }
 
 function processDamageOverTime(target){
@@ -2325,6 +2431,10 @@ function applyDamage(actor, target, move){
       log(`↩️ ${target.name} contraataca a ${actor.name}!`);
       applyDamage(target, actor, { ...basic, _isCounter: true });
     }
+  }
+
+    if(hpBefore > 0 && target.hp <= 0){
+    tryPassiveRevive(target);
   }
 
   flashHit(getKeyOfTarget(target));

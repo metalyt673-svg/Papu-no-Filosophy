@@ -1039,6 +1039,58 @@
       font-weight:700;
     }
 
+    /* Distintivo ✨ en las fichas (Glosario y selección de equipo) para los
+       personajes que tienen una pasiva. */
+    .passive-badge{
+      position:absolute;
+      top:6px;
+      right:8px;
+      font-size:14px;
+      line-height:1;
+      filter:drop-shadow(0 0 4px rgba(251,191,36,.65));
+      z-index:2;
+    }
+
+    /* Sección "Pasiva" en la ficha de detalle del Glosario. */
+    .glossary-passive{
+      margin-bottom:18px;
+    }
+
+    .glossary-passive h4{
+      margin:0 0 10px;
+      font-size:13px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#9db0cc;
+    }
+
+    .glossary-passive-card{
+      padding:12px 14px;
+      border:1px solid rgba(251,191,36,.35);
+      border-radius:13px;
+      background:
+        radial-gradient(circle at 0% 0%,rgba(251,191,36,.10),transparent 55%),
+        rgba(255,255,255,.025);
+    }
+
+    .glossary-passive-top .passive-name{
+      font-weight:700;
+      font-size:14px;
+      color:#fde68a;
+    }
+
+    .glossary-passive-desc{
+      margin:6px 0;
+      font-size:12px;
+      color:#c9d3e0;
+      line-height:1.45;
+    }
+
+    .glossary-passive-meta{
+      font-size:11px;
+      color:#9db0cc;
+    }
+
     .glossary-moves h4{
       margin:0 0 10px;
       font-size:13px;
@@ -2419,12 +2471,15 @@
   <script src="torneo.js" defer></script>
   <script src="historia2.js" defer></script>
   <script src="perfil.js" defer></script>
+  <script src="inventario.js" defer></script>
   <script src="amigos.js" defer></script>
   <script src="fama.js" defer></script>
   <script src="multijugador.js" defer></script>
   <script src="comparador.js" defer></script>
   <script src="equipos.js" defer></script>
   <script src="registro.js" defer></script>
+  <script src="tutorial.js" defer></script>
+  <script src="interfaz.js" defer></script>
   <script>
     const battleMusic = document.getElementById('battle-music');
 

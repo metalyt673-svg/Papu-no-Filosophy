@@ -306,11 +306,11 @@ const CHARACTERS = [
       effects: [
         {
           type: 'heal',
-          value: 42
+          value: 40
         },
         {
           type: 'selfHealPct',
-          value: 20,
+          value: 0.20,
         }
       ]
     }
@@ -5794,17 +5794,17 @@ const CHARACTERS = [
       power: 0,
       acc: 1.0,
       desc: 'Belerick refuerza su cuerpo con energía natural, aumentando su DEF y creando un escudo protector.',
-      baseCooldown: 3,
+      baseCooldown: 4,
       type: 'support',
       effects: [
         {
           type: 'tempDef',
-          value: 9,
+          value: 8,
           duration: 3
         },
         {
           type: 'shield',
-          value: 28
+          value: 22
         }
       ]
     },
@@ -5859,17 +5859,17 @@ const CHARACTERS = [
       power: 0,
       acc: 1.0,
       desc: 'Belerick adopta una postura defensiva absoluta, aumentando enormemente su DEF y reflejando una parte del daño recibido.',
-      baseCooldown: 5,
+      baseCooldown: 6,
       type: 'support',
       effects: [
         {
           type: 'tempDef',
-          value: 10,
+          value: 8,
           duration: 3
         },
         {
           type: 'shield',
-          value: 35
+          value: 30
         },
         {
           type: 'reflectDamage',
@@ -12953,7 +12953,7 @@ const CHARACTERS = [
     { id: 'ant3', name: 'El mismísimo Antonio Lobato', power: 30, acc: 0.80, desc: 'Ataque muy potente', 
       baseCooldown: 2, type: 'attack', effect: null
     },
-    { id: 'ant4', name: 'Hola, ¿Quieres saber cuanto ale tu coche?', power: 40, acc: 0.8, desc: 'Mega ataque fuerte', 
+    { id: 'ant4', name: 'Hola, ¿Quieres saber cuanto vale tu coche?', power: 40, acc: 0.8, desc: 'Mega ataque fuerte', 
       baseCooldown: 6, type: 'attack', effect: null
     } ]
 },
