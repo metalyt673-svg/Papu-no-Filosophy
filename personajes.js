@@ -14,6 +14,800 @@
 
 const CHARACTERS = [
 
+{
+  id: 'nozel',
+  name: 'Nozel Silva',
+  img: 'personajes/nozel.jpg',
+  classes: ['atacante', 'defensor'],
+  hp: 135,
+  atk: 29,
+  def: 18,
+  spd: 18,
+
+  /* MECÁNICA: Magia de Mercurio. Ataca con fuerza y se protege con armadura de mercurio. */
+  moves: [
+    {
+      id: 'nozel1',
+      name: 'Lanza de Mercurio',
+      power: 23,
+      acc: 0.97,
+      desc: 'Nozel dispara una lanza de mercurio contra el rival. Ataque básico.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: null
+    },
+    {
+      id: 'nozel2',
+      name: 'Armadura de Mercurio',
+      power: 0,
+      acc: 1.0,
+      desc: 'Nozel se envuelve en una armadura de mercurio: gana un escudo y aumenta su DEF +6 durante 3 turnos.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        { type: 'shield', value: 26 },
+        { type: 'tempDef', value: 6, duration: 3 }
+      ]
+    },
+    {
+      id: 'nozel3',
+      name: 'Oleada de Mercurio',
+      power: 26,
+      acc: 0.92,
+      desc: 'Una oleada de mercurio que golpea con fuerza y reduce la SPD del rival durante 2 turnos.',
+      baseCooldown: 2,
+      type: 'attack',
+      effects: [
+        { type: 'debuff', stat: 'spd', value: 5, duration: 2 }
+      ]
+    },
+    {
+      id: 'nozel4',
+      name: 'Valquiria de Mercurio (ULT)',
+      power: 30,
+      acc: 0.87,
+      desc: 'Nozel invoca una armadura de valquiria de mercurio y ataca con todo: gran daño, gana un escudo y aumenta su ATK +5 durante 2 turnos.',
+      baseCooldown: 6,
+      type: 'attack',
+      effects: [
+        { type: 'shield', value: 20 },
+        { type: 'tempAtk', value: 5, duration: 2 }
+      ]
+    }
+  ]
+},
+
+
+{
+  id: 'rill',
+  name: 'Rill Boismortier',
+  img: 'personajes/rill.jpg',
+  classes: ['mago', 'control'],
+  hp: 115,
+  atk: 24,
+  def: 14,
+  spd: 19,
+
+  /* MECÁNICA: mago versátil. Ralentiza y debilita al rival y se potencia a sí mismo. */
+  moves: [
+    {
+      id: 'rill1',
+      name: 'Proyectil Mágico',
+      power: 20,
+      acc: 0.97,
+      desc: 'Rill dispara un proyectil de mana y puede reducir la SPD del rival durante 2 turnos.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: [
+        { type: 'debuff', stat: 'spd', value: 4, duration: 2, prob: 0.4 }
+      ]
+    },
+    {
+      id: 'rill2',
+      name: 'Hechizo Paralizante',
+      power: 18,
+      acc: 0.92,
+      desc: 'Un hechizo que puede aturdir al rival y reduce su precisión durante 2 turnos.',
+      baseCooldown: 3,
+      type: 'attack',
+      effects: [
+        { type: 'stun', prob: 0.3, duration: 1 },
+        { type: 'accuracyDown', value: 10, duration: 2 }
+      ]
+    },
+    {
+      id: 'rill3',
+      name: 'Concentración de Maná',
+      power: 0,
+      acc: 1.0,
+      desc: 'Rill concentra su maná: aumenta su ATK +5 y su probabilidad de crítico un 15% durante 3 turnos.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        { type: 'tempAtk', value: 5, duration: 3 },
+        { type: 'critChance', value: 15, duration: 3 }
+      ]
+    },
+    {
+      id: 'rill4',
+      name: 'Gran Hechizo (ULT)',
+      power: 30,
+      acc: 0.88,
+      desc: 'Rill libera un gran hechizo: daño fuerte y reduce el ATK y la DEF del rival durante 3 turnos.',
+      baseCooldown: 6,
+      type: 'attack',
+      effects: [
+        { type: 'debuff', stat: 'atk', value: 5, duration: 3 },
+        { type: 'debuff', stat: 'def', value: 4, duration: 3 }
+      ]
+    }
+  ]
+},
+
+
+{
+  id: 'charlotte',
+  name: 'Charlotte Roselei',
+  img: 'personajes/charlotte.jpg',
+  classes: ['atacante', 'control'],
+  hp: 125,
+  atk: 25,
+  def: 16,
+  spd: 17,
+
+  /* MECÁNICA: Magia de Espinas. Hace sangrar al rival y refleja parte del daño recibido. */
+  moves: [
+    {
+      id: 'charlotte1',
+      name: 'Látigo de Espinas',
+      power: 20,
+      acc: 0.97,
+      desc: 'Charlotte azota al rival con un látigo de espinas y puede provocarle sangrado durante 2 turnos.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: [
+        { type: 'damageOverTime', status: 'bleed', value: 4, duration: 2, prob: 0.5 }
+      ]
+    },
+    {
+      id: 'charlotte2',
+      name: 'Armadura de Espinas',
+      power: 0,
+      acc: 1.0,
+      desc: 'Charlotte se cubre de espinas: gana un escudo y refleja el 25% del daño recibido durante 3 turnos.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        { type: 'shield', value: 22 },
+        { type: 'reflectDamage', value: 25, duration: 3 }
+      ]
+    },
+    {
+      id: 'charlotte3',
+      name: 'Jaula de Rosas',
+      power: 18,
+      acc: 0.92,
+      desc: 'Enredaderas de espinas aprisionan al rival: puede aturdirlo, reduce su SPD y le provoca sangrado seguro durante 3 turnos.',
+      baseCooldown: 3,
+      type: 'attack',
+      effects: [
+        { type: 'stun', prob: 0.3, duration: 1 },
+        { type: 'debuff', stat: 'spd', value: 4, duration: 3 },
+        { type: 'damageOverTime', status: 'bleed', value: 4, duration: 3, prob: 1.0 }
+      ]
+    },
+    {
+      id: 'charlotte4',
+      name: 'Bosque de Espinas (ULT)',
+      power: 24,
+      acc: 0.88,
+      desc: 'Un bosque de espinas emerge del suelo y golpea a todos los rivales, provocándoles sangrado durante 3 turnos.',
+      baseCooldown: 7,
+      aoe: true,
+      type: 'attack',
+      effects: [
+        { type: 'damageOverTime', status: 'bleed', value: 5, duration: 3, prob: 1.0 }
+      ]
+    }
+  ]
+},
+
+
+{
+  id: 'jack_ripper',
+  name: 'Jack the Ripper',
+  img: 'personajes/jack.jpg',
+  classes: ['atacante', 'debilitador'],
+  hp: 105,
+  atk: 29,
+  def: 12,
+  spd: 23,
+
+  /* MECÁNICA: asesino de cuchillas. Frágil pero rápido: sangrado y críticos. */
+  moves: [
+    {
+      id: 'jack1',
+      name: 'Tajo Rápido',
+      power: 21,
+      acc: 0.97,
+      desc: 'Jack corta al rival con un tajo veloz y puede provocarle sangrado durante 2 turnos.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: [
+        { type: 'damageOverTime', status: 'bleed', value: 4, duration: 2, prob: 0.5 }
+      ]
+    },
+    {
+      id: 'jack2',
+      name: 'Hoja Desgarradora',
+      power: 25,
+      acc: 0.92,
+      desc: 'Una estocada que desgarra al rival: sangrado seguro durante 3 turnos.',
+      baseCooldown: 2,
+      type: 'attack',
+      effects: [
+        { type: 'damageOverTime', status: 'bleed', value: 5, duration: 3, prob: 1.0 }
+      ]
+    },
+    {
+      id: 'jack3',
+      name: 'Sed de Sangre',
+      power: 0,
+      acc: 1.0,
+      desc: 'Jack se excita ante la caza: aumenta su ATK +6 y su probabilidad de crítico un 20% durante 3 turnos.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        { type: 'tempAtk', value: 6, duration: 3 },
+        { type: 'critChance', value: 20, duration: 3 }
+      ]
+    },
+    {
+      id: 'jack4',
+      name: 'Noche del Destripador (ULT)',
+      power: 30,
+      acc: 0.87,
+      desc: 'Jack desata una lluvia de cuchilladas: gran daño, sangrado intenso durante 3 turnos y reduce la DEF del rival.',
+      baseCooldown: 6,
+      type: 'attack',
+      effects: [
+        { type: 'damageOverTime', status: 'bleed', value: 7, duration: 3, prob: 1.0 },
+        { type: 'debuff', stat: 'def', value: 5, duration: 2 }
+      ]
+    }
+  ]
+},
+
+
+{
+  id: 'grey',
+  name: 'Grey',
+  img: 'personajes/grey.jpg',
+  classes: ['mago', 'soporte'],
+  hp: 118,
+  atk: 24,
+  def: 15,
+  spd: 20,
+
+  /* MECÁNICA: Magia de Transformación. Cambia de forma para adaptarse:
+     velocidad y precisión, defensa o ataque según lo que necesite. */
+  moves: [
+    {
+      id: 'grey1',
+      name: 'Garra de Cuervo',
+      power: 19,
+      acc: 0.97,
+      desc: 'Grey se transforma en un cuervo y ataca con garras. Ataque básico.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: null
+    },
+    {
+      id: 'grey2',
+      name: 'Forma Veloz',
+      power: 0,
+      acc: 1.0,
+      desc: 'Grey adopta una forma ágil: aumenta su SPD +6 y su precisión un 10% durante 3 turnos.',
+      baseCooldown: 3,
+      type: 'support',
+      effects: [
+        { type: 'tempSpd', value: 6, duration: 3 },
+        { type: 'accuracyUp', value: 10, duration: 3 }
+      ]
+    },
+    {
+      id: 'grey3',
+      name: 'Forma Acorazada',
+      power: 0,
+      acc: 1.0,
+      desc: 'Grey se transforma en una criatura resistente: gana un escudo y aumenta su DEF +6 durante 3 turnos.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        { type: 'shield', value: 22 },
+        { type: 'tempDef', value: 6, duration: 3 }
+      ]
+    },
+    {
+      id: 'grey4',
+      name: 'Transformación Total (ULT)',
+      power: 30,
+      acc: 0.9,
+      desc: 'Grey se transforma en una bestia poderosa y embiste al rival: gran daño, aumenta su propio ATK +5 durante 2 turnos y reduce la DEF del rival.',
+      baseCooldown: 6,
+      type: 'attack',
+      effects: [
+        { type: 'tempAtk', value: 5, duration: 2 },
+        { type: 'debuff', stat: 'def', value: 5, duration: 2 }
+      ]
+    }
+  ]
+},
+
+
+{
+  id: 'vanessa',
+  name: 'Vanessa Enoteca',
+  img: 'personajes/vanessa.jpg',
+  classes: ['control', 'debilitador'],
+  hp: 115,
+  atk: 21,
+  def: 14,
+  spd: 18,
+
+  /* MECÁNICA: Magia de Hilos. Ata al rival: ralentiza, aturde y le baja la precisión. */
+  moves: [
+    {
+      id: 'vanessa1',
+      name: 'Hilo Cortante',
+      power: 18,
+      acc: 0.97,
+      desc: 'Vanessa lanza hilos afilados que cortan al rival y pueden reducir su SPD durante 2 turnos.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: [
+        { type: 'debuff', stat: 'spd', value: 4, duration: 2, prob: 0.5 }
+      ]
+    },
+    {
+      id: 'vanessa2',
+      name: 'Hilo del Destino',
+      power: 15,
+      acc: 0.92,
+      desc: 'Vanessa ata al rival con un hilo del destino que puede aturdirlo y reduce su precisión durante 3 turnos.',
+      baseCooldown: 3,
+      type: 'attack',
+      effects: [
+        { type: 'stun', prob: 0.35, duration: 1 },
+        { type: 'accuracyDown', value: 10, duration: 3 }
+      ]
+    },
+    {
+      id: 'vanessa3',
+      name: 'Tejido Protector',
+      power: 0,
+      acc: 1.0,
+      desc: 'Vanessa teje una red de hilos que da un escudo a un aliado y elimina 1 debufo.',
+      baseCooldown: 3,
+      type: 'support',
+      effects: [
+        { type: 'shield', value: 20 },
+        { type: 'cleanse', target: 'ally', count: 1 }
+      ]
+    },
+    {
+      id: 'vanessa4',
+      name: 'Red de Escarlata (ULT)',
+      power: 24,
+      acc: 0.88,
+      desc: 'Vanessa atrapa al rival en una red de hilos: daño fuerte, posible aturdimiento y reduce su ATK y SPD durante 3 turnos.',
+      baseCooldown: 6,
+      type: 'attack',
+      effects: [
+        { type: 'stun', prob: 0.5, duration: 1 },
+        { type: 'debuff', stat: 'atk', value: 5, duration: 3 },
+        { type: 'debuff', stat: 'spd', value: 5, duration: 3 }
+      ]
+    }
+  ]
+},
+
+
+{
+  id: 'luck',
+  name: 'Luck Voltia',
+  img: 'personajes/luck.jpg',
+  classes: ['atacante', 'mago'],
+  hp: 122,
+  atk: 30,
+  def: 13,
+  spd: 24,
+
+  /* MECÁNICA: Magia de Rayo. Mucho daño, críticos y posibilidad de aturdir. */
+  moves: [
+    {
+      id: 'luck1',
+      name: 'Descarga Eléctrica',
+      power: 22,
+      acc: 0.97,
+      desc: 'Luck descarga un rayo sobre el rival con una pequeña probabilidad de aturdirlo.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: { type: 'stun', prob: 0.15, duration: 1 }
+    },
+    {
+      id: 'luck2',
+      name: 'Puño de Trueno',
+      power: 25,
+      acc: 0.92,
+      desc: 'Un puñetazo cargado de rayos que puede aturdir al rival y aumenta ligeramente la probabilidad de crítico de Luck.',
+      baseCooldown: 2,
+      type: 'attack',
+      effects: [
+        { type: 'critChance', value: 10, duration: 2 },
+        { type: 'stun', prob: 0.3, duration: 1 }
+      ]
+    },
+    {
+      id: 'luck3',
+      name: 'Sed de Combate',
+      power: 0,
+      acc: 1.0,
+      desc: 'Luck se emociona con la pelea: aumenta su ATK +6, su SPD +5 y su probabilidad de crítico un 15% durante 3 turnos.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        { type: 'tempAtk', value: 6, duration: 3 },
+        { type: 'tempSpd', value: 5, duration: 3 },
+        { type: 'critChance', value: 15, duration: 3 }
+      ]
+    },
+    {
+      id: 'luck4',
+      name: 'Tormenta de Rayos (ULT)',
+      power: 30,
+      acc: 0.86,
+      desc: 'Luck lo da todo con una tormenta de rayos devastadora que puede aturdir al rival y reduce su DEF durante 2 turnos.',
+      baseCooldown: 6,
+      type: 'attack',
+      effects: [
+        { type: 'stun', prob: 0.4, duration: 1 },
+        { type: 'debuff', stat: 'def', value: 5, duration: 2 }
+      ]
+    }
+  ]
+},
+
+
+{
+  id: 'charmy',
+  name: 'Charmy Pappitson',
+  img: 'personajes/charmy.jpg',
+  classes: ['sanador', 'soporte'],
+  hp: 120,
+  atk: 18,
+  def: 14,
+  spd: 17,
+
+  /* MECÁNICA: Magia de Algodón. Cura, protege con escudos de algodón y limpia debufos. */
+  moves: [
+    {
+      id: 'charmy1',
+      name: 'Algodón Pegajoso',
+      power: 16,
+      acc: 0.97,
+      desc: 'Charmy lanza algodón que enreda al rival y puede reducir su SPD durante 2 turnos.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: [
+        { type: 'debuff', stat: 'spd', value: 4, duration: 2, prob: 0.5 }
+      ]
+    },
+    {
+      id: 'charmy2',
+      name: 'Escudo de Algodón',
+      power: 0,
+      acc: 1.0,
+      desc: 'Charmy crea una nube de algodón que da un escudo a un aliado y aumenta su DEF +5 durante 3 turnos.',
+      baseCooldown: 3,
+      type: 'support',
+      effects: [
+        { type: 'shield', value: 22 },
+        { type: 'tempDef', value: 5, duration: 3 }
+      ]
+    },
+    {
+      id: 'charmy3',
+      name: 'Banquete de Charmy',
+      power: 0,
+      acc: 1.0,
+      desc: 'Charmy cocina un festín que recupera una gran cantidad de PS de un aliado y elimina 1 debufo.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        { type: 'heal', value: 30 },
+        { type: 'cleanse', target: 'ally', count: 1 }
+      ]
+    },
+    {
+      id: 'charmy4',
+      name: 'Sheep de Algodón (ULT)',
+      power: 0,
+      acc: 1.0,
+      desc: 'Charmy invoca a su ovejita Sheep, que arropa al equipo: limpia 2 debufos de cada aliado y otorga un escudo a un aliado.',
+      baseCooldown: 6,
+      type: 'support',
+      effects: [
+        { type: 'cleanse', target: 'team', count: 2 },
+        { type: 'shield', value: 30 }
+      ]
+    }
+  ]
+},
+
+
+{
+  id: 'gauche',
+  name: 'Gauche Adlai',
+  img: 'personajes/gauche.jpg',
+  classes: ['defensor', 'atacante'],
+  hp: 128,
+  atk: 25,
+  def: 17,
+  spd: 19,
+
+  /* MECÁNICA: Magia de Espejo. Refleja parte del daño que recibe y contraataca. */
+  moves: [
+    {
+      id: 'gauche1',
+      name: 'Reflejo Cortante',
+      power: 21,
+      acc: 0.97,
+      desc: 'Gauche ataca con fragmentos de espejo afilados. Ataque básico.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: null
+    },
+    {
+      id: 'gauche2',
+      name: 'Espejo Contraataque',
+      power: 22,
+      acc: 0.94,
+      desc: 'Ataca y levanta un espejo que refleja el 20% del daño recibido durante 2 turnos.',
+      baseCooldown: 2,
+      type: 'attack',
+      effects: [
+        { type: 'reflectDamage', value: 20, duration: 2 }
+      ]
+    },
+    {
+      id: 'gauche3',
+      name: 'Barrera de Espejos',
+      power: 0,
+      acc: 1.0,
+      desc: 'Gauche se rodea de espejos: gana un escudo y refleja el 30% del daño recibido durante 3 turnos.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        { type: 'shield', value: 24 },
+        { type: 'reflectDamage', value: 30, duration: 3 }
+      ]
+    },
+    {
+      id: 'gauche4',
+      name: 'Espejo de Marie (ULT)',
+      power: 30,
+      acc: 0.88,
+      desc: 'Por el amor a su hermana, Gauche desata una lluvia de espejos: gran daño, refleja el 35% del daño recibido durante 3 turnos y reduce el ATK del rival.',
+      baseCooldown: 6,
+      type: 'attack',
+      effects: [
+        { type: 'reflectDamage', value: 35, duration: 3 },
+        { type: 'debuff', stat: 'atk', value: 5, duration: 2 }
+      ]
+    }
+  ]
+},
+
+
+{
+  id: 'gordon',
+  name: 'Gordon Agrippa',
+  img: 'personajes/gordon.jpg',
+  classes: ['debilitador', 'mago'],
+  hp: 112,
+  atk: 22,
+  def: 13,
+  spd: 15,
+
+  /* MECÁNICA: Magia de Maldición. Desgasta al rival con veneno, le baja ATK/DEF
+     y reduce sus curaciones; gana con el tiempo, no con un solo golpe. */
+  moves: [
+    {
+      id: 'gordon1',
+      name: 'Maldición Menor',
+      power: 17,
+      acc: 0.97,
+      desc: 'Gordon lanza una maldición ligera que puede envenenar al rival durante 2 turnos.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: [
+        { type: 'damageOverTime', status: 'poison', value: 4, duration: 2, prob: 0.5 }
+      ]
+    },
+    {
+      id: 'gordon2',
+      name: 'Hechizo Debilitador',
+      power: 20,
+      acc: 0.92,
+      desc: 'Una maldición que reduce el ATK y la DEF del rival durante 3 turnos.',
+      baseCooldown: 2,
+      type: 'attack',
+      effects: [
+        { type: 'debuff', stat: 'atk', value: 5, duration: 3 },
+        { type: 'debuff', stat: 'def', value: 4, duration: 3 }
+      ]
+    },
+    {
+      id: 'gordon3',
+      name: 'Sello Maldito',
+      power: 14,
+      acc: 0.9,
+      desc: 'Marca al rival con un sello que reduce sus curaciones un 40% durante 3 turnos y lo envenena.',
+      baseCooldown: 3,
+      type: 'attack',
+      effects: [
+        { type: 'healReduction', value: 40, duration: 3 },
+        { type: 'damageOverTime', status: 'poison', value: 5, duration: 3, prob: 1.0 }
+      ]
+    },
+    {
+      id: 'gordon4',
+      name: 'Gran Maldición (ULT)',
+      power: 26,
+      acc: 0.88,
+      desc: 'Gordon libera toda su Magia de Maldición: daño fuerte, veneno intenso durante 3 turnos y reduce el ATK del rival.',
+      baseCooldown: 6,
+      type: 'attack',
+      effects: [
+        { type: 'damageOverTime', status: 'poison', value: 8, duration: 3, prob: 1.0 },
+        { type: 'debuff', stat: 'atk', value: 6, duration: 3 }
+      ]
+    }
+  ]
+},
+
+
+{
+  id: 'yuno',
+  name: 'Yuno',
+  img: 'personajes/yuno.jpg',
+  classes: ['mago', 'atacante'],
+  hp: 118,
+  atk: 27,
+  def: 14,
+  spd: 26,
+
+  /* MECÁNICA: es el más rápido y juega con críticos y ralentizaciones (Espíritu Sylph).
+     Su ULT golpea a todo el equipo rival. */
+  moves: [
+    {
+      id: 'yuno1',
+      name: 'Cuchilla de Viento',
+      power: 20,
+      acc: 0.98,
+      desc: 'Yuno lanza una cuchilla de viento afilada y precisa. Ataque básico.',
+      baseCooldown: 0,
+      type: 'attack',
+      effect: null
+    },
+    {
+      id: 'yuno2',
+      name: 'Ráfaga Cortante',
+      power: 24,
+      acc: 0.93,
+      desc: 'Una ráfaga de viento que corta al rival y puede reducir su SPD durante 2 turnos.',
+      baseCooldown: 2,
+      type: 'attack',
+      effects: [
+        { type: 'debuff', stat: 'spd', value: 5, duration: 2, prob: 0.7 }
+      ]
+    },
+    {
+      id: 'yuno3',
+      name: 'Bendición de Sylph',
+      power: 0,
+      acc: 1.0,
+      desc: 'El espíritu Sylph le presta su poder: aumenta su SPD +6 y su probabilidad de crítico un 20% durante 3 turnos.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        { type: 'tempSpd', value: 6, duration: 3 },
+        { type: 'critChance', value: 20, duration: 3 }
+      ]
+    },
+    {
+      id: 'yuno4',
+      name: 'Tormenta de Sylph (ULT)',
+      power: 22,
+      acc: 0.9,
+      desc: 'Yuno desata una tormenta de viento espiritual que golpea a todos los rivales y reduce su SPD durante 2 turnos.',
+      baseCooldown: 7,
+      aoe: true,
+      type: 'attack',
+      effects: [
+        { type: 'debuff', stat: 'spd', value: 4, duration: 2 }
+      ]
+    }
+  ]
+},
+
+
+{
+  id: 'magna_swing',
+  name: 'Magna Swing',
+  img: 'personajes/magna.jpg',
+  classes: ['atacante', 'mago'],
+  hp: 125,
+  atk: 28,
+  def: 14,
+  spd: 17,
+
+    moves: [
+    {
+      id: 'magna1',
+      name: 'Puño de Fuego Rebelde',
+      power: 21,
+      acc: 0.97,
+      desc: 'Magna envuelve su puño en llamas y golpea con rabia. Ignora los escudos del rival.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: [
+        { type: 'ignoreShield' }
+      ]
+    },
+    {
+      id: 'magna2',
+      name: 'Llamarada del Toro Negro',
+      power: 25,
+      acc: 0.92,
+      desc: 'Una oleada de fuego que ignora los escudos y puede quemar al rival durante 2 turnos.',
+      baseCooldown: 2,
+      type: 'attack',
+      effects: [
+        { type: 'ignoreShield' },
+        { type: 'damageOverTime', status: 'burn', value: 5, duration: 2, prob: 0.5 }
+      ]
+    },
+    {
+      id: 'magna3',
+      name: 'Orgullo de Black Bull',
+      power: 0,
+      acc: 1.0,
+      desc: 'Magna se enciende de ganas de pelear y aumenta su ATK +6 durante 3 turnos.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        { type: 'tempAtk', value: 6, duration: 3 }
+      ]
+    },
+    {
+      id: 'magna4',
+      name: 'Gran Explosión Ígnea (ULT)',
+      power: 30,
+      acc: 0.85,
+      desc: 'Una explosión de fuego devastadora que ignora los escudos y quema al rival durante 3 turnos.',
+      baseCooldown: 6,
+      type: 'attack',
+      effects: [
+        { type: 'ignoreShield' },
+        { type: 'damageOverTime', status: 'burn', value: 6, duration: 3, prob: 0.8 }
+      ]
+    }
+  ]
+},
+
+
 
 {
   id: 'chel',
