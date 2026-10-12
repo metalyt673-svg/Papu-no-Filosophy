@@ -20,7 +20,7 @@ const CHARACTERS = [
   img: 'personajes/nozel.jpg',
   classes: ['atacante', 'defensor'],
   hp: 135,
-  atk: 29,
+  atk: 27,
   def: 18,
   spd: 18,
 
