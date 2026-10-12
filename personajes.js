@@ -13085,6 +13085,13 @@ const CHARACTERS = [
   def: 16,
   spd: 18,
 
+  passive: {
+    type: 'ultKillExtraTurn',
+    name: 'Mi magia es nunca rendirme',
+    desc: 'Si mata a un enemigo con su ULT, gana un turno extra y su ULT queda lista de nuevo.',
+    moveId: 'ast4'
+  },
+
   moves: [
     {
       id: 'ast1',
@@ -13584,6 +13591,8 @@ const CHARACTERS = [
 },
 
      { id: 'sans', name: 'Sans',  img: 'personajes/sans.jpg',  classes: ['atacante'], hp: 80, atk: 34, def: 7, spd: 14,
+
+  passive: { type: 'dodge', name: 'Reflejos Perezosos', desc: 'El 20% de los ataques enemigos de un solo objetivo contra él fallan automáticamente.', chance: 0.20 },
   moves: [
     { id: 'san1', name: 'Are you ready?', power: 20, acc: 0.98, desc: 'Ataque básico', 
       baseCooldown: 0, type: 'attack', effect: null
@@ -13600,6 +13609,8 @@ const CHARACTERS = [
 },
 
 {id: 'Papyrus', name: 'Papyrus', img: 'personajes/Papyrus.gif', classes: ['atacante','soporte'], hp: 80, atk: 30, def: 10, spd: 17, 
+
+  passive: { type: 'openingBuff', name: '¡El Gran Papyrus!', desc: 'Al comenzar su primer turno en combate gana +6 ATK durante 3 turnos.', stat: 'atk', value: 6, duration: 3 },
     moves: [ {id:'mak1', name:'Plato de Espaguetis', power: 22, acc: 0.95, desc: 'Ataque básico.', baseCooldown: 0, type:'attack'},
          {id:'mak2', name:'Ataque azul', power: 32, acc: 1, desc: 'Daño fuerte.', baseCooldown: 2, type:'attack'},
          {id:'mak3', name:'Nyehehe', power: 0, acc: 1.0, desc: 'Otorga escudo 15.', effect:{type:'shield', value:15}, baseCooldown:3, type:'support'},
@@ -13737,6 +13748,8 @@ const CHARACTERS = [
     } ]
 },
      { id: 'antonio', name: 'Antonio Lobato',  img: 'personajes/antonio.jpg',  classes: ['atacante'], hp: 110, atk: 32, def: 8, spd: 10,
+
+  passive: { type: 'openingShield', name: 'Patrocinio Oficial', desc: 'Al comenzar su primer turno en combate gana 25 de escudo.', value: 25 },
   moves: [
     { id: 'ant1', name: 'F1', power: 20, acc: 1.0, desc: 'Ataque básico', 
       baseCooldown: 0, type: 'attack', effect: null
@@ -13767,6 +13780,8 @@ const CHARACTERS = [
     } ]
 },
      { id: 'nobita', name: 'Nobita Nobi',  img: 'personajes/nobita.jpg',  classes: ['soporte'], hp: 84, atk: 19, def: 14, spd: 10,
+
+  passive: { type: 'lastStand', name: '¡Doraemon, Ayúdame!', desc: 'La primera vez que su vida baja del 40%: gana 30 de escudo y recupera un 10% de su vida máxima.', threshold: 0.40, shield: 30, healPercent: 0.10 },
   moves: [
     { id: 'nob1', name: 'Lloriqueo', power: 20, acc: 1.0, desc: 'Ataque básico', 
       baseCooldown: 0, type: 'attack', effect: null
@@ -13782,6 +13797,8 @@ const CHARACTERS = [
     } ]
 },
      { id: 'hornet', name: 'Hornet',  img: 'personajes/hornet.jpg',  classes: ['atacante'], hp: 89, atk: 32, def: 9, spd: 15,
+
+  passive: { type: 'executeDamage', name: 'Aguja Certera', desc: 'Sus ataques infligen un 30% más de daño (directo) a enemigos con la vida por debajo del 50%.', threshold: 0.5, bonus: 0.30 },
   moves: [
     { id: 'hor1', name: 'Lanza sedeña', power: 24, acc: 1.0, desc: 'Ataque básico', 
       baseCooldown: 0, type: 'attack', effect: null
@@ -13813,6 +13830,8 @@ const CHARACTERS = [
     } ]
 },
      { id: 'shrek', name: 'Shrek',  img: 'personajes/shrek.jpg',  classes: ['defensor', 'soporte'], hp: 120, atk: 23, def: 9, spd: 12,
+
+  passive: { type: 'turnShield', name: 'Capas de Ogro', desc: 'Al comenzar su turno gana 8 de escudo (máximo 40).', value: 8, max: 40 },
   moves: [
     { id: 'shr1', name: 'ARRGH', power: 20, acc: 1.0, desc: 'Ataque básico', 
       baseCooldown: 0, type: 'attack', effect: null
@@ -13831,6 +13850,8 @@ const CHARACTERS = [
     } ]
 },
      { id: 'caillou', name: 'Caillou del futuro',  img: 'personajes/caillou.jpg',  classes: ['debilitador'], hp: 100, atk: 23, def: 10, spd: 17,
+
+  passive: { type: 'onHitDebuff', name: 'Berrinche', desc: 'Al recibir un ataque, tiene un 35% de probabilidad de reducir la SPD del atacante en 4 durante 2 turnos.', stat: 'spd', value: 4, duration: 2, chance: 0.35 },
   moves: [
     { id: 'cai1', name: 'cigarrillos', power: 20, acc: 0.98, desc: 'Ataque básico', 
       baseCooldown: 0, type: 'attack', effect: { type:'debuff', stat:'spd', value:4, prob:0.6 ,
@@ -13849,6 +13870,8 @@ const CHARACTERS = [
     } ]
 },
      { id: 'goku', name: 'Goku',  img: 'personajes/goku.jpg',  classes: ['atacante'], hp: 100, atk: 30, def: 9, spd: 12,
+
+  passive: { type: 'lastStand', name: 'Zenkai', desc: 'La primera vez que su vida baja del 35%: recupera un 15% de su vida máxima y gana +8 ATK durante 3 turnos.', threshold: 0.35, healPercent: 0.15, atk: { value: 8, duration: 3 } },
   moves: [
     { id: 'gok1', name: 'Puños poderosos', power: 23, acc: 0.70, desc: 'Ataque básico', 
       baseCooldown: 0, type: 'attack', effect: null
@@ -13883,6 +13906,8 @@ const CHARACTERS = [
       baseCooldown: 6, type: 'attack', effect: null } ]
     },
 	{id: 'kevin', name: 'Kevin', img: 'personajes/kevin.jpeg', classes: ['atacante', 'debilitador'], hp: 90, atk: 28, def: 12, spd: 13,
+
+  passive: { type: 'onKill', name: 'Pentakill', desc: 'Al derrotar a un enemigo recupera un 25% de su vida máxima y gana +4 ATK durante 3 turnos.', healPercent: 0.25, atk: { value: 4, duration: 3 } },
   moves: [
     {id:'kev1', name: 'Glasses mortales', power: 20, acc: 1.0, desc: 'Ataque rápido', baseCooldown: 0, type:'attack'},
     {id:'kev2', name: 'Double kill', power: 28, acc: 0.89, desc: 'Daño tocho', baseCooldown: 2, type:'attack'},
@@ -13892,6 +13917,8 @@ const CHARACTERS = [
   ]
 },
     { id: 'ladybug', name: 'Lady Bug',  img: 'personajes/ladybug.jpg',  classes: ['soporte'], hp: 90, atk: 22, def: 16, spd: 14,
+
+  passive: { type: 'turnRegen', name: 'Cura Milagrosa', desc: 'Al comenzar su turno recupera un 8% de su vida máxima.', percent: 0.08 },
   moves: [
     { id: 'lad1', name: 'Yo-yo', power: 20, acc: 0.98, desc: 'Ataque básico, cura 15', 
       baseCooldown: 0, type: 'attack', 
