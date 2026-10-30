@@ -531,7 +531,7 @@ function openCharacterDetail(id){
         <div class="glossary-passive-desc">${revivePassive.desc || 'Si la vida del personaje llega a 0, tiene un chance de revivir.'}</div>
         <div class="glossary-passive-meta">
           Probabilidad inicial: ${Math.round((revivePassive.chance != null ? revivePassive.chance : 0.5) * 100)}%
-          · Baja ${Math.round((revivePassive.decay != null ? revivePassive.decay : 0) * 100)} puntos cada vez que revive.
+          · Baja ${Math.round((revivePassive.decay != null ? revivePassive.decay : 0) * 100)}% de probabilidad cada vez que revive.
           · Vuelve con ${Math.round((revivePassive.healPercent != null ? revivePassive.healPercent : 0.5) * 100)}% de su vida máxima.
         </div>
       </div>

@@ -15,6 +15,293 @@
 const CHARACTERS = [
 
 {
+  id: 'titoyayo',
+  name: 'Tito Yayo',
+  img: 'personajes/tito_yayo.jpg',
+  classes: ['defensor', 'luchador'],
+  hp: 140,
+  atk: 22,
+  def: 19,
+  spd: 12,
+  passive: {
+    type: 'revive',
+    name: 'Segunda Oportunidad',
+    desc: 'La primera vez que su vida llega a 0, Tito Yayo revive con el 20% de su vida máxima (una sola vez por batalla).',
+    chance: 1,
+    decay: 1,
+    healPercent: 0.2
+  },
+
+  moves: [
+    {
+      id: 'titoyayo1',
+      name: 'Bastonazo',
+      power: 22,
+      acc: 0.97,
+      desc: 'Tito Yayo golpea al rival con su bastón. Ataque básico.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: null
+    },
+    {
+      id: 'titoyayo2',
+      name: 'Sermón de Abuelo',
+      power: 0,
+      acc: 0.95,
+      desc: 'Tito Yayo suelta un sermón interminable: reduce el ATK del rival y su precisión durante unos turnos.',
+      baseCooldown: 3,
+      type: 'debuff',
+      effects: [
+        { type: 'debuff', stat: 'atk', value: 5, duration: 3 },
+        { type: 'accuracyDown', value: 10, duration: 2 }
+      ]
+    },
+    {
+      id: 'titoyayo3',
+      name: 'Caldo de la Abuela',
+      power: 0,
+      acc: 1.0,
+      desc: 'Tito Yayo se toma un buen caldo: recupera parte de su vida y aumenta su DEF durante 3 turnos.',
+      baseCooldown: 5,
+      type: 'support',
+      effects: [
+        { type: 'selfHealPct', value: 0.2 },
+        { type: 'tempDef', value: 6, duration: 3 }
+      ]
+    },
+    {
+      id: 'titoyayo4',
+      name: 'ULTRA: ¡En Mis Tiempos!',
+      power: 0,
+      acc: 1.0,
+      desc: 'Tito Yayo recuerda sus tiempos de juventud: gana un escudo, refleja parte del daño recibido y aumenta su ATK durante 3 turnos.',
+      baseCooldown: 8,
+      type: 'support',
+      effects: [
+        { type: 'shield', value: 30 },
+        { type: 'reflectDamage', value: 25, duration: 3 },
+        { type: 'tempAtk', value: 6, duration: 3 }
+      ]
+    }
+  ]
+},
+
+{
+  id: 'jeff',
+  name: 'Jeff',
+  img: 'personajes/jeff.jpg',
+  classes: ['control', 'debilitador'],
+  hp: 100,
+  atk: 18,
+  def: 12,
+  spd: 22,
+
+  moves: [
+    {
+      id: 'jeff1',
+      name: 'Pregunta Incómoda',
+      power: 18,
+      acc: 0.98,
+      desc: 'Jeff suelta una pregunta que nadie quería oír. Ataque básico.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: null
+    },
+    {
+      id: 'jeff2',
+      name: 'Sarcasmo',
+      power: 0,
+      acc: 0.95,
+      desc: 'Jeff responde con un sarcasmo mortal: reduce el ATK del rival durante 3 turnos.',
+      baseCooldown: 3,
+      type: 'debuff',
+      effects: [
+        { type: 'debuff', stat: 'atk', value: 5, duration: 3 }
+      ]
+    },
+    {
+      id: 'jeff3',
+      name: 'Plan de Jeff',
+      power: 0,
+      acc: 1.0,
+      desc: 'Jeff lo piensa dos veces: aumenta su velocidad y su DEF durante 3 turnos.',
+      baseCooldown: 4,
+      type: 'support',
+      effects: [
+        { type: 'tempSpd', value: 5, duration: 3 },
+        { type: 'tempDef', value: 4, duration: 3 }
+      ]
+    },
+    {
+      id: 'jeff4',
+      name: 'ULTRA: ¡Lo Sabía!',
+      power: 26,
+      acc: 0.95,
+      desc: 'Jeff tenía razón desde el principio: golpea al rival, puede aturdirlo y le baja la velocidad durante 3 turnos.',
+      baseCooldown: 8,
+      type: 'attack',
+      effects: [
+        { type: 'stun', prob: 0.5, duration: 1 },
+        { type: 'debuff', stat: 'spd', value: 4, duration: 3 }
+      ]
+    }
+  ]
+},
+
+{
+  id: 'sumo',
+  name: 'Sumo',
+  img: 'personajes/sumo.jpg',
+  classes: ['atacante', 'luchador'],
+  hp: 130,
+  atk: 28,
+  def: 15,
+  spd: 14,
+
+  moves: [
+    {
+      id: 'sumo1',
+      name: 'Embestida',
+      power: 24,
+      acc: 0.96,
+      desc: 'Sumo se lanza de cabeza contra el rival. Ataque básico.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: null
+    },
+    {
+      id: 'sumo2',
+      name: 'Grito de Sumo',
+      power: 0,
+      acc: 1.0,
+      desc: 'Sumo grita a pleno pulmón: aumenta su ATK durante 2 turnos.',
+      baseCooldown: 3,
+      type: 'support',
+      effects: [
+        { type: 'tempAtk', value: 8, duration: 2 }
+      ]
+    },
+    {
+      id: 'sumo3',
+      name: 'Panzazo',
+      power: 30,
+      acc: 0.9,
+      desc: 'Sumo aplasta al rival con la barriga: daño alto y puede aturdirlo.',
+      baseCooldown: 3,
+      type: 'attack',
+      effects: [
+        { type: 'stun', prob: 0.3, duration: 1 }
+      ]
+    },
+    {
+      id: 'sumo4',
+      name: 'ULTRA: ¡Sumo Aplastante!',
+      power: 32,
+      acc: 0.95,
+      desc: 'Sumo salta y cae sobre los tres enemigos: daño en área y les baja la DEF durante 2 turnos.',
+      baseCooldown: 8,
+      aoe: true,
+      type: 'attack',
+      effects: [
+        { type: 'debuff', stat: 'def', value: 5, duration: 2, prob: 1.0 }
+      ]
+    }
+  ]
+},
+
+{
+  id: 'chicken',
+  name: 'Chicken',
+  img: 'personajes/chicken.jpg',
+  classes: ['atacante', 'control', 'inmortal'],
+  hp: 120,
+  atk: 24,
+  def: 17,
+  spd: 24,
+  passive: {
+  type: 'revive',
+  name: 'Hard To Kill',   
+  desc: 'Chicken tiene una probabilidad de revivir un par de veces cuando su vida llega a 0.',
+  chance: 0.5,        
+  decay: 0.2,          
+  healPercent: 0.5     
+},
+
+  moves: [
+     
+    {
+  id: 'chicken1',
+  name: 'Katana Throw',
+  power: 24,
+  acc: 0.95,
+  desc: 'Chicken arroja su katana hacia el oponente más cercano.',
+  baseCooldown: 0,
+  type: 'attack',
+  effects: null
+},
+
+{
+  id: 'chicken2',
+  name: 'Determination',
+  power: 25,
+  acc: 1.0,
+  desc: 'Chicken se acerca a su enemigo y le ataca cuerpo a cuerpo, aumentando su ATK temporalmente.',
+  baseCooldown: 3,
+  type: 'attack',
+  effects: [
+    {
+      type: 'tempAtk',
+      value: 5,
+      duration: 2,
+      prob: 1.0
+    }
+  ]
+},
+
+{
+  id: 'chicken3',
+  name: 'Throne Butt: Piercing Throw',
+  power: 25,
+  acc: 0.95,
+  desc: 'Chicken arroja su katana y golpea a los tres enemigos de un solo tiro, provocándoles sangrado.',
+  baseCooldown: 6,
+  aoe: true,
+  type: 'attack',
+  effects: [
+    {
+      type: 'damageOverTime',
+      status: 'bleed',
+      value: 5,
+      duration: 3,
+      prob: 0.97
+    }
+  ]
+},
+
+{
+  id: 'chicken4',
+  name: 'ULTRA: Harder To Kill',
+  power: 0,
+  acc: 0.97,
+  desc: 'Chicken adquiere la habilidad de robar vida por 3 turnos y se cura una pequeña porción de su vida.',
+  baseCooldown: 8,
+  type: 'support',
+  effects: [
+     {
+      type: 'selfHealPct',
+      value: 0.15
+     },
+     {
+      type: 'lifesteal',
+      value: 15,
+      duration: 3
+     }
+   ]
+  }
+ ]
+},
+
+{
   id: 'nozel',
   name: 'Nozel Silva',
   img: 'personajes/nozel.jpg',

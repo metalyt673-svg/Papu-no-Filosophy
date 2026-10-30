@@ -242,7 +242,7 @@
       themeTeam: ['tyrat', 'pifiasus', 'cantonio', 'buhu', 'blizzaria', 'doblilete', 'chansin'] },
     { id: 'lilhunter',   emoji: '🔫🤪', title: 'El cazador de mutantes que fue abandonado por su escuadrón.',
       intro: 'Ha pasado tantos años perdido en la nieve, que se ha convertido en uno de los salvajes. Reza para que su locura sea mayor que su puntería.',
-      themeTeam: ['yv']  },
+      themeTeam: ['yv', 'horror', 'chicken']  },
     { id: 'castelo-vandana', emoji: '🥒', title: 'The Only Pickle King Who Kill Maka Monsters.',
       intro: 'Era una fría y oscura noche de Halloween... El famosísimo pepinillo cazador de Maka Monsters busca venganza y piensa conseguirla aunque tenga que arrasar con todo a su camino.',
       themeTeam: ['gorilla_villaje', 'kevin', 'maka' ] },
