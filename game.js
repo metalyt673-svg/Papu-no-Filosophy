@@ -1150,6 +1150,7 @@ function updateArena(){
     const team = state.teams[p]; const idx = state.activeIndex[p]; const active = team[idx];
     const imgEl = $(`fighter-img-${p}`); const hpBar = $(`hpbar-${p}`).querySelector('i');
     if(!active){ imgEl.src=''; hpBar.style.width='0%'; $(`stats-${p}`).innerHTML = '<small>Sin personaje</small>'; return; }
+    imgEl.classList.toggle('inv-glow', isInvulnerable(active));
     imgEl.src = active.img; const percent = Math.max(0, Math.round((active.hp / active.maxHp) * 100)); hpBar.style.width = percent + '%';
     
     let stunIndicator = active.stunned > 0 ? ` 😵 STUN(${active.stunned})` : '';
@@ -1184,6 +1185,9 @@ function updateArena(){
       ? ` · ${active.debuffEffects.map(d => `⬇️${d.stat.toUpperCase()}-${d.value}(${d.remaining})`).join(' ')}`
       : '';
 
+    const invFx = getSpecialEffect(active, 'invulnerable');
+    const invIndicator = invFx ? ` · <span class="inv-tag">🛡️✨ INVULNERABLE(${invFx.remaining})</span>` : '';
+
     const accMod = getAccuracyModifier(active);
     const accIndicator = accMod !== 0 ? ` · ${accMod > 0 ? '🎯+' : '👁️‍🗨️'}${accMod}% PRE` : '';
 
@@ -1194,7 +1198,7 @@ function updateArena(){
       : '';
 
     $(`stats-${p}`).innerHTML =
-      `<small>HP: ${active.hp}/${active.maxHp} · Escudo: ${active.shield} · ATK:${getEffectiveStat(active,'atk')} DEF:${getEffectiveStat(active,'def')} SPD:${getEffectiveStat(active,'spd')}${stunIndicator}${statusIndicator}${controlIndicator}${debuffIndicator}${accIndicator}${reviveIndicator}</small>`;
+      `<small>HP: ${active.hp}/${active.maxHp} · Escudo: ${active.shield} · ATK:${getEffectiveStat(active,'atk')} DEF:${getEffectiveStat(active,'def')} SPD:${getEffectiveStat(active,'spd')}${stunIndicator}${invIndicator}${statusIndicator}${controlIndicator}${debuffIndicator}${accIndicator}${reviveIndicator}</small>`;
   });
   renderSlots('p1'); renderSlots('p2'); renderMovesArea();
 }
@@ -1274,6 +1278,10 @@ function startTurnActions(){
     ['p1','p2'].forEach(p => {
       state.teams[p].forEach(char => {
         if(char.hp > 0){
+          if(isInvulnerable(char)){
+            log(`🛡️✨ ${char.name} es invulnerable: la muerte súbita no le afecta.`);
+            return;
+          }
           const suddenDeathDmg = 10;
           const hpBefore = char.hp;
 
@@ -1491,7 +1499,8 @@ async function resolveMove(playerKey, moveId){
 
   if(isSupport){
     const targets = getAliveTeam(playerKey);
-    const selfOnly = effects.length > 0 && effects.every(e => e && (e.type === 'counter' || (e.type === 'cleanse' && e.target !== 'ally')));
+    const selfOnly = (effects.length > 0 && effects.every(e => e && (e.type === 'counter' || (e.type === 'cleanse' && e.target !== 'ally'))))
+      || effects.some(e => e && e.type === 'invulnerable');   // la invulnerabilidad siempre es para el lanzador
     const chosen = selfOnly ? null : await openTargetModal(playerKey, targets);
     const targetChar = chosen == null ? actor : state.teams[playerKey][chosen];
 
@@ -1559,7 +1568,7 @@ async function resolveMove(playerKey, moveId){
 // (buffs, curas, escudo, contraataque). Antes solo se aplicaban los efectos
 // dirigidos al rival (debuffs/estados), por lo que un ataque que debilitaba
 // al enemigo y a la vez bufaba al lanzador (p. ej. Ryuk) ignoraba el buff.
-const ATTACK_SELF_EFFECT_TYPES = ['heal','shield','tempDef','tempSpd','tempAtk','selfHealPct','counter','accuracyUp','cleanse'];
+const ATTACK_SELF_EFFECT_TYPES = ['heal','shield','tempDef','tempSpd','tempAtk','selfHealPct','counter','accuracyUp','cleanse','invulnerable'];
 function applyAttackSelfEffects(actor, move, effects){
   if(!actor || actor.hp <= 0) return;
   (effects || []).forEach(e => {
@@ -1581,6 +1590,11 @@ function applyEffect(actor, target, move) {
   const effects = move.effect ? [move.effect] : (move.effects || []);
 
   for (const e of effects) {
+    if (e.type === 'invulnerable') {
+      applyInvulnerability(actor, e);
+      continue;
+    }
+
     if (e.type === 'heal') {
       applyHealing(actor, target, e.value, move.name);
     }
@@ -1726,7 +1740,7 @@ function getEffectiveAcc(actor, move){
 }
 
 // Bufos purgables: stats temporales y efectos especiales positivos del propio portador.
-const PURGEABLE_SPECIAL_BUFFS = ['lifesteal','reflectDamage','critChance','counter','accuracyUp'];
+const PURGEABLE_SPECIAL_BUFFS = ['lifesteal','reflectDamage','critChance','counter','accuracyUp','invulnerable'];
 
 function listBuffs(target){
   if(!target) return [];
@@ -1744,7 +1758,7 @@ function buffLabel(e){
   const labels = {
     tempAtk:'ATK', tempDef:'DEF', tempSpd:'SPD',
     lifesteal:'Robo de vida', reflectDamage:'Reflejo de daño', critChance:'Prob. crítico',
-    counter:'Contraataque', accuracyUp:'Precisión'
+    counter:'Contraataque', accuracyUp:'Precisión', invulnerable:'Invulnerabilidad'
   };
   return labels[e.type] || e.type;
 }
@@ -1907,6 +1921,29 @@ function getHealReductionPercent(target){
   return getSpecialEffectPercent(target, 'healReduction');
 }
 
+/* ---------- Invulnerabilidad ---------- */
+// effect: { type:'invulnerable', duration:3 }
+// El portador es inmune a TODO tipo de daño (golpes, daño continuo, reflejo y muerte súbita)
+// mientras dure. No bloquea control (stun, freeze…) ni debuffs. Es un bufo purgable.
+// Siempre afecta al lanzador. Dura igual que el resto de bufos (baja 1 al acabar su turno).
+function isInvulnerable(target){
+  const fx = getSpecialEffect(target, 'invulnerable');
+  return !!(fx && fx.remaining > 0);
+}
+
+function applyInvulnerability(actor, effect){
+  if(!actor || actor.hp <= 0) return;
+  if(!Array.isArray(actor.specialEffects)) actor.specialEffects = [];
+  const duration = Math.max(1, Number(effect && effect.duration) || 1);
+  const existing = getSpecialEffect(actor, 'invulnerable');
+  if(existing){
+    existing.remaining = Math.max(existing.remaining, duration);
+  }else{
+    actor.specialEffects.push({ type:'invulnerable', value:100, remaining:duration });
+  }
+  log(`🛡️✨ ${actor.name} se vuelve INVULNERABLE durante ${duration} turno(s): no recibirá ningún tipo de daño.`);
+}
+
 function upsertSpecialEffect(actor, target, effect){
   if(!target || !effect) return;
   if(!Array.isArray(target.specialEffects)) target.specialEffects = [];
@@ -1988,6 +2025,7 @@ function processSpecialEffects(target){
         effect.type === 'counter' ? 'Contraataque' :
         effect.type === 'accuracyUp' ? 'Bonus de precisión' :
         effect.type === 'accuracyDown' ? 'Penalización de precisión' :
+        effect.type === 'invulnerable' ? 'Invulnerabilidad' :
         effect.type;
       log(`${label} terminó en ${target.name}.`);
       return false;
@@ -1998,6 +2036,11 @@ function processSpecialEffects(target){
 
 function applyReflectedDamage(source, target, amount){
   if(!source || !target || target.hp <= 0 || amount <= 0) return;
+
+  if(isInvulnerable(target)){
+    log(`🛡️✨ ${target.name} es invulnerable: ignora el daño reflejado.`);
+    return;
+  }
 
   // El reflejo no vuelve a reflejarse y tampoco activa robo de vida.
   let reflected = Math.max(0, Math.round(amount));
@@ -2244,6 +2287,11 @@ function applyStatusEffect(actor, target, effect){
 function applyStatusDamage(target, amount, status){
   if(!target || target.hp <= 0) return;
 
+  if(isInvulnerable(target)){
+    if(Math.round(amount) > 0) log(`🛡️✨ ${target.name} es invulnerable: ignora el daño por ${getStatusLabel(status)}.`);
+    return;
+  }
+
   let damage = Math.max(0, Math.round(amount));
   if(damage <= 0) return;
 
@@ -2351,6 +2399,12 @@ function applyDamage(actor, target, move){
   if(!target) return;
   // Solo se daña a personajes reales de un equipo (nunca a copias sueltas).
   if(!getKeyOfTarget(target)) return;
+
+  // Invulnerable: no recibe ningún daño.
+  if(isInvulnerable(target)){
+    log(`🛡️✨ ${target.name} es invulnerable: ${(move && move.name) || 'el ataque'}${actor ? ' de ' + actor.name : ''} no le hace nada.`);
+    return;
+  }
 
   const effectiveAtk = getEffectiveStat(actor, 'atk');
   const effectiveDef = getEffectiveStat(target, 'def');
@@ -2688,6 +2742,7 @@ function aiIsSupportMove(move){
 
 function aiEstimateDamage(actor, target, move){
   if(!actor || !target || !move || !move.power || move.power <= 0) return 0;
+  if(isInvulnerable(target)) return 0;   // no malgasta ataques contra un invulnerable
 
   const atk = getEffectiveStat(actor, 'atk');
   const def = getEffectiveStat(target, 'def');
@@ -2828,6 +2883,9 @@ function aiScoreMove(actor, move, enemy, team){
         score += n > 0 ? 20 + n * 18 : -20;
       }else if(e.type === 'counter'){
         score += enemy ? 38 : 0;
+      }else if(e.type === 'invulnerable'){
+        // Más ganas cuanto más herido está; si ya la tiene, no la repite.
+        score += isInvulnerable(actor) ? -60 : 28 + (1 - actor.hp / actor.maxHp) * 80;
       }
     }
 

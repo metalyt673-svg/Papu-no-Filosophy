@@ -333,7 +333,10 @@
     wrap.innerHTML = `
       <div class="inv-top">
         <h2 class="inv-title">🎒 Inventario</h2>
-        <button class="class-btn" data-act="back">⬅ Volver al menú</button>
+        <div class="inv-btns">
+          ${window.SKINS ? `<button class="inv-primary" data-act="shop">🛒 Tienda</button>` : ''}
+          <button class="class-btn" data-act="back">⬅ Volver al menú</button>
+        </div>
       </div>
       ${rankHTML(sp)}
       <div class="inv-h">📦 Cajas <small>${S.boxes} sin abrir</small></div>
@@ -343,6 +346,7 @@
         <div class="inv-tile"><b>+${fmt(S.total)}</b><span>Gloria ganada con cajas</span></div>
         <div class="inv-tile"><b>${S.best ? '+' + S.best : '—'}</b><span>Mejor caja</span></div>
         <div class="inv-tile"><b>${fmt(S.earned)}</b><span>Cajas conseguidas en total</span></div>
+        ${window.SKINS ? `<div class="inv-tile"><b>${window.SKINS.coinImg()} ${fmt(window.SKINS.coins())}</b><span>Monedas</span></div>` : ''}
       </div>
       ${hist}`;
   }
@@ -352,6 +356,7 @@
     if (!b) return;
     const act = b.dataset.act;
     if (act === 'back') closeInv();
+    else if (act === 'shop') { if (window.SKINS) window.SKINS.open(); }
     else if (act === 'open1') openBoxes(1);
     else if (act === 'openAll') openBoxes(Infinity);
     else if (act === 'close') closeReveal();
@@ -377,6 +382,8 @@
 
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape' || !ui.open) return;
+    const shop = byId('sk-screen');
+    if (shop && shop.style.display === 'flex') return;         // la Tienda (encima) gestiona su propio Escape
     if (byId('inv-modal')) closeReveal(); else closeInv();
   });
 
@@ -401,7 +408,8 @@
     S.history = S.history.slice(0, HISTORY_MAX);
     save();                      // se guarda ya: cerrar la ventana a medias no pierde nada
     const after = snap();
-    showReveal({ results, before, after, left: S.boxes });
+    const bonus = window.SKINS ? window.SKINS.rollChest(n) : null;
+    showReveal({ results, before, after, left: S.boxes, bonus });
   }
 
   function showReveal(d) {
@@ -452,6 +460,7 @@
       <div class="inv-plus">+<span id="inv-num">0</span></div>
       <small>puntos de gloria${many ? ` · ${d.results.length} cajas` : ''}</small>
       ${many ? `<div class="inv-chips">${d.results.map(p => `<i${p === max && p >= 45 ? ' class="top"' : ''}>+${p}</i>`).join('')}</div>` : ''}
+      ${window.SKINS && d.bonus ? window.SKINS.describeBonus(d.bonus) : ''}
     </div>`;
     countUp(byId('inv-num'), total);
     byId('inv-msg').textContent = !many && total >= 45 ? '¡Caja de oro! 🌟' : (!many && total <= 5 ? 'Mala suerte… la próxima será mejor.' : '');
@@ -511,6 +520,7 @@
     open: openInv,
     bonusGlory,
     add(n) { S = load(); S.boxes += Math.max(0, Math.floor(Number(n)) || 0); S.earned += Math.max(0, Math.floor(Number(n)) || 0); save(); refreshChip(); if (ui.open) renderScreen(); },
+    refresh() { S = load(); refreshChip(); if (ui.open) renderScreen(); },
     load
   };
 })();

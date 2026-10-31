@@ -21,6 +21,8 @@
      onKill            healPercent, atk{…}      Al derrotar a un enemigo: cura y/o buff de ATK.
      onHitDebuff       stat, value, duration,   Al recibir un ataque, probabilidad de debilitar al atacante.
                        chance
+     hitCooldown       amount (def. 1)          Al recibir daño, la habilidad suya con más enfriamiento
+                                                pendiente se recarga `amount` turno(s) (máx. 1 vez por turno).
 
    Cómo funciona (no modifica game.js; sirve en todos los modos, también contra la IA):
      - Envuelve applyDamage() (golpes, bajas, remate, represalias), startTurnActions()
@@ -35,7 +37,7 @@
   'use strict';
 
   const TYPES = new Set(['ultKillExtraTurn', 'dodge', 'lastStand', 'turnShield', 'turnRegen',
-    'openingShield', 'openingBuff', 'executeDamage', 'onKill', 'onHitDebuff']);
+    'openingShield', 'openingBuff', 'executeDamage', 'onKill', 'onHitDebuff', 'hitCooldown']);
   const getPassive = (ch, type) => (ch && ch.passive && ch.passive.type === type) ? ch.passive : null;
   const pname = ch => (ch.passive && ch.passive.name) || 'Pasiva';
   const enemyOf = key => key === 'p1' ? 'p2' : 'p1';
@@ -43,6 +45,7 @@
   let pending = null;                 // ULT que ha matado: { owner, moveId, turn, victim, name }
   const entered = new WeakSet();      // personajes que ya han empezado su primer turno
   const stood = new WeakSet();        // personajes cuyo lastStand ya se gastó
+const hitCdTurn = new WeakMap();    // personaje -> último turno en que hitCooldown se activó
 
   const announce = (ch, extra) =>
     log(`✨ ${ch.name} activa su pasiva «${pname(ch)}»${extra || '.'}`);
@@ -87,6 +90,17 @@
         giveAtkBuff(actor, ok.atk);
       }
       return;
+    }
+
+    // Ciencia a golpes (hitCooldown): al recibir daño, recarga su habilidad con más enfriamiento.
+    const hc = getPassive(target, 'hitCooldown');
+    if (hc && dealt > 0 && hitCdTurn.get(target) !== state.turnCount) {
+      const mv = (target.moves || []).filter(m => m.cd > 0).sort((a, b) => b.cd - a.cd)[0];
+      if (mv) {
+        hitCdTurn.set(target, state.turnCount);
+        mv.cd = Math.max(0, mv.cd - (Number(hc.amount) || 1));
+        announce(target, `: ${mv.name} se recarga 1 turno (CD ${mv.cd}).`);
+      }
     }
 
     // Última resistencia (una vez por batalla).
@@ -292,6 +306,11 @@
     '¡El Gran Papyrus!': 'The Great Papyrus!',
     'Al comenzar su primer turno en combate gana +6 ATK durante 3 turnos.':
       'At the start of his first turn in battle he gains +6 ATK for 3 turns.',
+    '✨ {0} activa su pasiva «{1}»: {2} se recarga 1 turno (CD {3}).':
+      '✨ {0} triggers its passive «{1}»: {2} cools down 1 turn (CD {3}).',
+    'Ciencia a Golpes': 'Science the Hard Way',
+    'Cada vez que Rick recibe daño, la habilidad suya con más enfriamiento pendiente se recarga 1 turno (como máximo una vez por turno).':
+      'Every time Rick takes damage, his ability with the most cooldown remaining recharges 1 turn (at most once per turn).',
     'Patrocinio Oficial': 'Official Sponsorship',
     'Al comenzar su primer turno en combate gana 25 de escudo.':
       'At the start of his first turn in battle he gains 25 shield.'

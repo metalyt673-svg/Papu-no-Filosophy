@@ -14,6 +14,75 @@
 
 const CHARACTERS = [
 
+
+
+{
+  id: 'ricksanchez',
+  name: 'Rick Sanchez',
+  img: 'personajes/rick_sanchez.jpg',
+  classes: ['mago', 'control'],
+  hp: 105,
+  atk: 25,
+  def: 11,
+  spd: 23,
+  passive: {
+    type: 'hitCooldown',
+    name: 'Ciencia a Golpes',
+    desc: 'Cada vez que Rick recibe daño, la habilidad suya con más enfriamiento pendiente se recarga 1 turno (como máximo una vez por turno).'
+  },
+
+  moves: [
+    {
+      id: 'ricksanchez1',
+      name: 'Pistola de Portales',
+      power: 21,
+      acc: 0.97,
+      desc: 'Rick dispara un rayo de su pistola de portales. Ataque básico.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: null
+    },
+    {
+      id: 'ricksanchez2',
+      name: 'Sarcasmo Científico',
+      power: 0,
+      acc: 0.95,
+      desc: 'Rick humilla al rival con un discurso lleno de ciencia y desprecio: reduce su DEF durante 3 turnos y su precisión durante 2.',
+      baseCooldown: 3,
+      type: 'debuff',
+      effects: [
+        { type: 'debuff', stat: 'def', value: 5, duration: 3 },
+        { type: 'accuracyDown', value: 10, duration: 2 }
+      ]
+    },
+    {
+      id: 'ricksanchez3',
+      name: 'Invento Defectuoso',
+      power: 30,
+      acc: 0.9,
+      desc: 'Rick lanza un invento a medio terminar: daño alto y quemadura durante 3 turnos.',
+      baseCooldown: 4,
+      type: 'attack',
+      effects: [
+        { type: 'damageOverTime', status: 'burn', value: 5, duration: 3 }
+      ]
+    },
+    {
+      id: 'ricksanchez4',
+      name: 'ULTRA: ¡Portal de Escape!',
+      power: 0,
+      acc: 1.0,
+      desc: 'Rick se esfuma por un portal: es INVULNERABLE (inmune a todo tipo de daño) durante 3 turnos y vuelve con +5 ATK durante 3 turnos.',
+      baseCooldown: 9,
+      type: 'support',
+      effects: [
+        { type: 'invulnerable', duration: 3 },
+        { type: 'tempAtk', value: 5, duration: 3 }
+      ]
+    }
+  ]
+},
+
 {
   id: 'titoyayo',
   name: 'Tito Yayo',
@@ -14993,7 +15062,8 @@ moves: [
       ]
     }
   ]
-}
+},
+
 
 ];
 

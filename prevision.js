@@ -73,6 +73,10 @@
   }
 
   function estimateOne(actor, target, move, crit, ignoresShield) {
+    if (typeof isInvulnerable === 'function' && isInvulnerable(target)) {
+      return { target, hp: target.hp, shield: 0, ignoresShield, min: 0, max: 0, critMax: 0,
+               absMax: 0, killSure: false, pKill: 0, immune: true };
+    }
     const atk = getEffectiveStat(actor, 'atk');
     const def = getEffectiveStat(target, 'def');
     let base = Math.round(Number(move.power) * (atk / def));
@@ -120,6 +124,7 @@
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   function killBadge(r) {
+    if (r.immune) return '<span class="dt-kill no">🛡️ Invulnerable</span>';
     if (r.killSure) return '<span class="dt-kill sure">💀 Mata seguro</span>';
     if (r.pKill > 0.005) {
       const p = r.pKill >= 0.995 ? 99 : Math.max(1, Math.round(r.pKill * 100));
@@ -139,6 +144,7 @@
       h += `<div class="dt-row">
         <div class="dt-name">${esc(r.target.name)} · ${r.hp}/${r.target.maxHp} HP</div>
         <div class="dt-dmg">−${range}</div>`;
+      if (r.immune) h += '<div class="dt-note">🛡️✨ Invulnerable: no recibirá daño</div>';
       if (est.crit > 0 && r.critMax > r.max)
         h += `<div class="dt-crit">⚡ Crítico (${Math.round(est.crit * 100)}%): Hasta −${r.critMax}</div>`;
       if (r.shield > 0)
