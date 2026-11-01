@@ -13782,8 +13782,8 @@ const CHARACTERS = [
   ]
 },
 {
-  id: 'hosimi',
-  name: 'Hosimi Miyabi',
+  id: 'hoshimi',
+  name: 'Hoshimi Miyabi',
   img: 'personajes/hoshimi.jpg',
   classes: ['atacante', 'control'],
 

@@ -77,6 +77,41 @@
     { id: 'selena9', charId: 'selena', name: 'Selena · Lady Vengeance', img: 'personajes/selena9.jpg', rarity: 'legend' },
     { id: 'selena10', charId: 'selena', name: 'Selena · Curse of Cinder', img: 'personajes/selena10.jpg', rarity: 'legend' },
     { id: 'selena11', charId: 'selena', name: 'Selena · Silverblot Raiko', img: 'personajes/selena11.jpg', rarity: 'legend' },
+    { id: 'zora1', charId: 'zora', name: 'Zora · Atuendo default', img: 'personajes/zora1.jpg', rarity: 'common' },
+    { id: 'zora2', charId: 'zora', name: 'Zora · Agente Secreto', img: 'personajes/zora3.jpg', rarity: 'rare' },
+    { id: 'zora3', charId: 'zora', name: 'Zora · Atuendo default2', img: 'personajes/zora2.jpg', rarity: 'epic' },
+    { id: 'vermeil1', charId: 'vermeil', name: 'Vermeil · Uniforme Escolar', img: 'personajes/vermeil3.jpg', rarity: 'common' },
+    { id: 'vermeil2', charId: 'vermeil', name: 'Vermeil · Pasión de Maná', img: 'personajes/vermeil8.jpg', rarity: 'rare' },
+    { id: 'vermeil3', charId: 'vermeil', name: 'Vermeil · Kimono Borracha', img: 'personajes/vermeil2.jpg', rarity: 'epic' },
+    { id: 'vermeil4', charId: 'vermeil', name: 'Vermeil · Succubus aburrida', img: 'personajes/vermeil1.jpg', rarity: 'epic' },
+    { id: 'vermeil5', charId: 'vermeil', name: 'Vermeil · Succubus Maliciosa', img: 'personajes/vermeil4.jpg', rarity: 'legend' },
+    { id: 'vermeil6', charId: 'vermeil', name: 'Vermeil · Vaquera', img: 'personajes/vermeil5.jpg', rarity: 'legend' },
+    { id: 'vermeil_nurse', charId: 'vermeil', name: 'Vermeil · Enfermera', img: 'personajes/vermeil7.jpg', rarity: 'event' },
+    { id: 'vermeil_gothic', charId: 'vermeil', name: 'Vermeil · Gótica', img: 'personajes/vermeil6.jpg', rarity: 'event' },
+    { id: 'dyrroth1', charId: 'dyrroth', name: 'Dyrroth · Prince of the Abyss', img: 'personajes/dyrroth1.jpg', rarity: 'common' },
+    { id: 'dyrroth2', charId: 'dyrroth', name: 'Dyrroth · Scalebore', img: 'personajes/dyrroth2.jpg', rarity: 'rare' },
+    { id: 'dyrroth3', charId: 'dyrroth', name: 'Dyrroth · Orochi Chris', img: 'personajes/dyrroth3.jpg', rarity: 'legend' },
+    { id: 'dyrroth_star', charId: 'dyrroth', name: 'Dyrroth · Ruins Scavenger', img: 'personajes/dyrroth4.jpg', rarity: 'event' },
+    { id: 'dyrroth5', charId: 'dyrroth', name: 'Dyrroth · V.E.N.O.M. Cobra', img: 'personajes/dyrroth5.jpg', rarity: 'epic' },
+    { id: 'dyrroth6', charId: 'dyrroth', name: 'Dyrroth · Gon', img: 'personajes/dyrroth6.jpg', rarity: 'legend' },
+    { id: 'clarence1', charId: 'clarence', name: 'Clarence · Diva', img: 'personajes/clarence1.jpg', rarity: 'rare' },
+    { id: 'clarence2', charId: 'clarence', name: 'Clarence · Hawai', img: 'personajes/clarence2.jpg', rarity: 'common' },
+    { id: 'clarence3', charId: 'clarence', name: 'Clarence · Dino', img: 'personajes/clarence3.jpg', rarity: 'rare' },
+    { id: 'clarence4', charId: 'clarence', name: 'Clarence · Rico', img: 'personajes/clarence4.gif', rarity: 'common' },
+    { id: 'clarence5', charId: 'clarence', name: 'Clarence · Chuches', img: 'personajes/clarence5.jpg', rarity: 'epic' },
+    { id: 'clarence6', charId: 'clarence', name: 'Clarence · Pirata', img: 'personajes/clarence6.jpg', rarity: 'rare' },
+    { id: 'clarence7', charId: 'clarence', name: 'Clarence · Maduro', img: 'personajes/clarence7.jpg', rarity: 'legend' },
+    { id: 'clarence8', charId: 'clarence', name: 'Clarence · Vikingo', img: 'personajes/clarence8.jpg', rarity: 'legend' },
+    { id: 'hoshimi1', charId: 'hoshimi', name: 'Miyabi · Gala', img: 'personajes/hoshimi1.jpg', rarity: 'legend' },
+    { id: 'hoshimi2', charId: 'hoshimi', name: 'Miyabi · Espadachina', img: 'personajes/hoshimi2.jpg', rarity: 'rare' },
+    { id: 'hoshimi3', charId: 'hoshimi', name: 'Miyabi · Espadachina ardiente', img: 'personajes/hoshimi3.jpg', rarity: 'legend' },
+    { id: 'hoshimi4', charId: 'hoshimi', name: 'Miyabi · Melon Eater', img: 'personajes/hoshimi4.jpg', rarity: 'epic' },
+    { id: 'hoshimi_summer', charId: 'hoshimi', name: 'Miyabi · Lifeguard', img: 'personajes/hoshimi5.jpg', rarity: 'event' },
+    { id: 'hoshimi6', charId: 'hoshimi', name: 'Miyabi · Miko', img: 'personajes/hoshimi6.jpg', rarity: 'legend' },
+    { id: 'hoshimi7', charId: 'hoshimi', name: 'Miyabi · Violinista', img: 'personajes/hoshimi7.jpg', rarity: 'common' },
+    { id: 'hoshimi_hw', charId: 'hoshimi', name: 'Miyabi · Dracula', img: 'personajes/hoshimi8.jpg', rarity: 'event' },
+    { id: 'hoshimi_summer1', charId: 'hoshimi', name: 'Miyabi · Swimsuit', img: 'personajes/hoshimi9.jpg', rarity: 'event' },
+    { id: 'hoshimi10', charId: 'hoshimi', name: 'Miyabi · the Ice Espadachina', img: 'personajes/hoshimi10.jpg', rarity: 'legend' },
     // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
   ];
 
@@ -89,7 +124,12 @@
     secre_maid: true,
     belerick_star: true,
     floryn_hk: true,
-    selena_star: true
+    selena_star: true,
+    vermeil_nurse: true,
+    vermeil_gothic: true,
+    dyrroth_star: true,
+    hoshimi_summer: true,
+    hoshimi_summer1: true
   };
 
   const RARITY = {
@@ -596,7 +636,12 @@
     hookGlossary();
   }
 
+  /* Multijugador: skin equipada de un personaje (solo si la tienes) y su imagen (validada contra el catálogo) */
+  const selectedSkinId = charId => { const d = load(); const id = d.selected[charId]; return (id && d.owned[id] && skinById(id)) ? id : null; };
+  const skinImg = (skinId, charId) => { const s = skinById(skinId); return (s && s.charId === charId) ? s.img : null; };
+
   window.SKINS = {
+    selectedSkinId, skinImg,
     rollChest, describeBonus, addCoins, coinImg, rates, buy, equip, open: openShop,
     coins: () => load().coins, catalog: SKIN_CATALOG, reload: () => { S = load(); applyAll(); }
   };

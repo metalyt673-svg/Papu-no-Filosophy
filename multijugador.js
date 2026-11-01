@@ -48,7 +48,7 @@
     bans: false, seed: 0,
     nick: { me: 'Jugador', opp: 'Rival' },
     ready: { me: false, opp: false },
-    started: false, oppTeamIds: null,
+    started: false, oppTeamIds: null, oppSkins: {},
     queue: [], draining: false,
     applied: 0, hashes: { me: {}, opp: {} },
     applyingRemote: false, presetTarget: null, busy: false, frozen: false,
@@ -381,6 +381,10 @@
       case 'team':
         if (!Array.isArray(msg.ids)) return;
         MP.oppTeamIds = msg.ids.slice(0, 3).map(String);
+        MP.oppSkins = {};
+        if (msg.skins && typeof msg.skins === 'object') {
+          MP.oppTeamIds.forEach(id => { if (typeof msg.skins[id] === 'string') MP.oppSkins[id] = msg.skins[id].slice(0, 80); });
+        }
         MP.ready.opp = true;
         if (MP.active && state.phase === 'select') { updateTurnInfo(); tryStartBattle(); }
         return;
@@ -434,7 +438,7 @@
     MP.active = true;
     installPatches();
     MP.ready = { me: false, opp: false };
-    MP.started = false; MP.oppTeamIds = null;
+    MP.started = false; MP.oppTeamIds = null; MP.oppSkins = {};
     MP.queue = []; MP.draining = false;
     MP.applied = 0; MP.hashes = { me: {}, opp: {} };
     MP.applyingRemote = false; MP.presetTarget = null; MP.busy = false; MP.frozen = false;
@@ -479,7 +483,17 @@
     const valid = ids.length === 3 && new Set(ids).size === 3 &&
       ids.every(id => findBaseById(id) && (!MP.bans || !isBanned(id)));
     if (!valid) { showInfoBanner('⚠️ El rival envió un equipo no válido. Se cancela la partida.'); return leaveMatch(); }
-    state.teams[oppRole()] = ids.map(id => cloneCharacter(findBaseById(id)));
+    state.teams[oppRole()] = ids.map(id => {
+      const c = cloneCharacter(findBaseById(id));
+      // La skin del rival: la imagen de SU skin equipada, no la que yo tenga puesta en ese personaje.
+      try {
+        const skinId = MP.oppSkins && MP.oppSkins[id];
+        const img = skinId && window.SKINS && window.SKINS.skinImg ? window.SKINS.skinImg(skinId, id) : null;
+        if (img) c.img = img;
+        else if (findBaseById(id).__img0) c.img = findBaseById(id).__img0;   // sin skin: imagen original, no la mía
+      } catch (e) { /* ignorar */ }
+      return c;
+    });
     MP.started = true;
     MP.origStartBattle();
     applyBattleUI();
@@ -768,7 +782,12 @@
       const mine = state.teams[MP.role];
       if (mine.length !== 3 || MP.ready.me) return;
       MP.ready.me = true;
-      send({ t: 'team', ids: mine.map(c => c.id) });
+      const skins = {};
+      mine.forEach(c => {
+        try { const sid = window.SKINS && window.SKINS.selectedSkinId ? window.SKINS.selectedSkinId(c.id) : null; if (sid) skins[c.id] = sid; }
+        catch (e) { /* ignorar */ }
+      });
+      send({ t: 'team', ids: mine.map(c => c.id), skins });
       W.updateStartBtn();
       updateTurnInfo();
       tryStartBattle();
