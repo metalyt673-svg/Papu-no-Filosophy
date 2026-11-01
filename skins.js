@@ -460,6 +460,14 @@
     .sk-coin{padding:4px 14px;border-radius:99px;font-weight:800;font-size:15px;color:#fde047;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.5)}
     .sk-drop{display:flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border-radius:14px;border:1px solid var(--c);background:rgba(255,255,255,.05);text-align:left}
     .sk-drop img,.sk-drop .sk-fb{width:48px;height:48px;border-radius:10px;object-fit:cover}
+    /* animación de lo que sale en los cofres normales (ventana del Inventario) */
+    .sk-coin{animation:sk-coinpop .6s .15s cubic-bezier(.2,1.5,.4,1) both}
+    .sk-drop{position:relative;overflow:hidden;animation:sk-dropin .75s .55s cubic-bezier(.2,1.4,.4,1) both,sk-glow 1.6s 1.3s ease-in-out 3}
+    .sk-drop::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.45) 50%,transparent 65%);transform:translateX(-120%);animation:sk-shine 1s 1.1s ease-out 2;pointer-events:none}
+    @keyframes sk-coinpop{0%{opacity:0;transform:scale(.4) translateY(10px)}100%{opacity:1;transform:none}}
+    @keyframes sk-dropin{0%{opacity:0;transform:scale(.3) rotate(-8deg)}60%{opacity:1;transform:scale(1.12) rotate(2deg)}100%{opacity:1;transform:none}}
+    @keyframes sk-glow{0%,100%{box-shadow:0 0 0 var(--c)}50%{box-shadow:0 0 22px var(--c)}}
+    @keyframes sk-shine{to{transform:translateX(120%)}}
     .sk-drop small{display:block;color:#c9b9a4;font-size:11px}
 
     #sk-chip{display:inline-block;margin-left:8px;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:800;color:#fde047;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.45)}
@@ -499,6 +507,27 @@
       border:2px solid var(--c);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.012)),#0f1020;box-shadow:0 0 40px var(--c)}
     .sk-rv img,.sk-rv .sk-fb{width:220px;max-width:100%;aspect-ratio:1;object-fit:cover;object-position:center 15%;border-radius:16px;background:#0d1730;display:flex;align-items:center;justify-content:center;font-size:70px}
     .sk-rv h3{margin:0;font-size:20px}
+    /* cofre de skin garantizada: apertura animada */
+    .sk-open{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;color:#fff;text-align:center;cursor:pointer}
+    .sk-open-chest{position:relative;width:170px;height:170px;display:flex;align-items:center;justify-content:center}
+    .sk-open-chest::before{content:'';position:absolute;inset:-30px;border-radius:50%;background:radial-gradient(circle,var(--c) 0%,transparent 65%);opacity:.15;animation:sk-aura var(--dur,1.6s) ease-in forwards}
+    .sk-open-chest img,.sk-open-chest .sk-chest-img{position:relative;width:150px;height:150px;border-radius:20px;object-fit:cover;font-size:80px;display:flex;align-items:center;justify-content:center;
+      box-shadow:0 0 30px rgba(251,191,36,.45);animation:sk-shake var(--dur,1.6s) ease-in forwards}
+    .sk-open small{color:#9fb0c9}
+    .sk-flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;animation:sk-flash .7s ease-out forwards}
+    .sk-rv.sk-in{animation:sk-cardin .8s cubic-bezier(.2,1.3,.4,1) both}
+    .sk-rv.sk-in img,.sk-rv.sk-in .sk-fb{animation:sk-imgin .9s .15s ease-out both}
+    .sk-rv.sk-in .sk-rar{animation:sk-rarpop .6s .6s cubic-bezier(.2,1.6,.4,1) both}
+    .sk-spark{position:absolute;left:50%;top:42%;width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 10px var(--c);pointer-events:none;animation:sk-spark 1.1s ease-out forwards}
+    @keyframes sk-shake{0%{transform:rotate(0) scale(1)}10%{transform:rotate(-4deg)}20%{transform:rotate(4deg) scale(1.03)}30%{transform:rotate(-6deg)}40%{transform:rotate(6deg) scale(1.06)}
+      55%{transform:rotate(-9deg) scale(1.08)}70%{transform:rotate(9deg) scale(1.12)}85%{transform:rotate(-11deg) scale(1.16)}100%{transform:rotate(0) scale(1.3)}}
+    @keyframes sk-aura{0%{opacity:.1;transform:scale(.6)}100%{opacity:.95;transform:scale(1.7)}}
+    @keyframes sk-flash{0%{opacity:.95}100%{opacity:0}}
+    @keyframes sk-cardin{0%{opacity:0;transform:scale(.4) rotate(-6deg)}100%{opacity:1;transform:none}}
+    @keyframes sk-imgin{0%{filter:brightness(3) blur(6px);transform:scale(.85)}100%{filter:none;transform:none}}
+    @keyframes sk-rarpop{0%{opacity:0;transform:scale(.3)}100%{opacity:1;transform:none}}
+    @keyframes sk-spark{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2)}}
+    @media (prefers-reduced-motion:reduce){.sk-coin,.sk-drop,.sk-drop::after,.sk-open-chest::before,.sk-open-chest img,.sk-open-chest .sk-chest-img,.sk-flash,.sk-rv.sk-in,.sk-rv.sk-in *,.sk-spark{animation:none!important}}
     .sk-card.sk-off{opacity:.55;filter:grayscale(.6)}
     .sk-btn{padding:8px 12px;border:0;border-radius:12px;cursor:pointer;font:inherit;font-weight:800;color:#1a1204;background:linear-gradient(180deg,#fde047,#f59e0b)}
     .sk-btn:disabled{opacity:.45;cursor:not-allowed}
@@ -599,18 +628,56 @@
     </div><div class="sk-h">🎨 Catálogo de hoy</div>`;
   }
 
+  /* Rebote del cofre normal al comprarlo (va directo al Inventario, se abre allí con su propia animación) */
+  function bounceChest() {
+    try {
+      const el = document.querySelector('.sk-chest:not(.gold) .sk-chest-img');
+      if (el && el.animate) el.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.25) rotate(-6deg)' }, { transform: 'scale(.94) rotate(4deg)' }, { transform: 'scale(1)' }], { duration: 520, easing: 'ease-out' });
+    } catch (e) { /* ignorar */ }
+  }
+
   function showSkinReveal(s) {
     const old = byId('sk-reveal'); if (old) old.remove();
     const r = rarityOf(s);
+    const calm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    const big = s.rarity === 'legend' || s.rarity === 'event';          // las raras tardan un poco más (más suspense)
+    const dur = calm ? 0 : (big ? 2200 : 1600);
     const m = document.createElement('div');
     m.id = 'sk-reveal';
-    m.innerHTML = `<div class="sk-rv" style="--c:${r.color}">
-      ${fallbackImg(s.img, '🎨')}
-      <h3>${esc(s.name)}</h3><span class="sk-rar">${r.icon} ${r.label}</span>
-      <small>${esc(baseOf(s).name)}</small>
-      <button class="sk-btn" data-act="closeReveal">¡Genial!</button></div>`;
-    m.addEventListener('click', e => { if (e.target === m || e.target.closest('[data-act="closeReveal"]')) m.remove(); });
+    m.style.setProperty('--c', r.color);
+    let revealed = false, timer = null;
+
+    const reveal = () => {
+      if (revealed || !m.isConnected) return;
+      revealed = true; clearTimeout(timer);
+      m.innerHTML = `<div class="sk-rv sk-in" style="--c:${r.color}">
+        ${fallbackImg(s.img, '🎨')}
+        <h3>${esc(s.name)}</h3><span class="sk-rar">${r.icon} ${r.label}</span>
+        <small>${esc(baseOf(s).name)}</small>
+        <button class="sk-btn" data-act="closeReveal">¡Genial!</button></div>`;
+      if (calm) return;
+      const fl = document.createElement('div'); fl.className = 'sk-flash'; m.appendChild(fl);
+      const n = big ? 34 : 22;
+      for (let i = 0; i < n; i++) {                                    // chispas en abanico
+        const sp = document.createElement('i'); sp.className = 'sk-spark';
+        const ang = Math.random() * Math.PI * 2, d = 90 + Math.random() * (big ? 220 : 150);
+        sp.style.setProperty('--dx', Math.round(Math.cos(ang) * d) + 'px');
+        sp.style.setProperty('--dy', Math.round(Math.sin(ang) * d) + 'px');
+        sp.style.animationDelay = Math.round(Math.random() * 180) + 'ms';
+        m.appendChild(sp);
+      }
+      setTimeout(() => m.querySelectorAll('.sk-spark,.sk-flash').forEach(x => x.remove()), 1600);
+    };
+
+    m.innerHTML = `<div class="sk-open" style="--dur:${dur}ms">
+      <div class="sk-open-chest">${fallbackImg(SKIN_CHEST_IMG, '🎁').replace('<img ', '<img class="sk-chest-img" ')}</div>
+      <b>Abriendo cofre…</b><small>Toca para saltar</small></div>`;
+    m.addEventListener('click', e => {
+      if (!revealed) { reveal(); return; }                              // un toque durante la apertura salta la animación
+      if (e.target === m || e.target.closest('[data-act="closeReveal"]')) m.remove();
+    });
     document.body.appendChild(m);
+    if (calm) reveal(); else timer = setTimeout(reveal, dur);
   }
 
   function renderGrid() {
@@ -648,7 +715,7 @@
     const act = b.dataset.act;
     if (act === 'back') closeShop();
     else if (act === 'buy') { ui.msg = buy(b.dataset.s).msg; renderShop(); }
-    else if (act === 'buyChest') { ui.msg = buyChest().msg; renderShop(); }
+    else if (act === 'buyChest') { const r = buyChest(); ui.msg = r.msg; renderShop(); if (r.ok) bounceChest(); }
     else if (act === 'buySkinChest') { const r = buySkinChest(); ui.msg = r.msg; renderShop(); if (r.skin) showSkinReveal(r.skin); }
     else if (act === 'inv') { closeShop(); if (!invVisible() && window.INVENTARIO) window.INVENTARIO.open(); }
     else if (act === 'equip') { const s = skinById(b.dataset.s); if (s) equip(s.charId, s.id); ui.msg = '🎨 Skin equipada.'; renderShop(); }
