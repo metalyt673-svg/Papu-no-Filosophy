@@ -184,7 +184,23 @@
     { id: 'helcurt6', charId: 'helcurt', name: 'Helcurt · Scorpio', img: 'personajes/helcurt5.jpg', rarity: 'epic' },
     { id: 'helcurt_star', charId: 'helcurt', name: 'Helcurt · Dream Prowler', img: 'personajes/helcurt6.jpg', rarity: 'event' },
     { id: 'helcurt7', charId: 'helcurt', name: 'Helcurt · Kaiju of the Deep', img: 'personajes/helcurt7.jpg', rarity: 'legend' },
-    // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
+    { id: 'ricksanchez1', charId: 'ricksanchez', name: 'Rick Sanchez · High', img: 'personajes/ricksanchez1.jpg', rarity: 'common' },
+    { id: 'ricksanchez2', charId: 'ricksanchez', name: 'Rick Sanchez · Suit', img: 'personajes/ricksanchez2.jpg', rarity: 'rare' },
+    { id: 'ricksanchez3', charId: 'ricksanchez', name: 'Rick Sanchez · Toxic Rick', img: 'personajes/ricksanchez3.jpg', rarity: 'rare' },
+    { id: 'ricksanchez4', charId: 'ricksanchez', name: 'Rick Sanchez · Doofus Rick', img: 'personajes/ricksanchez4.jpg', rarity: 'epic' },
+    { id: 'ricksanchez5', charId: 'ricksanchez', name: 'Rick Sanchez · Rick Prime', img: 'personajes/ricksanchez5.jpg', rarity: 'legend' },
+    { id: 'ricksanchez6', charId: 'ricksanchez', name: 'Rick Sanchez · Gucci Rick', img: 'personajes/ricksanchez6.jpg', rarity: 'legend' },
+    { id: 'ricksanchez7', charId: 'ricksanchez', name: 'Rick Sanchez · Evil Rick', img: 'personajes/ricksanchez7.jpg', rarity: 'epic' },
+    { id: 'ricksanchez8', charId: 'ricksanchez', name: 'Rick Sanchez · Pickle Rick', img: 'personajes/ricksanchez8.jpg', rarity: 'legend' },
+    { id: 'yv1', charId: 'yv', name: 'Yung Venuz · Demi God', img: 'personajes/yv1.jpg', rarity: 'rare' },
+    { id: 'yv2', charId: 'yv', name: 'Yung Venuz · Sad', img: 'personajes/yv2.jpg', rarity: 'common' },
+    { id: 'yv3', charId: 'yv', name: 'Yung Venuz · Tha Gun God', img: 'personajes/yv3.jpg', rarity: 'epic' },
+    { id: 'horror1', charId: 'horror', name: 'Horror · Portal', img: 'personajes/horror1.jpg', rarity: 'rare' },
+    { id: 'horror2', charId: 'horror', name: 'Horror · IDPD', img: 'personajes/horror2.jpg', rarity: 'epic' },
+    { id: 'chicken1', charId: 'chicken', name: 'Chicken · Green Eyes', img: 'personajes/chicken1.jpg', rarity: 'rare' },
+    { id: 'chicken2', charId: 'chicken', name: 'Chicken · Blind Samurai', img: 'personajes/chicken2.jpg', rarity: 'legend' },
+
+        // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
   ];
 
   /* SKINS DE EVENTO: interruptor individual. true = se puede conseguir ahora (tienda y cofres);

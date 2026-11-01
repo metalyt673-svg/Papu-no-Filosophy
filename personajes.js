@@ -2224,7 +2224,7 @@ const CHARACTERS = [
 {
   id: 'yv',
   name: 'Yung Venuz',
-  img: 'personajes/yv.gif',
+  img: 'personajes/yv.jpg',
   classes: ['atacante'],
   hp: 125,
   atk: 28,
