@@ -880,7 +880,7 @@
     return {
       name: P.name, avatar: P.avatar, favs: P.favs.slice(),
       points: g.points,
-      rank: { name: g.rank.cur.name, icon: g.rank.cur.icon, rgb: g.rank.cur.rgb, pct: g.rank.pct,
+      rank: { min: g.rank.cur.min, name: g.rank.cur.name, icon: g.rank.cur.icon, rgb: g.rank.cur.rgb, pct: g.rank.pct,
         nextName: g.rank.next ? g.rank.next.name : '', nextIcon: g.rank.next ? g.rank.next.icon : '', nextMin: g.rank.next ? g.rank.next.min : 0 },
       freeWins: g.freeWins, freePlayed: g.freePlayed,
       free: FREE_MODES.map(m => Object.assign({ icon: m.icon, name: m.name }, P.free[m.id])),

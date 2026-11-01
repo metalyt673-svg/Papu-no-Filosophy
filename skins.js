@@ -99,6 +99,7 @@
     { id: 'clarence3', charId: 'clarence', name: 'Clarence · Dino', img: 'personajes/clarence3.jpg', rarity: 'rare' },
     { id: 'clarence4', charId: 'clarence', name: 'Clarence · Rico', img: 'personajes/clarence4.gif', rarity: 'common' },
     { id: 'clarence5', charId: 'clarence', name: 'Clarence · Chuches', img: 'personajes/clarence5.jpg', rarity: 'epic' },
+    { id: 'clarence9', charId: 'clarence', name: 'Clarence · Balance', img: 'personajes/balance.jpg', rarity: 'epic' },
     { id: 'clarence6', charId: 'clarence', name: 'Clarence · Pirata', img: 'personajes/clarence6.jpg', rarity: 'rare' },
     { id: 'clarence7', charId: 'clarence', name: 'Clarence · Maduro', img: 'personajes/clarence7.jpg', rarity: 'legend' },
     { id: 'clarence8', charId: 'clarence', name: 'Clarence · Vikingo', img: 'personajes/clarence8.jpg', rarity: 'legend' },
@@ -112,6 +113,77 @@
     { id: 'hoshimi_hw', charId: 'hoshimi', name: 'Miyabi · Dracula', img: 'personajes/hoshimi8.jpg', rarity: 'event' },
     { id: 'hoshimi_summer1', charId: 'hoshimi', name: 'Miyabi · Swimsuit', img: 'personajes/hoshimi9.jpg', rarity: 'event' },
     { id: 'hoshimi10', charId: 'hoshimi', name: 'Miyabi · the Ice Espadachina', img: 'personajes/hoshimi10.jpg', rarity: 'legend' },
+    { id: 'cici1', charId: 'cici', name: 'Cici · Buoyant Performer', img: 'personajes/cici6.png', rarity: 'common' },
+    { id: 'cici2', charId: 'cici', name: 'Cici · Whimiscal Carnival', img: 'personajes/cici1.png', rarity: 'rare' },
+    { id: 'cici_star', charId: 'cici', name: 'Cici · Circus Reverie', img: 'personajes/cici2.png', rarity: 'event' },
+    { id: 'cici_star1', charId: 'cici', name: 'Cici · Circus Fantasy', img: 'personajes/cici3.png', rarity: 'event' },
+    { id: 'cici_star2', charId: 'cici', name: 'Cici · Circus Glamour', img: 'personajes/cici4.png', rarity: 'event' },
+    { id: 'cici3', charId: 'cici', name: 'Cici · P. ACE', img: 'personajes/cici5.png', rarity: 'epic' },
+    { id: 'mimosa1', charId: 'mimosa', name: 'Mimosa · Gala', img: 'personajes/mimosa4.jpg', rarity: 'common' },
+    { id: 'mimosa2', charId: 'mimosa', name: 'Mimosa · Amanecer Dorado', img: 'personajes/mimosa5.jpg', rarity: 'rare' },
+    { id: 'mimosa3', charId: 'mimosa', name: 'Mimosa · Bunny', img: 'personajes/mimosa3.jpg', rarity: 'epic' },
+    { id: 'mimosa4', charId: 'mimosa', name: 'Mimosa · Calle', img: 'personajes/mimosa1.jpg', rarity: 'epic' },
+    { id: 'mimosa5', charId: 'mimosa', name: 'Mimosa · Clover Academy', img: 'personajes/mimosa2.jpg', rarity: 'legend' },
+    { id: 'mimosa_chm', charId: 'mimosa', name: 'Mimosa · Navidad', img: 'personajes/mimosa6.jpg', rarity: 'event' },
+    { id: 'mimosa_sport', charId: 'mimosa', name: 'Mimosa · Animadora', img: 'personajes/mimosa7.jpg', rarity: 'event' },
+    { id: 'mimosa_casino', charId: 'mimosa', name: 'Mimosa · Casino', img: 'personajes/mimosa8.jpg', rarity: 'event' },
+    { id: 'gojo1', charId: 'gojo_satoru', name: 'Gojo · Hollow Red', img: 'personajes/gojo1.jpg', rarity: 'epic' },
+    { id: 'gojo2', charId: 'gojo_satoru', name: 'Gojo · Last Battle', img: 'personajes/gojo5.jpg', rarity: 'common' },
+    { id: 'gojo3', charId: 'gojo_satoru', name: 'Gojo · Mentor', img: 'personajes/gojo2.jpg', rarity: 'rare' },
+    { id: 'gojo_chm', charId: 'gojo_satoru', name: 'Gojo · Navidad', img: 'personajes/gojo3.jpg', rarity: 'event' },
+    { id: 'gojo_hk', charId: 'gojo_satoru', name: 'Gojo · Hello Kitty', img: 'personajes/gojo4.jpg', rarity: 'event' },
+    { id: 'gojo4', charId: 'gojo_satoru', name: 'Gojo · Hollow Purple', img: 'personajes/gojo6.jpg', rarity: 'legend' },
+    { id: 'johnson1', charId: 'johnson_ml', name: 'Johnson · Wild Engine', img: 'personajes/johnson1.jpg', rarity: 'common' },
+    { id: 'johnson2', charId: 'johnson_ml', name: 'Johnson · Fire Chief', img: 'personajes/johnson2.jpg', rarity: 'rare' },
+    { id: 'johnson3', charId: 'johnson_ml', name: 'Johnson · S.A.B.E.R. Automata', img: 'personajes/johnson3.jpg', rarity: 'epic' },
+    { id: 'johnson4', charId: 'johnson_ml', name: 'Johnson · Jeepney Racer', img: 'personajes/johnson4.jpg', rarity: 'rare' },
+    { id: 'johnson5', charId: 'johnson_ml', name: 'Johnson · Wreck King', img: 'personajes/johnson5.jpg', rarity: 'legend' },
+    { id: 'johnson6', charId: 'johnson_ml', name: 'Johnson · Death Ride', img: 'personajes/johnson6.jpg', rarity: 'epic' },
+    { id: 'johnson_transformer', charId: 'johnson_ml', name: 'Johnson · Optimus Prime', img: 'personajes/johnson7.jpg', rarity: 'event' },
+    { id: 'johnson7', charId: 'johnson_ml', name: 'Johnson · Starblazer', img: 'personajes/johnson8.jpg', rarity: 'epic' },
+    { id: 'johnson8', charId: 'johnson_ml', name: 'Johnson · Sovereign of Realms', img: 'personajes/johnson9.jpg', rarity: 'legend' },
+    { id: 'gloo1', charId: 'gloo_ml', name: 'Gloo · Swamp Spirits', img: 'personajes/gloo1.jpg', rarity: 'common' },
+    { id: 'gloo2', charId: 'gloo_ml', name: 'Gloo · Verdant Enchanter', img: 'personajes/gloo2.jpg', rarity: 'rare' },
+    { id: 'gloo3', charId: 'gloo_ml', name: 'Gloo · Jellyman', img: 'personajes/gloo3.jpg', rarity: 'epic' },
+    { id: 'gloo_patricio', charId: 'gloo_ml', name: 'Gloo · Patrick', img: 'personajes/gloo4.jpg', rarity: 'event' },
+    { id: 'estes1', charId: 'estes', name: 'Estes · Holy Priest', img: 'personajes/estes1.jpg', rarity: 'rare' },
+    { id: 'estes2', charId: 'estes', name: 'Estes · Galaxy Dominator', img: 'personajes/estes2.jpg', rarity: 'legend' },
+    { id: 'estes3', charId: 'estes', name: 'Estes · Crow Bishop', img: 'personajes/estes3.jpg', rarity: 'epic' },
+    { id: 'estes4', charId: 'estes', name: 'Estes · Rattan Dragon', img: 'personajes/estes4.jpg', rarity: 'epic' },
+    { id: 'estes5', charId: 'estes', name: 'Estes · Arcane Magistrate', img: 'personajes/estes5.jpg', rarity: 'epic' },
+    { id: 'estes6', charId: 'estes', name: 'Estes · SPARKLE', img: 'personajes/estes6.jpg', rarity: 'rare' },
+    { id: 'grock1', charId: 'grock', name: 'Grock · Fortress Titan', img: 'personajes/grock1.jpg', rarity: 'common' },
+    { id: 'grock2', charId: 'grock', name: 'Grock · Grave Guardian', img: 'personajes/grock2.jpg', rarity: 'rare' },
+    { id: 'grock3', charId: 'grock', name: 'Grock · Castle Guard', img: 'personajes/grock3.jpg', rarity: 'rare' },
+    { id: 'grock4', charId: 'grock', name: 'Grock · V.E.N.O.M. Monitor Lizard', img: 'personajes/grock4.jpg', rarity: 'epic' },
+    { id: 'grock_star', charId: 'grock', name: 'Grock · Iceland Golem', img: 'personajes/grock5.jpg', rarity: 'event' },
+    { id: 'grock5', charId: 'grock', name: 'Grock · Codename: Rhino', img: 'personajes/grock6.jpg', rarity: 'epic' },
+    { id: 'grock6', charId: 'grock', name: 'Grock · Ancient Golem', img: 'personajes/grock7.jpg', rarity: 'rare' },
+    { id: 'grock7', charId: 'grock', name: 'Grock · Wasteland Psycho', img: 'personajes/grock8.jpg', rarity: 'epic' },
+    { id: 'guinevere1', charId: 'guinevere', name: 'Guinevere · Fleur de Bleau', img: 'personajes/guinevere1.jpg', rarity: 'common' },
+    { id: 'guinevere_kof', charId: 'guinevere', name: 'Guinevere · Athena Asamiya', img: 'personajes/guinevere2.jpg', rarity: 'event' },
+    { id: 'guinevere3', charId: 'guinevere', name: 'Guinevere · Lotus', img: 'personajes/guinevere3.jpg', rarity: 'rare' },
+    { id: 'guinevere4', charId: 'guinevere', name: 'Guinevere · Amethyst Dance', img: 'personajes/guinevere4.jpg', rarity: 'epic' },
+    { id: 'guinevere5', charId: 'guinevere', name: 'Guinevere · Lady Crane', img: 'personajes/guinevere5.jpg', rarity: 'epic' },
+    { id: 'guinevere6', charId: 'guinevere', name: 'Guinevere · Sakura Wishes', img: 'personajes/guinevere6.jpg', rarity: 'epic' },
+    { id: 'guinevere_summer', charId: 'guinevere', name: 'Guinevere · Summer Breeze', img: 'personajes/guinevere7.jpg', rarity: 'event' },
+    { id: 'guinevere8', charId: 'guinevere', name: 'Guinevere · Psion of Tomorrow', img: 'personajes/guinevere8.jpg', rarity: 'legend' },
+    { id: 'guinevere9', charId: 'guinevere', name: 'Guinevere · Elegant Butterfly', img: 'personajes/guinevere9.jpg', rarity: 'rare' },
+    { id: 'guinevere10', charId: 'guinevere', name: 'Guinevere · Daybreak Halo', img: 'personajes/guinevere10.jpg', rarity: 'legend' },
+    { id: 'thamuz1', charId: 'thamuz', name: 'Thamuz · Lord Lava', img: 'personajes/thamuz1.jpg', rarity: 'common' },
+    { id: 'thamuz2', charId: 'thamuz', name: 'Thamuz · Lord of Wraith', img: 'personajes/thamuz2.jpg', rarity: 'rare' },
+    { id: 'thamuz3', charId: 'thamuz', name: 'Thamuz · Liquid Fire', img: 'personajes/thamuz3.jpg', rarity: 'epic' },
+    { id: 'thamuz4', charId: 'thamuz', name: 'Thamuz · Abyssal Reaper', img: 'personajes/thamuz4.jpg', rarity: 'epic' },
+    { id: 'thamuz_kai', charId: 'thamuz', name: 'Thamuz · General Kai', img: 'personajes/thamuz5.jpg', rarity: 'event' },
+    { id: 'thamuz_star', charId: 'thamuz', name: 'Thamuz · Sanctified Flame', img: 'personajes/thamuz6.jpg', rarity: 'legend' },
+    { id: 'thamuz7', charId: 'thamuz', name: 'Thamuz · The Annihilator', img: 'personajes/thamuz7.jpg', rarity: 'legend' },
+    { id: 'helcurt1', charId: 'helcurt', name: 'Helcurt · Shadowbringer', img: 'personajes/helcurt1.jpg', rarity: 'common' },
+    { id: 'helcurt2', charId: 'helcurt', name: 'Helcurt · Exoracial Executer', img: 'personajes/helcurt2.jpg', rarity: 'rare' },
+    { id: 'helcurt3', charId: 'helcurt', name: 'Helcurt · Ice Scythe', img: 'personajes/helcurt3.jpg', rarity: 'epic' },
+    { id: 'helcurt4', charId: 'helcurt', name: 'Helcurt · Evolved Predator', img: 'personajes/helcurt4.jpg', rarity: 'epic' },
+    { id: 'helcurt6', charId: 'helcurt', name: 'Helcurt · Scorpio', img: 'personajes/helcurt5.jpg', rarity: 'epic' },
+    { id: 'helcurt_star', charId: 'helcurt', name: 'Helcurt · Dream Prowler', img: 'personajes/helcurt6.jpg', rarity: 'event' },
+    { id: 'helcurt7', charId: 'helcurt', name: 'Helcurt · Kaiju of the Deep', img: 'personajes/helcurt7.jpg', rarity: 'legend' },
     // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
   ];
 
@@ -129,7 +201,17 @@
     vermeil_gothic: true,
     dyrroth_star: true,
     hoshimi_summer: true,
-    hoshimi_summer1: true
+    hoshimi_summer1: true,
+    gojo_chm: true,
+    gojo_hk: true,
+    johnson_transformer: true,
+    gloo_patricio: true,
+    grock_star: true,
+    guinevere_kof: true,
+    guinevere_summer: true,
+    thamuz_kai: true,
+    thamuz_star: true,
+    helcurt_star: true
   };
 
   const RARITY = {
@@ -342,7 +424,7 @@
   function describeBonus(b) {
     if (!b) return '';
     const skins = (b.skins || []).map(s => `<div class="sk-drop" style="--c:${rarityOf(s).color}">
-        <img src="${esc(s.img)}" alt="" onerror="this.replaceWith(document.createTextNode('🎨'))">
+        ${fallbackImg(s.img, '🎨')}
         <span><b>🎨 ¡Skin nueva!</b><small>${esc(s.name)} · ${rarityOf(s).label}</small></span></div>`).join('');
     return `<div class="sk-bonus"><span class="sk-coin">${coinImg()} +${fmt(b.coins)} monedas</span>${skins}</div>`;
   }
@@ -430,8 +512,30 @@
     sc.addEventListener('click', onClick);
   }
 
+  /* Si una imagen no carga (p. ej. la tienes como .png/.jpeg en vez de .jpg) prueba las otras extensiones
+     antes de rendirse y, si acierta, se acuerda de la ruta buena para el resto del juego. */
+  const IMG_EXTS = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+  const extOf = src => ((String(src).match(/\.([a-z0-9]+)$/i) || [])[1] || '').toLowerCase();
+  const nextImg = (src, tried) => { const b = String(src).replace(/\.[a-z0-9]+$/i, ''); const e = IMG_EXTS.find(x => !tried.includes(x)); return e ? b + '.' + e : null; };
+  function rememberImg(orig, now) {
+    if (!orig || !now || orig === now) return;
+    SKIN_CATALOG.forEach(k => { if (k.img === orig) k.img = now; });
+    applyAll();
+  }
+  window.__skFix = function (img, emoji) {
+    const orig = img.dataset.orig || img.getAttribute('src');
+    img.dataset.orig = orig;
+    const tried = (img.dataset.tried || extOf(orig)).split(',').filter(Boolean);
+    if (!tried.includes(extOf(img.getAttribute('src')))) tried.push(extOf(img.getAttribute('src')));
+    const nxt = nextImg(orig, tried);
+    if (!nxt) { img.outerHTML = '<div class="sk-fb">' + emoji + '</div>'; return; }
+    tried.push(extOf(nxt));
+    img.dataset.tried = tried.join(',');
+    img.setAttribute('src', nxt);
+  };
+  window.__skOk = function (img) { rememberImg(img.dataset.orig, img.getAttribute('src')); };
   function fallbackImg(src, emoji) {
-    return `<img src="${esc(src)}" alt="" onerror="this.outerHTML='<div class=&quot;sk-fb&quot;>${emoji}</div>'">`;
+    return `<img src="${esc(src)}" alt="" data-orig="${esc(src)}" onerror="__skFix(this,'${emoji}')" onload="__skOk(this)">`;
   }
 
   function cardHTML(s) {
@@ -634,6 +738,25 @@
     injectScreen();
     applyAll();
     hookGlossary();
+    healSelected();
+  }
+
+  function healSelected() {
+    try {
+      S = load();
+      Object.keys(S.selected).forEach(cid => {
+        const k = skinById(S.selected[cid]);
+        if (!k || !S.owned[k.id]) return;
+        const orig = k.img, tried = [extOf(orig)];
+        const probe = src => {
+          const im = new Image();
+          im.onload = () => rememberImg(orig, src);
+          im.onerror = () => { const n = nextImg(orig, tried); if (n) { tried.push(extOf(n)); probe(n); } };
+          im.src = src;
+        };
+        probe(orig);
+      });
+    } catch (e) { /* ignorar */ }
   }
 
   /* Multijugador: skin equipada de un personaje (solo si la tienes) y su imagen (validada contra el catálogo) */

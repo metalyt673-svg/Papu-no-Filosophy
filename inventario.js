@@ -17,6 +17,12 @@
 
    Todo se guarda en localStorage ('batalla-inventario').
 
+   CONVERTIR GLORIA EN MONEDAS (💱):
+     - Solo se puede convertir la gloria SOBRANTE: la que ganaste con cajas y que
+       está por encima del mínimo de tu rango actual. Nunca bajas de rango.
+     - Tipo de cambio desfavorable a propósito (CONVERT_RATE gloria = 1 moneda),
+       y en bloques (CONVERT_STEP). Sin tope diario. Los ajustes están abajo.
+
    DÓNDE AJUSTAR COSAS:
      - Imagen de la caja:           BOX_IMG
      - Mínimo / máximo de gloria:   GLORY_MIN / GLORY_MAX
@@ -36,6 +42,10 @@
   const GLORY_MAX   = 50;
   const REQUIRE_WIN = false;   // false: una caja por cada partida terminada (gana o pierdas)
   const HISTORY_MAX = 12;
+
+  /* Conversión de gloria sobrante en monedas de la tienda */
+  const CONVERT_RATE      = 2;     // gloria necesaria para 1 moneda (2 -> 10 gloria = 5 monedas)
+  const CONVERT_STEP      = 10;    // se convierte en bloques de esta cantidad de gloria
 
   /* ---------------- utilidades ---------------- */
   const byId = id => document.getElementById(id);
@@ -65,6 +75,7 @@
       opened: n(d.opened),    // cajas abiertas
       total: n(d.total),      // gloria total ganada con cajas
       best: n(d.best),        // mejor caja
+      spent: n(d.spent),      // gloria de cajas ya convertida en monedas
       history: (Array.isArray(d.history) ? d.history : []).slice(0, HISTORY_MAX)
         .map(h => ({ pts: n(h && h.pts), at: Number(h && h.at) || 0 }))
     };
@@ -73,7 +84,33 @@
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* modo privado */ } }
 
   /* Gloria extra que suma perfil.js a los puntos del jugador. */
-  const bonusGlory = () => load().total;
+  const bonusGlory = () => { const d = load(); return Math.max(0, d.total - d.spent); };
+
+  /* ---------------- gloria → monedas ---------------- */
+  /* Cuánta gloria se puede convertir ahora mismo (sin bajar del mínimo del rango actual) */
+  function convertInfo() {
+    S = load();
+    const available = Math.max(0, S.total - S.spent);          // gloria de cajas aún no gastada
+    const sp = snap();
+    const surplus = sp && sp.rank && typeof sp.rank.min === 'number' ? Math.max(0, sp.points - sp.rank.min) : 0;
+    const raw = Math.min(available, surplus);
+    return { max: Math.floor(raw / CONVERT_STEP) * CONVERT_STEP, available, surplus };
+  }
+
+  function convertGlory(amount) {
+    if (!window.SKINS || typeof window.SKINS.addCoins !== 'function') return { ok: false, msg: 'La tienda no está disponible.' };
+    amount = Math.floor(Number(amount)) || 0;
+    const info = convertInfo();
+    if (amount < CONVERT_STEP || amount % CONVERT_STEP) return { ok: false, msg: `Se convierte de ${CONVERT_STEP} en ${CONVERT_STEP} puntos de gloria.` };
+    if (amount > info.max) return { ok: false, msg: info.max ? `Ahora mismo solo puedes convertir ${info.max} de gloria.` : 'No tienes gloria sobrante para convertir ahora mismo.' };
+    const coins = Math.floor(amount / CONVERT_RATE);
+    S = load();
+    S.spent += amount;
+    save();
+    window.SKINS.addCoins(coins);
+    refreshChip();
+    return { ok: true, msg: `💱 Has convertido ${fmt(amount)} de gloria en ${fmt(coins)} monedas.` };
+  }
 
   /* ---------------- conseguir cajas (fin de partida vs IA) ---------------- */
   function award(win) {
@@ -162,6 +199,12 @@
     .inv-empty{display:flex;align-items:center;gap:16px;padding:6px 2px;color:#a8957f}
     .inv-empty-ic{font-size:44px;opacity:.55}
     .inv-empty b{display:block;color:#e8dccb;margin-bottom:3px}
+
+    .inv-conv{display:flex;flex-direction:column;gap:8px}
+    .inv-conv b{font-size:18px}
+    .inv-conv span{color:#c9b9a4;font-size:13px;line-height:1.5}
+    .inv-conv-msg{min-height:18px;font-size:13px;color:#fcd34d}
+    .inv-primary:disabled,.inv-conv .class-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;filter:none}
 
     .inv-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
     .inv-tile{padding:14px 16px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012)),#0f1020;border:1px solid rgba(255,255,255,.09)}
@@ -280,7 +323,7 @@
   }
 
   /* ---------------- pantalla del inventario ---------------- */
-  const ui = { open: false };
+  const ui = { open: false, msg: '' };
 
   function injectMarkup() {
     if (byId('inv-screen')) return;
@@ -324,6 +367,22 @@
       : `<div class="inv-empty"><span class="inv-empty-ic">📭</span>
           <div><b>No tienes cajas sin abrir</b>Consigue una al terminar una partida contra la IA, con o sin baneos.</div></div>`;
 
+    const ci = convertInfo();
+    const convHTML = window.SKINS ? `
+      <div class="inv-h">💱 Gloria → monedas <small>${CONVERT_RATE} de gloria = 1 moneda</small></div>
+      <section class="inv-panel inv-conv">
+        <b>Convierte tu gloria sobrante en monedas</b>
+        <span>Solo cuenta la gloria de cajas que está <b style="font-size:inherit">por encima del mínimo de tu rango</b>: nunca bajarás de rango.
+          Se cambia de ${CONVERT_STEP} en ${CONVERT_STEP}, sin límite diario.</span>
+        <span>Convertible ahora: <b style="font-size:inherit;color:#fdba74">${fmt(ci.max)}</b> de gloria
+          → ${window.SKINS.coinImg()} <b style="font-size:inherit;color:#fde047">${fmt(Math.floor(ci.max / CONVERT_RATE))}</b> monedas</span>
+        <div class="inv-btns">
+          <button class="class-btn" data-act="conv" data-amt="${CONVERT_STEP}" ${ci.max >= CONVERT_STEP ? '' : 'disabled'}>Convertir ${CONVERT_STEP} → ${Math.floor(CONVERT_STEP / CONVERT_RATE)}</button>
+          <button class="inv-primary" data-act="conv" data-amt="${ci.max}" ${ci.max >= CONVERT_STEP ? '' : 'disabled'}>💱 Convertir todo lo posible</button>
+        </div>
+        <div class="inv-conv-msg">${esc(ui.msg)}</div>
+      </section>` : '';
+
     const hist = S.history.length
       ? `<div class="inv-h">🕘 Últimas cajas abiertas</div>
          <div class="inv-hist">${S.history.map(h =>
@@ -341,6 +400,7 @@
       ${rankHTML(sp)}
       <div class="inv-h">📦 Cajas <small>${S.boxes} sin abrir</small></div>
       <section class="inv-panel">${boxesHTML}</section>
+      ${convHTML}
       <div class="inv-tiles">
         <div class="inv-tile"><b>${fmt(S.opened)}</b><span>Cajas abiertas</span></div>
         <div class="inv-tile"><b>+${fmt(S.total)}</b><span>Gloria ganada con cajas</span></div>
@@ -357,6 +417,7 @@
     const act = b.dataset.act;
     if (act === 'back') closeInv();
     else if (act === 'shop') { if (window.SKINS) window.SKINS.open(); }
+    else if (act === 'conv') { ui.msg = convertGlory(b.dataset.amt).msg; renderScreen(); }
     else if (act === 'open1') openBoxes(1);
     else if (act === 'openAll') openBoxes(Infinity);
     else if (act === 'close') closeReveal();
@@ -365,7 +426,7 @@
 
   function openInv() {
     byId('main-menu').style.display = 'none';
-    ui.open = true;
+    ui.open = true; ui.msg = '';
     const sc = byId('inv-screen');
     sc.style.display = 'flex';
     sc.scrollTop = 0;
@@ -518,7 +579,7 @@
   // Lo usa perfil.js (bonusGlory) y sirve para depurar desde la consola: INVENTARIO.add(3)
   window.INVENTARIO = {
     open: openInv,
-    bonusGlory,
+    bonusGlory, convertGlory, convertInfo,
     add(n) { S = load(); S.boxes += Math.max(0, Math.floor(Number(n)) || 0); S.earned += Math.max(0, Math.floor(Number(n)) || 0); save(); refreshChip(); if (ui.open) renderScreen(); },
     refresh() { S = load(); refreshChip(); if (ui.open) renderScreen(); },
     load
