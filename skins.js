@@ -199,6 +199,11 @@
     { id: 'horror2', charId: 'horror', name: 'Horror · IDPD', img: 'personajes/horror2.jpg', rarity: 'epic' },
     { id: 'chicken1', charId: 'chicken', name: 'Chicken · Green Eyes', img: 'personajes/chicken1.jpg', rarity: 'rare' },
     { id: 'chicken2', charId: 'chicken', name: 'Chicken · Blind Samurai', img: 'personajes/chicken2.jpg', rarity: 'legend' },
+    { id: 'mayuri1', charId: 'mayuri', name: 'Mayuri · Faraón Arrancar', img: 'personajes/mayuri1.jpg', rarity: 'legend' },
+    { id: 'mayuri2', charId: 'mayuri', name: 'Mayuri · Desarrollo de Investigación', img: 'personajes/mayuri2.jpg', rarity: 'epic' },
+    { id: 'mayuri3', charId: 'mayuri', name: 'Mayuri · Sol Brillante', img: 'personajes/mayuri3.jpg', rarity: 'rare' },
+    { id: 'mayuri4', charId: 'mayuri', name: 'Mayuri · Departamento de Ciencias y Desarrollo', img: 'personajes/mayuri4.jpg', rarity: 'epic' },
+    { id: 'mayuri5', charId: 'mayuri', name: 'Mayuri · Hueco mundo', img: 'personajes/mayuri5.jpg', rarity: 'common' },
 
         // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
   ];
