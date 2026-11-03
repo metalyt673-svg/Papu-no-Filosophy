@@ -21,6 +21,8 @@
      onKill            healPercent, atk{…}      Al derrotar a un enemigo: cura y/o buff de ATK.
      onHitDebuff       stat, value, duration,   Al recibir un ataque, probabilidad de debilitar al atacante.
                        chance
+     onHitBurnAll      value, duration          Al recibir daño, quema a TODOS los enemigos vivos
+                                                (value de vida por turno durante duration turnos).
      hitCooldown       amount (def. 1)          Al recibir daño, la habilidad suya con más enfriamiento
                                                 pendiente se recarga `amount` turno(s) (máx. 1 vez por turno).
 
@@ -37,7 +39,7 @@
   'use strict';
 
   const TYPES = new Set(['ultKillExtraTurn', 'dodge', 'lastStand', 'turnShield', 'turnRegen',
-    'openingShield', 'openingBuff', 'executeDamage', 'onKill', 'onHitDebuff', 'hitCooldown']);
+    'openingShield', 'openingBuff', 'executeDamage', 'onKill', 'onHitDebuff', 'hitCooldown', 'onHitBurnAll']);
   const getPassive = (ch, type) => (ch && ch.passive && ch.passive.type === type) ? ch.passive : null;
   const pname = ch => (ch.passive && ch.passive.name) || 'Pasiva';
   const enemyOf = key => key === 'p1' ? 'p2' : 'p1';
@@ -46,6 +48,9 @@
   const entered = new WeakSet();      // personajes que ya han empezado su primer turno
   const stood = new WeakSet();        // personajes cuyo lastStand ya se gastó
 const hitCdTurn = new WeakMap();    // personaje -> último turno en que hitCooldown se activó
+
+  /* Todos los enemigos vivos (también los del banquillo) del equipo contrario. */
+  const aliveEnemiesOf = ch => getAliveChars(enemyOf(getKeyOfTarget(ch)));
 
   const announce = (ch, extra) =>
     log(`✨ ${ch.name} activa su pasiva «${pname(ch)}»${extra || '.'}`);
@@ -112,6 +117,16 @@ const hitCdTurn = new WeakMap();    // personaje -> último turno en que hitCool
       if (ls.shield) { target.shield = (target.shield || 0) + Number(ls.shield); log(`✨ ${target.name} gana ${ls.shield} de escudo.`); }
       heal(target, Number(ls.healPercent) || 0);
       giveAtkBuff(target, ls.atk);
+    }
+
+    // Llama vengativa: al recibir daño, quema a todos los enemigos.
+    const bn = getPassive(target, 'onHitBurnAll');
+    if (bn && dealt > 0 && actor && actor !== target && !(move && move._isCounter) &&
+        getKeyOfTarget(actor) !== getKeyOfTarget(target)) {
+      announce(target, `: quema a todos los enemigos (-${bn.value} de vida, ${bn.duration} turnos).`);
+      aliveEnemiesOf(target).forEach(foe => {
+        applyStatusEffect(target, foe, { type: 'damageOverTime', status: 'burn', value: Number(bn.value) || 5, duration: Number(bn.duration) || 2 });
+      });
     }
 
     // Represalia al ser golpeado.
@@ -311,13 +326,18 @@ const hitCdTurn = new WeakMap();    // personaje -> último turno en que hitCool
     'Ciencia a Golpes': 'Science the Hard Way',
     'Cada vez que Rick recibe daño, la habilidad suya con más enfriamiento pendiente se recarga 1 turno (como máximo una vez por turno).':
       'Every time Rick takes damage, his ability with the most cooldown remaining recharges 1 turn (at most once per turn).',
+    'Sangre de León Ardiente': 'Blazing Lion Blood',
+    'Cada vez que recibe daño, quema a todos los enemigos: -5 de vida por turno durante 2 turnos.':
+      'Every time she takes damage, she burns all enemies: -5 health per turn for 2 turns.',
+    '✨ {0} activa su pasiva «{1}»: quema a todos los enemigos (-{2} de vida, {3} turnos).':
+      '✨ {0} triggers its passive «{1}»: burns all enemies (-{2} health, {3} turns).',
     'Patrocinio Oficial': 'Official Sponsorship',
     'Al comenzar su primer turno en combate gana 25 de escudo.':
       'At the start of his first turn in battle he gains 25 shield.'
   } });
 
   function init() {
-    const need = ['applyDamage', 'endTurn', 'startTurnActions', 'getKeyOfTarget', 'applyHealing', 'applyEffect', 'applyDebuff', 'tryPassiveRevive'];
+    const need = ['applyDamage', 'endTurn', 'startTurnActions', 'getKeyOfTarget', 'applyHealing', 'applyEffect', 'applyDebuff', 'tryPassiveRevive', 'applyStatusEffect', 'getAliveChars'];
     if (need.some(n => typeof window[n] !== 'function')) {
       console.warn('[pasivas.js] no se encontró el motor de combate; pasivas desactivadas');
       return;

@@ -17,8 +17,8 @@
        img: 'personajes/noelle1.jpg', rarity: 'rare' }
    El precio sale de la rareza (PRICES) salvo que pongas price: N.
 
-   RAREZAS: common, rare, epic, event (Evento) y legend (Legendaria); las dos últimas son las más raras y caras.
-   COFRES EN LA TIENDA: CHEST_PRICE (cofre normal, va al Inventario) y SKIN_CHEST_PRICE (skin garantizada; la rareza sale de RARITY_WEIGHT).
+   RAREZAS (de menos a más valor): common, rare, epic, legend (Legendaria) y event (Evento, la más valiosa y difícil de conseguir).
+   COFRES EN LA TIENDA: CHEST_PRICE (cofre normal, va al Inventario) y SKIN_CHESTS (cofres y paquetes de skins garantizadas: precio, nº de skins y rarezas; dentro de lo permitido la rareza sale de RARITY_WEIGHT).
    SKINS DE EVENTO: se activan/desactivan una a una en EVENT_ACTIVE (id: true/false).
    AJUSTES: PRICES, COINS_MIN/COINS_MAX por cofre, SKIN_CHANCE, RARITY_WEIGHT.
    Todo se guarda en localStorage ('batalla-skins').
@@ -242,12 +242,24 @@
     event:  { label: 'Evento', color: '#fb7185', icon: '🎉' },
     legend: { label: 'Legendaria', color: '#fbbf24', icon: '🌟' }
   };
-  const PRICES = { common: 150, rare: 300, epic: 600, event: 1000, legend: 1500 };       // monedas
+  const PRICES = { common: 150, rare: 300, epic: 600, legend: 1500, event: 2000 };       // monedas
   const RARITY_WEIGHT = { common: 5, rare: 3, epic: 1.3, event: 0.2, legend: 0.5 };       // % de cada RAREZA en los cofres (no por skin). Si una rareza no tiene skins disponibles, el resto se reparte hasta sumar 100 %
   const COINS_MIN = 15, COINS_MAX = 45;                        // monedas por cofre
   const SKIN_CHANCE = 0.12;                                    // 12 % de que un cofre dé una skin
   const CHEST_PRICE = 50;                                      // cofre normal de la tienda (monedas)
-  const SKIN_CHEST_PRICE = 400;                                // cofre de skin garantizada (monedas)
+  /* COFRES Y PAQUETES DE SKINS GARANTIZADAS DE LA TIENDA (siempre dan skins que aún no tengas).
+       price = monedas · count = nº de skins distintas · allow = rarezas posibles (null = todas)
+       Dentro de lo permitido, la rareza sale de RARITY_WEIGHT. color/hue = aspecto del cofre.
+       Para usar tu propio dibujo: img: 'personajes/cofre-oro.png' (si no existe se ve el emoji). */
+  const SKIN_CHESTS = [
+    { id: 'skin',       group: 'chest', icon: '🎁', name: 'Cofre Misterioso',  tag: 'Skin garantizada',            desc: 'Una skin que aún no tengas, de cualquier rareza.',                      price: 400,  count: 1, allow: null,                                color: '#fbbf24', hue: 0 },
+    { id: 'plata',      group: 'chest', icon: '🥈', name: 'Cofre de Plata',    tag: 'Rara o superior',             desc: 'Nada de comunes: te toca una skin rara, épica o mejor.',                price: 700,  count: 1, allow: ['rare', 'epic', 'event', 'legend'], color: '#38bdf8', hue: 150 },
+    { id: 'oro',        group: 'chest', icon: '🥇', name: 'Cofre de Oro',      tag: 'Épica o superior',            desc: 'Una skin épica, legendaria o de evento asegurada.',                     price: 1150, count: 1, allow: ['epic', 'event', 'legend'],         color: '#c084fc', hue: 260 },
+    { id: 'legendario', group: 'chest', icon: '👑', name: 'Cofre Legendario',  tag: 'Legendaria garantizada',      desc: 'Una skin legendaria asegurada.',                                         price: 1800, count: 1, allow: ['legend'],                          color: '#f59e0b', hue: 20 },
+    { id: 'evento',     group: 'chest', icon: '🎆', name: 'Cofre de Evento',   tag: 'Skin de evento garantizada',  desc: 'Las skins más valiosas: edición limitada, solo mientras haya eventos activos.', price: 2400, count: 1, allow: ['event'],                           color: '#fb7185', hue: 330 },
+    { id: 'trio',       group: 'pack',  icon: '🎴', name: 'Paquete Trío',      tag: '3 skins distintas',           desc: 'Tres skins nuevas de cualquier rareza, más barato que por separado.',   price: 1100, count: 3, allow: null,                                color: '#34d399', hue: 90 },
+    { id: 'real',       group: 'pack',  icon: '💎', name: 'Paquete Real',      tag: '3 skins épicas o superiores', desc: 'Tres skins distintas, todas épicas, legendarias o de evento.',          price: 3100, count: 3, allow: ['epic', 'event', 'legend'],         color: '#a78bfa', hue: 230 }
+  ];
   const SHOP_SIZE = 5;                                         // skins en el catálogo diario de la tienda
   const BOX_IMG = 'personajes/caja.jpg';
   const COIN_IMG = 'personajes/papucoin.png';                  // imagen de la moneda
@@ -404,17 +416,27 @@
     return { ok: true, msg: '📦 ¡Cofre comprado! Ya lo tienes en tu Inventario.' };
   }
 
-  /* Cofre de skin garantizada: siempre da una skin que no tengas; solo varía la rareza */
-  function buySkinChest() {
+  /* Skins que aún se pueden conseguir con un cofre concreto */
+  function chestPool(c) {
     S = load();
-    const pool = validSkins().filter(s => !S.owned[s.id] && isAvailable(s));
-    if (!pool.length) return { ok: false, msg: '¡Ya tienes todas las skins disponibles!' };
-    if (S.coins < SKIN_CHEST_PRICE) return { ok: false, msg: `Te faltan ${fmt(SKIN_CHEST_PRICE - S.coins)} monedas.` };
-    const pick = weightedPick(pool);
-    S.coins -= SKIN_CHEST_PRICE; S.owned[pick.id] = 1;
-    if (!S.selected[pick.charId]) S.selected[pick.charId] = pick.id;
+    return validSkins().filter(k => !S.owned[k.id] && isAvailable(k) && (!c.allow || c.allow.includes(k.rarity)));
+  }
+
+  /* Cofre / paquete de skins garantizadas: da `count` skins distintas que no tengas; solo varía la rareza */
+  function buySkinChest(id) {
+    const c = SKIN_CHESTS.find(x => x.id === (id || 'skin'));
+    if (!c) return { ok: false, msg: 'Ese cofre no existe.' };
+    let pool = chestPool(c);
+    if (!pool.length) return { ok: false, msg: c.allow ? '¡Ya tienes todas las skins de este cofre o no hay ninguna disponible ahora!' : '¡Ya tienes todas las skins disponibles!' };
+    if (pool.length < c.count) return { ok: false, msg: `Solo quedan ${pool.length} skins para este paquete (necesita ${c.count}).` };
+    if (S.coins < c.price) return { ok: false, msg: `Te faltan ${fmt(c.price - S.coins)} monedas.` };
+    const picks = [];
+    for (let i = 0; i < c.count; i++) { const pick = weightedPick(pool); picks.push(pick); pool = pool.filter(x => x !== pick); }
+    S.coins -= c.price;
+    picks.forEach(pick => { S.owned[pick.id] = 1; if (!S.selected[pick.charId]) S.selected[pick.charId] = pick.id; });
     save(); applyAll(); refreshChip();
-    return { ok: true, skin: pick, msg: `🎁 ¡Te ha tocado «${pick.name}»!` };
+    return { ok: true, chest: c, skins: picks, skin: picks[0],
+      msg: c.count === 1 ? `${c.icon} ¡Te ha tocado «${picks[0].name}»!` : `${c.icon} ¡${c.name}: has conseguido ${c.count} skins nuevas!` };
   }
 
   /* Recompensa extra de n cofres: { coins, skins:[skin...] } (la usa inventario.js) */
@@ -502,11 +524,30 @@
     .sk-chest-info{display:flex;flex-direction:column;gap:6px;min-width:0}
     .sk-chest-info small{color:#9fb0c9;line-height:1.35}
     .sk-chest-btns{display:flex;gap:6px;flex-wrap:wrap}
+    /* cofres y paquetes de skins: cada uno con su color */
+    .sk-sc{position:relative;overflow:hidden;border:1px solid var(--cc);background:#0f1020;
+      background:linear-gradient(135deg,color-mix(in srgb,var(--cc) 20%,transparent),transparent 58%),#0f1020;
+      box-shadow:0 12px 30px rgba(0,0,0,.4),0 0 16px color-mix(in srgb,var(--cc) 28%,transparent);transition:transform .2s,box-shadow .2s}
+    .sk-sc:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(0,0,0,.45),0 0 26px color-mix(in srgb,var(--cc) 55%,transparent)}
+    .sk-sc::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.13) 50%,transparent 60%);transform:translateX(-130%);pointer-events:none}
+    .sk-sc:hover::after{transform:translateX(130%);transition:transform .8s ease}
+    .sk-sc .sk-chest-img{box-shadow:0 0 18px color-mix(in srgb,var(--cc) 55%,transparent)}
+    .sk-tag{align-self:flex-start;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:2px 9px;border-radius:99px;color:var(--cc);border:1px solid var(--cc);background:rgba(255,255,255,.04)}
+    .sk-chest-title{font-size:17px;letter-spacing:.02em;background:linear-gradient(90deg,#fff 30%,var(--cc));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .sk-ribbon{position:absolute;top:8px;right:-26px;transform:rotate(38deg);padding:2px 30px;font-size:11px;font-weight:900;color:#10131f;background:var(--cc)}
     #sk-reveal{position:fixed;inset:0;z-index:140;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(3,4,10,.82)}
     .sk-rv{width:min(340px,100%);display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px;border-radius:22px;text-align:center;color:#fff;
       border:2px solid var(--c);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.012)),#0f1020;box-shadow:0 0 40px var(--c)}
     .sk-rv img,.sk-rv .sk-fb{width:220px;max-width:100%;aspect-ratio:1;object-fit:cover;object-position:center 15%;border-radius:16px;background:#0d1730;display:flex;align-items:center;justify-content:center;font-size:70px}
     .sk-rv h3{margin:0;font-size:20px}
+    /* paquetes: varias skins a la vez */
+    .sk-rv.sk-rv-multi{width:min(720px,100%)}
+    .sk-rv-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+    .sk-mini{width:190px;max-width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px;border-radius:16px;border:2px solid var(--c);
+      background:rgba(255,255,255,.04);box-shadow:0 0 22px var(--c);animation:sk-cardin .7s calc(var(--i) * .35s + .2s) cubic-bezier(.2,1.3,.4,1) both}
+    .sk-rv-multi .sk-mini img,.sk-rv-multi .sk-mini .sk-fb{width:100%;font-size:46px}
+    .sk-mini b{font-size:14px}
+    .sk-mini small{color:#9fb0c9}
     /* cofre de skin garantizada: apertura animada */
     .sk-open{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;color:#fff;text-align:center;cursor:pointer}
     .sk-open-chest{position:relative;width:170px;height:170px;display:flex;align-items:center;justify-content:center}
@@ -527,7 +568,7 @@
     @keyframes sk-imgin{0%{filter:brightness(3) blur(6px);transform:scale(.85)}100%{filter:none;transform:none}}
     @keyframes sk-rarpop{0%{opacity:0;transform:scale(.3)}100%{opacity:1;transform:none}}
     @keyframes sk-spark{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2)}}
-    @media (prefers-reduced-motion:reduce){.sk-coin,.sk-drop,.sk-drop::after,.sk-open-chest::before,.sk-open-chest img,.sk-open-chest .sk-chest-img,.sk-flash,.sk-rv.sk-in,.sk-rv.sk-in *,.sk-spark{animation:none!important}}
+    @media (prefers-reduced-motion:reduce){.sk-mini,.sk-sc,.sk-sc::after,.sk-coin,.sk-drop,.sk-drop::after,.sk-open-chest::before,.sk-open-chest img,.sk-open-chest .sk-chest-img,.sk-flash,.sk-rv.sk-in,.sk-rv.sk-in *,.sk-spark{animation:none!important}}
     .sk-card.sk-off{opacity:.55;filter:grayscale(.6)}
     .sk-btn{padding:8px 12px;border:0;border-radius:12px;cursor:pointer;font:inherit;font-weight:800;color:#1a1204;background:linear-gradient(180deg,#fde047,#f59e0b)}
     .sk-btn:disabled{opacity:.45;cursor:not-allowed}
@@ -606,58 +647,86 @@
       <span class="sk-rar">${r.icon} ${r.label}</span>${btn}</div>`;
   }
 
+  function skinChestCard(c, s0) {
+    const pool = chestPool(c).length;
+    const can = s0.coins >= c.price && pool >= c.count;
+    const note = !pool ? (c.allow ? 'Ya no quedan skins de este tipo disponibles.' : 'Ya las tienes todas.')
+      : pool < c.count ? `Solo quedan ${pool} skins (necesita ${c.count}).` : `Quedan ${pool} por conseguir.`;
+    const img = c.img || SKIN_CHEST_IMG;
+    return `<div class="sk-chest sk-sc ${c.group === 'pack' ? 'pack' : ''}" style="--cc:${c.color}">
+        ${c.count > 1 ? `<span class="sk-ribbon">×${c.count}</span>` : ''}
+        <img class="sk-chest-img" style="filter:hue-rotate(${c.img ? 0 : c.hue}deg) saturate(1.1)" src="${esc(img)}" alt="" onerror="this.outerHTML='<div class=&quot;sk-chest-img&quot;>${c.icon}</div>'">
+        <div class="sk-chest-info"><span class="sk-tag">${esc(c.tag)}</span>
+          <b class="sk-chest-title">${c.icon} ${esc(c.name)}</b>
+          <small>${esc(c.desc)} ${note}</small>
+          <div class="sk-chest-btns">
+            <button class="sk-btn" data-act="buySkinChest" data-chest="${c.id}" ${can ? '' : 'disabled'}>${coinImg()} ${fmt(c.price)} · Comprar</button></div></div></div>`;
+  }
+
   function chestsHTML() {
     const s0 = load();
-    const left = validSkins().filter(s => !s0.owned[s.id] && isAvailable(s)).length;
     let boxes = 0;
     try { boxes = window.INVENTARIO ? window.INVENTARIO.load().boxes || 0 : 0; } catch (e) { /* ignorar */ }
-    return `<div class="sk-h">📦 Cofres</div><div class="sk-chests">
-      <div class="sk-chest">
+    const group = g => SKIN_CHESTS.filter(c => c.group === g).map(c => skinChestCard(c, s0)).join('');
+    return `<div class="sk-h">📦 Cofres clásicos</div><div class="sk-chests">
+      <div class="sk-chest sk-sc sk-normal" style="--cc:#fb923c">
         <img class="sk-chest-img" src="${esc(BOX_IMG)}" alt="" onerror="this.outerHTML='<div class=&quot;sk-chest-img&quot;>📦</div>'">
-        <div class="sk-chest-info"><b>Cofre normal</b>
-          <small>Igual que los de las partidas: gloria, ${COINS_MIN}-${COINS_MAX} monedas y un ${Math.round(SKIN_CHANCE * 100)} % de skin. Se guarda en tu Inventario (${boxes} sin abrir).</small>
+        <div class="sk-chest-info"><span class="sk-tag">Clásico · va al Inventario</span>
+          <b class="sk-chest-title">📦 Cofre del Aventurero</b>
+          <small>Igual que los de las partidas: gloria, ${COINS_MIN}-${COINS_MAX} monedas y un ${Math.round(SKIN_CHANCE * 100)} % de skin. Tienes ${boxes} sin abrir.</small>
           <div class="sk-chest-btns">
             <button class="sk-btn" data-act="buyChest" ${s0.coins >= CHEST_PRICE ? '' : 'disabled'}>${coinImg()} ${fmt(CHEST_PRICE)} · Comprar</button>
             <button class="sk-btn alt" data-act="inv">📦 Inventario</button></div></div></div>
-      <div class="sk-chest gold">
-        <img class="sk-chest-img" src="${esc(SKIN_CHEST_IMG)}" alt="" onerror="this.outerHTML='<div class=&quot;sk-chest-img&quot;>🎁</div>'">
-        <div class="sk-chest-info"><b>Cofre de skin garantizada</b>
-          <small>Siempre te da una skin que aún no tengas. Solo varía la rareza (desde Común hasta Legendaria). Quedan ${left} por conseguir.</small>
-          <div class="sk-chest-btns">
-            <button class="sk-btn" data-act="buySkinChest" ${(s0.coins >= SKIN_CHEST_PRICE && left) ? '' : 'disabled'}>${coinImg()} ${fmt(SKIN_CHEST_PRICE)} · Comprar</button></div></div></div>
-    </div><div class="sk-h">🎨 Catálogo de hoy</div>`;
+    </div>
+    <div class="sk-h">🎁 Cofres de skin garantizada</div><div class="sk-chests">${group('chest')}</div>
+    <div class="sk-h">🎴 Paquetes de skins</div><div class="sk-chests">${group('pack')}</div>
+    <div class="sk-h">🎨 Catálogo de hoy</div>`;
   }
 
   /* Rebote del cofre normal al comprarlo (va directo al Inventario, se abre allí con su propia animación) */
   function bounceChest() {
     try {
-      const el = document.querySelector('.sk-chest:not(.gold) .sk-chest-img');
+      const el = document.querySelector('.sk-chest.sk-normal .sk-chest-img');
       if (el && el.animate) el.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.25) rotate(-6deg)' }, { transform: 'scale(.94) rotate(4deg)' }, { transform: 'scale(1)' }], { duration: 520, easing: 'ease-out' });
     } catch (e) { /* ignorar */ }
   }
 
-  function showSkinReveal(s) {
+  function showSkinReveal(skins, chest) {
+    const list = [].concat(skins).filter(Boolean);
+    if (!list.length) return;
     const old = byId('sk-reveal'); if (old) old.remove();
-    const r = rarityOf(s);
+    const ORDER = ['common', 'rare', 'epic', 'legend', 'event'];       // de menos a más valor
+    const best = list.reduce((a, k) => ORDER.indexOf(k.rarity) > ORDER.indexOf(a.rarity) ? k : a, list[0]);
+    const br = rarityOf(best);
     const calm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-    const big = s.rarity === 'legend' || s.rarity === 'event';          // las raras tardan un poco más (más suspense)
+    const big = best.rarity === 'legend' || best.rarity === 'event';   // las raras tardan un poco más (más suspense)
     const dur = calm ? 0 : (big ? 2200 : 1600);
     const m = document.createElement('div');
     m.id = 'sk-reveal';
-    m.style.setProperty('--c', r.color);
+    m.style.setProperty('--c', chest ? chest.color : br.color);
     let revealed = false, timer = null;
 
     const reveal = () => {
       if (revealed || !m.isConnected) return;
       revealed = true; clearTimeout(timer);
-      m.innerHTML = `<div class="sk-rv sk-in" style="--c:${r.color}">
-        ${fallbackImg(s.img, '🎨')}
-        <h3>${esc(s.name)}</h3><span class="sk-rar">${r.icon} ${r.label}</span>
-        <small>${esc(baseOf(s).name)}</small>
-        <button class="sk-btn" data-act="closeReveal">¡Genial!</button></div>`;
+      m.style.setProperty('--c', br.color);
+      if (list.length === 1) {
+        const k = list[0];
+        m.innerHTML = `<div class="sk-rv sk-in" style="--c:${br.color}">
+          ${fallbackImg(k.img, '🎨')}
+          <h3>${esc(k.name)}</h3><span class="sk-rar">${br.icon} ${br.label}</span>
+          <small>${esc(baseOf(k).name)}</small>
+          <button class="sk-btn" data-act="closeReveal">¡Genial!</button></div>`;
+      } else {
+        m.innerHTML = `<div class="sk-rv sk-rv-multi sk-in" style="--c:${br.color}">
+          <h3>${chest ? esc(chest.icon + ' ' + chest.name) : '🎁 Tus skins'}</h3>
+          <div class="sk-rv-row">${list.map((k, i) => { const r = rarityOf(k);
+            return `<div class="sk-mini" style="--c:${r.color};--i:${i}">${fallbackImg(k.img, '🎨')}<b>${esc(k.name)}</b><span class="sk-rar">${r.icon} ${r.label}</span><small>${esc(baseOf(k).name)}</small></div>`; }).join('')}</div>
+          <button class="sk-btn" data-act="closeReveal">¡Genial!</button></div>`;
+      }
       if (calm) return;
       const fl = document.createElement('div'); fl.className = 'sk-flash'; m.appendChild(fl);
-      const n = big ? 34 : 22;
+      const n = (big ? 34 : 22) + (list.length > 1 ? 14 : 0);
       for (let i = 0; i < n; i++) {                                    // chispas en abanico
         const sp = document.createElement('i'); sp.className = 'sk-spark';
         const ang = Math.random() * Math.PI * 2, d = 90 + Math.random() * (big ? 220 : 150);
@@ -669,9 +738,11 @@
       setTimeout(() => m.querySelectorAll('.sk-spark,.sk-flash').forEach(x => x.remove()), 1600);
     };
 
+    const art = chest && chest.img ? chest.img : SKIN_CHEST_IMG;
+    const hue = chest && !chest.img ? chest.hue : 0;
     m.innerHTML = `<div class="sk-open" style="--dur:${dur}ms">
-      <div class="sk-open-chest">${fallbackImg(SKIN_CHEST_IMG, '🎁').replace('<img ', '<img class="sk-chest-img" ')}</div>
-      <b>Abriendo cofre…</b><small>Toca para saltar</small></div>`;
+      <div class="sk-open-chest">${fallbackImg(art, chest ? chest.icon : '🎁').replace('<img ', `<img class="sk-chest-img" style="filter:hue-rotate(${hue}deg) saturate(1.1)" `)}</div>
+      <b>Abriendo ${chest ? esc(chest.name) : 'cofre'}…</b><small>Toca para saltar</small></div>`;
     m.addEventListener('click', e => {
       if (!revealed) { reveal(); return; }                              // un toque durante la apertura salta la animación
       if (e.target === m || e.target.closest('[data-act="closeReveal"]')) m.remove();
@@ -716,7 +787,7 @@
     if (act === 'back') closeShop();
     else if (act === 'buy') { ui.msg = buy(b.dataset.s).msg; renderShop(); }
     else if (act === 'buyChest') { const r = buyChest(); ui.msg = r.msg; renderShop(); if (r.ok) bounceChest(); }
-    else if (act === 'buySkinChest') { const r = buySkinChest(); ui.msg = r.msg; renderShop(); if (r.skin) showSkinReveal(r.skin); }
+    else if (act === 'buySkinChest') { const r = buySkinChest(b.dataset.chest); ui.msg = r.msg; renderShop(); if (r.skins) showSkinReveal(r.skins, r.chest); }
     else if (act === 'inv') { closeShop(); if (!invVisible() && window.INVENTARIO) window.INVENTARIO.open(); }
     else if (act === 'equip') { const s = skinById(b.dataset.s); if (s) equip(s.charId, s.id); ui.msg = '🎨 Skin equipada.'; renderShop(); }
     else if (act === 'unequip') { equip(b.dataset.c, null); ui.msg = 'Vuelves a la apariencia original.'; renderShop(); }

@@ -10488,20 +10488,28 @@ const CHARACTERS = [
   id: 'mereoleona',
   name: 'Mereoleona Vermillion',
   img: 'personajes/mereoleona.gif',
-  classes: ['atacante', 'mago'],
-  hp: 142,
-  atk: 27,
-  def: 23,
-  spd: 24,
+  classes: ['tanque', 'atacante', 'mago'],
+  hp: 168,
+  atk: 24,
+  def: 30,
+  spd: 22,
+
+  passive: {
+    type: 'onHitBurnAll',
+    name: 'Sangre de León Ardiente',
+    desc: 'Cada vez que recibe daño, quema a todos los enemigos: -5 de vida por turno durante 2 turnos.',
+    value: 5,
+    duration: 2
+  },
 
   moves: [
     {
       id: 'calidos_brachium',
       name: 'Calidos Brachium',
-      power: 20,
+      power: 18,
       acc: 0.95,
       desc: 'Envuelve su brazo en llamas y golpea al enemigo, reduciendo su DEF.',
-      baseCooldown: 2,
+      baseCooldown: 1,
       type: 'attack',
       effect: {
         type: 'debuff',
@@ -10516,44 +10524,40 @@ const CHARACTERS = [
       name: 'Mana Zone',
       power: 0,
       acc: 1.0,
-      desc: 'Controla el maná del entorno para aumentar su ATK durante 3 turnos.',
+      desc: 'Controla el maná del entorno: gana un escudo y aumenta su ATK durante 3 turnos.',
       baseCooldown: 3,
       type: 'support',
-      effect: {
-        type: 'tempAtk',
-        value: 11,
-        duration: 3
-      }
+      effects: [
+        { type: 'shield', value: 18 },
+        { type: 'tempAtk', value: 8, duration: 3 }
+      ]
     },
     {
       id: 'hellfire_incarnate',
       name: 'Encarnación del Infierno',
       power: 0,
       acc: 1.0,
-      desc: 'Su cuerpo arde con un fuego implacable, aumentando su DEF durante 3 turnos.',
+      desc: 'Su cuerpo arde con un fuego implacable: aumenta su DEF y refleja parte del daño recibido durante 3 turnos.',
       baseCooldown: 4,
       type: 'support',
-      effect: {
-        type: 'tempDef',
-        value: 10,
-        duration: 3
-      }
+      effects: [
+        { type: 'tempDef', value: 12, duration: 3 },
+        { type: 'reflectDamage', value: 20, duration: 3 }
+      ]
     },
     {
       id: 'purgatory_abyss',
       name: 'ULTI: Purgatory Abyss',
-      power: 24,
+      power: 20,
       acc: 0.90,
-      desc: 'Desata un océano de llamas que consume al enemigo, infligiendo un daño devastador y reduciendo su ATK.',
+      desc: 'Desata un océano de llamas que consume a todos los enemigos, reduciendo su ATK mientras Mereoleona se protege con un escudo.',
       baseCooldown: 6,
+      aoe: true,
       type: 'attack',
-      effect: {
-        type: 'debuff',
-        stat: 'atk',
-        value: 8,
-        prob: 1.0,
-        duration: 3
-      }
+      effects: [
+        { type: 'debuff', stat: 'atk', value: 6, duration: 3, prob: 1.0 },
+        { type: 'shield', value: 20 }
+      ]
     }
   ]
 },
