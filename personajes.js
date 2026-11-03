@@ -1344,7 +1344,7 @@ const CHARACTERS = [
   moves: [
     {
       id: 'horror1',
-      name: 'Rayo de Radiación',
+      name: 'Radiation Ray',
       power: 0,
       acc: 0.97,
       desc: 'Horror dispara un pequeño rayo de radiación que debilita ligeramente al oponente.',
@@ -1384,12 +1384,11 @@ const CHARACTERS = [
       desc: 'Horror usa su radiación para curar a un aliado.',
       baseCooldown: 2,
       type: 'support',
-      effect: [
+      effect:
         {
           type: 'heal',
           value: 18
         }
-      ]
     },
 
     {
