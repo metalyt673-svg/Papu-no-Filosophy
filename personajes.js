@@ -14967,7 +14967,7 @@ moves: [
       power: 20,
       acc: 0.95,
       desc: 'Typhon clava su mirada seductora en el enemigo, dejándolo embelesado y a merced de sus propios aliados.',
-      baseCooldown: 8,
+      baseCooldown: 6,
       type: 'attack',
       effects: [
         { type: 'charm', duration: 1, prob: 0.6 }
