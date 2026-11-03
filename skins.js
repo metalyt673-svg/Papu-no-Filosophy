@@ -205,6 +205,117 @@
     { id: 'mayuri4', charId: 'mayuri', name: 'Mayuri · Departamento de Ciencias y Desarrollo', img: 'personajes/mayuri4.jpg', rarity: 'epic' },
     { id: 'mayuri5', charId: 'mayuri', name: 'Mayuri · Hueco mundo', img: 'personajes/mayuri5.jpg', rarity: 'common' },
 
+    { id: 'yoruichi2', charId: 'yoruichi', name: 'Yoruichi · Atuendo default', img: 'personajes/yoruichi2.jpg', rarity: 'common' },
+    { id: 'yoruichi1', charId: 'yoruichi', name: 'Yoruichi · Repartidora', img: 'personajes/yoruichi1.jpg', rarity: 'common' },
+    { id: 'yoruichi9', charId: 'yoruichi', name: 'Yoruichi · Maid', img: 'personajes/yoruichi9.jpg', rarity: 'rare' },
+    { id: 'yoruichi3', charId: 'yoruichi', name: 'Yoruichi · Baloncesto', img: 'personajes/yoruichi3.jpg', rarity: 'rare' },
+    { id: 'yoruichi10', charId: 'yoruichi', name: 'Yoruichi · Streetwear', img: 'personajes/yoruichi10.jpg', rarity: 'epic' },
+    { id: 'yoruichi4', charId: 'yoruichi', name: 'Yoruichi · Noche de piscina', img: 'personajes/yoruichi4.jpg', rarity: 'epic' },
+    { id: 'yoruichi5', charId: 'yoruichi', name: 'Yoruichi · Verano en la playa', img: 'personajes/yoruichi5.jpg', rarity: 'epic' },
+    { id: 'yoruichi_hw', charId: 'yoruichi', name: 'Yoruichi · Halloween', img: 'personajes/yoruichi7.jpg', rarity: 'event' },
+    { id: 'yoruichi6', charId: 'yoruichi', name: 'Yoruichi · Shunkō Felino', img: 'personajes/yoruichi6.jpg', rarity: 'legend' },
+    { id: 'yoruichi8', charId: 'yoruichi', name: 'Yoruichi · Gótica', img: 'personajes/yoruichi8.jpg', rarity: 'legend' },
+
+    { id: 'cz1', charId: 'cz2128', name: 'CZ2128 · Bufanda de camuflaje', img: 'personajes/cz2.jpg', rarity: 'common' },
+    { id: 'cz2', charId: 'cz2128', name: 'CZ2128 · Descanso en el café', img: 'personajes/cz4.jpg', rarity: 'rare' },
+    { id: 'cz3', charId: 'cz2128', name: 'CZ2128 · Doncella de combate', img: 'personajes/cz5.jpg', rarity: 'epic' },
+    { id: 'cz_summer', charId: 'cz2128', name: 'CZ2128 · Piscina de verano', img: 'personajes/cz3.jpg', rarity: 'event' },
+    { id: 'cz5', charId: 'cz2128', name: 'CZ2128 · Yukata del festival', img: 'personajes/cz1.jpg', rarity: 'legend' },
+
+    { id: 'nobara1', charId: 'nobara', name: 'Nobara · Merienda', img: 'personajes/nobara1.jpg', rarity: 'common' },
+    { id: 'nobara3', charId: 'nobara', name: 'Nobara · Hechicera Maliciosa', img: 'personajes/nobara3.jpg', rarity: 'epic' },
+    { id: 'nobara8', charId: 'nobara', name: 'Nobara · Jugadora de Golf', img: 'personajes/nobara8.jpg', rarity: 'rare' },
+    { id: 'nobara_casino', charId: 'nobara', name: 'Nobara · Casino', img: 'personajes/nobara9.jpg', rarity: 'event' },
+    { id: 'nobara4', charId: 'nobara', name: 'Nobara · Sonrisa de combate', img: 'personajes/nobara4.jpg', rarity: 'common' },
+    { id: 'nobara2', charId: 'nobara', name: 'Nobara · Clavos resonantes', img: 'personajes/nobara2.jpg', rarity: 'rare' },
+    { id: 'nobara5', charId: 'nobara', name: 'Nobara · Parche carmesí', img: 'personajes/nobara5.jpg', rarity: 'epic' },
+    { id: 'nobara6', charId: 'nobara', name: 'Nobara · Luz de clavos', img: 'personajes/nobara6.jpg', rarity: 'epic' },
+    { id: 'nobara7', charId: 'nobara', name: 'Nobara · Resonancia roja', img: 'personajes/nobara7.jpg', rarity: 'legend' },
+    { id: 'nobara_maid', charId: 'nobara', name: 'Nobara · Maid', img: 'personajes/nobara10.jpg', rarity: 'event' },
+
+    { id: 'nakiri7', charId: 'nakiri_ayame', name: 'Nakiri · Gafas', img: 'personajes/nakiri7.jpg', rarity: 'common' },
+    { id: 'nakiri8', charId: 'nakiri_ayame', name: 'Nakiri · Paraguas rojo', img: 'personajes/nakiri8.jpg', rarity: 'common' },
+    { id: 'nakiri1', charId: 'nakiri_ayame', name: 'Nakiri · Tímida', img: 'personajes/nakiri1.jpg', rarity: 'rare' },
+    { id: 'nakiri3', charId: 'nakiri_ayame', name: 'Nakiri · Danza de cerezos', img: 'personajes/nakiri3.jpg', rarity: 'rare' },
+    { id: 'nakiri11', charId: 'nakiri_ayame', name: 'Nakiri · Festival de verano', img: 'personajes/nakiri11.jpg', rarity: 'rare' },
+    { id: 'nakiri5', charId: 'nakiri_ayame', name: 'Nakiri · Sake bajo la luna', img: 'personajes/nakiri5.jpg', rarity: 'epic' },
+    { id: 'nakiri9', charId: 'nakiri_ayame', name: 'Nakiri · Espadachina espiritual', img: 'personajes/nakiri9.jpg', rarity: 'epic' },
+    { id: 'nakiri12', charId: 'nakiri_ayame', name: 'Nakiri · Sake en tatami', img: 'personajes/nakiri12.jpg', rarity: 'epic' },
+    { id: 'nakiri2', charId: 'nakiri_ayame', name: 'Nakiri · Luna sobre el cerezo', img: 'personajes/nakiri2.jpg', rarity: 'legend' },
+    { id: 'nakiri6', charId: 'nakiri_ayame', name: 'Nakiri · Luna de sangre', img: 'personajes/nakiri6.jpg', rarity: 'legend' },
+    { id: 'nakiri_autumn', charId: 'nakiri_ayame', name: 'Nakiri · Hojas de otoño', img: 'personajes/nakiri10.jpg', rarity: 'event' },
+    { id: 'nakiri_maid', charId: 'nakiri_ayame', name: 'Nakiri · Maid', img: 'personajes/nakiri4.jpg', rarity: 'event' },
+
+    { id: 'shiori5', charId: 'shiori_novella', name: 'Shiori · Casual', img: 'personajes/shiori5.jpg', rarity: 'common' },
+    { id: 'shiori3', charId: 'shiori_novella', name: 'Shiori · Idol', img: 'personajes/shiori3.jpg', rarity: 'rare' },
+    { id: 'shiori1', charId: 'shiori_novella', name: 'Shiori · Hongo nocturno', img: 'personajes/shiori1.jpg', rarity: 'epic' },
+    { id: 'shiori4', charId: 'shiori_novella', name: 'Shiori · Reina gótica', img: 'personajes/shiori4.jpg', rarity: 'legend' },
+    { id: 'shiori_hw', charId: 'shiori_novella', name: 'Shiori · Momia', img: 'personajes/shiori2.jpg', rarity: 'event' },
+    { id: 'shiori8', charId: 'shiori_novella', name: 'Shiori · Uniforme escolar', img: 'personajes/shiori8.jpg', rarity: 'common' },
+    { id: 'shiori6', charId: 'shiori_novella', name: 'Shiori · Jersey y cadenas', img: 'personajes/shiori6.jpg', rarity: 'rare' },
+    { id: 'shiori7', charId: 'shiori_novella', name: 'Shiori · Bibliotecaria gótica', img: 'personajes/shiori7.jpg', rarity: 'epic' },
+    { id: 'shiori9', charId: 'shiori_novella', name: 'Shiori · Científica', img: 'personajes/shiori9.jpg', rarity: 'legend' },
+    { id: 'shiori_summer', charId: 'shiori_novella', name: 'Shiori · Swimsuit', img: 'personajes/shiori10.jpg', rarity: 'event' },
+    { id: 'shiori15', charId: 'shiori_novella', name: 'Shiori · Gafas en la boca', img: 'personajes/shiori15.jpg', rarity: 'common' },
+    { id: 'shiori13', charId: 'shiori_novella', name: 'Shiori · Día de lluvia', img: 'personajes/shiori13.jpg', rarity: 'rare' },
+    { id: 'shiori11', charId: 'shiori_novella', name: 'Shiori · Escritora de la biblioteca', img: 'personajes/shiori11.jpg', rarity: 'epic' },
+    { id: 'shiori14', charId: 'shiori_novella', name: 'Shiori · Gatita', img: 'personajes/shiori14.jpg', rarity: 'legend' },
+    { id: 'shiori_hood', charId: 'shiori_novella', name: 'Shiori · Caperucita sangrienta', img: 'personajes/shiori12.jpg', rarity: 'event' },
+    { id: 'shiori16', charId: 'shiori_novella', name: 'Shiori · Vestido negro', img: 'personajes/shiori16.jpg', rarity: 'common' },
+    { id: 'shiori18', charId: 'shiori_novella', name: 'Shiori · Paso de cebra', img: 'personajes/shiori18.jpg', rarity: 'rare' },
+    { id: 'shiori20', charId: 'shiori_novella', name: 'Shiori · Selfie en el espejo', img: 'personajes/shiori20.jpg', rarity: 'epic' },
+    { id: 'shiori19', charId: 'shiori_novella', name: 'Shiori · Lolita rosa', img: 'personajes/shiori19.jpg', rarity: 'legend' },
+    { id: 'shiori_summer1', charId: 'shiori_novella', name: 'Shiori · Playa', img: 'personajes/shiori17.jpg', rarity: 'event' },
+    { id: 'shiori21', charId: 'shiori_novella', name: 'Shiori · Energy drink', img: 'personajes/shiori21.jpg', rarity: 'common' },
+    { id: 'shiori24', charId: 'shiori_novella', name: 'Shiori · Parada de bus', img: 'personajes/shiori24.jpg', rarity: 'rare' },
+    { id: 'shiori25', charId: 'shiori_novella', name: 'Shiori · Pijama nocturno', img: 'personajes/shiori25.jpg', rarity: 'epic' },
+    { id: 'shiori22', charId: 'shiori_novella', name: 'Shiori · Espadachina', img: 'personajes/shiori22.jpg', rarity: 'legend' },
+    { id: 'shiori_casino', charId: 'shiori_novella', name: 'Shiori · Casino', img: 'personajes/shiori23.jpg', rarity: 'event' },
+    { id: 'shiori27', charId: 'shiori_novella', name: 'Shiori · Chaqueta de pelo', img: 'personajes/shiori27.jpg', rarity: 'rare' },
+    { id: 'shiori30', charId: 'shiori_novella', name: 'Shiori · Conejita gótica', img: 'personajes/shiori30.jpg', rarity: 'epic' },
+    { id: 'shiori28', charId: 'shiori_novella', name: 'Shiori · Tijeras sangrientas', img: 'personajes/shiori28.jpg', rarity: 'legend' },
+    { id: 'shiori_summer2', charId: 'shiori_novella', name: 'Shiori · Camisa mojada', img: 'personajes/shiori26.jpg', rarity: 'event' },
+    { id: 'shiori_chm', charId: 'shiori_novella', name: 'Shiori · Navidad', img: 'personajes/shiori29.jpg', rarity: 'event' },
+
+    /* ——— Karin (Blue Archive) ——— */
+    { id: 'karin1',  charId: 'karin', name: 'Karin · Street Puffer',      img: 'personajes/karin1.jpg',  rarity: 'common' },
+    { id: 'karin2',  charId: 'karin', name: 'Karin · Bunny',              img: 'personajes/karin2.jpg',  rarity: 'epic' },
+    { id: 'karin3',  charId: 'karin', name: 'Karin · Maid',               img: 'personajes/karin3.jpg',  rarity: 'rare' },
+    { id: 'karin4',  charId: 'karin', name: 'Karin · Noche de piscina',   img: 'personajes/karin4.jpg',  rarity: 'epic' },
+    { id: 'karin5',  charId: 'karin', name: 'Karin · Camarera',           img: 'personajes/karin5.jpg',  rarity: 'rare' },
+    { id: 'karin6',  charId: 'karin', name: 'Karin · Street Fashion',     img: 'personajes/karin6.jpg',  rarity: 'epic' },
+    { id: 'karin7',  charId: 'karin', name: 'Karin · Vestido oscuro',     img: 'personajes/karin7.jpg',  rarity: 'common' },
+    { id: 'karin8',  charId: 'karin', name: 'Karin · Combat Bunny',       img: 'personajes/karin8.jpg',  rarity: 'legend' },
+    { id: 'karin9',  charId: 'karin', name: 'Karin · Surfer',             img: 'personajes/karin9.jpg',  rarity: 'epic' },
+    { id: 'karin10', charId: 'karin', name: 'Karin · Maid Heart',         img: 'personajes/karin10.jpg', rarity: 'rare' },
+    { id: 'karin_summer', charId: 'karin', name: 'Karin · Volleyball Summer',  img: 'personajes/karin11.jpg', rarity: 'event' },
+    { id: 'karin12', charId: 'karin', name: 'Karin · Beach Black',        img: 'personajes/karin12.jpg', rarity: 'legend' },
+
+    /* ——— Ibuki (Blue Archive) ——— */
+    { id: 'ibuki1',  charId: 'ibuki', name: 'Ibuki · Samurai',            img: 'personajes/ibuki1.jpg',  rarity: 'epic' },
+    { id: 'ibuki2',  charId: 'ibuki', name: 'Ibuki · Miko',               img: 'personajes/ibuki2.jpg',  rarity: 'rare' },
+    { id: 'ibuki3',  charId: 'ibuki', name: 'Ibuki · Maid Combat',        img: 'personajes/ibuki3.jpg',  rarity: 'legend' },
+    { id: 'ibuki4',  charId: 'ibuki', name: 'Ibuki · Competition Swimsuit', img: 'personajes/ibuki4.jpg', rarity: 'epic' },
+    { id: 'ibuki5',  charId: 'ibuki', name: 'Ibuki · Qipao',              img: 'personajes/ibuki5.jpg',  rarity: 'epic' },
+    { id: 'ibuki6',  charId: 'ibuki', name: 'Ibuki · Dual Swords',        img: 'personajes/ibuki6.jpg',  rarity: 'legend' },
+    { id: 'ibuki7',  charId: 'ibuki', name: 'Ibuki · Elegant Dress',      img: 'personajes/ibuki7.jpg',  rarity: 'legend' },
+    { id: 'ibuki_summer',  charId: 'ibuki', name: 'Ibuki · Beach Bikini',       img: 'personajes/ibuki8.jpg',  rarity: 'event' },
+    { id: 'ibuki9',  charId: 'ibuki', name: 'Ibuki · Tea Party',          img: 'personajes/ibuki9.jpg',  rarity: 'rare' },
+    { id: 'ibuki10', charId: 'ibuki', name: 'Ibuki · Competition Swim',   img: 'personajes/ibuki10.jpg', rarity: 'epic' },
+
+    /* ——— Castorice ——— */
+    { id: 'castorice1',  charId: 'castorice', name: 'Castorice · Casual Home',       img: 'personajes/castorice1.jpg',  rarity: 'common' },
+    { id: 'castorice2',  charId: 'castorice', name: 'Castorice · Butterfly Bikini',  img: 'personajes/castorice2.jpg',  rarity: 'epic' },
+    { id: 'castorice3',  charId: 'castorice', name: 'Castorice · Street Coffee',     img: 'personajes/castorice3.jpg',  rarity: 'rare' },
+    { id: 'castorice4',  charId: 'castorice', name: 'Castorice · Mourning',          img: 'personajes/castorice4.jpg',  rarity: 'legend' },
+    { id: 'castorice5',  charId: 'castorice', name: 'Castorice · Dark Garden',       img: 'personajes/castorice5.jpg',  rarity: 'legend' },
+    { id: 'castorice6',  charId: 'castorice', name: 'Castorice · Butterfly Throne',  img: 'personajes/castorice6.jpg',  rarity: 'epic' },
+    { id: 'castorice_hw', charId: 'castorice', name: 'Castorice · Halloween Mummy',  img: 'personajes/castorice7.jpg',  rarity: 'event' },
+    { id: 'castorice8',  charId: 'castorice', name: 'Castorice · Competition Swim', img: 'personajes/castorice8.jpg',  rarity: 'epic' },
+    { id: 'castorice9',  charId: 'castorice', name: 'Castorice · Bunny Maid',       img: 'personajes/castorice9.jpg',  rarity: 'rare' },
+    { id: 'castorice10', charId: 'castorice', name: 'Castorice · Casual Outdoor',   img: 'personajes/castorice10.jpg', rarity: 'common' },
+    { id: 'castorice_summer', charId: 'castorice', name: 'Castorice · Beach Popsicle', img: 'personajes/castorice11.jpg', rarity: 'event' },
+
         // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
   ];
 
@@ -232,7 +343,24 @@
     guinevere_summer: true,
     thamuz_kai: true,
     thamuz_star: true,
-    helcurt_star: true
+    helcurt_star: true,
+    yoruichi_hw: true,
+    cz_summer: true,
+    nobara_maid: true,
+    nobara_casino: true,
+    nakiri_autumn: true,
+    nakiri_maid: true,
+    shiori_hw: true,
+    shiori_summer: true,
+    shiori_hood: true,
+    shiori_summer1: true,
+    shiori_casino: true,
+    shiori_summer2: true,
+    shiori_chm: true,
+    karin_summer: true,
+    ibuki_summer: true,
+    castorice_hw: true,
+    castorice_summer: true
   };
 
   const RARITY = {
@@ -578,7 +706,15 @@
 
     .sk-box{margin:0 0 16px}
     .sk-box h4{margin:0 0 8px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#9db0cc}
-    .sk-row{display:flex;gap:8px;flex-wrap:wrap}
+    .sk-row{display:grid;grid-template-columns:repeat(auto-fill,78px);gap:8px;justify-content:start}
+    .sk-row .sk-opt.sk-hide{display:none}
+    .sk-box h4.sk-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .sk-pager{display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0}
+    .sk-pager span{font-size:12px;color:#9db0cc;min-width:56px;text-align:center}
+    .sk-pg{width:32px;height:28px;border-radius:9px;cursor:pointer;font:inherit;font-weight:800;font-size:16px;line-height:1;color:#fff;
+      background:rgba(139,92,246,.3);border:1px solid rgba(167,139,250,.55)}
+    .sk-pg:hover:not(:disabled){background:rgba(139,92,246,.5)}
+    .sk-pg:disabled{opacity:.3;cursor:not-allowed}
     .sk-opt{position:relative;width:78px;padding:4px;border-radius:12px;cursor:pointer;color:inherit;font:inherit;text-align:center;
       background:rgba(255,255,255,.04);border:1px solid rgba(148,163,184,.25)}
     .sk-opt img,.sk-opt .sk-fb{width:100%;aspect-ratio:1;object-fit:cover;object-position:center 15%;border-radius:9px;background:#0d1730;display:flex;align-items:center;justify-content:center;font-size:26px}
@@ -829,6 +965,7 @@
   }
 
   /* ---------------- selector en el glosario ---------------- */
+  const skPage = {};                       // página del selector recordada por personaje
   function hookGlossary() {
     const _detail = window.openCharacterDetail;
     if (typeof _detail === 'function') {
@@ -845,12 +982,38 @@
               title="${ownedOk ? esc(label) : esc(label) + ' — consíguela en cofres o en el catálogo de la tienda'}">${fallbackImg(img, '🎨')}<span>${esc(label)}</span></button>`;
           const box = document.createElement('div');
           box.className = 'sk-box';
-          box.innerHTML = `<h4>🎨 Apariencia</h4><div class="sk-row">
+          box.innerHTML = `<h4 class="sk-head"><span>🎨 Apariencia</span><span class="sk-pager" hidden><button type="button" class="sk-pg" data-pg="-1" title="Anterior">‹</button><span class="sk-pg-n"></span><button type="button" class="sk-pg" data-pg="1" title="Siguiente">›</button></span></h4><div class="sk-row">
             ${opt('', base.__img0 || base.img, 'Original', true, !cur)}
             ${skins.map(s => opt(s.id, s.img, s.name, !!S.owned[s.id], cur === s.id)).join('')}</div>
             <div class="sk-hint">Las skins con 🔒 salen en cofres 📦 o aparecen en el catálogo diario de la 🛒 Tienda.</div>`;
           const stats = body.querySelector('.glossary-stats');
           if (stats) body.insertBefore(box, stats); else body.appendChild(box);
+          /* Paginación: solo 2 filas visibles; el nº de columnas depende del ancho disponible */
+          const row = box.querySelector('.sk-row'), pager = box.querySelector('.sk-pager');
+          const items = Array.from(row.querySelectorAll('.sk-opt'));
+          const curIdx = Math.max(0, items.findIndex(el => el.classList.contains('sel')));
+          let page = (skPage[id] != null) ? skPage[id] : -1;
+          const layout = () => {
+            const cols = Math.max(1, getComputedStyle(row).gridTemplateColumns.split(' ').filter(Boolean).length);
+            const size = cols * 2, pages = Math.max(1, Math.ceil(items.length / size));
+            if (page < 0) page = Math.floor(curIdx / size);          // primera vez: página de la skin equipada
+            page = Math.min(Math.max(page, 0), pages - 1);
+            skPage[id] = page;
+            items.forEach((el, i) => el.classList.toggle('sk-hide', Math.floor(i / size) !== page));
+            pager.hidden = pages <= 1;
+            pager.querySelector('.sk-pg-n').textContent = (page + 1) + ' / ' + pages;
+            pager.querySelector('[data-pg="-1"]').disabled = page <= 0;
+            pager.querySelector('[data-pg="1"]').disabled = page >= pages - 1;
+          };
+          layout();
+          requestAnimationFrame(layout);                              // por si el modal aún no tenía su ancho final
+          const onResize = () => { if (!box.isConnected) { window.removeEventListener('resize', onResize); return; } layout(); };
+          window.addEventListener('resize', onResize);
+          pager.addEventListener('click', ev => {
+            const g = ev.target.closest('.sk-pg');
+            if (!g || g.disabled) return;
+            page += Number(g.dataset.pg); layout();
+          });
           box.addEventListener('click', ev => {
             const o = ev.target.closest('.sk-opt');
             if (!o || o.disabled) return;
