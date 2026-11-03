@@ -14967,10 +14967,10 @@ moves: [
       power: 20,
       acc: 0.95,
       desc: 'Typhon clava su mirada seductora en el enemigo, dejándolo embelesado y a merced de sus propios aliados.',
-      baseCooldown: 4,
+      baseCooldown: 8,
       type: 'attack',
       effects: [
-        { type: 'charm', duration: 2, prob: 0.6 }
+        { type: 'charm', duration: 1, prob: 0.6 }
       ]
     },
     {
@@ -14989,7 +14989,7 @@ moves: [
     {
       id: 'typhon4',
       name: 'ULTI: Abismo Tifónico',
-      power: 32,
+      power: 28,
       acc: 0.88,
       desc: 'Typhon libera su verdadera naturaleza monstruosa, sumiendo al enemigo en un terror paralizante mientras lo arrastra al fondo del abismo.',
       baseCooldown: 7,
