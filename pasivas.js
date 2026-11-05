@@ -331,6 +331,9 @@ const hitCdTurn = new WeakMap();    // personaje -> último turno en que hitCool
       'Every time she takes damage, she burns all enemies: -5 health per turn for 2 turns.',
     '✨ {0} activa su pasiva «{1}»: quema a todos los enemigos (-{2} de vida, {3} turnos).':
       '✨ {0} triggers its passive «{1}»: burns all enemies (-{2} health, {3} turns).',
+    'Nota al Margen': 'Margin Note',
+    'Al recibir un ataque, tiene un 50% de probabilidad de reducir el ATK del atacante en 4 durante 2 turnos.':
+      'When hit by an attack, she has a 50% chance to lower the attacker\'s ATK by 4 for 2 turns.',
     'Patrocinio Oficial': 'Official Sponsorship',
     'Al comenzar su primer turno en combate gana 25 de escudo.':
       'At the start of his first turn in battle he gains 25 shield.'

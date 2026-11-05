@@ -12,6 +12,23 @@
 const PATCH_NOTES = [
 
 {
+  version: 'v1.12',
+  date: '05/11/26',
+  summary: 'REVAMP de Shiori Novella: pasa a ser una soporte-debilitadora mucho más sólida, con pasiva propia, habilidades más fiables y dos efectos que no funcionaban arreglados.',
+  changes: [
+{ type: 'nuevo',  target: 'Shiori - Pasiva: Nota al Margen', desc: 'NUEVA. Al recibir un ataque, tiene un 50% de probabilidad de reducir el ATK del atacante en 4 durante 2 turnos.' },
+{ type: 'buff',   target: 'Shiori - Estadísticas base', desc: 'VIDA aumentada de 100 a 112, DEF de 14 a 16 y VEL de 15 a 17. ATQ sin cambios (22).' },
+{ type: 'buff',   target: 'Shiori - Maldición del Relato', desc: 'Poder aumentado de 18 a 20, reducción de ATQ de 5 a 6 y cooldown reducido de 2 a 1 turno.' },
+{ type: 'buff',   target: 'Shiori - Libro del Destino', desc: 'Antes: +7 ATQ durante 2 turnos. Ahora: +8 ATQ durante 3 turnos y además otorga 12 de escudo al aliado.' },
+{ type: 'buff',   target: 'Shiori - Historia Prohibida', desc: 'Poder aumentado de 24 a 26 y ahora además reduce la precisión del enemigo un 10% durante 2 turnos.' },
+{ type: 'buff',   target: 'Shiori - Control Narrativo', desc: 'Reducción de VEL aumentada de 6 a 8 y su duración de 2 a 3 turnos. Precisión de 90% a 95% y cooldown de 4 a 3 turnos.' },
+{ type: 'bug',    target: 'Shiori - Perspicacia de la Bibliotecaria', desc: 'Corregido: el efecto no se aplicaba correctamente. Ahora funciona y además mejora: +8 DEF y +5 VEL durante 3 turnos (antes +6 DEF y +4 VEL durante 2).' },
+{ type: 'bug',    target: 'Shiori - ULTI: Capítulo Final', desc: 'Corregido: el daño extra contra enemigos con debuffs no se aplicaba. Ahora tiene 32 de poder (antes 40) y siempre reduce la DEF (-8) y el ATQ (-6) del enemigo durante 3 turnos.' }
+  ]
+},
+
+
+{
   version: 'v1.11',
   date: '03/11/26',
   summary: 'REVAMP de Mereoleona: deja de ser una atacante frágil y pasa a ser una tanque versátil que castiga a quien la golpea.',

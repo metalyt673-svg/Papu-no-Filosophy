@@ -87,7 +87,7 @@ const CHARACTERS = [
   id: 'titoyayo',
   name: 'Tito Yayo',
   img: 'personajes/tito_yayo.jpg',
-  classes: ['defensor', 'luchador'],
+  classes: ['defensor'],
   hp: 140,
   atk: 22,
   def: 19,
@@ -221,7 +221,7 @@ const CHARACTERS = [
   id: 'sumo',
   name: 'Sumo',
   img: 'personajes/sumo.jpg',
-  classes: ['atacante', 'luchador'],
+  classes: ['atacante'],
   hp: 130,
   atk: 28,
   def: 15,
@@ -9655,25 +9655,35 @@ const CHARACTERS = [
   img: 'personajes/shiori.jpg',
   classes: ['soporte', 'debilitador'],
 
-  hp: 100,
+  hp: 112,
   atk: 22,
-  def: 14,
-  spd: 15,
+  def: 16,
+  spd: 17,
+
+  passive: {
+    type: 'onHitDebuff',
+    name: 'Nota al Margen',
+    desc: 'Al recibir un ataque, tiene un 50% de probabilidad de reducir el ATK del atacante en 4 durante 2 turnos.',
+    stat: 'atk',
+    value: 4,
+    duration: 2,
+    chance: 0.5
+  },
 
   moves: [
 
     {
       id: 'shiori_storytellers_curse',
       name: 'Maldición del Relato',
-      power: 18,
+      power: 20,
       acc: 0.9,
       desc: 'Shiori recita una historia maldita que daña al enemigo y reduce su ATK durante 2 turnos.',
-      baseCooldown: 2,
+      baseCooldown: 1,
       type: 'attack',
       effect: {
         type: 'debuff',
         stat: 'atk',
-        value: 5,
+        value: 6,
         duration: 2
       }
     },
@@ -9683,45 +9693,42 @@ const CHARACTERS = [
       name: 'Libro del Destino',
       power: 0,
       acc: 1.0,
-      desc: 'Shiori consulta su libro y revela el destino de un aliado, aumentando su ATK durante 2 turnos.',
+      desc: 'Shiori consulta su libro y revela el destino de un aliado: aumenta su ATK durante 3 turnos y le otorga 12 de escudo.',
       baseCooldown: 3,
       type: 'support',
-      effect: {
-        type: 'tempAtk',
-        value: 7,
-        duration: 2
-      }
+      effects: [
+        { type: 'tempAtk', value: 8, duration: 3 },
+        { type: 'shield', value: 12 }
+      ]
     },
 
     {
       id: 'shiori_forbidden_tale',
       name: 'Historia Prohibida',
-      power: 24,
+      power: 26,
       acc: 0.85,
-      desc: 'Shiori cuenta una historia prohibida que debilita la mente del enemigo. Reduce su DEF durante 3 turnos.',
+      desc: 'Shiori cuenta una historia prohibida que debilita la mente del enemigo. Reduce su DEF durante 3 turnos y su precisión durante 2.',
       baseCooldown: 3,
       type: 'attack',
-      effect: {
-        type: 'debuff',
-        stat: 'def',
-        value: 6,
-        duration: 3
-      }
+      effects: [
+        { type: 'debuff', stat: 'def', value: 6, duration: 3, prob: 1.0 },
+        { type: 'accuracyDown', value: 10, duration: 2 }
+      ]
     },
 
     {
       id: 'shiori_narrative_control',
       name: 'Control Narrativo',
       power: 0,
-      acc: 0.9,
-      desc: 'Shiori altera el curso de la historia y ralentiza al enemigo, reduciendo su SPD durante 2 turnos.',
-      baseCooldown: 4,
+      acc: 0.95,
+      desc: 'Shiori altera el curso de la historia y ralentiza al enemigo, reduciendo su SPD durante 3 turnos.',
+      baseCooldown: 3,
       type: 'support',
       effect: {
         type: 'debuff',
         stat: 'spd',
-        value: 6,
-        duration: 2
+        value: 8,
+        duration: 3
       }
     },
 
@@ -9730,30 +9737,27 @@ const CHARACTERS = [
       name: 'Perspicacia de la Bibliotecaria',
       power: 0,
       acc: 1.0,
-      desc: 'Shiori analiza el campo de batalla y fortalece a un aliado. El objetivo obtiene +6 DEF y +4 SPD durante 2 turnos.',
+      desc: 'Shiori analiza el campo de batalla y fortalece a un aliado. El objetivo obtiene +8 DEF y +5 SPD durante 3 turnos.',
       baseCooldown: 4,
       type: 'support',
-      effect: {
-        type: 'selfBuff',
-        def: 6,
-        spd: 4,
-        duration: 2
-      }
+      effects: [
+        { type: 'tempDef', value: 8, duration: 3 },
+        { type: 'tempSpd', value: 5, duration: 3 }
+      ]
     },
 
     {
       id: 'shiori_final_chapter',
-      name: 'Capítulo Final',
-      power: 40,
+      name: 'ULTI: Capítulo Final',
+      power: 32,
       acc: 0.9,
-      desc: 'Shiori escribe el capítulo final de la batalla. Inflige un poderoso ataque y causa daño adicional contra enemigos que tengan varios debuffs.',
+      desc: 'Shiori escribe el capítulo final de la batalla. Inflige un poderoso ataque y reduce la DEF y el ATK del enemigo durante 3 turnos.',
       baseCooldown: 6,
       type: 'attack',
-      effect: {
-        type: 'conditionalDamage',
-        condition: 'debuffed',
-        value: 25
-      }
+      effects: [
+        { type: 'debuff', stat: 'def', value: 8, duration: 3, prob: 1.0 },
+        { type: 'debuff', stat: 'atk', value: 6, duration: 3, prob: 1.0 }
+      ]
     }
 
   ]
@@ -12566,7 +12570,7 @@ const CHARACTERS = [
   id: 'thamuz',
   name: 'Thamuz',
   img: 'personajes/thamuz.png', 
-  classes: ['atacante', 'luchador'],
+  classes: ['atacante'],
   hp: 145,
   atk: 30,
   def: 24,
@@ -13438,7 +13442,7 @@ const CHARACTERS = [
   id: 'asta',
   name: 'Asta',
   img: 'personajes/asta.jpg', 
-  classes: ['atacante', 'antimagia'],
+  classes: ['atacante'],
   hp: 130,
   atk: 30,
   def: 16,

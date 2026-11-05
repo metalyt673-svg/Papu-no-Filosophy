@@ -787,6 +787,8 @@ function startStoryBattle(chapter){
 
   const surrenderBtn = $('story-surrender-btn');
   if(surrenderBtn) surrenderBtn.style.display = 'inline-block';
+  const homeBtnStory = $('home-back');
+  if(homeBtnStory) homeBtnStory.style.display = 'none';
 
   if(window.playStoryBattleMusic) window.playStoryBattleMusic();
 
@@ -890,6 +892,8 @@ function startMode(mode, withBans){
   const startBtnEl = $('startBtn');
   if(startBtnEl) startBtnEl.style.display = '';
 
+  const homeBtn = $('home-back');
+  if(homeBtn) homeBtn.style.display = '';
   $('main-menu').style.display = 'none';
   $('p2-title').innerText = mode === 'pve' ? 'IA (se elegirá automáticamente)' : 'Jugador 2 — Selección';
   $('enemy-label').innerText = mode === 'pve' ? 'IA' : 'Jugador 2';
@@ -3314,6 +3318,20 @@ $('startBtn').addEventListener('click', ()=> {
   startBattle();
 });
 $('restartBtn').addEventListener('click', ()=> location.reload());
+
+/* Botón «🏠 Volver al inicio» (pantalla de combate y fase de baneos).
+   Recarga la página, que es lo más limpio: corta los turnos de la IA y la música
+   pendientes y te deja en el menú principal. Si hay un combate en curso, pide confirmación. */
+function goHome(){
+  if(state.phase === 'battle' && !confirm('¿Volver al inicio? Se perderá el combate en curso.')) return;
+  // Suena cancel.mp3 y se espera un instante antes de recargar, o la recarga cortaría el sonido.
+  if(window.SFX) SFX.play('cancel');
+  setTimeout(() => location.reload(), 350);
+}
+['home-back', 'ban-home-back'].forEach(id => {
+  const btn = $(id);
+  if(btn) btn.addEventListener('click', goHome);
+});
 
 /* Hooks de la fase de baneos */
 function setupBanUI(){
