@@ -33,6 +33,27 @@ const CLASSES = [
   { key: 'control', label: '🤖 Control' }
 ];
 
+/* ---------- Filtro de clases múltiple ----------
+   Cada filtro (state.filter[p], banFilter, glossaryFilter) es null (sin filtro)
+   o un array de claves de clase. Un personaje se muestra si tiene AL MENOS UNA
+   de las clases elegidas. También acepta un string suelto por compatibilidad. */
+function classFilterList(f){ return Array.isArray(f) ? f : (f ? [f] : []); }
+function matchesClassFilter(ch, f){
+  const list = classFilterList(f);
+  if(!list.length) return true;
+  return (ch.classes || []).some(k => list.includes(k));
+}
+function toggleClassInFilter(f, key){
+  const list = classFilterList(f).slice();
+  const i = list.indexOf(key);
+  if(i === -1) list.push(key); else list.splice(i, 1);
+  return list.length ? list : null;
+}
+function isClassActive(f, key){ return classFilterList(f).includes(key); }
+function classFilterLabel(f){
+  return classFilterList(f).map(k => { const c = CLASSES.find(x => x.key === k); return c ? c.label : k; }).join(', ');
+}
+
 /* CHARACTERS ahora vive en personajes/personajes.js (variable global CHARACTERS,
    cargado antes que este archivo en juego.html). */
 
@@ -159,7 +180,7 @@ function findBaseById(id){
 }
 
 function isCharInTeam(player, id){ 
-  return state.teams[player].some(c=>c.id===id); 
+  return state.teams[player].some(c=>c && c.id===id); 
 }
 
 /* =========================================================
@@ -182,7 +203,7 @@ function playerLabel(player){
 /* Personajes mostrados en la rejilla de baneos (filtro de clase + búsqueda). */
 function getBanCandidates(){
   let chars = CHARACTERS;
-  if(state.banFilter) chars = chars.filter(c => c.classes.includes(state.banFilter));
+  if(state.banFilter) chars = chars.filter(c => matchesClassFilter(c, state.banFilter));
   const q = normalizeText(state.banSearch);
   if(q){
     chars = chars.filter(c => {
@@ -219,9 +240,9 @@ function renderBanFilters(){
   cont.appendChild(all);
   CLASSES.forEach(c => {
     const b = document.createElement('button');
-    b.className = 'class-btn' + (state.banFilter === c.key ? ' active' : '');
+    b.className = 'class-btn' + (isClassActive(state.banFilter, c.key) ? ' active' : '');
     b.textContent = c.label;
-    b.onclick = () => { state.banFilter = c.key; renderBanFilters(); renderBanGrid(); };
+    b.onclick = () => { state.banFilter = toggleClassInFilter(state.banFilter, c.key); renderBanFilters(); renderBanGrid(); };
     cont.appendChild(b);
   });
 }
@@ -408,7 +429,7 @@ function passiveBadgeHTML(ch){
 
 function getGlossaryCandidates(){
   let chars = CHARACTERS;
-  if(state.glossaryFilter) chars = chars.filter(c => c.classes.includes(state.glossaryFilter));
+  if(state.glossaryFilter) chars = chars.filter(c => matchesClassFilter(c, state.glossaryFilter));
   const q = normalizeText(state.glossarySearch);
   if(q){
     chars = chars.filter(c => {
@@ -447,9 +468,9 @@ function renderGlossaryFilters(){
   cont.appendChild(all);
   CLASSES.forEach(c => {
     const b = document.createElement('button');
-    b.className = 'class-btn' + (state.glossaryFilter === c.key ? ' active' : '');
+    b.className = 'class-btn' + (isClassActive(state.glossaryFilter, c.key) ? ' active' : '');
     b.textContent = c.label;
-    b.onclick = () => { state.glossaryFilter = c.key; renderGlossaryFilters(); renderGlossaryGrid(); };
+    b.onclick = () => { state.glossaryFilter = toggleClassInFilter(state.glossaryFilter, c.key); renderGlossaryFilters(); renderGlossaryGrid(); };
     cont.appendChild(b);
   });
 }
@@ -907,7 +928,7 @@ function normalizeText(txt){
 function getVisibleCharacters(player){
   let chars = CHARACTERS;
   if(state.bansEnabled) chars = chars.filter(c => !isBanned(c.id));
-  if(state.filter[player]) chars = chars.filter(c => c.classes.includes(state.filter[player]));
+  if(state.filter[player]) chars = chars.filter(c => matchesClassFilter(c, state.filter[player]));
   const q = normalizeText(state.search[player]);
   if(q){
     chars = chars.filter(c => {
@@ -1013,7 +1034,7 @@ function renderCharGrid(player){
       ? CHARACTERS.filter(c => !isBanned(c.id)).length
       : CHARACTERS.length;
     counter.innerText = (state.search[player] || state.filter[player])
-      ? `Mostrando ${chars.length} de ${total} personajes`
+      ? `${state.filter[player] ? 'Clases: ' + classFilterLabel(state.filter[player]) + ' · ' : ''}Mostrando ${chars.length} de ${total} personajes`
       : `${total} personajes disponibles`;
   }
 
@@ -1066,16 +1087,20 @@ function renderCharGrid(player){
 function showClassMenu(player){
   const list = $(`${player}-list`); list.innerHTML='';
   CLASSES.forEach(c=>{
-    const b = document.createElement('button'); b.className='class-btn'; b.textContent = c.label;
-    b.onclick = () => { state.filter[player] = c.key; renderPanel(player); };
+    const b = document.createElement('button');
+    b.className = 'class-btn' + (isClassActive(state.filter[player], c.key) ? ' active' : '');
+    b.textContent = c.label;
+    b.onclick = () => { state.filter[player] = toggleClassInFilter(state.filter[player], c.key); showClassMenu(player); };
     list.appendChild(b);
   });
-  const back = document.createElement('button'); back.className='back-btn'; back.innerText='← Volver'; back.onclick = ()=>{ setFilter(player, null); };
-  list.appendChild(back);
+  const done = document.createElement('button'); done.className='back-btn'; done.innerText='✔ Listo'; done.onclick = ()=>{ renderPanel(player); };
+  list.appendChild(done);
+  const clear = document.createElement('button'); clear.className='back-btn'; clear.innerText='Limpiar selección'; clear.onclick = ()=>{ state.filter[player] = null; showClassMenu(player); };
+  list.appendChild(clear);
 }
 function setFilter(player, cls){
   state.filter[player] = cls;
-  if(cls === null) state.search[player] = '';   // "Ver todos" limpia también el buscador
+  if(cls === null) state.search[player] = '';   // "Ver todos" limpia también el buscador (y las clases)
   renderPanel(player);
 }
 
@@ -1085,16 +1110,38 @@ function toggleSelectChar(player, id){
   // el Modo Historia), permitiendo modificar el equipo a mitad de combate.
   if(state.phase !== 'select') return;
   const team = state.teams[player];
-  const idx = team.findIndex(c => c.id === id);
+  const idx = team.findIndex(c => c && c.id === id);
   const maxTeam = 3;
   
   if(idx !== -1){ 
-    team.splice(idx,1); 
+    removeFromTeam(player, idx);
+    return;
   } else {
-    if(team.length >= maxTeam) return;
-    team.push(cloneCharacter(findBaseById(id)));
+    /* Los huecos (null) dejados al quitar personajes se rellenan primero,
+       así los demás no se mueven de su posición. */
+    if(teamCount(player) >= maxTeam) return;
+    const hole = team.findIndex(c => !c);
+    const clone = cloneCharacter(findBaseById(id));
+    if(hole !== -1 && hole < maxTeam) team[hole] = clone; else team.push(clone);
   }
   renderPanel('p1'); renderPanel('p2'); renderSlots('p1'); renderSlots('p2'); updateStartBtn(); updateInfoText();
+}
+
+function teamCount(player){ return state.teams[player].filter(Boolean).length; }
+
+function removeFromTeam(player, index){
+  if(state.phase !== 'select') return;
+  const team = state.teams[player];
+  if(index < 0 || index >= team.length) return;
+  /* Se deja un hueco (null) en vez de desplazar a los demás personajes. */
+  team[index] = null;
+  while(team.length && !team[team.length - 1]) team.pop();
+  if(!team[state.activeIndex[player]]){
+    const first = team.findIndex(c => c);
+    state.activeIndex[player] = first === -1 ? 0 : first;
+  }
+  renderPanel('p1'); renderPanel('p2'); renderSlots('p1'); renderSlots('p2'); updateStartBtn(); updateInfoText();
+  if(typeof updateArena === 'function') updateArena();
 }
 
 function renderSlots(player){
@@ -1121,6 +1168,17 @@ function renderSlots(player){
           if(team[i] && i !== state.activeIndex[player] && team[i].hp > 0){ performSwap(player, i, false); }
         }
       };
+      /* Botón ✕ para quitar al personaje del equipo (solo en la selección) */
+      if(state.phase === 'select' && !(state.mode === 'pve' && player === 'p2')){
+        slot.style.position = 'relative';
+        const rm = document.createElement('button');
+        rm.type = 'button';
+        rm.textContent = '✕';
+        rm.title = 'Quitar del equipo';
+        rm.style.cssText = 'position:absolute;top:4px;right:4px;width:22px;height:22px;padding:0;border:0;border-radius:50%;background:rgba(220,38,38,.9);color:#fff;font-size:12px;line-height:22px;cursor:pointer;z-index:2';
+        rm.onclick = (e) => { e.stopPropagation(); removeFromTeam(player, i); };
+        slot.appendChild(rm);
+      }
     } else {
       slot.classList.add('empty'); slot.innerHTML = '<div class="small muted">Vacío</div>';
     }
@@ -1130,17 +1188,17 @@ function renderSlots(player){
 
 function updateStartBtn(){ 
   const maxTeam = 3;
-  const ok = state.teams.p1.length === maxTeam && (state.mode==='pvp' ? state.teams.p2.length===maxTeam : true); 
+  const ok = teamCount('p1') === maxTeam && (state.mode==='pvp' ? teamCount('p2')===maxTeam : true); 
   $('startBtn').disabled = !ok; 
 }
 
 function updateInfoText(){ 
   const maxTeam = 3;
-  $('p1-info').innerText = `Seleccionados: ${state.teams.p1.length}/${maxTeam}`; 
+  $('p1-info').innerText = `Seleccionados: ${teamCount('p1')}/${maxTeam}`; 
   if(state.mode === 'pve'){
     $('p2-info').innerText = 'IA elegirá 3 personajes';
   } else {
-    $('p2-info').innerText = `Seleccionados: ${state.teams.p2.length}/${maxTeam}`;
+    $('p2-info').innerText = `Seleccionados: ${teamCount('p2')}/${maxTeam}`;
   }
 }
 
@@ -1217,6 +1275,10 @@ function decideRoundInitiative(){
 function startBattle(){
   state.mode = window.GAME_MODE || state.mode || 'pvp';
   const maxTeam = 3;
+
+  // Quita los huecos que pudieran quedar de la fase de selección
+  state.teams.p1 = state.teams.p1.filter(Boolean);
+  state.teams.p2 = state.teams.p2.filter(Boolean);
 
   if(state.mode === 'pve' && !state.storyMode && state.teams.p2.length < 3){
     const pool = CHARACTERS.filter(c => !state.bansEnabled || !isBanned(c.id));

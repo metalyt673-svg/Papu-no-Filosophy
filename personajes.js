@@ -1344,7 +1344,7 @@ const CHARACTERS = [
   moves: [
     {
       id: 'horror1',
-      name: 'Rayo de Radiación',
+      name: 'Radiation Ray',
       power: 0,
       acc: 0.97,
       desc: 'Horror dispara un pequeño rayo de radiación que debilita ligeramente al oponente.',
@@ -1384,12 +1384,11 @@ const CHARACTERS = [
       desc: 'Horror usa su radiación para curar a un aliado.',
       baseCooldown: 2,
       type: 'support',
-      effect: [
+      effect:
         {
           type: 'heal',
           value: 18
         }
-      ]
     },
 
     {
@@ -2408,7 +2407,7 @@ const CHARACTERS = [
   img: 'personajes/vexoria.jpg',
   classes: ['atacante', 'control'],
   hp: 125,
-  atk: 26,
+  atk: 22,
   def: 16,
   spd: 19,
 
@@ -2431,7 +2430,7 @@ const CHARACTERS = [
         },
         {
           type: 'selfHealPct',
-          value: 5
+          value: 0.02
         }
       ]
     },
@@ -2439,7 +2438,7 @@ const CHARACTERS = [
     {
       id: 'vex2',
       name: 'Eclipse de la Serpiente',
-      power: 25,
+      power: 24,
       acc: 0.94,
       desc: 'Vexoria cubre al enemigo con una sombra solar que reduce su DEF y SPD.',
       baseCooldown: 2,
@@ -2472,7 +2471,7 @@ const CHARACTERS = [
       effects: [
         {
           type: 'tempAtk',
-          value: 10,
+          value: 6,
           duration: 3
         },
         {
@@ -2490,7 +2489,7 @@ const CHARACTERS = [
     {
       id: 'vex4',
       name: 'ULTI: Sun Eater',
-      power: 30,
+      power: 28,
       acc: 0.90,
       desc: 'Vexoria desata su poder de Devoradora del Sol, envolviendo al enemigo en una gigantesca explosión solar mientras absorbe su energía.',
       baseCooldown: 7,
@@ -2499,14 +2498,14 @@ const CHARACTERS = [
         {
           type: 'debuff',
           stat: 'atk',
-          value: 10,
+          value: 8,
           duration: 3,
           prob: 1.0
         },
         {
           type: 'debuff',
           stat: 'def',
-          value: 12,
+          value: 8,
           duration: 3,
           prob: 1.0
         },
@@ -14967,10 +14966,10 @@ moves: [
       power: 20,
       acc: 0.95,
       desc: 'Typhon clava su mirada seductora en el enemigo, dejándolo embelesado y a merced de sus propios aliados.',
-      baseCooldown: 4,
+      baseCooldown: 6,
       type: 'attack',
       effects: [
-        { type: 'charm', duration: 2, prob: 0.6 }
+        { type: 'charm', duration: 1, prob: 0.6 }
       ]
     },
     {
@@ -14989,7 +14988,7 @@ moves: [
     {
       id: 'typhon4',
       name: 'ULTI: Abismo Tifónico',
-      power: 32,
+      power: 28,
       acc: 0.88,
       desc: 'Typhon libera su verdadera naturaleza monstruosa, sumiendo al enemigo en un terror paralizante mientras lo arrastra al fondo del abismo.',
       baseCooldown: 7,

@@ -33,39 +33,55 @@
 
   /* ---------------- CATÁLOGO ---------------- */
   const SKIN_CATALOG = [
+    /* ——— Noelle Silva ——— */
     { id: 'noelle5', charId: 'noelle_silva', name: 'Noelle · Diablita', img: 'personajes/noelle5.jpg', rarity: 'common' },
     { id: 'noelle1', charId: 'noelle_silva', name: 'Noelle · Diablita2', img: 'personajes/noelle1.jpg', rarity: 'rare' },
     { id: 'noelle2', charId: 'noelle_silva', name: 'Noelle · Swimsuit', img: 'personajes/noelle2.jpg', rarity: 'epic' },
     { id: 'noelle3', charId: 'noelle_silva', name: 'Noelle · Lazito_verde', img: 'personajes/noelle3.jpg', rarity: 'epic' },
     { id: 'noelle_hw', charId: 'noelle_silva', name: 'Noelle · Halloween', img: 'personajes/noelle4.jpg', rarity: 'event' },
     { id: 'noelle6', charId: 'noelle_silva', name: 'Noelle · Sirena', img: 'personajes/noelle6.jpg', rarity: 'legend' },
+
+    /* ——— Albedo ——— */
     { id: 'albedo1', charId: 'albedo', name: 'Albedo · Atuendo default', img: 'personajes/albedo1.jpg', rarity: 'common' },
     { id: 'albedo2', charId: 'albedo', name: 'Albedo · Carruaje elegante', img: 'personajes/albedo2.jpg', rarity: 'rare' },
     { id: 'albedo3', charId: 'albedo', name: 'Albedo · Armadura', img: 'personajes/albedo3.jpg', rarity: 'epic' },
     { id: 'albedo_chm', charId: 'albedo', name: 'Albedo · Navidad', img: 'personajes/albedo4.jpg', rarity: 'event' },
     { id: 'albedo5', charId: 'albedo', name: 'Albedo · Succubus', img: 'personajes/albedo5.jpg', rarity: 'legend' },
+    { id: 'albedo6', charId: 'albedo', name: 'Albedo · Yukata', img: 'personajes/albedo6.jpg', rarity: 'epic' },
+    { id: 'albedo7', charId: 'albedo', name: 'Albedo · Pink Tank', img: 'personajes/albedo7.jpg', rarity: 'rare' },
+    { id: 'albedo8', charId: 'albedo', name: 'Albedo · Gothic Gown', img: 'personajes/albedo8.jpg', rarity: 'legend' },
+
+    /* ——— Secre ——— */
     { id: 'secre1', charId: 'secre', name: 'Secre · Atuendo default', img: 'personajes/secre1.jpg', rarity: 'common' },
     { id: 'secre2', charId: 'secre', name: 'Secre · Uniforme escolar', img: 'personajes/secre2.jpg', rarity: 'rare' },
     { id: 'secre3', charId: 'secre', name: 'Secre · kimono', img: 'personajes/secre3.jpg', rarity: 'epic' },
     { id: 'secre_maid', charId: 'secre', name: 'Secre · Maid', img: 'personajes/secre4.jpg', rarity: 'event' },
     { id: 'secre5', charId: 'secre', name: 'Secre · Magia sellada', img: 'personajes/secre5.jpg', rarity: 'legend' },
+
+    /* ——— Belerick ——— */
     { id: 'belerick1', charId: 'belerick', name: "Belerick · Tiger's Claw", img: 'personajes/belerick1.jpg', rarity: 'common' },
     { id: 'belerick2', charId: 'belerick', name: 'Belerick · Torch Guardian', img: 'personajes/belerick2.jpg', rarity: 'rare' },
     { id: 'belerick3', charId: 'belerick', name: 'Belerick · Arbiter of Stars', img: 'personajes/belerick3.jpg', rarity: 'epic' },
     { id: 'belerick_star', charId: 'belerick', name: 'Belerick · Smouldering Fortress', img: 'personajes/belerick4.jpg', rarity: 'event' },
     { id: 'belerick5', charId: 'belerick', name: 'Belerick · The Deep One', img: 'personajes/belerick5.jpg', rarity: 'legend' },
+
+    /* ——— Punpun ——— */
     { id: 'punpun1', charId: 'punpun', name: 'Punpun · Chibi', img: 'personajes/punpun1.jpeg', rarity: 'common' },
     { id: 'punpun2', charId: 'punpun', name: 'Punpun · Teen', img: 'personajes/punpun2.jpeg', rarity: 'rare' },
     { id: 'punpun3', charId: 'punpun', name: 'Punpun · Hair', img: 'personajes/punpun3.jpeg', rarity: 'rare' },
     { id: 'punpun4', charId: 'punpun', name: 'Punpun · Real', img: 'personajes/punpun4.jpeg', rarity: 'epic' },
     { id: 'punpun5', charId: 'punpun', name: 'Punpun · Triangle', img: 'personajes/punpun5.jpeg', rarity: 'epic' },
     { id: 'punpun6', charId: 'punpun', name: 'Punpun · ??', img: 'personajes/punpun6.jpeg', rarity: 'legend' },
+
+    /* ——— Floryn ——— */
     { id: 'floryn1', charId: 'floryn', name: 'Floryn · Springtide', img: 'personajes/floryn1.jpg', rarity: 'common' },
     { id: 'floryn2', charId: 'floryn', name: 'Floryn · Paw Power', img: 'personajes/floryn2.jpg', rarity: 'rare' },
     { id: 'floryn3', charId: 'floryn', name: 'Floryn · Yatai Waitress', img: 'personajes/floryn3.jpg', rarity: 'epic' },
     { id: 'floryn4', charId: 'floryn', name: 'Floryn · Herald of Autumn', img: 'personajes/floryn4.jpg', rarity: 'epic' },
     { id: 'floryn_hk', charId: 'floryn', name: 'Floryn · Fluffly Dream', img: 'personajes/floryn5.jpg', rarity: 'event' },
     { id: 'floryn6', charId: 'floryn', name: 'Floryn · Melody of Light', img: 'personajes/floryn6.jpg', rarity: 'legend' },
+
+    /* ——— Selena ——— */
     { id: 'selena1', charId: 'selena', name: 'Selena · Abyssal Witch', img: 'personajes/selena1.jpg', rarity: 'common' },
     { id: 'selena2', charId: 'selena', name: 'Selena · Wasp Queen', img: 'personajes/selena2.jpg', rarity: 'rare' },
     { id: 'selena3', charId: 'selena', name: 'Selena · Virus', img: 'personajes/selena3.jpg', rarity: 'epic' },
@@ -77,9 +93,13 @@
     { id: 'selena9', charId: 'selena', name: 'Selena · Lady Vengeance', img: 'personajes/selena9.jpg', rarity: 'legend' },
     { id: 'selena10', charId: 'selena', name: 'Selena · Curse of Cinder', img: 'personajes/selena10.jpg', rarity: 'legend' },
     { id: 'selena11', charId: 'selena', name: 'Selena · Silverblot Raiko', img: 'personajes/selena11.jpg', rarity: 'legend' },
+
+    /* ——— Zora ——— */
     { id: 'zora1', charId: 'zora', name: 'Zora · Atuendo default', img: 'personajes/zora1.jpg', rarity: 'common' },
     { id: 'zora2', charId: 'zora', name: 'Zora · Agente Secreto', img: 'personajes/zora3.jpg', rarity: 'rare' },
     { id: 'zora3', charId: 'zora', name: 'Zora · Atuendo default2', img: 'personajes/zora2.jpg', rarity: 'epic' },
+
+    /* ——— Vermeil ——— */
     { id: 'vermeil1', charId: 'vermeil', name: 'Vermeil · Uniforme Escolar', img: 'personajes/vermeil3.jpg', rarity: 'common' },
     { id: 'vermeil2', charId: 'vermeil', name: 'Vermeil · Pasión de Maná', img: 'personajes/vermeil8.jpg', rarity: 'rare' },
     { id: 'vermeil3', charId: 'vermeil', name: 'Vermeil · Kimono Borracha', img: 'personajes/vermeil2.jpg', rarity: 'epic' },
@@ -88,12 +108,16 @@
     { id: 'vermeil6', charId: 'vermeil', name: 'Vermeil · Vaquera', img: 'personajes/vermeil5.jpg', rarity: 'legend' },
     { id: 'vermeil_nurse', charId: 'vermeil', name: 'Vermeil · Enfermera', img: 'personajes/vermeil7.jpg', rarity: 'event' },
     { id: 'vermeil_gothic', charId: 'vermeil', name: 'Vermeil · Gótica', img: 'personajes/vermeil6.jpg', rarity: 'event' },
+
+    /* ——— Dyrroth ——— */
     { id: 'dyrroth1', charId: 'dyrroth', name: 'Dyrroth · Prince of the Abyss', img: 'personajes/dyrroth1.jpg', rarity: 'common' },
     { id: 'dyrroth2', charId: 'dyrroth', name: 'Dyrroth · Scalebore', img: 'personajes/dyrroth2.jpg', rarity: 'rare' },
     { id: 'dyrroth3', charId: 'dyrroth', name: 'Dyrroth · Orochi Chris', img: 'personajes/dyrroth3.jpg', rarity: 'legend' },
     { id: 'dyrroth_star', charId: 'dyrroth', name: 'Dyrroth · Ruins Scavenger', img: 'personajes/dyrroth4.jpg', rarity: 'event' },
     { id: 'dyrroth5', charId: 'dyrroth', name: 'Dyrroth · V.E.N.O.M. Cobra', img: 'personajes/dyrroth5.jpg', rarity: 'epic' },
     { id: 'dyrroth6', charId: 'dyrroth', name: 'Dyrroth · Gon', img: 'personajes/dyrroth6.jpg', rarity: 'legend' },
+
+    /* ——— Clarence ——— */
     { id: 'clarence1', charId: 'clarence', name: 'Clarence · Diva', img: 'personajes/clarence1.jpg', rarity: 'rare' },
     { id: 'clarence2', charId: 'clarence', name: 'Clarence · Hawai', img: 'personajes/clarence2.jpg', rarity: 'common' },
     { id: 'clarence3', charId: 'clarence', name: 'Clarence · Dino', img: 'personajes/clarence3.jpg', rarity: 'rare' },
@@ -103,6 +127,8 @@
     { id: 'clarence6', charId: 'clarence', name: 'Clarence · Pirata', img: 'personajes/clarence6.jpg', rarity: 'rare' },
     { id: 'clarence7', charId: 'clarence', name: 'Clarence · Maduro', img: 'personajes/clarence7.jpg', rarity: 'legend' },
     { id: 'clarence8', charId: 'clarence', name: 'Clarence · Vikingo', img: 'personajes/clarence8.jpg', rarity: 'legend' },
+
+    /* ——— Miyabi (Hoshimi) ——— */
     { id: 'hoshimi1', charId: 'hoshimi', name: 'Miyabi · Gala', img: 'personajes/hoshimi1.jpg', rarity: 'legend' },
     { id: 'hoshimi2', charId: 'hoshimi', name: 'Miyabi · Espadachina', img: 'personajes/hoshimi2.jpg', rarity: 'rare' },
     { id: 'hoshimi3', charId: 'hoshimi', name: 'Miyabi · Espadachina ardiente', img: 'personajes/hoshimi3.jpg', rarity: 'legend' },
@@ -113,12 +139,16 @@
     { id: 'hoshimi_hw', charId: 'hoshimi', name: 'Miyabi · Dracula', img: 'personajes/hoshimi8.jpg', rarity: 'event' },
     { id: 'hoshimi_summer1', charId: 'hoshimi', name: 'Miyabi · Swimsuit', img: 'personajes/hoshimi9.jpg', rarity: 'event' },
     { id: 'hoshimi10', charId: 'hoshimi', name: 'Miyabi · the Ice Espadachina', img: 'personajes/hoshimi10.jpg', rarity: 'legend' },
+
+    /* ——— Cici ——— */
     { id: 'cici1', charId: 'cici', name: 'Cici · Buoyant Performer', img: 'personajes/cici6.png', rarity: 'common' },
     { id: 'cici2', charId: 'cici', name: 'Cici · Whimiscal Carnival', img: 'personajes/cici1.png', rarity: 'rare' },
     { id: 'cici_star', charId: 'cici', name: 'Cici · Circus Reverie', img: 'personajes/cici2.png', rarity: 'event' },
     { id: 'cici_star1', charId: 'cici', name: 'Cici · Circus Fantasy', img: 'personajes/cici3.png', rarity: 'event' },
     { id: 'cici_star2', charId: 'cici', name: 'Cici · Circus Glamour', img: 'personajes/cici4.png', rarity: 'event' },
     { id: 'cici3', charId: 'cici', name: 'Cici · P. ACE', img: 'personajes/cici5.png', rarity: 'epic' },
+
+    /* ——— Mimosa ——— */
     { id: 'mimosa1', charId: 'mimosa', name: 'Mimosa · Gala', img: 'personajes/mimosa4.jpg', rarity: 'common' },
     { id: 'mimosa2', charId: 'mimosa', name: 'Mimosa · Amanecer Dorado', img: 'personajes/mimosa5.jpg', rarity: 'rare' },
     { id: 'mimosa3', charId: 'mimosa', name: 'Mimosa · Bunny', img: 'personajes/mimosa3.jpg', rarity: 'epic' },
@@ -127,12 +157,16 @@
     { id: 'mimosa_chm', charId: 'mimosa', name: 'Mimosa · Navidad', img: 'personajes/mimosa6.jpg', rarity: 'event' },
     { id: 'mimosa_sport', charId: 'mimosa', name: 'Mimosa · Animadora', img: 'personajes/mimosa7.jpg', rarity: 'event' },
     { id: 'mimosa_casino', charId: 'mimosa', name: 'Mimosa · Casino', img: 'personajes/mimosa8.jpg', rarity: 'event' },
+
+    /* ——— Gojo Satoru ——— */
     { id: 'gojo1', charId: 'gojo_satoru', name: 'Gojo · Hollow Red', img: 'personajes/gojo1.jpg', rarity: 'epic' },
     { id: 'gojo2', charId: 'gojo_satoru', name: 'Gojo · Last Battle', img: 'personajes/gojo5.jpg', rarity: 'common' },
     { id: 'gojo3', charId: 'gojo_satoru', name: 'Gojo · Mentor', img: 'personajes/gojo2.jpg', rarity: 'rare' },
     { id: 'gojo_chm', charId: 'gojo_satoru', name: 'Gojo · Navidad', img: 'personajes/gojo3.jpg', rarity: 'event' },
     { id: 'gojo_hk', charId: 'gojo_satoru', name: 'Gojo · Hello Kitty', img: 'personajes/gojo4.jpg', rarity: 'event' },
     { id: 'gojo4', charId: 'gojo_satoru', name: 'Gojo · Hollow Purple', img: 'personajes/gojo6.jpg', rarity: 'legend' },
+
+    /* ——— Johnson ——— */
     { id: 'johnson1', charId: 'johnson_ml', name: 'Johnson · Wild Engine', img: 'personajes/johnson1.jpg', rarity: 'common' },
     { id: 'johnson2', charId: 'johnson_ml', name: 'Johnson · Fire Chief', img: 'personajes/johnson2.jpg', rarity: 'rare' },
     { id: 'johnson3', charId: 'johnson_ml', name: 'Johnson · S.A.B.E.R. Automata', img: 'personajes/johnson3.jpg', rarity: 'epic' },
@@ -142,16 +176,22 @@
     { id: 'johnson_transformer', charId: 'johnson_ml', name: 'Johnson · Optimus Prime', img: 'personajes/johnson7.jpg', rarity: 'event' },
     { id: 'johnson7', charId: 'johnson_ml', name: 'Johnson · Starblazer', img: 'personajes/johnson8.jpg', rarity: 'epic' },
     { id: 'johnson8', charId: 'johnson_ml', name: 'Johnson · Sovereign of Realms', img: 'personajes/johnson9.jpg', rarity: 'legend' },
+
+    /* ——— Gloo ——— */
     { id: 'gloo1', charId: 'gloo_ml', name: 'Gloo · Swamp Spirits', img: 'personajes/gloo1.jpg', rarity: 'common' },
     { id: 'gloo2', charId: 'gloo_ml', name: 'Gloo · Verdant Enchanter', img: 'personajes/gloo2.jpg', rarity: 'rare' },
     { id: 'gloo3', charId: 'gloo_ml', name: 'Gloo · Jellyman', img: 'personajes/gloo3.jpg', rarity: 'epic' },
     { id: 'gloo_patricio', charId: 'gloo_ml', name: 'Gloo · Patrick', img: 'personajes/gloo4.jpg', rarity: 'event' },
+
+    /* ——— Estes ——— */
     { id: 'estes1', charId: 'estes', name: 'Estes · Holy Priest', img: 'personajes/estes1.jpg', rarity: 'rare' },
     { id: 'estes2', charId: 'estes', name: 'Estes · Galaxy Dominator', img: 'personajes/estes2.jpg', rarity: 'legend' },
     { id: 'estes3', charId: 'estes', name: 'Estes · Crow Bishop', img: 'personajes/estes3.jpg', rarity: 'epic' },
     { id: 'estes4', charId: 'estes', name: 'Estes · Rattan Dragon', img: 'personajes/estes4.jpg', rarity: 'epic' },
     { id: 'estes5', charId: 'estes', name: 'Estes · Arcane Magistrate', img: 'personajes/estes5.jpg', rarity: 'epic' },
     { id: 'estes6', charId: 'estes', name: 'Estes · SPARKLE', img: 'personajes/estes6.jpg', rarity: 'rare' },
+
+    /* ——— Grock ——— */
     { id: 'grock1', charId: 'grock', name: 'Grock · Fortress Titan', img: 'personajes/grock1.jpg', rarity: 'common' },
     { id: 'grock2', charId: 'grock', name: 'Grock · Grave Guardian', img: 'personajes/grock2.jpg', rarity: 'rare' },
     { id: 'grock3', charId: 'grock', name: 'Grock · Castle Guard', img: 'personajes/grock3.jpg', rarity: 'rare' },
@@ -160,6 +200,8 @@
     { id: 'grock5', charId: 'grock', name: 'Grock · Codename: Rhino', img: 'personajes/grock6.jpg', rarity: 'epic' },
     { id: 'grock6', charId: 'grock', name: 'Grock · Ancient Golem', img: 'personajes/grock7.jpg', rarity: 'rare' },
     { id: 'grock7', charId: 'grock', name: 'Grock · Wasteland Psycho', img: 'personajes/grock8.jpg', rarity: 'epic' },
+
+    /* ——— Guinevere ——— */
     { id: 'guinevere1', charId: 'guinevere', name: 'Guinevere · Fleur de Bleau', img: 'personajes/guinevere1.jpg', rarity: 'common' },
     { id: 'guinevere_kof', charId: 'guinevere', name: 'Guinevere · Athena Asamiya', img: 'personajes/guinevere2.jpg', rarity: 'event' },
     { id: 'guinevere3', charId: 'guinevere', name: 'Guinevere · Lotus', img: 'personajes/guinevere3.jpg', rarity: 'rare' },
@@ -170,6 +212,8 @@
     { id: 'guinevere8', charId: 'guinevere', name: 'Guinevere · Psion of Tomorrow', img: 'personajes/guinevere8.jpg', rarity: 'legend' },
     { id: 'guinevere9', charId: 'guinevere', name: 'Guinevere · Elegant Butterfly', img: 'personajes/guinevere9.jpg', rarity: 'rare' },
     { id: 'guinevere10', charId: 'guinevere', name: 'Guinevere · Daybreak Halo', img: 'personajes/guinevere10.jpg', rarity: 'legend' },
+
+    /* ——— Thamuz ——— */
     { id: 'thamuz1', charId: 'thamuz', name: 'Thamuz · Lord Lava', img: 'personajes/thamuz1.jpg', rarity: 'common' },
     { id: 'thamuz2', charId: 'thamuz', name: 'Thamuz · Lord of Wraith', img: 'personajes/thamuz2.jpg', rarity: 'rare' },
     { id: 'thamuz3', charId: 'thamuz', name: 'Thamuz · Liquid Fire', img: 'personajes/thamuz3.jpg', rarity: 'epic' },
@@ -177,6 +221,8 @@
     { id: 'thamuz_kai', charId: 'thamuz', name: 'Thamuz · General Kai', img: 'personajes/thamuz5.jpg', rarity: 'event' },
     { id: 'thamuz_star', charId: 'thamuz', name: 'Thamuz · Sanctified Flame', img: 'personajes/thamuz6.jpg', rarity: 'legend' },
     { id: 'thamuz7', charId: 'thamuz', name: 'Thamuz · The Annihilator', img: 'personajes/thamuz7.jpg', rarity: 'legend' },
+
+    /* ——— Helcurt ——— */
     { id: 'helcurt1', charId: 'helcurt', name: 'Helcurt · Shadowbringer', img: 'personajes/helcurt1.jpg', rarity: 'common' },
     { id: 'helcurt2', charId: 'helcurt', name: 'Helcurt · Exoracial Executer', img: 'personajes/helcurt2.jpg', rarity: 'rare' },
     { id: 'helcurt3', charId: 'helcurt', name: 'Helcurt · Ice Scythe', img: 'personajes/helcurt3.jpg', rarity: 'epic' },
@@ -184,6 +230,8 @@
     { id: 'helcurt6', charId: 'helcurt', name: 'Helcurt · Scorpio', img: 'personajes/helcurt5.jpg', rarity: 'epic' },
     { id: 'helcurt_star', charId: 'helcurt', name: 'Helcurt · Dream Prowler', img: 'personajes/helcurt6.jpg', rarity: 'event' },
     { id: 'helcurt7', charId: 'helcurt', name: 'Helcurt · Kaiju of the Deep', img: 'personajes/helcurt7.jpg', rarity: 'legend' },
+
+    /* ——— Rick Sanchez ——— */
     { id: 'ricksanchez1', charId: 'ricksanchez', name: 'Rick Sanchez · High', img: 'personajes/ricksanchez1.jpg', rarity: 'common' },
     { id: 'ricksanchez2', charId: 'ricksanchez', name: 'Rick Sanchez · Suit', img: 'personajes/ricksanchez2.jpg', rarity: 'rare' },
     { id: 'ricksanchez3', charId: 'ricksanchez', name: 'Rick Sanchez · Toxic Rick', img: 'personajes/ricksanchez3.jpg', rarity: 'rare' },
@@ -192,19 +240,51 @@
     { id: 'ricksanchez6', charId: 'ricksanchez', name: 'Rick Sanchez · Gucci Rick', img: 'personajes/ricksanchez6.jpg', rarity: 'legend' },
     { id: 'ricksanchez7', charId: 'ricksanchez', name: 'Rick Sanchez · Evil Rick', img: 'personajes/ricksanchez7.jpg', rarity: 'epic' },
     { id: 'ricksanchez8', charId: 'ricksanchez', name: 'Rick Sanchez · Pickle Rick', img: 'personajes/ricksanchez8.jpg', rarity: 'legend' },
+
+    /* ——— YV ——— */
     { id: 'yv1', charId: 'yv', name: 'Yung Venuz · Demi God', img: 'personajes/yv1.jpg', rarity: 'rare' },
     { id: 'yv2', charId: 'yv', name: 'Yung Venuz · Sad', img: 'personajes/yv2.jpg', rarity: 'common' },
     { id: 'yv3', charId: 'yv', name: 'Yung Venuz · Tha Gun God', img: 'personajes/yv3.jpg', rarity: 'epic' },
+
+    /* ——— Horror ——— */
     { id: 'horror1', charId: 'horror', name: 'Horror · Portal', img: 'personajes/horror1.jpg', rarity: 'rare' },
     { id: 'horror2', charId: 'horror', name: 'Horror · IDPD', img: 'personajes/horror2.jpg', rarity: 'epic' },
+
+    /* ——— Chicken ——— */
     { id: 'chicken1', charId: 'chicken', name: 'Chicken · Green Eyes', img: 'personajes/chicken1.jpg', rarity: 'rare' },
     { id: 'chicken2', charId: 'chicken', name: 'Chicken · Blind Samurai', img: 'personajes/chicken2.jpg', rarity: 'legend' },
+
+    /* ——— Mayuri ——— */
     { id: 'mayuri1', charId: 'mayuri', name: 'Mayuri · Faraón Arrancar', img: 'personajes/mayuri1.jpg', rarity: 'legend' },
     { id: 'mayuri2', charId: 'mayuri', name: 'Mayuri · Desarrollo de Investigación', img: 'personajes/mayuri2.jpg', rarity: 'epic' },
     { id: 'mayuri3', charId: 'mayuri', name: 'Mayuri · Sol Brillante', img: 'personajes/mayuri3.jpg', rarity: 'rare' },
     { id: 'mayuri4', charId: 'mayuri', name: 'Mayuri · Departamento de Ciencias y Desarrollo', img: 'personajes/mayuri4.jpg', rarity: 'epic' },
     { id: 'mayuri5', charId: 'mayuri', name: 'Mayuri · Hueco mundo', img: 'personajes/mayuri5.jpg', rarity: 'common' },
 
+    /* ——— Isaac ——— */
+    { id: 'isaac1', charId: 'isaac', name: 'Isaac · Cain', img: 'personajes/isaac1.jpg', rarity: 'common' },
+    { id: 'isaac2', charId: 'isaac', name: 'Isaac · Judas', img: 'personajes/isaac2.jpg', rarity: 'common' },
+    { id: 'isaac3', charId: 'isaac', name: 'Isaac · The Lost', img: 'personajes/isaac3.jpg', rarity: 'rare' },
+    { id: 'isaac4', charId: 'isaac', name: 'Isaac · Blue Baby', img: 'personajes/isaac4.jpg', rarity: 'rare' },
+    { id: 'isaac5', charId: 'isaac', name: 'Isaac · Tainted Isaac', img: 'personajes/isaac5.jpg', rarity: 'epic' },
+    { id: 'isaac6', charId: 'isaac', name: 'Isaac · Tainted Judas', img: 'personajes/isaac6.jpg', rarity: 'epic' },
+    { id: 'isaac7', charId: 'isaac', name: 'Isaac · Tainted Samson', img: 'personajes/isaac7.jpg', rarity: 'legend' },
+    { id: 'isaac8', charId: 'isaac', name: 'Isaac · Tainted Keeper', img: 'personajes/isaac8.jpg', rarity: 'legend' },
+    { id: 'isaac9', charId: 'isaac', name: 'Isaac · Festive', img: 'personajes/isaac9.jpg', rarity: 'event' },
+
+    /* ——— Sans ——— */
+    { id: 'sans1', charId: 'sans', name: 'Sans · Trumpet', img: 'personajes/sans1.jpg', rarity: 'common' },
+    { id: 'sans2', charId: 'sans', name: 'Sans · Ketchup', img: 'personajes/sans2.jpg', rarity: 'common' },
+    { id: 'sans3', charId: 'sans', name: 'Sans · Scientist', img: 'personajes/sans3.jpg', rarity: 'rare' },
+    { id: 'sans4', charId: 'sans', name: 'Sans · Underswap', img: 'personajes/sans4.jpg', rarity: 'rare' },
+    { id: 'sans5', charId: 'sans', name: 'Sans · Underfell', img: 'personajes/sans5.jpg', rarity: 'epic' },
+    { id: 'sans6', charId: 'sans', name: 'Sans · Errortale', img: 'personajes/sans6.jpg', rarity: 'epic' },
+    { id: 'sans7', charId: 'sans', name: 'Sans · Inktale', img: 'personajes/sans7.jpg', rarity: 'legend' },
+    { id: 'sans8', charId: 'sans', name: 'Sans · Saness', img: 'personajes/sans8.jpg', rarity: 'legend' },
+    { id: 'sans9', charId: 'sans', name: 'Sans · Christmas', img: 'personajes/sans9.jpg', rarity: 'event' },
+    { id: 'sans10', charId: 'sans', name: 'Sans · Halloween', img: 'personajes/sans10.jpg', rarity: 'event' },
+
+    /* ——— Yoruichi ——— */
     { id: 'yoruichi2', charId: 'yoruichi', name: 'Yoruichi · Atuendo default', img: 'personajes/yoruichi2.jpg', rarity: 'common' },
     { id: 'yoruichi1', charId: 'yoruichi', name: 'Yoruichi · Repartidora', img: 'personajes/yoruichi1.jpg', rarity: 'common' },
     { id: 'yoruichi9', charId: 'yoruichi', name: 'Yoruichi · Maid', img: 'personajes/yoruichi9.jpg', rarity: 'rare' },
@@ -216,12 +296,14 @@
     { id: 'yoruichi6', charId: 'yoruichi', name: 'Yoruichi · Shunkō Felino', img: 'personajes/yoruichi6.jpg', rarity: 'legend' },
     { id: 'yoruichi8', charId: 'yoruichi', name: 'Yoruichi · Gótica', img: 'personajes/yoruichi8.jpg', rarity: 'legend' },
 
+    /* ——— CZ2128 ——— */
     { id: 'cz1', charId: 'cz2128', name: 'CZ2128 · Bufanda de camuflaje', img: 'personajes/cz2.jpg', rarity: 'common' },
     { id: 'cz2', charId: 'cz2128', name: 'CZ2128 · Descanso en el café', img: 'personajes/cz4.jpg', rarity: 'rare' },
     { id: 'cz3', charId: 'cz2128', name: 'CZ2128 · Doncella de combate', img: 'personajes/cz5.jpg', rarity: 'epic' },
     { id: 'cz_summer', charId: 'cz2128', name: 'CZ2128 · Piscina de verano', img: 'personajes/cz3.jpg', rarity: 'event' },
     { id: 'cz5', charId: 'cz2128', name: 'CZ2128 · Yukata del festival', img: 'personajes/cz1.jpg', rarity: 'legend' },
 
+    /* ——— Nobara ——— */
     { id: 'nobara1', charId: 'nobara', name: 'Nobara · Merienda', img: 'personajes/nobara1.jpg', rarity: 'common' },
     { id: 'nobara3', charId: 'nobara', name: 'Nobara · Hechicera Maliciosa', img: 'personajes/nobara3.jpg', rarity: 'epic' },
     { id: 'nobara8', charId: 'nobara', name: 'Nobara · Jugadora de Golf', img: 'personajes/nobara8.jpg', rarity: 'rare' },
@@ -233,6 +315,7 @@
     { id: 'nobara7', charId: 'nobara', name: 'Nobara · Resonancia roja', img: 'personajes/nobara7.jpg', rarity: 'legend' },
     { id: 'nobara_maid', charId: 'nobara', name: 'Nobara · Maid', img: 'personajes/nobara10.jpg', rarity: 'event' },
 
+    /* ——— Nakiri Ayame ——— */
     { id: 'nakiri7', charId: 'nakiri_ayame', name: 'Nakiri · Gafas', img: 'personajes/nakiri7.jpg', rarity: 'common' },
     { id: 'nakiri8', charId: 'nakiri_ayame', name: 'Nakiri · Paraguas rojo', img: 'personajes/nakiri8.jpg', rarity: 'common' },
     { id: 'nakiri1', charId: 'nakiri_ayame', name: 'Nakiri · Tímida', img: 'personajes/nakiri1.jpg', rarity: 'rare' },
@@ -246,6 +329,7 @@
     { id: 'nakiri_autumn', charId: 'nakiri_ayame', name: 'Nakiri · Hojas de otoño', img: 'personajes/nakiri10.jpg', rarity: 'event' },
     { id: 'nakiri_maid', charId: 'nakiri_ayame', name: 'Nakiri · Maid', img: 'personajes/nakiri4.jpg', rarity: 'event' },
 
+    /* ——— Shiori Novella ——— */
     { id: 'shiori5', charId: 'shiori_novella', name: 'Shiori · Casual', img: 'personajes/shiori5.jpg', rarity: 'common' },
     { id: 'shiori3', charId: 'shiori_novella', name: 'Shiori · Idol', img: 'personajes/shiori3.jpg', rarity: 'rare' },
     { id: 'shiori1', charId: 'shiori_novella', name: 'Shiori · Hongo nocturno', img: 'personajes/shiori1.jpg', rarity: 'epic' },
@@ -316,6 +400,20 @@
     { id: 'castorice10', charId: 'castorice', name: 'Castorice · Casual Outdoor',   img: 'personajes/castorice10.jpg', rarity: 'common' },
     { id: 'castorice_summer', charId: 'castorice', name: 'Castorice · Beach Popsicle', img: 'personajes/castorice11.jpg', rarity: 'event' },
 
+    /* ——— Onigiriya / Nekomata Okayu ——— */
+    { id: 'onigiria1',  charId: 'nekomata_okayu', name: 'Onigiriya · Beach Bikini',       img: 'personajes/onigiria1.jpg',  rarity: 'epic' },
+    { id: 'onigiria2',  charId: 'nekomata_okayu', name: 'Onigiriya · Birthday Casual',     img: 'personajes/onigiria2.jpg',  rarity: 'rare' },
+    { id: 'onigiria3',  charId: 'nekomata_okayu', name: 'Onigiriya · Street Punk',         img: 'personajes/onigiria3.jpg',  rarity: 'epic' },
+    { id: 'onigiria_hw',  charId: 'nekomata_okayu', name: 'Onigiriya · Halloween Devil',     img: 'personajes/onigiria4.jpg',  rarity: 'event' },
+    { id: 'onigiria5',  charId: 'nekomata_okayu', name: 'Onigiriya · Onsen',               img: 'personajes/onigiria5.jpg',  rarity: 'legend' },
+    { id: 'onigiria6',  charId: 'nekomata_okayu', name: 'Onigiriya · Pool Float',          img: 'personajes/onigiria6.jpg',  rarity: 'epic' },
+    { id: 'onigiria7',  charId: 'nekomata_okayu', name: 'Onigiriya · Bunny Suit',          img: 'personajes/onigiria7.jpg',  rarity: 'legend' },
+    { id: 'onigiria_hw1',  charId: 'nekomata_okayu', name: 'Onigiriya · Witch Halloween',     img: 'personajes/onigiria8.jpg',  rarity: 'event' },
+    { id: 'onigiria9',  charId: 'nekomata_okayu', name: 'Onigiriya · School Uniform',      img: 'personajes/onigiria9.jpg',  rarity: 'rare' },
+    { id: 'onigiria_hw2', charId: 'nekomata_okayu', name: 'Onigiriya · Mummy Halloween',     img: 'personajes/onigiria10.jpg', rarity: 'event' },
+    { id: 'onigiria11', charId: 'nekomata_okayu', name: 'Onigiriya · Flower Bouquet',      img: 'personajes/onigiria11.jpg', rarity: 'common' },
+    { id: 'onigiria12', charId: 'nekomata_okayu', name: 'Onigiriya · Hoodie Cat',          img: 'personajes/onigiria12.jpg', rarity: 'common' },
+
         // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
   ];
 
@@ -360,7 +458,10 @@
     karin_summer: true,
     ibuki_summer: true,
     castorice_hw: true,
-    castorice_summer: true
+    castorice_summer: true,
+    onigiria_hw: true,
+    onigiria_hw1: true,
+    onigiria_hw2: true
   };
 
   const RARITY = {
