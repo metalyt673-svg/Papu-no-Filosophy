@@ -84,25 +84,76 @@
       img: 'bosses_cooperativo/gusty_bones.jpg',
       music: 'bosses_cooperativo/music/gusty_music.mp3',
       tagline: 'Un esqueleto fantasmal con mucho aguante. Se esconde tras su escudo y ataca por sorpresa.',
-      hp: 700, atk: 19, def: 12, spd: 16, ccResist: 0.6,
+      hp: 700, atk: 22, def: 15, spd: 19, ccResist: 0.7,
       phases: [
         { at: 0.5, log: 'Gusty Bones se enfurece: ¡más ATK y más velocidad!', atk: 3, spd: 3 },
         { at: 0.25, log: '¡Gusty Bones pierde la paciencia y ataca DOS veces por ronda!', actions: 2 }
       ],
       moves: [
-        { id: 'gusty1', name: 'Golpe de Huesos', power: 22, acc: 0.95, baseCooldown: 0, type: 'attack', effects: null,
+        { id: 'gusty1', name: 'Golpe de Huesos', power: 25, acc: 0.95, baseCooldown: 0, type: 'attack', effects: null,
           desc: 'Un golpe seco con sus huesos contra uno de los dos personajes del frente.' },
-        { id: 'gusty2', name: 'Susto Fantasmal', power: 12, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
-          effects: [{ type: 'fear', prob: 0.4, duration: 1 }],
+        { id: 'gusty2', name: 'Susto Fantasmal', power: 14, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
+          effects: [{ type: 'fear', prob: 0.5, duration: 1 }],
           desc: 'Un susto repentino a los dos del frente. Puede aterrorizarlos.' },
         { id: 'gusty3', name: 'Escudo de Huesos', power: 0, acc: 1, baseCooldown: 4, type: 'support', aiWeight: 0.8,
-          effects: [{ type: 'shield', value: 60 }, { type: 'tempDef', value: 3, duration: 2 }],
+          effects: [{ type: 'shield', value: 80 }, { type: 'tempDef', value: 4, duration: 2 }],
           desc: 'Se protege con sus huesos: escudo y más DEF durante 2 turnos.' },
-        { id: 'gusty4', name: 'ULTRA: Lluvia de Huesos', power: 26, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
-          effects: [{ type: 'damageOverTime', status: 'bleed', value: 4, duration: 3, prob: 0.8 }],
+        { id: 'gusty4', name: 'ULTRA: Lluvia de Huesos', power: 29, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
+          effects: [{ type: 'damageOverTime', status: 'bleed', value: 5, duration: 3, prob: 0.85 }],
           desc: 'Una lluvia de huesos sobre el frente. Puede provocar sangrado.' }
       ],
       rewards: { coins: 250, chests: 2, firstCoins: 250, firstChests: 2, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.18 }
+    },
+    {
+      id: 'coopboss_slimamander', name: 'Slimamander', icon: '🦎', c1: '#22c55e', c2: '#052e16', tier: 1,
+      img: 'bosses_cooperativo/slimamander.jpg',
+      music: 'bosses_cooperativo/music/slimamander_music.mp3',
+      tagline: 'Una salamandra viscosa que quema y ralentiza. Se regenera, así que no le des tregua.',
+      hp: 800, atk: 23, def: 14, spd: 17, ccResist: 0.65,
+      phases: [
+        { at: 0.5, log: 'Slimamander se calienta: ¡su baba arde y ataca con más fuerza!', atk: 3 },
+        { at: 0.25, log: '¡Slimamander pierde el control y ataca DOS veces por ronda!', actions: 2 }
+      ],
+      moves: [
+        { id: 'slima1', name: 'Salivazo Viscoso', power: 24, acc: 0.95, baseCooldown: 0, type: 'attack',
+          effects: [{ type: 'debuff', stat: 'spd', value: 3, duration: 2 }],
+          desc: 'Un salivazo pegajoso que reduce la SPD del objetivo.' },
+        { id: 'slima2', name: 'Llamarada Pegajosa', power: 13, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
+          effects: [{ type: 'damageOverTime', status: 'burn', value: 4, duration: 3, prob: 0.8 }],
+          desc: 'Fuego y baba sobre los dos del frente. Puede quemarlos.' },
+        { id: 'slima3', name: 'Regenerar Baba', power: 0, acc: 1, baseCooldown: 4, type: 'support', aiWeight: 0.8,
+          effects: [{ type: 'selfHealPct', value: 0.08 }, { type: 'shield', value: 50 }],
+          desc: 'Se cubre de baba: recupera algo de vida y gana escudo.' },
+        { id: 'slima4', name: 'ULTRA: Erupción Viscosa', power: 28, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
+          effects: [{ type: 'damageOverTime', status: 'burn', value: 5, duration: 3, prob: 0.9 }],
+          desc: 'Una erupción de baba ardiente sobre el frente. Quemadura casi segura.' }
+      ],
+      rewards: { coins: 300, chests: 2, firstCoins: 300, firstChests: 2, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.2 }
+    },
+    {
+      id: 'coopboss_sproink', name: 'Sproink', icon: '🐗', c1: '#f472b6', c2: '#3b0a24', tier: 2,
+      img: 'bosses_cooperativo/sproink.jpg',
+      music: 'bosses_cooperativo/music/sproink_music.mp3',
+      tagline: 'Rápido y testarudo. Embiste, ensordece y se pone cada vez más furioso.',
+      hp: 900, atk: 24, def: 14, spd: 21, ccResist: 0.65,
+      phases: [
+        { at: 0.6, log: 'Sproink resopla: ¡más ATK y más velocidad!', atk: 3, spd: 3 },
+        { at: 0.3, log: '¡Sproink se desboca y ataca DOS veces por ronda!', atk: 2, actions: 2 }
+      ],
+      moves: [
+        { id: 'sproink1', name: 'Embestida', power: 25, acc: 0.95, baseCooldown: 0, type: 'attack', effects: null,
+          desc: 'Una embestida contra uno de los dos personajes del frente.' },
+        { id: 'sproink2', name: 'Chillido Ensordecedor', power: 13, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
+          effects: [{ type: 'slow', value: 20, duration: 2, prob: 0.85 }, { type: 'accuracyDown', value: 10, duration: 2 }],
+          desc: 'Un chillido que ralentiza y resta precisión a los dos del frente.' },
+        { id: 'sproink3', name: 'Subidón', power: 0, acc: 1, baseCooldown: 5, type: 'support', aiWeight: 0.9,
+          effects: [{ type: 'tempAtk', value: 5, duration: 3 }, { type: 'tempSpd', value: 4, duration: 3 }],
+          desc: 'Se emociona: más ATK y SPD durante 3 turnos.' },
+        { id: 'sproink4', name: 'ULTRA: Carga Desbocada', power: 30, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
+          effects: [{ type: 'stun', prob: 0.3, duration: 1 }],
+          desc: 'Una carga a toda velocidad sobre el frente. Puede aturdir.' }
+      ],
+      rewards: { coins: 400, chests: 3, firstCoins: 400, firstChests: 2, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.22 }
     },
     {
       id: 'coopboss_coloso', name: 'Coloso de Obsidiana', icon: '🗿', c1: '#64748b', c2: '#0f172a', tier: 1,

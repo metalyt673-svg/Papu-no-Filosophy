@@ -87,15 +87,15 @@ const CHARACTERS = [
   id: 'titoyayo',
   name: 'Tito Yayo',
   img: 'personajes/tito_yayo.jpg',
-  classes: ['defensor'],
+  classes: ['defensor', 'inmortal'],
   hp: 140,
   atk: 22,
   def: 19,
   spd: 12,
   passive: {
     type: 'revive',
-    name: 'Segunda Oportunidad',
-    desc: 'La primera vez que su vida llega a 0, Tito Yayo revive con el 20% de su vida máxima (una sola vez por batalla).',
+    name: 'Que Bueno Que No Soy Ese Sujeto',
+    desc: 'Cuando su vida llega a 0, Tito Yayo revive con el 20% de su vida máxima (una vez por batalla).',
     chance: 1,
     decay: 1,
     healPercent: 0.2
@@ -5928,12 +5928,22 @@ const CHARACTERS = [
   id: 'lukraz',
   name: 'Lukraz',
   img: 'personajes/lukraz.png',
-  classes: ['mago', 'control', 'soporte'],
+  classes: ['mago', 'control'],
 
-  hp: 120,
-  atk: 30,
-  def: 15,
-  spd: 19,
+  hp: 115,
+  atk: 24,
+  def: 16,
+  spd: 18,
+
+  passive: {
+    type: 'endTurnRecover',
+    name: '¡Ayúdame, Claude!',
+    desc: 'Cada vez que terminas el turno con Lukraz activo, Claude le proporciona 5 de vida y 5 de escudo.',
+    heal: 5,
+    shield: 5,
+    max: 40
+  },
+
 
   moves: [
     {
@@ -5951,23 +5961,24 @@ const CHARACTERS = [
       id: 'lukraz2',
       name: 'Gráficas Salientes',
       power: 25,
-      acc: 0.94,
-      desc: 'Lukraz libera sus gráficas y las usa para encadenar a su oponente, reduciendo su DEF y ralentizando sus movimientos.',
-      baseCooldown: 3,
+      acc: 0.95,
+      desc: 'Lukraz libera sus gráficas y electrocuta a un oponente, ralentizándolo y dañando a sus aliados.',
+      baseCooldown: 5,
       type: 'attack',
       effects: [
         {
-          type: 'debuff',
-          stat: 'def',
-          value: 8,
-          duration: 3,
+          type: 'damageOverTime',
+          status: 'electrified',
+          value: 4,
+          duration: 2,
           prob: 1.0
         },
         {
-          type: 'slow',
-          value: 10,
+          type: 'debuff',
+          stat: 'spd',
+          value: 7,
           duration: 2,
-          prob: 1.0
+          prob: 0.95
         }
       ]
     },
@@ -5977,19 +5988,18 @@ const CHARACTERS = [
       name: 'ChatGPT, ¡CHAMBEA!',
       power: 0,
       acc: 1.0,
-      desc: 'Lukraz explota laboralmente a su ChatGPT de confianza para que le aumente temporalmente su ATK y SPD (usable en aliados).',
-      baseCooldown: 4,
+      desc: 'Lukraz explota laboralmente a su ChatGPT de confianza para que bloquee el daño por él.',
+      baseCooldown: 5,
       type: 'support',
       effects: [
         {
-          type: 'tempAtk',
-          value: 8,
+          type: 'tempDef',
+          value: 6,
           duration: 3
         },
         {
-          type: 'tempSpd',
-          value: 3,
-          duration: 3
+          type: 'shield',
+          value: 20
         }
       ]
     },
@@ -5997,15 +6007,15 @@ const CHARACTERS = [
     {
       id: 'lukraz4',
       name: 'TÉCNICA DEFINITIVA: Papucoin',
-      power: 30,
-      acc: 0.89,
-      desc: 'Lukraz libera un gigantesco tanque Papucoin y dispara un laser que desintegra a su oponente, provocándole un brutal impacto financiero que reduce su ATK y DEF.',
+      power: 28,
+      acc: 0.9,
+      desc: 'Lukraz libera un gigantesco tanque Papucoin y dispara un laser que desintegra a su oponente, provocándole un brutal impacto financiero que reduce su velocidad y defensa.',
       baseCooldown: 7,
       type: 'attack',
       effects: [
         {
           type: 'debuff',
-          stat: 'atk',
+          stat: 'spd',
           value: 6,
           duration: 3,
           prob: 1.0
@@ -6013,7 +6023,7 @@ const CHARACTERS = [
         {
           type: 'debuff',
           stat: 'def',
-          value: 8,
+          value: 7,
           duration: 3,
           prob: 1.0
         }
@@ -10491,9 +10501,9 @@ const CHARACTERS = [
   id: 'mereoleona',
   name: 'Mereoleona Vermillion',
   img: 'personajes/mereoleona.gif',
-  classes: ['tanque', 'atacante', 'mago'],
+  classes: ['defensor', 'atacante', 'mago'],
   hp: 168,
-  atk: 24,
+  atk: 22,
   def: 30,
   spd: 22,
 
@@ -14374,7 +14384,7 @@ moves: [
   img: 'personajes/Albedo.gif',
   classes: ['defensor', 'soporte', 'control'],
   hp: 150,
-  atk: 25,
+  atk: 22,
   def: 28,
   spd: 10,
 
@@ -14433,12 +14443,12 @@ moves: [
       effects: [
         {
           type: 'tempDef',
-          value: 8,
+          value: 6,
           duration: 3
         },
         {
           type: 'shield',
-          value: 35
+          value: 25
         }
       ]
     },
@@ -14491,27 +14501,27 @@ moves: [
         {
           type: 'debuff',
           stat: 'atk',
-          value: 10,
+          value: 8,
           duration: 3,
           prob: 1.0
         },
         {
           type: 'tempDef',
-          value: 10,
+          value: 8,
           duration: 3
         },
         {
           type: 'reflectDamage',
-          value: 45,
+          value: 30,
           duration: 3
         },
         {
           type: 'shield',
-          value: 40
+          value: 25
         },
         {
           type: 'selfHealPct',
-          value: 0.18
+          value: 0.16
         }
       ]
     }

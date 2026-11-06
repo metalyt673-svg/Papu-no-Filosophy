@@ -25,6 +25,12 @@
                                                 (value de vida por turno durante duration turnos).
      hitCooldown       amount (def. 1)          Al recibir daño, la habilidad suya con más enfriamiento
                                                 pendiente se recarga `amount` turno(s) (máx. 1 vez por turno).
+     endTurnRecover    heal, shield, max        Al TERMINAR su turno estando activo: recupera `heal` de vida
+                                                (cantidad fija) y gana `shield` de escudo (si pones `max`,
+                                                el escudo no pasa de ese tope). No salta si se cambia por
+                                                otro consumiendo el turno (ya no está en combate).
+                                                Ej.: passive: { type:'endTurnRecover', name:'…', desc:'…',
+                                                                heal: 10, shield: 8, max: 40 }
 
    Cómo funciona (no modifica game.js; sirve en todos los modos, también contra la IA):
      - Envuelve applyDamage() (golpes, bajas, remate, represalias), startTurnActions()
@@ -39,7 +45,7 @@
   'use strict';
 
   const TYPES = new Set(['ultKillExtraTurn', 'dodge', 'lastStand', 'turnShield', 'turnRegen',
-    'openingShield', 'openingBuff', 'executeDamage', 'onKill', 'onHitDebuff', 'hitCooldown', 'onHitBurnAll']);
+    'openingShield', 'openingBuff', 'executeDamage', 'onKill', 'onHitDebuff', 'hitCooldown', 'onHitBurnAll', 'endTurnRecover']);
   const getPassive = (ch, type) => (ch && ch.passive && ch.passive.type === type) ? ch.passive : null;
   const pname = ch => (ch.passive && ch.passive.name) || 'Pasiva';
   const enemyOf = key => key === 'p1' ? 'p2' : 'p1';
@@ -222,10 +228,37 @@ const hitCdTurn = new WeakMap();    // personaje -> último turno en que hitCool
     };
   }
 
+  /* ---------- 4a) efectos de fin de turno ---------- */
+  function onTurnEnd(finished) {
+    if (typeof state === 'undefined' || state.phase !== 'battle') return;
+    const a = finished || getActive(state.turnOwner);
+    if (!a || a.hp <= 0) return;
+    // Solo cuenta si acaba su turno SIENDO el personaje activo de ese jugador
+    // (si se cambió por otro consumiendo el turno, ya no está en combate).
+    if (getKeyOfTarget(a) !== state.turnOwner || getActive(state.turnOwner) !== a) return;
+
+    const er = getPassive(a, 'endTurnRecover');
+    if (!er) return;
+
+    const healed = heal2(a, Number(er.heal) || 0);
+    const max = Number(er.max) || Infinity, add = Math.max(0, Number(er.shield) || 0);
+    const gain = Math.max(0, Math.min(add, max - (a.shield || 0)));
+    if (gain > 0) a.shield = (a.shield || 0) + gain;
+
+    if (healed > 0 || gain > 0) announce(a, gain > 0 ? `: +${gain} de escudo.` : '.');
+  }
+
+  // Curación de cantidad FIJA (heal() de arriba trabaja con % de vida máxima).
+  function heal2(ch, amount) {
+    if (!(amount > 0) || ch.hp <= 0) return 0;
+    return applyHealing(ch, ch, Math.round(amount), pname(ch));
+  }
+
   /* ---------- 4) turno extra + cooldown regenerado ---------- */
   function hookEndTurn() {
     const _end = window.endTurn;
     window.endTurn = function (finishedActor) {
+      try { onTurnEnd(finishedActor); } catch (e) { console.warn('[pasivas.js]', e); }
       const pd = pending;
       pending = null;
       if (!pd || typeof state === 'undefined' || state.phase !== 'battle' ||
@@ -334,6 +367,9 @@ const hitCdTurn = new WeakMap();    // personaje -> último turno en que hitCool
     'Nota al Margen': 'Margin Note',
     'Al recibir un ataque, tiene un 50% de probabilidad de reducir el ATK del atacante en 4 durante 2 turnos.':
       'When hit by an attack, she has a 50% chance to lower the attacker\'s ATK by 4 for 2 turns.',
+    '⚡ electrizado': '⚡ electrified',
+    '⚡ La descarga eléctrica de {0} se propaga a todo su equipo.':
+      '⚡ {0}\'s electric discharge spreads to the whole team.',
     'Patrocinio Oficial': 'Official Sponsorship',
     'Al comenzar su primer turno en combate gana 25 de escudo.':
       'At the start of his first turn in battle he gains 25 shield.'

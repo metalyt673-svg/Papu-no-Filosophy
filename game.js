@@ -4,7 +4,7 @@
    - Buffs y debuffs temporales con duración real
    - Modo muerte súbita tras 70 turnos
    - Sistema de estados: stun, congelar, embelesar, miedo y ralentizar
-   - Daño continuo: quemadura, veneno y sangrado
+   - Daño continuo: quemadura, veneno, sangrado y electrizado (⚡ daña a TODO el equipo enemigo)
    - Nuevos efectos: robo de vida, reflejo de daño, crítico y reducción de curación
    - IA táctica con decisiones por vida, daño, estados, buffs, debuffs y cambios gratuitos
 */
@@ -1224,7 +1224,8 @@ function updateArena(){
           const icon =
             s.status === 'burn' ? '🔥' :
             s.status === 'poison' ? '☠️' :
-            s.status === 'bleed' ? '🩸' : '☠️';
+            s.status === 'bleed' ? '🩸' :
+            s.status === 'electrified' ? '⚡' : '☠️';
 
           return `${icon} ${s.status}(${s.remaining})`;
         }).join(' ')}`
@@ -2170,6 +2171,7 @@ function getStatusLabel(status){
     burn: '🔥 quemadura',
     poison: '☠️ veneno',
     bleed: '🩸 sangrado',
+    electrified: '⚡ electrizado',
     freeze: '❄️ congelado',
     charm: '💕 embelesado',
     fear: '😨 miedo',
@@ -2377,6 +2379,26 @@ function applyStatusDamage(target, amount, status){
   if(hpBefore > 0 && target.hp <= 0) tryPassiveRevive(target);
 }
 
+/* ---------- ⚡ Electrizado (daño continuo en área) ----------
+   Se aplica como cualquier otro daño continuo, a UN solo enemigo:
+     { type:'damageOverTime', status:'electrified', value: 4, duration: 3 }
+   pero cuando le toca hacer daño (al empezar el turno del afectado), la descarga
+   golpea a TODO su equipo a la vez (el activo y el banquillo), con el mismo
+   `value` para cada uno. Como es en área, conviene darle menos `value` que a
+   quemadura/veneno/sangrado. Solo el afectado lo "tiene": los demás solo
+   reciben el daño de cada descarga. Ignora el escudo, como el resto de DoT. */
+function applyElectrifiedDamage(target, damage){
+  const key = getKeyOfTarget(target);
+  const team = key ? state.teams[key] : [target];
+  const others = team.filter(c => c && c !== target && c.hp > 0);
+
+  if(others.length) log(`⚡ La descarga eléctrica de ${target.name} se propaga a todo su equipo.`);
+
+  // El afectado primero y después el resto del equipo (activo y banquillo).
+  applyStatusDamage(target, damage, 'electrified');
+  others.forEach(c => applyStatusDamage(c, damage, 'electrified'));
+}
+
 function processDamageOverTime(target){
   if(!target || target.hp <= 0 || !Array.isArray(target.statusEffects)) return;
 
@@ -2384,7 +2406,8 @@ function processDamageOverTime(target){
     if(status.type !== 'damageOverTime') return true;
 
     const damage = Math.max(0, Number(status.value) || 0);
-    applyStatusDamage(target, damage, status.status);
+    if(status.status === 'electrified') applyElectrifiedDamage(target, damage);
+    else applyStatusDamage(target, damage, status.status);
 
     status.remaining -= 1;
 
@@ -2855,6 +2878,13 @@ function aiEffectBonus(actor, target, move){
 
       score += already ? 5 : 17;
       score += Math.min(18, (Number(e.value) || 0) * 0.8);
+
+      // Electrizado: la descarga también alcanza al resto del equipo enemigo.
+      if(e.status === 'electrified' && target){
+        const key = getKeyOfTarget(target);
+        const others = key ? getAliveChars(key).filter(c => c !== target).length : 0;
+        score += others * Math.min(10, (Number(e.value) || 0) * 0.6);
+      }
     }
 
     if(e.type === 'lifesteal') score += 18 + normalizePercentValue(e.value) * 0.25;
