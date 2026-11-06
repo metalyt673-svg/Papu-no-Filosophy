@@ -283,6 +283,7 @@
     { id: 'sans8', charId: 'sans', name: 'Sans · Saness', img: 'personajes/sans8.jpg', rarity: 'legend' },
     { id: 'sans9', charId: 'sans', name: 'Sans · Christmas', img: 'personajes/sans9.jpg', rarity: 'event' },
     { id: 'sans10', charId: 'sans', name: 'Sans · Halloween', img: 'personajes/sans10.jpg', rarity: 'event' },
+    { id: 'sans11', charId: 'sans', name: 'Sans · Mortadela', img: 'personajes/sans11.jpg', rarity: 'legend' },
 
     /* ——— Yoruichi ——— */
     { id: 'yoruichi2', charId: 'yoruichi', name: 'Yoruichi · Atuendo default', img: 'personajes/yoruichi2.jpg', rarity: 'common' },
@@ -414,6 +415,111 @@
     { id: 'onigiria11', charId: 'nekomata_okayu', name: 'Onigiriya · Flower Bouquet',      img: 'personajes/onigiria11.jpg', rarity: 'common' },
     { id: 'onigiria12', charId: 'nekomata_okayu', name: 'Onigiriya · Hoodie Cat',          img: 'personajes/onigiria12.jpg', rarity: 'common' },
 
+    /* ——— W ——— */
+    { id: 'w1',  charId: 'w', name: 'W · Combat Frame',       img: 'personajes/w1.jpg',  rarity: 'epic' },
+    { id: 'w2',  charId: 'w', name: 'W · Gothic Dress',       img: 'personajes/w2.jpg',  rarity: 'legend' },
+    { id: 'w3',  charId: 'w', name: 'W · Shrine Curse',       img: 'personajes/w3.jpg',  rarity: 'epic' },
+    { id: 'w4',  charId: 'w', name: 'W · Idol Stage',         img: 'personajes/w4.jpg',  rarity: 'rare' },
+    { id: 'w_god',  charId: 'w', name: 'W · Nun',                img: 'personajes/w5.jpg',  rarity: 'event' },
+    { id: 'w_summer',  charId: 'w', name: 'W · Poolside',           img: 'personajes/w6.jpg',  rarity: 'event' },
+    { id: 'w_summer2',  charId: 'w', name: 'W · Water Hose',         img: 'personajes/w7.jpg',  rarity: 'rare' },
+    { id: 'w8',  charId: 'w', name: 'W · Casino Bunny',       img: 'personajes/w8.jpg',  rarity: 'legend' },
+    { id: 'w9',  charId: 'w', name: 'W · Office Chaos',       img: 'personajes/w9.jpg',  rarity: 'common' },
+    { id: 'w_casino', charId: 'w', name: 'W · Bunny Suit',         img: 'personajes/w10.jpg', rarity: 'event' },
+    { id: 'w11', charId: 'w', name: 'W · Beach Popsicle',     img: 'personajes/w11.jpg', rarity: 'event' },
+    { id: 'w12', charId: 'w', name: 'W · Casual Crop',        img: 'personajes/w12.jpg', rarity: 'common' },
+    { id: 'w13', charId: 'w', name: 'W · Cyber Screens',      img: 'personajes/w13.jpg', rarity: 'epic' },
+    { id: 'w14', charId: 'w', name: 'W · Red Jacket',         img: 'personajes/w14.jpg', rarity: 'rare' },
+    { id: 'w15', charId: 'w', name: 'W · Tactical',           img: 'personajes/w15.jpg', rarity: 'epic' },
+
+    /* ——— Akuma Nihmane ——— */
+    { id: 'akuma1',      charId: 'akuma_nihmane', name: 'Akuma · Catgirl',        img: 'personajes/akuma1.jpg',  rarity: 'epic' },
+    { id: 'akuma2',      charId: 'akuma_nihmane', name: 'Akuma · Selfie',         img: 'personajes/akuma2.jpg',  rarity: 'rare' },
+    { id: 'akuma_chm',   charId: 'akuma_nihmane', name: 'Akuma · Winter Plush',   img: 'personajes/akuma3.jpg',  rarity: 'event' },
+    { id: 'akuma4',      charId: 'akuma_nihmane', name: 'Akuma · Beach Cat',      img: 'personajes/akuma4.jpg',  rarity: 'epic' },
+    { id: 'akuma5',      charId: 'akuma_nihmane', name: 'Akuma · Festival',       img: 'personajes/akuma5.jpg',  rarity: 'rare' },
+    { id: 'akuma6',      charId: 'akuma_nihmane', name: 'Akuma · Street Rock',    img: 'personajes/akuma6.jpg',  rarity: 'common' },
+    { id: 'akuma7',      charId: 'akuma_nihmane', name: 'Akuma · School Uniform', img: 'personajes/akuma7.jpg',  rarity: 'common' },
+    { id: 'akuma8',      charId: 'akuma_nihmane', name: 'Akuma · Punk Night',     img: 'personajes/akuma8.jpg',  rarity: 'legend' },
+    { id: 'akuma_hw',    charId: 'akuma_nihmane', name: 'Akuma · Halloween Mummy',img: 'personajes/akuma9.jpg',  rarity: 'event' },
+    { id: 'akuma_summer',charId: 'akuma_nihmane', name: 'Akuma · Beach Bikini',   img: 'personajes/akuma10.jpg', rarity: 'event' },
+    { id: 'akuma11',     charId: 'akuma_nihmane', name: 'Akuma · Cyberpunk',      img: 'personajes/akuma11.jpg', rarity: 'legend' },
+
+    /* ——— Marciana ——— */
+    { id: 'marciana_summer',  charId: 'marciana', name: 'Marciana · Lifeguard Shock',   img: 'personajes/marciana1.jpg',  rarity: 'event' },
+    { id: 'marciana2',        charId: 'marciana', name: 'Marciana · Covered Jacket',    img: 'personajes/marciana2.jpg',  rarity: 'rare' },
+    { id: 'marciana_summer2', charId: 'marciana', name: 'Marciana · Beach Smile',       img: 'personajes/marciana3.jpg',  rarity: 'event' },
+    { id: 'marciana4',        charId: 'marciana', name: 'Marciana · Shark Unit',        img: 'personajes/marciana4.jpg',  rarity: 'epic' },
+    { id: 'marciana5',        charId: 'marciana', name: 'Marciana · Jacket Open',       img: 'personajes/marciana5.jpg',  rarity: 'epic' },
+    { id: 'marciana_summer3', charId: 'marciana', name: 'Marciana · Red Bikini',        img: 'personajes/marciana6.jpg',  rarity: 'event' },
+    { id: 'marciana7',        charId: 'marciana', name: 'Marciana · Golden Rifle',      img: 'personajes/marciana7.jpg',  rarity: 'legend' },
+    { id: 'marciana8',        charId: 'marciana', name: 'Marciana · Beach Panic',       img: 'personajes/marciana8.jpg',  rarity: 'epic' },
+    { id: 'marciana9',        charId: 'marciana', name: 'Marciana · Instructor',        img: 'personajes/marciana9.jpg',  rarity: 'rare' },
+    { id: 'marciana10',       charId: 'marciana', name: 'Marciana · Sunbathe',          img: 'personajes/marciana10.jpg', rarity: 'common' },
+
+    /* ——— Renner ——— */
+    { id: 'renner1',     charId: 'renner_the_golden_princess', name: 'Renner · Vampire Peace',   img: 'personajes/renner1.jpg', rarity: 'epic' },
+    { id: 'renner_hw',   charId: 'renner_the_golden_princess', name: 'Renner · Undead Crown',    img: 'personajes/renner2.jpg', rarity: 'event' },
+    { id: 'renner3',     charId: 'renner_the_golden_princess', name: 'Renner · True Form',       img: 'personajes/renner3.jpg', rarity: 'legend' },
+
+    /* ——— Inosuke Hashibira ——— */
+    { id: 'inosuke1', charId: 'inosuke_hashibira', name: 'Inosuke · Beast Slash',     img: 'personajes/inosuke1.jpg', rarity: 'epic' },
+    { id: 'inosuke2', charId: 'inosuke_hashibira', name: 'Inosuke · Unmasked Smile',  img: 'personajes/inosuke2.jpg', rarity: 'rare' },
+    { id: 'inosuke3', charId: 'inosuke_hashibira', name: 'Inosuke · Wild Charge',     img: 'personajes/inosuke3.jpg', rarity: 'epic' },
+    { id: 'inosuke4', charId: 'inosuke_hashibira', name: 'Inosuke · Moonlight Boar',  img: 'personajes/inosuke4.jpg', rarity: 'legend' },
+    { id: 'inosuke5', charId: 'inosuke_hashibira', name: 'Inosuke · Mask Off',        img: 'personajes/inosuke5.jpg', rarity: 'common' },
+
+    /* ——— Kisame Hoshigaki ——— */
+    { id: 'kisame1', charId: 'kisame_hoshigaki', name: 'Kisame · Underwater Seal',  img: 'personajes/kisame1.jpg', rarity: 'epic' },
+    { id: 'kisame2', charId: 'kisame_hoshigaki', name: 'Kisame · Samehada Form',    img: 'personajes/kisame2.jpg', rarity: 'legend' },
+    { id: 'kisame3', charId: 'kisame_hoshigaki', name: 'Kisame · Shark Blade',      img: 'personajes/kisame3.jpg', rarity: 'rare' },
+
+    /* ——— Zentreya ——— */
+    { id: 'zentreya_summer',  charId: 'zentreya_dragon', name: 'Zentreya · USA Bikini',      img: 'personajes/zentreya1.jpg',  rarity: 'event' },
+    { id: 'zentreya_maid',    charId: 'zentreya_dragon', name: 'Zentreya · Maid',            img: 'personajes/zentreya2.jpg',  rarity: 'event' },
+    { id: 'zentreya3',        charId: 'zentreya_dragon', name: 'Zentreya · Metalcore',       img: 'personajes/zentreya3.jpg',  rarity: 'epic' },
+    { id: 'zentreya4',        charId: 'zentreya_dragon', name: 'Zentreya · Goth Close-up',   img: 'personajes/zentreya4.jpg',  rarity: 'rare' },
+    { id: 'zentreya_summer2', charId: 'zentreya_dragon', name: 'Zentreya · Pool Spikes',     img: 'personajes/zentreya5.jpg',  rarity: 'event' },
+    { id: 'zentreya6',        charId: 'zentreya_dragon', name: 'Zentreya · Maid Wings',      img: 'personajes/zentreya6.jpg',  rarity: 'epic' },
+    { id: 'zentreya7',        charId: 'zentreya_dragon', name: 'Zentreya · Fire Fist',       img: 'personajes/zentreya7.jpg',  rarity: 'legend' },
+    { id: 'zentreya8',        charId: 'zentreya_dragon', name: 'Zentreya · Metal Crop',      img: 'personajes/zentreya8.jpg',  rarity: 'common' },
+    { id: 'zentreya9',        charId: 'zentreya_dragon', name: 'Zentreya · Tribal',          img: 'personajes/zentreya9.jpg',  rarity: 'rare' },
+    { id: 'zentreya_nurse',   charId: 'zentreya_dragon', name: 'Zentreya · Nurse',           img: 'personajes/zentreya10.jpg', rarity: 'event' },
+    { id: 'zentreya_bunny',   charId: 'zentreya_dragon', name: 'Zentreya · Bunny',           img: 'personajes/zentreya11.jpg', rarity: 'event' },
+
+    /* ——— Aoki Ruri ——— */
+    { id: 'aoki1',       charId: 'aoki_ruki', name: 'Aoki · Tennis',       img: 'personajes/aoki1.jpg', rarity: 'epic' },
+    { id: 'aoki2',       charId: 'aoki_ruki', name: 'Aoki · Cheerleader',  img: 'personajes/aoki2.jpg', rarity: 'rare' },
+    { id: 'aoki_maid',   charId: 'aoki_ruki', name: 'Aoki · Maid',         img: 'personajes/aoki3.jpg', rarity: 'event' },
+
+    /* ——— Akumi ——— */
+    { id: 'akumi1',        charId: 'akumi_yoclesh', name: 'Akumi · Bandage Oni',      img: 'personajes/akumi1.jpg',  rarity: 'epic' },
+    { id: 'akumi2',        charId: 'akumi_yoclesh', name: 'Akumi · Okonomiyaki',      img: 'personajes/akumi2.jpg',  rarity: 'rare' },
+    { id: 'akumi_bday',    charId: 'akumi_yoclesh', name: 'Akumi · Birthday',         img: 'personajes/akumi3.jpg',  rarity: 'event' },
+    { id: 'akumi4',        charId: 'akumi_yoclesh', name: 'Akumi · Gothic Rose',      img: 'personajes/akumi4.jpg',  rarity: 'epic' },
+    { id: 'akumi5',        charId: 'akumi_yoclesh', name: 'Akumi · Masked Assassin',  img: 'personajes/akumi5.jpg',  rarity: 'legend' },
+    { id: 'akumi_summer',  charId: 'akumi_yoclesh', name: 'Akumi · Beach',            img: 'personajes/akumi6.jpg',  rarity: 'event' },
+    { id: 'akumi_bunny',   charId: 'akumi_yoclesh', name: 'Akumi · Bunny',            img: 'personajes/akumi7.jpg',  rarity: 'event' },
+    { id: 'akumi8',        charId: 'akumi_yoclesh', name: 'Akumi · Streetwear',       img: 'personajes/akumi8.jpg',  rarity: 'rare' },
+    { id: 'akumi_hw',      charId: 'akumi_yoclesh', name: 'Akumi · Ghost',            img: 'personajes/akumi9.jpg',  rarity: 'event' },
+    { id: 'akumi10',       charId: 'akumi_yoclesh', name: 'Akumi · Shrine Boat',      img: 'personajes/akumi10.jpg', rarity: 'epic' },
+    { id: 'akumi11',       charId: 'akumi_yoclesh', name: 'Akumi · Lingerie Plush',   img: 'personajes/akumi11.jpg', rarity: 'legend' },
+    { id: 'akumi12',       charId: 'akumi_yoclesh', name: 'Akumi · Kimono Sake',      img: 'personajes/akumi12.jpg', rarity: 'epic' },
+    { id: 'akumi_bunny2',  charId: 'akumi_yoclesh', name: 'Akumi · Bunny Formal',     img: 'personajes/akumi13.jpg', rarity: 'event' },
+    { id: 'akumi14',       charId: 'akumi_yoclesh', name: 'Akumi · Captain',          img: 'personajes/akumi14.jpg', rarity: 'rare' },
+
+    /* ——— Nitocris ——— */
+    { id: 'nitocris1',       charId: 'nitocris_fate', name: 'Nitocris · Casual Bunny',    img: 'personajes/nitocris1.jpg',  rarity: 'rare' },
+    { id: 'nitocris2',       charId: 'nitocris_fate', name: 'Nitocris · White Dress',     img: 'personajes/nitocris2.jpg',  rarity: 'epic' },
+    { id: 'nitocris3',       charId: 'nitocris_fate', name: 'Nitocris · Pharaoh',         img: 'personajes/nitocris3.jpg',  rarity: 'legend' },
+    { id: 'nitocris4',       charId: 'nitocris_fate', name: 'Nitocris · Witch Library',   img: 'personajes/nitocris4.jpg',  rarity: 'epic' },
+    { id: 'nitocris5',       charId: 'nitocris_fate', name: 'Nitocris · Sakura Kimono',   img: 'personajes/nitocris5.jpg',  rarity: 'epic' },
+    { id: 'nitocris_hw',     charId: 'nitocris_fate', name: 'Nitocris · Halloween',       img: 'personajes/nitocris6.jpg',  rarity: 'event' },
+    { id: 'nitocris_hw2',  charId: 'nitocris_fate', name: 'Nitocris · Mummy',           img: 'personajes/nitocris7.jpg',  rarity: 'event' },
+    { id: 'nitocris_bunny',  charId: 'nitocris_fate', name: 'Nitocris · Bunny',           img: 'personajes/nitocris8.jpg',  rarity: 'event' },
+    { id: 'nitocris_summer', charId: 'nitocris_fate', name: 'Nitocris · Beach',           img: 'personajes/nitocris9.jpg',  rarity: 'event' },
+    { id: 'nitocris10',      charId: 'nitocris_fate', name: 'Nitocris · Office',          img: 'personajes/nitocris10.jpg', rarity: 'rare' },
+
         // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
   ];
 
@@ -461,7 +567,33 @@
     castorice_summer: true,
     onigiria_hw: true,
     onigiria_hw1: true,
-    onigiria_hw2: true
+    onigiria_hw2: true,
+    w_god: true,
+    w_summer: true,
+    w_summer2: true,
+    w_casino: true,
+    akuma_chm: true,
+    akuma_hw: true,
+    akuma_summer: true,
+    marciana_summer: true,
+    marciana_summer2: true,
+    marciana_summer3: true,
+    renner_hw: true,
+    zentreya_summer: true,
+    zentreya_summer2: true,
+    zentreya_maid: true,
+    zentreya_nurse: true,
+    zentreya_bunny: true,
+    aoki_maid: true,
+    akumi_bday: true,
+    akumi_summer: true,
+    akumi_bunny: true,
+    akumi_hw: true,
+    akumi_bunny2: true,
+    nitocris_hw: true,
+    nitocris_hw2: true,
+    nitocris_bunny: true,
+    nitocris_summer: true
   };
 
   const RARITY = {

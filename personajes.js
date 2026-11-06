@@ -8629,7 +8629,7 @@ const CHARACTERS = [
 
 {
   id: 'aoki_ruki',
-  name: 'Aoki Ruki',
+  name: 'Aoki Ruri',
   img: 'personajes/aoki.jpg',
   classes: ['mago', 'atacante'],
   hp: 112,
@@ -12809,7 +12809,7 @@ const CHARACTERS = [
   classes: ['sanador', 'soporte'],
   hp: 120,
   atk: 15,
-  def: 25,
+  def: 20,
   spd: 19,
 
   moves: [
@@ -12821,7 +12821,7 @@ const CHARACTERS = [
       desc: 'Canaliza poder lunar para curar a un aliado con una fuerte ráfaga de luz.',
       baseCooldown: 0,
       type: 'support',
-      effect: { type:'heal', value: 35 }
+      effect: { type:'heal', value: 30 }
     },
     {
       id: 'domain_moon_goddess',
@@ -12831,7 +12831,7 @@ const CHARACTERS = [
       desc: 'Crea un campo lunar que otorga DEF adicional a un aliado durante varios turnos.',
       baseCooldown: 3,
       type: 'support',
-      effect: { type:'tempDef', value: 10, duration: 3 }
+      effect: { type:'tempDef', value: 8, duration: 3 }
     },
     {
       id: 'blessing_moonlight',
@@ -12854,7 +12854,7 @@ const CHARACTERS = [
       desc: 'Desata la energía lunar suprema, curando a todo el equipo por un gran porcentaje de la vida máxima.',
       baseCooldown: 6,
       type: 'support',
-      effect: { type:'selfHealPct', value: 0.30 } 
+      effect: { type:'selfHealPct', value: 0.15 } 
     }
   ]
 },
