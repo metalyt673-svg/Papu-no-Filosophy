@@ -824,6 +824,22 @@
     return { coins, skins: got };
   }
 
+  /* Da directamente una skin que aún no tengas (la usa cooperativo.js como recompensa de jefe).
+     allow = rarezas permitidas (['epic','legend']...) o null para cualquiera. La rareza sale de RARITY_WEIGHT.
+     Devuelve { id, name, img, charId, rarity, rarityLabel, rarityColor, rarityIcon } o null si no queda ninguna. */
+  function grantSkin(allow) {
+    S = load();
+    const pool = validSkins().filter(k => !S.owned[k.id] && isAvailable(k) && (!allow || !allow.length || allow.includes(k.rarity)));
+    if (!pool.length) return null;
+    const pick = weightedPick(pool);
+    S.owned[pick.id] = 1;
+    if (!S.selected[pick.charId]) S.selected[pick.charId] = pick.id;
+    save(); applyAll(); refreshChip();
+    const r = rarityOf(pick);
+    return { id: pick.id, name: pick.name, img: pick.img, charId: pick.charId, rarity: pick.rarity,
+             rarityLabel: r.label, rarityColor: r.color, rarityIcon: r.icon };
+  }
+
   /* HTML del bonus para la ventana de apertura del cofre */
   function describeBonus(b) {
     if (!b) return '';
@@ -1320,7 +1336,7 @@
 
   window.SKINS = {
     selectedSkinId, skinImg,
-    rollChest, describeBonus, addCoins, coinImg, rates, buy, equip, open: openShop,
+    rollChest, describeBonus, addCoins, coinImg, rates, buy, equip, open: openShop, grantSkin,
     coins: () => load().coins, catalog: SKIN_CATALOG, reload: () => { S = load(); applyAll(); }
   };
 

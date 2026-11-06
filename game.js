@@ -1334,7 +1334,8 @@ function startTurnActions(){
 
   // Verificar muerte súbita (el Modo Desafío la retrasa hasta el turno 100)
   const suddenDeathTurn = state.challengeMode ? SUDDEN_DEATH_TURN_CHALLENGE : SUDDEN_DEATH_TURN;
-  if(state.turnCount >= suddenDeathTurn && !state.suddenDeath){
+  // Modo Cooperativo (cooperativo.js): no hay muerte súbita; el jefe se enfurece con la vida.
+  if(!(window.COOP_HOOK && window.COOP_HOOK.active) && state.turnCount >= suddenDeathTurn && !state.suddenDeath){
     state.suddenDeath = true;
     log('⚠️ ¡MUERTE SÚBITA ACTIVADA! Todos los personajes reciben 10 de daño por turno.');
   }
@@ -1386,7 +1387,10 @@ function startTurnActions(){
     if(actor.hp <= 0){
       processEndOfTurnEffects(actor);
 
-      const aliveIdx = team.findIndex(c => c.hp > 0);
+      // Modo Cooperativo: el reemplazo sale de la reserva del MISMO jugador (cooperativo.js).
+      const hookIdx = (window.COOP_HOOK && window.COOP_HOOK.active && typeof window.COOP_HOOK.pick === 'function')
+        ? window.COOP_HOOK.pick(p, team) : undefined;
+      const aliveIdx = hookIdx !== undefined ? hookIdx : team.findIndex(c => c.hp > 0);
       if(aliveIdx !== -1){
         state.activeIndex[p] = aliveIdx;
         log(`${p==='p1'?'Jugador 1':(state.mode==='pve'?'IA':'Jugador 2')} trae a ${team[aliveIdx].name} al combate (reemplazo inmediato).`);

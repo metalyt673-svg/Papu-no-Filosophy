@@ -88,7 +88,7 @@
 
   /* ---------- ¿es un botón de modo de juego? ---------- */
   // Añade aquí los ids de nuevos modos si los creas.
-  const SEL_MODOS = '#menu-pvp, #menu-pve, #menu-pvp-ban, #menu-pve-ban, #menu-story';
+  const SEL_MODOS = '#menu-pvp, #menu-pve, #menu-pvp-ban, #menu-pve-ban, #menu-story, #menu-coop';
   const esModo = el => !!(el.closest && el.closest(SEL_MODOS));
 
   /* ---------- ¿estamos en pleno combate? ---------- */
