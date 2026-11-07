@@ -286,16 +286,16 @@
     { id: 'sans11', charId: 'sans', name: 'Sans · Mortadela', img: 'personajes/sans11.jpg', rarity: 'legend' },
 
     /* ——— Yoruichi ——— */
-    { id: 'yoruichi2', charId: 'yoruichi', name: 'Yoruichi · Atuendo default', img: 'personajes/yoruichi2.jpg', rarity: 'common' },
-    { id: 'yoruichi1', charId: 'yoruichi', name: 'Yoruichi · Repartidora', img: 'personajes/yoruichi1.jpg', rarity: 'common' },
-    { id: 'yoruichi9', charId: 'yoruichi', name: 'Yoruichi · Maid', img: 'personajes/yoruichi9.jpg', rarity: 'rare' },
-    { id: 'yoruichi3', charId: 'yoruichi', name: 'Yoruichi · Baloncesto', img: 'personajes/yoruichi3.jpg', rarity: 'rare' },
-    { id: 'yoruichi10', charId: 'yoruichi', name: 'Yoruichi · Streetwear', img: 'personajes/yoruichi10.jpg', rarity: 'epic' },
-    { id: 'yoruichi4', charId: 'yoruichi', name: 'Yoruichi · Noche de piscina', img: 'personajes/yoruichi4.jpg', rarity: 'epic' },
-    { id: 'yoruichi5', charId: 'yoruichi', name: 'Yoruichi · Verano en la playa', img: 'personajes/yoruichi5.jpg', rarity: 'epic' },
-    { id: 'yoruichi_hw', charId: 'yoruichi', name: 'Yoruichi · Halloween', img: 'personajes/yoruichi7.jpg', rarity: 'event' },
-    { id: 'yoruichi6', charId: 'yoruichi', name: 'Yoruichi · Shunkō Felino', img: 'personajes/yoruichi6.jpg', rarity: 'legend' },
-    { id: 'yoruichi8', charId: 'yoruichi', name: 'Yoruichi · Gótica', img: 'personajes/yoruichi8.jpg', rarity: 'legend' },
+    { id: 'yoruichi2', charId: 'yoruichi', name: 'Yoruichi · Atuendo default', img: 'personajes/yoruichi3.jpg', rarity: 'common' },
+    { id: 'yoruichi1', charId: 'yoruichi', name: 'Yoruichi · Repartidora', img: 'personajes/yoruichi2.jpg', rarity: 'common' },
+    { id: 'yoruichi9', charId: 'yoruichi', name: 'Yoruichi · Maid', img: 'personajes/yoruichi10.jpg', rarity: 'rare' },
+    { id: 'yoruichi3', charId: 'yoruichi', name: 'Yoruichi · Baloncesto', img: 'personajes/yoruichi4.jpg', rarity: 'rare' },
+    { id: 'yoruichi10', charId: 'yoruichi', name: 'Yoruichi · Streetwear', img: 'personajes/yoruichi9.jpg', rarity: 'epic' },
+    { id: 'yoruichi4', charId: 'yoruichi', name: 'Yoruichi · Noche de piscina', img: 'personajes/yoruichi5.jpg', rarity: 'epic' },
+    { id: 'yoruichi5', charId: 'yoruichi', name: 'Yoruichi · Verano en la playa', img: 'personajes/yoruichi6.jpg', rarity: 'epic' },
+    { id: 'yoruichi_hw', charId: 'yoruichi', name: 'Yoruichi · Halloween', img: 'personajes/yoruichi8.jpg', rarity: 'event' },
+    { id: 'yoruichi6', charId: 'yoruichi', name: 'Yoruichi · Shunkō Felino', img: 'personajes/yoruichi7.jpg', rarity: 'legend' },
+    { id: 'yoruichi8', charId: 'yoruichi', name: 'Yoruichi · Gótica', img: 'personajes/yoruichi1.jpg', rarity: 'legend' },
 
     /* ——— CZ2128 ——— */
     { id: 'cz1', charId: 'cz2128', name: 'CZ2128 · Bufanda de camuflaje', img: 'personajes/cz2.jpg', rarity: 'common' },
@@ -605,7 +605,7 @@
   };
   const PRICES = { common: 150, rare: 300, epic: 600, legend: 1500, event: 2000 };       // monedas
   const RARITY_WEIGHT = { common: 5, rare: 3, epic: 1.3, event: 0.2, legend: 0.5 };       // % de cada RAREZA en los cofres (no por skin). Si una rareza no tiene skins disponibles, el resto se reparte hasta sumar 100 %
-  const COINS_MIN = 15, COINS_MAX = 45;                        // monedas por cofre
+  const COINS_MIN = 1500, COINS_MAX = 4500;                        // monedas por cofre
   const SKIN_CHANCE = 0.12;                                    // 12 % de que un cofre dé una skin
   const CHEST_PRICE = 50;                                      // cofre normal de la tienda (monedas)
   /* COFRES Y PAQUETES DE SKINS GARANTIZADAS DE LA TIENDA (siempre dan skins que aún no tengas).

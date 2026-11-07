@@ -195,7 +195,9 @@
     if (est.charmed) return;
     const active = getActive(est.enemyKey);
     const row = est.rows.find(r => r.target === active);
-    const bar = document.getElementById('hpbar-' + est.enemyKey);
+    // En el Cooperativo la arena normal está oculta: la sombra va en la barra de vida del jefe.
+    const coBar = est.enemyKey === 'p2' ? document.querySelector('#co-arena .co-bosshp') : null;
+    const bar = coBar || document.getElementById('hpbar-' + est.enemyKey);
     if (!row || !bar || !active.maxHp) return;
     const pct = v => (Math.max(0, v) / active.maxHp) * 100;
     const minD = Math.min(row.min, row.hp), maxD = Math.min(row.max, row.hp);

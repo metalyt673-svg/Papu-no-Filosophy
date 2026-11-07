@@ -156,117 +156,81 @@
       rewards: { coins: 400, chests: 3, firstCoins: 400, firstChests: 2, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.22 }
     },
     {
-      id: 'coopboss_coloso', name: 'Coloso de Obsidiana', icon: '🗿', c1: '#64748b', c2: '#0f172a', tier: 1,
-      tagline: 'Un gigante de roca volcánica. Lento, pero cada golpe retumba.',
-      hp: 850, atk: 21, def: 15, spd: 12, ccResist: 0.75,
-      phases: [{ at: 0.5, log: 'El Coloso se agrieta y su núcleo arde: ¡ataca con más fuerza!', atk: 4 }],
-      moves: [
-        { id: 'coloso1', name: 'Puñetazo Sísmico', power: 26, acc: 0.95, baseCooldown: 0, type: 'attack', effects: null,
-          desc: 'Un puñetazo descomunal contra uno de los dos personajes del frente.' },
-        { id: 'coloso2', name: 'Temblor', power: 13, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
-          effects: [{ type: 'slow', value: 20, duration: 2, prob: 0.85 }],
-          desc: 'El suelo tiembla: daño a los dos del frente y los ralentiza.' },
-        { id: 'coloso3', name: 'Coraza de Roca', power: 0, acc: 1, baseCooldown: 4, type: 'support', aiWeight: 0.8,
-          effects: [{ type: 'shield', value: 70 }, { type: 'tempDef', value: 4, duration: 2 }],
-          desc: 'Se cubre de roca: escudo y más DEF durante 2 turnos.' },
-        { id: 'coloso4', name: 'ULTRA: Avalancha', power: 30, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
-          effects: [{ type: 'stun', prob: 0.35, duration: 1 }],
-          desc: 'Una avalancha entera cae sobre el frente. Puede aturdir.' }
-      ],
-      rewards: { coins: 350, chests: 3, firstCoins: 350, firstChests: 2, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.2 }
-    },
-    {
-      id: 'coopboss_hidra', name: 'Hidra del Pantano', icon: '🐍', c1: '#16a34a', c2: '#052e16', tier: 2,
-      tagline: 'Veneno, regeneración y muchas cabezas. No dejes que se recupere.',
-      hp: 1000, atk: 23, def: 13, spd: 18, ccResist: 0.6,
+      id: 'coopboss_animaustro', name: 'Animaustro', icon: '🏺', c1: '#a16207', c2: '#1c1202', tier: 2,
+      img: 'bosses_cooperativo/animaustro.jpg',
+      music: 'bosses_cooperativo/music/animaustro_music.mp3',
+      tagline: 'Un jefe duro y sereno que castiga la prisa. Resiste mucho y devuelve con fuerza.',
+      hp: 950, atk: 25, def: 15, spd: 20, ccResist: 0.7,
       phases: [
-        { at: 0.6, log: 'Le crece una nueva cabeza: la Hidra es más rápida y feroz.', atk: 3, spd: 3 },
-        { at: 0.3, log: 'La Hidra pierde el control: ¡ahora ataca DOS veces por ronda!', actions: 2 }
+        { at: 0.5, log: 'Animaustro se concentra: ¡más ATK y más velocidad!', atk: 3, spd: 2 },
+        { at: 0.25, log: '¡Animaustro pierde la calma y ataca DOS veces por ronda!', actions: 2 }
       ],
       moves: [
-        { id: 'hidra1', name: 'Mordisco Venenoso', power: 22, acc: 0.95, baseCooldown: 0, type: 'attack',
-          effects: [{ type: 'damageOverTime', status: 'poison', value: 5, duration: 3, prob: 0.6 }],
-          desc: 'Un mordisco que puede envenenar durante 3 turnos.' },
-        { id: 'hidra2', name: 'Aliento Tóxico', power: 11, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
-          effects: [{ type: 'damageOverTime', status: 'poison', value: 4, duration: 3, prob: 0.9 }, { type: 'healReduction', value: 30, duration: 2 }],
-          desc: 'Una nube tóxica: envenena a los dos del frente y reduce sus curaciones.' },
-        { id: 'hidra3', name: 'Regeneración', power: 0, acc: 1, baseCooldown: 4, type: 'support', aiWeight: 0.9,
-          effects: [{ type: 'selfHealPct', value: 0.1 }, { type: 'cleanse', target: 'self', count: 2 }],
-          desc: 'Cierra sus heridas: recupera vida y se limpia de debuffs.' },
-        { id: 'hidra4', name: 'ULTRA: Siete Cabezas', power: 24, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
-          effects: [{ type: 'damageOverTime', status: 'bleed', value: 5, duration: 3, prob: 0.9 }],
-          desc: 'Todas las cabezas atacan a la vez. Provoca sangrado.' }
+        { id: 'anima1', name: 'Golpe Severo', power: 26, acc: 0.95, baseCooldown: 0, type: 'attack', effects: null,
+          desc: 'Un golpe contundente contra uno de los dos personajes del frente.' },
+        { id: 'anima2', name: 'Onda Opresiva', power: 14, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
+          effects: [{ type: 'debuff', stat: 'atk', value: 3, duration: 2 }],
+          desc: 'Una onda sobre los dos del frente que reduce su ATK.' },
+        { id: 'anima3', name: 'Postura Firme', power: 0, acc: 1, baseCooldown: 4, type: 'support', aiWeight: 0.8,
+          effects: [{ type: 'shield', value: 90 }, { type: 'tempDef', value: 4, duration: 2 }],
+          desc: 'Adopta una postura defensiva: escudo y más DEF durante 2 turnos.' },
+        { id: 'anima4', name: 'ULTRA: Sentencia Final', power: 31, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
+          effects: [{ type: 'stun', prob: 0.3, duration: 1 }],
+          desc: 'Un golpe demoledor sobre el frente. Puede aturdir.' }
       ],
-      rewards: { coins: 550, chests: 4, firstCoins: 550, firstChests: 3, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.22 }
+      rewards: { coins: 450, chests: 3, firstCoins: 450, firstChests: 2, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.22 }
     },
     {
-      id: 'coopboss_reina', name: 'Reina de la Ventisca', icon: '❄️', c1: '#38bdf8', c2: '#0c1e3a', tier: 3,
-      tagline: 'Hielo, ralentización y congelación. Rápida y letal si te descuidas.',
-      hp: 1200, atk: 25, def: 13, spd: 22, ccResist: 0.7,
-      phases: [{ at: 0.5, log: 'La Reina forma una armadura de escarcha: ¡escudo y más DEF!', def: 3, shield: 120 }],
-      moves: [
-        { id: 'reina1', name: 'Lanza de Hielo', power: 24, acc: 0.95, baseCooldown: 0, type: 'attack',
-          effects: [{ type: 'debuff', stat: 'spd', value: 4, duration: 2 }],
-          desc: 'Una lanza helada que reduce la SPD del objetivo.' },
-        { id: 'reina2', name: 'Ventisca', power: 14, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
-          effects: [{ type: 'slow', value: 25, duration: 2, prob: 0.9 }, { type: 'accuracyDown', value: 10, duration: 2 }],
-          desc: 'Una tormenta de nieve: ralentiza y resta precisión a los dos del frente.' },
-        { id: 'reina3', name: 'Prisión de Cristal', power: 18, acc: 0.9, baseCooldown: 5, type: 'attack',
-          effects: [{ type: 'freeze', prob: 0.55, duration: 1 }],
-          desc: 'Encierra a un objetivo en hielo: puede congelarlo y hacerle perder el turno.' },
-        { id: 'reina4', name: 'ULTRA: Cero Absoluto', power: 30, acc: 0.9, baseCooldown: 7, type: 'attack', aoe: true, ult: true,
-          effects: [{ type: 'freeze', prob: 0.4, duration: 1 }],
-          desc: 'El frío más extremo cae sobre el frente. Puede congelar a ambos.' }
-      ],
-      rewards: { coins: 800, chests: 5, firstCoins: 800, firstChests: 4, skinAllow: ['epic', 'legend'], repeatSkinChance: 0.25 }
-    },
-    {
-      id: 'coopboss_vacio', name: 'Señor del Vacío', icon: '🌀', c1: '#7c3aed', c2: '#0b0420', tier: 4,
-      tagline: 'Devora tus buffs, roba vida y siembra el miedo. Mantén la calma.',
-      hp: 1500, atk: 28, def: 14, spd: 20, ccResist: 0.75,
+      id: 'coopboss_maddiman', name: 'Dr. Maddiman', icon: '😈', c1: '#dc2626', c2: '#2a0606', tier: 2,
+      img: 'bosses_cooperativo/dr_maddiman.jpg',
+      music: 'bosses_cooperativo/music/maddiman_music.mp3',
+      tagline: 'Un jefe irascible: cuanto más lo castigas, más fuerte golpea.',
+      hp: 1050, atk: 26, def: 15, spd: 18, ccResist: 0.7,
       phases: [
-        { at: 0.5, log: 'El Vacío se agita: el Señor absorbe energía y gana ATK.', atk: 4 },
-        { at: 0.3, log: 'La realidad se rompe: ¡el Señor del Vacío actúa DOS veces por ronda!', actions: 2 }
+        { at: 0.6, log: 'Dr. Maddiman se enfada: ¡más ATK!', atk: 3 },
+        { at: 0.3, log: '¡Dr. Maddiman estalla de ira! Más ATK y ataca DOS veces por ronda.', atk: 3, actions: 2 }
       ],
       moves: [
-        { id: 'vacio1', name: 'Desgarro Dimensional', power: 26, acc: 0.95, baseCooldown: 0, type: 'attack',
-          effects: [{ type: 'lifesteal', value: 20, duration: 2 }],
-          desc: 'Rasga la realidad y se cura con parte del daño.' },
-        { id: 'vacio2', name: 'Devorar Magia', power: 14, acc: 0.95, baseCooldown: 3, type: 'attack',
-          effects: [{ type: 'purgeBuffs', count: 2 }, { type: 'debuff', stat: 'atk', value: 4, duration: 3 }],
-          desc: 'Arranca 2 buffs del objetivo y le reduce el ATK.' },
-        { id: 'vacio3', name: 'Grito del Abismo', power: 12, acc: 0.95, baseCooldown: 4, type: 'attack', aoe: true,
-          effects: [{ type: 'fear', prob: 0.5, duration: 1 }],
-          desc: 'Un alarido que puede aterrorizar a los dos del frente.' },
-        { id: 'vacio4', name: 'ULTRA: Singularidad', power: 32, acc: 0.9, baseCooldown: 7, type: 'attack', aoe: true, ult: true,
-          effects: [{ type: 'healReduction', value: 40, duration: 3 }],
-          desc: 'Colapsa el espacio sobre el frente y reduce sus curaciones.' }
-      ],
-      rewards: { coins: 1100, chests: 6, firstCoins: 1100, firstChests: 5, skinAllow: ['epic', 'legend'], repeatSkinChance: 0.28 }
-    },
-    {
-      id: 'coopboss_dragon', name: 'Drakar, Dragón Ancestral', icon: '🐉', c1: '#ef4444', c2: '#2a0606', tier: 5,
-      tagline: 'El jefe final. Fuego, furia y una última fase brutal.',
-      hp: 2000, atk: 31, def: 15, spd: 21, ccResist: 0.8,
-      phases: [
-        { at: 0.6, log: 'Drakar ruge y sus llamas se vuelven blancas: ¡más ATK!', atk: 3 },
-        { at: 0.3, log: '¡FURIA ANCESTRAL! Drakar ataca DOS veces por ronda.', atk: 3, actions: 2 }
-      ],
-      moves: [
-        { id: 'dragon1', name: 'Zarpazo', power: 30, acc: 0.95, baseCooldown: 0, type: 'attack', effects: null,
-          desc: 'Un zarpazo devastador contra un personaje del frente.' },
-        { id: 'dragon2', name: 'Aliento de Fuego', power: 17, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
-          effects: [{ type: 'damageOverTime', status: 'burn', value: 6, duration: 3, prob: 0.9 }],
-          desc: 'Una oleada de fuego: quema a los dos del frente.' },
-        { id: 'dragon3', name: 'Rugido Ancestral', power: 0, acc: 1, baseCooldown: 5, type: 'support', aiWeight: 0.9,
+        { id: 'madd1', name: 'Puñetazo Furioso', power: 27, acc: 0.95, baseCooldown: 0, type: 'attack', effects: null,
+          desc: 'Un puñetazo cargado de rabia contra uno de los dos del frente.' },
+        { id: 'madd2', name: 'Grito de Rabia', power: 14, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
+          effects: [{ type: 'fear', prob: 0.4, duration: 1 }, { type: 'accuracyDown', value: 10, duration: 2 }],
+          desc: 'Un grito que puede asustar y resta precisión a los dos del frente.' },
+        { id: 'madd3', name: 'Ataque de Ira', power: 0, acc: 1, baseCooldown: 5, type: 'support', aiWeight: 0.9,
           effects: [{ type: 'tempAtk', value: 6, duration: 3 }, { type: 'critChance', value: 15, duration: 3 }],
-          desc: 'Un rugido que le da más ATK y probabilidad de crítico durante 3 turnos.' },
-        { id: 'dragon4', name: 'ULTRA: Llamarada Final', power: 36, acc: 0.9, baseCooldown: 7, type: 'attack', aoe: true, ult: true,
-          effects: [{ type: 'damageOverTime', status: 'burn', value: 7, duration: 3, prob: 1 }],
-          desc: 'La llamarada definitiva sobre el frente. Quemadura segura.' }
+          desc: 'Se enfurece: más ATK y probabilidad de crítico durante 3 turnos.' },
+        { id: 'madd4', name: 'ULTRA: Rabieta Total', power: 31, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
+          effects: [{ type: 'damageOverTime', status: 'burn', value: 5, duration: 3, prob: 0.8 }],
+          desc: 'Una rabieta que arrasa el frente. Puede quemar.' }
       ],
-      rewards: { coins: 1600, chests: 8, firstCoins: 1600, firstChests: 8, skinAllow: ['legend'], repeatSkinChance: 0.3 }
-    }
+      rewards: { coins: 500, chests: 3, firstCoins: 500, firstChests: 2, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.24 }
+    },
+    {
+      id: 'coopboss_tarantutor', name: 'Tarantutor', icon: '🕷️', c1: '#7c3aed', c2: '#12062b', tier: 3,
+      img: 'bosses_cooperativo/tarantutor.jpg',
+      music: 'bosses_cooperativo/music/tarantutor_music.mp3',
+      tagline: 'Rápido y venenoso. Te debilita poco a poco y se cura con tu energía.',
+      hp: 1150, atk: 27, def: 15, spd: 21, ccResist: 0.7,
+      phases: [
+        { at: 0.5, log: 'Tarantutor se agita: ¡más ATK y más velocidad!', atk: 3, spd: 3 },
+        { at: 0.25, log: '¡Tarantutor se lanza a la caza y ataca DOS veces por ronda!', actions: 2 }
+      ],
+      moves: [
+        { id: 'taran1', name: 'Mordisco Venenoso', power: 27, acc: 0.95, baseCooldown: 0, type: 'attack',
+          effects: [{ type: 'damageOverTime', status: 'poison', value: 4, duration: 3, prob: 0.5 }],
+          desc: 'Un mordisco que puede envenenar al objetivo.' },
+        { id: 'taran2', name: 'Telaraña Pegajosa', power: 14, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
+          effects: [{ type: 'slow', value: 20, duration: 2, prob: 0.85 }],
+          desc: 'Una telaraña sobre los dos del frente que reduce su SPD.' },
+        { id: 'taran3', name: 'Succión Vital', power: 0, acc: 1, baseCooldown: 5, type: 'support', aiWeight: 0.8,
+          effects: [{ type: 'lifesteal', value: 20, duration: 2 }, { type: 'selfHealPct', value: 0.06 }],
+          desc: 'Roba vida con sus ataques durante 2 turnos y recupera algo de salud.' },
+        { id: 'taran4', name: 'ULTRA: Plaga de Arañas', power: 31, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
+          effects: [{ type: 'damageOverTime', status: 'poison', value: 5, duration: 3, prob: 0.9 }, { type: 'healReduction', value: 30, duration: 2 }],
+          desc: 'Una plaga sobre el frente. Envenena y reduce la curación recibida.' }
+      ],
+      rewards: { coins: 600, chests: 3, firstCoins: 600, firstChests: 3, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.26 }
+    },
   ];
   BOSSES.forEach(b => {
     if (!b.img) b.img = bossSvg(b.icon, b.c1, b.c2);
