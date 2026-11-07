@@ -520,6 +520,73 @@
     { id: 'nitocris_summer', charId: 'nitocris_fate', name: 'Nitocris · Beach',           img: 'personajes/nitocris9.jpg',  rarity: 'event' },
     { id: 'nitocris10',      charId: 'nitocris_fate', name: 'Nitocris · Office',          img: 'personajes/nitocris10.jpg', rarity: 'rare' },
 
+    /* ——— Hela ——— */
+    { id: 'hela1', charId: 'hela', name: 'Hela · Dark Gaze',     img: 'personajes/hela1.jpg', rarity: 'epic' },
+    { id: 'hela2', charId: 'hela', name: 'Hela · Soft Smile',    img: 'personajes/hela2.jpg', rarity: 'rare' },
+    { id: 'hela3', charId: 'hela', name: 'Hela · HEL.',          img: 'personajes/hela3.jpg', rarity: 'legend' },
+    { id: 'hela4', charId: 'hela', name: 'Hela · Starlight',     img: 'personajes/hela4.jpg', rarity: 'epic' },
+
+    /* ——— Athena Asamiya ——— */
+    { id: 'asamiya1',       charId: 'athena_asamiya_kof', name: 'Athena · School Red',      img: 'personajes/asamiya1.jpg', rarity: 'rare' },
+    { id: 'asamiya2',       charId: 'athena_asamiya_kof', name: 'Athena · Psycho Ball',     img: 'personajes/asamiya2.jpg', rarity: 'epic' },
+    { id: 'asamiya3',       charId: 'athena_asamiya_kof', name: 'Athena · Classic',         img: 'personajes/asamiya3.jpg', rarity: 'epic' },
+    { id: 'asamiya_summer', charId: 'athena_asamiya_kof', name: 'Athena · Beach Idol',      img: 'personajes/asamiya4.jpg', rarity: 'event' },
+    { id: 'asamiya5',       charId: 'athena_asamiya_kof', name: 'Athena · Peace Sign',      img: 'personajes/asamiya5.jpg', rarity: 'rare' },
+    { id: 'asamiya6',       charId: 'athena_asamiya_kof', name: 'Athena · Cheer',           img: 'personajes/asamiya6.jpg', rarity: 'common' },
+    { id: 'asamiya7',       charId: 'athena_asamiya_kof', name: 'Athena · Pink Sailor',     img: 'personajes/asamiya7.jpg', rarity: 'epic' },
+    { id: 'asamiya8',       charId: 'athena_asamiya_kof', name: 'Athena · Flame Aura',      img: 'personajes/asamiya8.jpg', rarity: 'legend' },
+    { id: 'asamiya9',       charId: 'athena_asamiya_kof', name: 'Athena · Short Hair',      img: 'personajes/asamiya9.jpg', rarity: 'epic' },
+
+    /* ——— Lucy Kushinada ——— */
+    { id: 'lucy1',       charId: 'lucy_kushinada', name: 'Lucy · Moonlight',     img: 'personajes/lucy1.jpg', rarity: 'epic' },
+    { id: 'lucy2',       charId: 'lucy_kushinada', name: 'Lucy · Wink',          img: 'personajes/lucy2.jpg', rarity: 'rare' },
+    { id: 'lucy3',       charId: 'lucy_kushinada', name: 'Lucy · Neon',          img: 'personajes/lucy3.jpg', rarity: 'epic' },
+    { id: 'lucy4',       charId: 'lucy_kushinada', name: 'Lucy · City Scout',    img: 'personajes/lucy4.jpg', rarity: 'epic' },
+    { id: 'lucy5',       charId: 'lucy_kushinada', name: 'Lucy · Night Drink',   img: 'personajes/lucy5.jpg', rarity: 'rare' },
+    { id: 'lucy_bunny',  charId: 'lucy_kushinada', name: 'Lucy · Bunny',         img: 'personajes/lucy6.jpg', rarity: 'event' },
+
+    /* ——— Mudrock ——— */
+    { id: 'mudrock1',       charId: 'mudrock_arknights', name: 'Mudrock · Combat',        img: 'personajes/mudrock1.jpg',  rarity: 'common' },
+    { id: 'mudrock_hw',     charId: 'mudrock_arknights', name: 'Mudrock · Halloween',     img: 'personajes/mudrock2.jpg',  rarity: 'event' },
+    { id: 'mudrock3',       charId: 'mudrock_arknights', name: 'Mudrock · Beach',         img: 'personajes/mudrock3.jpg',  rarity: 'epic' },
+    { id: 'mudrock_bunny',  charId: 'mudrock_arknights', name: 'Mudrock · Bunny',         img: 'personajes/mudrock4.jpg',  rarity: 'event' },
+    { id: 'mudrock5',       charId: 'mudrock_arknights', name: 'Mudrock · Apple Picnic',  img: 'personajes/mudrock5.jpg',  rarity: 'rare' },
+    { id: 'mudrock6',       charId: 'mudrock_arknights', name: 'Mudrock · Battle Scar',   img: 'personajes/mudrock6.jpg',  rarity: 'legend' },
+    { id: 'mudrock7',       charId: 'mudrock_arknights', name: 'Mudrock · Casual',        img: 'personajes/mudrock7.jpg',  rarity: 'rare' },
+    { id: 'mudrock8',       charId: 'mudrock_arknights', name: 'Mudrock · Ocean',         img: 'personajes/mudrock8.jpg',  rarity: 'epic' },
+    { id: 'mudrock9',       charId: 'mudrock_arknights', name: 'Mudrock · Temptation',    img: 'personajes/mudrock9.jpg',  rarity: 'legend' },
+    { id: 'mudrock_chm',    charId: 'mudrock_arknights', name: 'Mudrock · Navidad',       img: 'personajes/mudrock10.jpg', rarity: 'event' },
+
+    /* ——— Dizzy ——— */
+    { id: 'dizzy1',       charId: 'dizzy_guilty_gear', name: 'Dizzy · Classic',       img: 'personajes/dizzy1.jpg', rarity: 'common' },
+    { id: 'dizzy2',       charId: 'dizzy_guilty_gear', name: 'Dizzy · Sword Wings',   img: 'personajes/dizzy2.jpg', rarity: 'legend' },
+    { id: 'dizzy3',       charId: 'dizzy_guilty_gear', name: 'Dizzy · Necro',         img: 'personajes/dizzy3.jpg', rarity: 'epic' },
+    { id: 'dizzy4',       charId: 'dizzy_guilty_gear', name: 'Dizzy · Lightning',     img: 'personajes/dizzy4.jpg', rarity: 'legend' },
+    { id: 'dizzy5',       charId: 'dizzy_guilty_gear', name: 'Dizzy · Soft Gaze',     img: 'personajes/dizzy5.jpg', rarity: 'rare' },
+    { id: 'dizzy6',       charId: 'dizzy_guilty_gear', name: 'Dizzy · Home',          img: 'personajes/dizzy6.jpg', rarity: 'rare' },
+    { id: 'dizzy_bunny',  charId: 'dizzy_guilty_gear', name: 'Dizzy · Bunny',         img: 'personajes/dizzy7.jpg', rarity: 'event' },
+    { id: 'dizzy_maid',   charId: 'dizzy_guilty_gear', name: 'Dizzy · Maid',          img: 'personajes/dizzy8.jpg', rarity: 'event' },
+
+    /* ——— Wakamo ——— */
+    { id: 'wakamo1',        charId: 'wakamo_blue_archive', name: 'Wakamo · Classic',       img: 'personajes/wakamo1.jpg',  rarity: 'epic' },
+    { id: 'wakamo_witch',   charId: 'wakamo_blue_archive', name: 'Wakamo · Witch',         img: 'personajes/wakamo2.jpg',  rarity: 'event' },
+    { id: 'wakamo3',        charId: 'wakamo_blue_archive', name: 'Wakamo · Festival',      img: 'personajes/wakamo3.jpg',  rarity: 'legend' },
+    { id: 'wakamo_hw',      charId: 'wakamo_blue_archive', name: 'Wakamo · Halloween',     img: 'personajes/wakamo4.jpg',  rarity: 'event' },
+    { id: 'wakamo_summer',  charId: 'wakamo_blue_archive', name: 'Wakamo · Bikini',        img: 'personajes/wakamo5.jpg',  rarity: 'event' },
+    { id: 'wakamo6',        charId: 'wakamo_blue_archive', name: 'Wakamo · Casual',        img: 'personajes/wakamo6.jpg',  rarity: 'rare' },
+    { id: 'wakamo7',        charId: 'wakamo_blue_archive', name: 'Wakamo · School',        img: 'personajes/wakamo7.jpg',  rarity: 'epic' },
+    { id: 'wakamo8',        charId: 'wakamo_blue_archive', name: 'Wakamo · Crimson',       img: 'personajes/wakamo8.jpg',  rarity: 'legend' },
+    { id: 'wakamo_summer2', charId: 'wakamo_blue_archive', name: 'Wakamo · Poolside',      img: 'personajes/wakamo9.jpg',  rarity: 'event' },
+    { id: 'wakamo10',       charId: 'wakamo_blue_archive', name: 'Wakamo · Indoor',        img: 'personajes/wakamo10.jpg', rarity: 'rare' },
+    { id: 'wakamo11',       charId: 'wakamo_blue_archive', name: 'Wakamo · Snow Mask',     img: 'personajes/wakamo11.jpg', rarity: 'epic' },
+    { id: 'wakamo_bunny',   charId: 'wakamo_blue_archive', name: 'Wakamo · Bunny',         img: 'personajes/wakamo12.jpg', rarity: 'event' },
+
+    /* ——— Implacable ——— */
+    { id: 'implacable1',      charId: 'implacable_azur_lane', name: 'Implacable · Nun',        img: 'personajes/implacable1.jpg', rarity: 'epic' },
+    { id: 'implacable2',      charId: 'implacable_azur_lane', name: 'Implacable · Devotion',   img: 'personajes/implacable2.jpg', rarity: 'legend' },
+    { id: 'implacable_hw',    charId: 'implacable_azur_lane', name: 'Implacable · Witch',      img: 'personajes/implacable3.jpg', rarity: 'event' },
+    { id: 'implacable_summer',charId: 'implacable_azur_lane', name: 'Implacable · Swimsuit',   img: 'personajes/implacable4.jpg', rarity: 'event' },
+
         // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
   ];
 
@@ -593,7 +660,21 @@
     nitocris_hw: true,
     nitocris_hw2: true,
     nitocris_bunny: true,
-    nitocris_summer: true
+    nitocris_summer: true,
+    asamiya_summer: true,
+    lucy_bunny: true,
+    mudrock_hw: true,
+    mudrock_bunny: true,
+    mudrock_chm: true,
+    dizzy_bunny: true,
+    dizzy_maid: true,
+    wakamo_witch: true,
+    wakamo_hw: true,
+    wakamo_summer: true,
+    wakamo_summer2: true,
+    wakamo_bunny: true,
+    implacable_hw: true,
+    implacable_summer: true
   };
 
   const RARITY = {
