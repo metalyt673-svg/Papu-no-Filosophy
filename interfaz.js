@@ -250,7 +250,7 @@
   function renderHub() {
     current = collectModes();
     const cards = current.map((m, i) => `
-      <button class="hub-card" data-hub-i="${i}" title="${esc(m.title)}">
+      <button class="hub-card" data-sfx="none" data-hub-i="${i}" title="${esc(m.title)}">
         <div class="hub-frame">${m.img
           ? `<img src="${esc(m.img)}" alt="${esc(m.title)}" data-fb="${esc(m.fallback)}">`
           : `<div class="hub-fb">${esc(m.fallback)}</div>`}</div>
