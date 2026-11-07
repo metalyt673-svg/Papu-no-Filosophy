@@ -216,16 +216,16 @@
         { at: 0.25, log: '¡Tarantutor se lanza a la caza y ataca DOS veces por ronda!', actions: 2 }
       ],
       moves: [
-        { id: 'taran1', name: 'Mordisco Venenoso', power: 27, acc: 0.95, baseCooldown: 0, type: 'attack',
+        { id: 'taran1', name: 'Mordisco Venenoso', power: 25, acc: 0.95, baseCooldown: 0, type: 'attack',
           effects: [{ type: 'damageOverTime', status: 'poison', value: 4, duration: 3, prob: 0.5 }],
           desc: 'Un mordisco que puede envenenar al objetivo.' },
         { id: 'taran2', name: 'Telaraña Pegajosa', power: 14, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
           effects: [{ type: 'slow', value: 20, duration: 2, prob: 0.85 }],
           desc: 'Una telaraña sobre los dos del frente que reduce su SPD.' },
         { id: 'taran3', name: 'Succión Vital', power: 0, acc: 1, baseCooldown: 5, type: 'support', aiWeight: 0.8,
-          effects: [{ type: 'lifesteal', value: 20, duration: 2 }, { type: 'selfHealPct', value: 0.06 }],
+          effects: [{ type: 'lifesteal', value: 20, duration: 2 }, { type: 'selfHealPct', value: 0.02 }],
           desc: 'Roba vida con sus ataques durante 2 turnos y recupera algo de salud.' },
-        { id: 'taran4', name: 'ULTRA: Plaga de Arañas', power: 31, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
+        { id: 'taran4', name: 'ULTRA: Plaga de Arañas', power: 30, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
           effects: [{ type: 'damageOverTime', status: 'poison', value: 5, duration: 3, prob: 0.9 }, { type: 'healReduction', value: 30, duration: 2 }],
           desc: 'Una plaga sobre el frente. Envenena y reduce la curación recibida.' }
       ],

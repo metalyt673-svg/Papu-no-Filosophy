@@ -10890,7 +10890,7 @@ const CHARACTERS = [
       power: 22,
       acc: 0.95,
       desc: 'Dispara un Cero Oscuras que reduce la DEF del enemigo.',
-      baseCooldown: 2,
+      baseCooldown: 1,
       type: 'attack',
       effect: {
         type: 'debuff',
@@ -14443,12 +14443,12 @@ moves: [
       effects: [
         {
           type: 'tempDef',
-          value: 6,
+          value: 7,
           duration: 3
         },
         {
           type: 'shield',
-          value: 25
+          value: 30
         }
       ]
     },
@@ -14488,7 +14488,7 @@ moves: [
       power: 30,
       acc: 0.89,
       desc: 'Albedo libera todo su poder como Guardiana de Nazarick, debilitando al enemigo mientras se protege con una enorme resistencia.',
-      baseCooldown: 7,
+      baseCooldown: 8,
       type: 'attack',
       effects: [
         {
@@ -14517,7 +14517,7 @@ moves: [
         },
         {
           type: 'shield',
-          value: 25
+          value: 30
         },
         {
           type: 'selfHealPct',

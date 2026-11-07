@@ -605,7 +605,7 @@
   };
   const PRICES = { common: 150, rare: 300, epic: 600, legend: 1500, event: 2000 };       // monedas
   const RARITY_WEIGHT = { common: 5, rare: 3, epic: 1.3, event: 0.2, legend: 0.5 };       // % de cada RAREZA en los cofres (no por skin). Si una rareza no tiene skins disponibles, el resto se reparte hasta sumar 100 %
-  const COINS_MIN = 1500, COINS_MAX = 4500;                        // monedas por cofre
+  const COINS_MIN = 15, COINS_MAX = 45;                        // monedas por cofre
   const SKIN_CHANCE = 0.12;                                    // 12 % de que un cofre dé una skin
   const CHEST_PRICE = 50;                                      // cofre normal de la tienda (monedas)
   /* COFRES Y PAQUETES DE SKINS GARANTIZADAS DE LA TIENDA (siempre dan skins que aún no tengas).
