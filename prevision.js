@@ -85,7 +85,10 @@
 
     const shield = ignoresShield ? 0 : (target.shield || 0);
     const afterShield = d => Math.max(0, d - shield);
-    const xN = afterShield(base), xC = afterShield(critBase);
+    // Habilidades con missingHpBonus: más daño cuanta menos vida tenga el objetivo.
+    const f = (Number(move.missingHpBonus) > 0 && target.maxHp)
+      ? 1 + Number(move.missingHpBonus) * (1 - Math.min(1, target.hp / target.maxHp)) : 1;
+    const xN = afterShield(base) * f, xC = afterShield(critBase) * f;
 
     const nMin = Math.round(xN * VAR_MIN), nMax = Math.round(xN * VAR_MAX);
     const cMax = Math.round(xC * VAR_MAX);

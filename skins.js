@@ -587,6 +587,137 @@
     { id: 'implacable_hw',    charId: 'implacable_azur_lane', name: 'Implacable · Witch',      img: 'personajes/implacable3.jpg', rarity: 'event' },
     { id: 'implacable_summer',charId: 'implacable_azur_lane', name: 'Implacable · Swimsuit',   img: 'personajes/implacable4.jpg', rarity: 'event' },
 
+    /* ——— Shylily ——— */
+    { id: 'shylily1',         charId: 'shylily', name: 'Shylily · Beach Orca',       img: 'personajes/shylily1.jpg',  rarity: 'event' },
+    { id: 'shylily_hw',       charId: 'shylily', name: 'Shylily · Mummy',            img: 'personajes/shylily2.jpg',  rarity: 'event' },
+    { id: 'shylily_nurse',    charId: 'shylily', name: 'Shylily · Nurse',            img: 'personajes/shylily3.jpg',  rarity: 'event' },
+    { id: 'shylily4',         charId: 'shylily', name: 'Shylily · Deep Dive',        img: 'personajes/shylily4.jpg',  rarity: 'epic' },
+    { id: 'shylily5',         charId: 'shylily', name: 'Shylily · School',           img: 'personajes/shylily5.jpg',  rarity: 'rare' },
+    { id: 'shylily6',         charId: 'shylily', name: 'Shylily · Jiangshi',         img: 'personajes/shylily6.jpg',  rarity: 'epic' },
+    { id: 'shylily7',         charId: 'shylily', name: 'Shylily · Street',           img: 'personajes/shylily7.jpg',  rarity: 'rare' },
+    { id: 'shylily8',         charId: 'shylily', name: 'Shylily · Latex',            img: 'personajes/shylily8.jpg',  rarity: 'legend' },
+    { id: 'shylily9',         charId: 'shylily', name: 'Shylily · Ocean Splash',     img: 'personajes/shylily9.jpg',  rarity: 'epic' },
+    { id: 'shylily10',        charId: 'shylily', name: 'Shylily · Rockstar',         img: 'personajes/shylily10.jpg', rarity: 'legend' },
+    { id: 'shylily12',        charId: 'shylily', name: 'Shylily · Forbidden Fruit',  img: 'personajes/shylily12.jpg', rarity: 'legend' },
+    { id: 'shylily13',        charId: 'shylily', name: 'Shylily · Chains',           img: 'personajes/shylily13.jpg', rarity: 'event' },
+    { id: 'shylily14',        charId: 'shylily', name: 'Shylily · Casual',           img: 'personajes/shylily14.jpg', rarity: 'common' },
+    { id: 'shylily_summer',   charId: 'shylily', name: 'Shylily · Pool Float',       img: 'personajes/shylily15.jpg', rarity: 'event' },
+    { id: 'shylily16',        charId: 'shylily', name: 'Shylily · Gothic',           img: 'personajes/shylily16.jpg', rarity: 'epic' },
+    { id: 'shylily_bunny',    charId: 'shylily', name: 'Shylily · Bunny',            img: 'personajes/shylily17.jpg', rarity: 'event' },
+    { id: 'shylily18',        charId: 'shylily', name: 'Shylily · Cosy',             img: 'personajes/shylily18.jpg', rarity: 'rare' },
+    { id: 'shylily19',        charId: 'shylily', name: 'Shylily · Mermaid Idol',     img: 'personajes/shylily19.jpg', rarity: 'epic' },
+    { id: 'shylily20',        charId: 'shylily', name: 'Shylily · Wet Shirt',        img: 'personajes/shylily20.jpg', rarity: 'event' },
+    { id: 'shylily_maid',     charId: 'shylily', name: 'Shylily · Maid',             img: 'personajes/shylily21.jpg', rarity: 'event' },
+
+    /* ——— Aizen ——— */
+    { id: 'aizen1',       charId: 'aizen', name: 'Aizen · Eyepatch',       img: 'personajes/aizen1.png',  rarity: 'epic' },
+    { id: 'aizen2',       charId: 'aizen', name: 'Aizen · Roses',          img: 'personajes/aizen2.png',  rarity: 'rare' },
+    { id: 'aizen3',       charId: 'aizen', name: 'Aizen · Kyoka Suigetsu', img: 'personajes/aizen3.png',  rarity: 'legend' },
+    { id: 'aizen4',       charId: 'aizen', name: 'Aizen · Profile',        img: 'personajes/aizen4.png',  rarity: 'common' },
+    { id: 'aizen5',       charId: 'aizen', name: 'Aizen · Shattered',      img: 'personajes/aizen5.png',  rarity: 'epic' },
+    { id: 'aizen6',       charId: 'aizen', name: 'Aizen · Bound',          img: 'personajes/aizen6.jpg',  rarity: 'legend' },
+    { id: 'aizen7',       charId: 'aizen', name: 'Aizen · Fur Coat',       img: 'personajes/aizen7.jpg',  rarity: 'epic' },
+    { id: 'aizen8',       charId: 'aizen', name: 'Aizen · Hogyoku',        img: 'personajes/aizen8.jpg',  rarity: 'legend' },
+    { id: 'aizen9',       charId: 'aizen', name: 'Aizen · Bloodied Blade', img: 'personajes/aizen9.jpg',  rarity: 'legend' },
+    { id: 'aizen_cat',    charId: 'aizen', name: 'Aizen · Cat Ears',       img: 'personajes/aizen10.jpg', rarity: 'event' },
+    { id: 'aizen11',      charId: 'aizen', name: 'Aizen · Plush',          img: 'personajes/aizen11.png', rarity: 'rare' },
+
+    /* ——— Tier Harribel ——— */
+    { id: 'harribel1',        charId: 'tier_harribel', name: 'Harribel · Office',        img: 'personajes/harribel1.jpg',  rarity: 'rare' },
+    { id: 'harribel2',        charId: 'tier_harribel', name: 'Harribel · Resurrección',  img: 'personajes/harribel2.jpg',  rarity: 'legend' },
+    { id: 'harribel_summer',  charId: 'tier_harribel', name: 'Harribel · Bikini',        img: 'personajes/harribel3.jpg',  rarity: 'event' },
+    { id: 'harribel_bunny',   charId: 'tier_harribel', name: 'Harribel · Bunny',         img: 'personajes/harribel4.jpg',  rarity: 'event' },
+    { id: 'harribel_summer2', charId: 'tier_harribel', name: 'Harribel · Beach',         img: 'personajes/harribel5.jpg',  rarity: 'event' },
+    { id: 'harribel6',        charId: 'tier_harribel', name: 'Harribel · Kimono',        img: 'personajes/harribel6.jpg',  rarity: 'epic' },
+    { id: 'harribel7',        charId: 'tier_harribel', name: 'Harribel · Sailor',        img: 'personajes/harribel7.jpg',  rarity: 'rare' },
+    { id: 'harribel8',        charId: 'tier_harribel', name: 'Harribel · Combat',        img: 'personajes/harribel8.jpg',  rarity: 'epic' },
+    { id: 'harribel9',        charId: 'tier_harribel', name: 'Harribel · Fur Coat',      img: 'personajes/harribel9.jpg',  rarity: 'epic' },
+    { id: 'harribel10',       charId: 'tier_harribel', name: 'Harribel · Sweater',       img: 'personajes/harribel10.jpg', rarity: 'rare' },
+
+    /* ——— Hsin ——— */
+    { id: 'hsin1',       charId: 'hsin_wuthering_waves', name: 'Hsin · Moon Fox',     img: 'personajes/hsin1.jpg', rarity: 'legend' },
+    { id: 'hsin2',       charId: 'hsin_wuthering_waves', name: 'Hsin · Elegant',      img: 'personajes/hsin2.jpg', rarity: 'epic' },
+    { id: 'hsin3',       charId: 'hsin_wuthering_waves', name: 'Hsin · Seductive',    img: 'personajes/hsin3.jpg', rarity: 'legend' },
+    { id: 'hsin4',       charId: 'hsin_wuthering_waves', name: 'Hsin · Back View',    img: 'personajes/hsin4.jpg', rarity: 'rare' },
+    { id: 'hsin_event',  charId: 'hsin_wuthering_waves', name: 'Hsin · Chains',       img: 'personajes/hsin5.jpg', rarity: 'event' },
+    { id: 'hsin6',       charId: 'hsin_wuthering_waves', name: 'Hsin · Passionate',   img: 'personajes/hsin6.jpg', rarity: 'epic' },
+
+    /* ——— Fern ——— */
+    { id: 'fern1',         charId: 'fern_frieren', name: 'Fern · Mage',         img: 'personajes/fern1.jpg',  rarity: 'common' },
+    { id: 'fern2',         charId: 'fern_frieren', name: 'Fern · Zoltraak',     img: 'personajes/fern2.jpg',  rarity: 'legend' },
+    { id: 'fern3',         charId: 'fern_frieren', name: 'Fern · Bakery',       img: 'personajes/fern3.jpg',  rarity: 'rare' },
+    { id: 'fern4',         charId: 'fern_frieren', name: 'Fern · Café',         img: 'personajes/fern4.jpg',  rarity: 'rare' },
+    { id: 'fern_maid',     charId: 'fern_frieren', name: 'Fern · Maid',         img: 'personajes/fern5.jpg',  rarity: 'event' },
+    { id: 'fern6',         charId: 'fern_frieren', name: 'Fern · Street',       img: 'personajes/fern6.jpg',  rarity: 'epic' },
+    { id: 'fern7',         charId: 'fern_frieren', name: 'Fern · Sunglasses',   img: 'personajes/fern7.jpg',  rarity: 'epic' },
+    { id: 'fern_summer',   charId: 'fern_frieren', name: 'Fern · Bikini',       img: 'personajes/fern8.jpg',  rarity: 'event' },
+    { id: 'fern9',         charId: 'fern_frieren', name: 'Fern · Blouse',       img: 'personajes/fern9.jpg',  rarity: 'rare' },
+    { id: 'fern10',        charId: 'fern_frieren', name: 'Fern · Casual',       img: 'personajes/fern10.jpg', rarity: 'rare' },
+
+    /* ——— Fediel ——— */
+    { id: 'fediel1',         charId: 'fediel_granblue_fantasy', name: 'Fediel · Classic',      img: 'personajes/fediel.jpg',   rarity: 'legend' },
+    { id: 'fediel_summer',   charId: 'fediel_granblue_fantasy', name: 'Fediel · Beach',        img: 'personajes/fediel1.jpg',  rarity: 'event' },
+    { id: 'fediel2',         charId: 'fediel_granblue_fantasy', name: 'Fediel · Combat',       img: 'personajes/fediel2.jpg',  rarity: 'epic' },
+    { id: 'fediel3',         charId: 'fediel_granblue_fantasy', name: 'Fediel · Close-up',     img: 'personajes/fediel3.jpg',  rarity: 'rare' },
+    { id: 'fediel4',         charId: 'fediel_granblue_fantasy', name: 'Fediel · Darkness',     img: 'personajes/fediel4.jpg',  rarity: 'legend' },
+    { id: 'fediel5',         charId: 'fediel_granblue_fantasy', name: 'Fediel · Office',       img: 'personajes/fediel5.jpg',  rarity: 'rare' },
+    { id: 'fediel6',         charId: 'fediel_granblue_fantasy', name: 'Fediel · Dragon',       img: 'personajes/fediel6.jpg',  rarity: 'epic' },
+    { id: 'fediel_summer2',  charId: 'fediel_granblue_fantasy', name: 'Fediel · Bikini',       img: 'personajes/fediel7.jpg',  rarity: 'event' },
+    { id: 'fediel_summer3',  charId: 'fediel_granblue_fantasy', name: 'Fediel · Swim',         img: 'personajes/fediel8.jpg',  rarity: 'event' },
+    { id: 'fediel9',         charId: 'fediel_granblue_fantasy', name: 'Fediel · Seductive',    img: 'personajes/fediel9.jpg',  rarity: 'epic' },
+    { id: 'fediel_chm',      charId: 'fediel_granblue_fantasy', name: 'Fediel · Christmas',    img: 'personajes/fediel10.jpg', rarity: 'event' },
+
+    /* ——— Stocking Anarchy ——— */
+    { id: 'stocking1',       charId: 'stocking_psg', name: 'Stocking · Winter',      img: 'personajes/stocking1.jpg',  rarity: 'rare' },
+    { id: 'stocking2',       charId: 'stocking_psg', name: 'Stocking · Sweater',      img: 'personajes/stocking2.jpg',  rarity: 'epic' },
+    { id: 'stocking3',       charId: 'stocking_psg', name: 'Stocking · Neon Gothic',  img: 'personajes/stocking3.jpg',  rarity: 'legend' },
+    { id: 'stocking_event',  charId: 'stocking_psg', name: 'Stocking · Zombie Cop',   img: 'personajes/stocking4.jpg',  rarity: 'event' },
+    { id: 'stocking5',       charId: 'stocking_psg', name: 'Stocking · Angel Sword',  img: 'personajes/stocking5.jpg',  rarity: 'legend' },
+    { id: 'stocking6',       charId: 'stocking_psg', name: 'Stocking · Angel Dress',  img: 'personajes/stocking6.jpg',  rarity: 'epic' },
+    { id: 'stocking7',       charId: 'stocking_psg', name: 'Stocking · Black Dress',  img: 'personajes/stocking7.jpg',  rarity: 'rare' },
+    { id: 'stocking8',       charId: 'stocking_psg', name: 'Stocking · Sailor',       img: 'personajes/stocking8.jpg',  rarity: 'rare' },
+    { id: 'stocking9',       charId: 'stocking_psg', name: 'Stocking · Cupcake',      img: 'personajes/stocking9.jpg',  rarity: 'rare' },
+    { id: 'stocking10',      charId: 'stocking_psg', name: 'Stocking · Stripes',      img: 'personajes/stocking10.jpg', rarity: 'epic' },
+    { id: 'stocking11',      charId: 'stocking_psg', name: 'Stocking · Gothic',       img: 'personajes/stocking11.jpg', rarity: 'epic' },
+    { id: 'stocking12',      charId: 'stocking_psg', name: 'Stocking · Peace',        img: 'personajes/stocking12.jpg', rarity: 'rare' },
+
+    /* ——— Owari ——— */
+    { id: 'owari1',          charId: 'owari_azur_lane', name: 'Owari · Demoness',     img: 'personajes/owari1.jpg',  rarity: 'legend' },
+    { id: 'owari_maid',      charId: 'owari_azur_lane', name: 'Owari · Maid',         img: 'personajes/owari2.jpg',  rarity: 'event' },
+    { id: 'owari3',          charId: 'owari_azur_lane', name: 'Owari · Temptation',   img: 'personajes/owari3.jpg',  rarity: 'epic' },
+    { id: 'owari4',          charId: 'owari_azur_lane', name: 'Owari · Elegant',      img: 'personajes/owari4.jpg',  rarity: 'epic' },
+    { id: 'owari5',          charId: 'owari_azur_lane', name: 'Owari · School',       img: 'personajes/owari5.jpg',  rarity: 'rare' },
+    { id: 'owari6',          charId: 'owari_azur_lane', name: 'Owari · Classroom',    img: 'personajes/owari6.jpg',  rarity: 'rare' },
+    { id: 'owari_summer',    charId: 'owari_azur_lane', name: 'Owari · Beach',        img: 'personajes/owari7.jpg',  rarity: 'event' },
+    { id: 'owari8',          charId: 'owari_azur_lane', name: 'Owari · Cardigan',     img: 'personajes/owari8.jpg',  rarity: 'rare' },
+    { id: 'owari_yukata',    charId: 'owari_azur_lane', name: 'Owari · Yukata',       img: 'personajes/owari9.jpg',  rarity: 'event' },
+    { id: 'owari10',         charId: 'owari_azur_lane', name: 'Owari · Casual',       img: 'personajes/owari10.jpg', rarity: 'epic' },
+
+    /* ——— Tokoyami Towa ——— */
+    { id: 'tokoyami_summer', charId: 'tokoyami_towa', name: 'Towa · Beach',         img: 'personajes/tokoyami1.jpg',  rarity: 'event' },
+    { id: 'tokoyami2',       charId: 'tokoyami_towa', name: 'Towa · School',        img: 'personajes/tokoyami2.jpg',  rarity: 'rare' },
+    { id: 'tokoyami3',       charId: 'tokoyami_towa', name: 'Towa · Autumn',        img: 'personajes/tokoyami3.jpg',  rarity: 'rare' },
+    { id: 'tokoyami4',       charId: 'tokoyami_towa', name: 'Towa · Winter',        img: 'personajes/tokoyami4.jpg',  rarity: 'epic' },
+    { id: 'tokoyami5',       charId: 'tokoyami_towa', name: 'Towa · Casual',        img: 'personajes/tokoyami5.jpg',  rarity: 'rare' },
+    { id: 'tokoyami6',       charId: 'tokoyami_towa', name: 'Towa · Cyber',         img: 'personajes/tokoyami6.jpg',  rarity: 'legend' },
+    { id: 'tokoyami_hw',     charId: 'tokoyami_towa', name: 'Towa · Halloween',     img: 'personajes/tokoyami7.jpg',  rarity: 'event' },
+    { id: 'tokoyami_bunny',  charId: 'tokoyami_towa', name: 'Towa · Bunny',         img: 'personajes/tokoyami8.jpg',  rarity: 'event' },
+    { id: 'tokoyami9',       charId: 'tokoyami_towa', name: 'Towa · Cat Hat',       img: 'personajes/tokoyami9.jpg',  rarity: 'epic' },
+    { id: 'tokoyami_summer2',charId: 'tokoyami_towa', name: 'Towa · Pool',          img: 'personajes/tokoyami10.jpg', rarity: 'event' },
+
+    /* ——— Mint ——— */
+    { id: 'mint1',           charId: 'mint_nte', name: 'Mint · Jungle',         img: 'personajes/mint1.jpg',  rarity: 'legend' },
+    { id: 'mint_summer',     charId: 'mint_nte', name: 'Mint · Beach',          img: 'personajes/mint2.jpg',  rarity: 'event' },
+    { id: 'mint3',           charId: 'mint_nte', name: 'Mint · Peace',          img: 'personajes/mint3.jpg',  rarity: 'rare' },
+    { id: 'mint4',           charId: 'mint_nte', name: 'Mint · Taiyaki',        img: 'personajes/mint4.jpg',  rarity: 'epic' },
+    { id: 'mint5',           charId: 'mint_nte', name: 'Mint · Ice Cream',      img: 'personajes/mint5.jpg',  rarity: 'epic' },
+    { id: 'mint6',           charId: 'mint_nte', name: 'Mint · Demon',          img: 'personajes/mint6.jpg',  rarity: 'legend' },
+    { id: 'mint7',           charId: 'mint_nte', name: 'Mint · Graffiti',       img: 'personajes/mint7.jpg',  rarity: 'rare' },
+    { id: 'mint8',           charId: 'mint_nte', name: 'Mint · Casual',         img: 'personajes/mint8.jpg',  rarity: 'rare' },
+    { id: 'mint9',           charId: 'mint_nte', name: 'Mint · Comic',          img: 'personajes/mint9.jpg',  rarity: 'epic' },
+    { id: 'mint10',          charId: 'mint_nte', name: 'Mint · Night City',     img: 'personajes/mint10.jpg', rarity: 'epic' },
+    { id: 'mint11',          charId: 'mint_nte', name: 'Mint · Cheer',          img: 'personajes/mint11.jpg', rarity: 'epic' },
+
         // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
   ];
 
@@ -674,7 +805,35 @@
     wakamo_summer2: true,
     wakamo_bunny: true,
     implacable_hw: true,
-    implacable_summer: true
+    implacable_summer: true,
+    shylily1: true,
+    shylily_hw: true,
+    shylily_nurse: true,
+    shylily13: true,
+    shylily_summer: true,
+    shylily_bunny: true,
+    shylily20: true,
+    shylily_maid: true,
+    aizen_cat: true,
+    harribel_summer: true,
+    harribel_bunny: true,
+    harribel_summer2: true,
+    hsin_event: true,
+    fern_maid: true,
+    fern_summer: true,
+    fediel_summer: true,
+    fediel_summer2: true,
+    fediel_summer3: true,
+    fediel_chm: true,
+    stocking_event: true,
+    owari_maid: true,
+    owari_summer: true,
+    owari_yukata: true,
+    tokoyami_summer: true,
+    tokoyami_hw: true,
+    tokoyami_bunny: true,
+    tokoyami_summer2: true,
+    mint_summer: true
   };
 
   const RARITY = {
@@ -686,7 +845,7 @@
   };
   const PRICES = { common: 150, rare: 300, epic: 600, legend: 1500, event: 2000 };       // monedas
   const RARITY_WEIGHT = { common: 5, rare: 3, epic: 1.3, event: 0.2, legend: 0.5 };       // % de cada RAREZA en los cofres (no por skin). Si una rareza no tiene skins disponibles, el resto se reparte hasta sumar 100 %
-  const COINS_MIN = 15, COINS_MAX = 45;                        // monedas por cofre
+  const COINS_MIN = 150, COINS_MAX = 450;                        // monedas por cofre
   const SKIN_CHANCE = 0.12;                                    // 12 % de que un cofre dé una skin
   const CHEST_PRICE = 50;                                      // cofre normal de la tienda (monedas)
   /* COFRES Y PAQUETES DE SKINS GARANTIZADAS DE LA TIENDA (siempre dan skins que aún no tengas).

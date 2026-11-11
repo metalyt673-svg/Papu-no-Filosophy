@@ -19,7 +19,7 @@
   'use strict';
 
   const KEY = 'batalla-equipos';
-  const SLOTS = 5;
+  const SLOTS = 7;
   const SIZE = 3;
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));

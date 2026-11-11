@@ -4469,98 +4469,133 @@ const CHARACTERS = [
   ]
 },
 
+
 {
   id: 'guijarro',
   name: 'Guijarro',
   img: 'personajes/guijarro.png',
-  classes: ['mago', 'control', 'debilitador'],
+  classes: ['soporte', 'debilitador'],
 
-  hp: 123,
-  atk: 30,
-  def: 16,
+  hp: 120,
+  atk: 18,
+  def: 20,
   spd: 18,
 
   moves: [
     {
       id: 'guijarro1',
-      name: 'Eso Dijo Ella',
-      power: 22,
+      name: 'Fuenteovejuna, Todos A Una',
+      power: 0,
       acc: 0.97,
-      desc: 'Guijarro arremete contra su oponente con su misteriosa frase. ¿Qué significará? Nunca lo sabremos...',
+      desc: 'Guijarro reúne a sus aliados y los mejora por el poder de la obra teatral clásica.',
       baseCooldown: 0,
-      type: 'attack',
-      effect: null
+      aoe: true,
+      type: 'support',
+      effects: [
+        {
+          type: 'tempAtk',
+          value: 4,
+          duration: 2,
+          prob: 0.9
+        },
+        {
+          type: 'tempDef',
+          value: 5,
+          duration: 2,
+          prob: 0.9
+        },
+        {
+          type: 'tempSpd',
+          value: 5,
+          duration: 2,
+          prob: 0.9
+        }
+      ]
     },
 
     {
       id: 'guijarro2',
-      name: 'A Llorar A La Llorería',
-      power: 25,
+      name: 'A Pluma Y Espada',
+      power: 20,
       acc: 0.94,
-      desc: 'Guijarro concentra su poder en su poderosa frase que obliga al oponente a pensar mejor en lo que dice.',
+      desc: 'Guijarro concentra el poder de sus ancestros en un espadazo que rasga la piel de su oponente.',
       baseCooldown: 3,
       type: 'attack',
       effects: [
         {
-          type: 'debuff',
-          stat: 'def',
-          value: 9,
-          duration: 3,
-          prob: 1.0
+          type: 'damageOverTime',
+          status: 'bleed',
+          value: 6,
+          duration: 2,
+          prob: 0.97
         },
         {
-          type: 'slow',
-          value: 10,
+          type: 'healReduction',
+          value: 20,
           duration: 2,
-          prob: 1.0
+          prob: 0.95
         }
+
       ]
     },
 
     {
       id: 'guijarro3',
-      name: 'A Pluma Y Espada',
+      name: 'En Tanto Que De Rosa Y Azucena',
       power: 0,
-      acc: 1.0,
-      desc: 'Guijarro adquiere temporalmente la forma de sus ancestros poetas, mejorando su ATK y DEF (usable en aliados).',
-      baseCooldown: 4,
-      type: 'support',
+      acc: 0.95,
+      desc: 'Guijarro relata un antiguo poema de Garcilaso para apaciguar a su oponente por un turno y reducir sus estadísticas.',
+      baseCooldown: 7,
+      type: 'attack',
       effects: [
         {
-          type: 'tempAtk',
-          value: 9,
+          type: 'stun',
+          duration: 1,
+          prob: 1
+        },
+        {
+          type: 'accuracyDown',
+          value: 10,
           duration: 3
         },
         {
-          type: 'tempDef',
+          type: 'debuff',
+          stat: 'atk',
+          value: 8,
+          duration: 2,
+          prob: 0.9
+        },
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 8,
+          duration: 2,
+          prob: 0.85
+        },
+        {
+          type: 'debuff',
+          stat: 'spd',
           value: 10,
-          duration: 3
-        }
+          duration: 2,
+          prob: 1.0
+        },
+
       ]
     },
 
     {
       id: 'guijarro4',
-      name: 'TÉCNICA DEFINITIVA: Versos De Lope',
-      power: 30,
-      acc: 0.91,
-      desc: 'Guijarro recita su poema prohibido que interrumpe en las mentes de los débiles, reduciendo ATK y DEF en su oponente.',
+      name: 'TÉCNICA DEFINITIVA: Desmayarse, Atreverse, Estar Furioso',
+      power: 26,
+      acc: 0.95,
+      desc: 'Guijarro recita el famoso soneto de Lope de Vega, dándole un chance de distorsionar la mente de su rival y hacer que ataque a sus aliados.',
       baseCooldown: 7,
       type: 'attack',
       effects: [
         {
-          type: 'debuff',
-          stat: 'atk',
-          value: 6,
-          duration: 3,
-          prob: 1.0
-        },
-        {
-          type: 'debuff',
-          stat: 'def',
-          value: 7,
-          duration: 3,
-          prob: 1.0
+          type: 'charm',
+          duration: 2,
+          prob: 0.7
         }
       ]
     }
@@ -12759,7 +12794,7 @@ const CHARACTERS = [
   img: 'personajes/grock.png', 
   classes: ['defensor'],
   hp: 160,
-  atk: 28,
+  atk: 18,
   def: 35,
   spd: 9,
 
@@ -12773,7 +12808,7 @@ const CHARACTERS = [
       baseCooldown: 0,
       type: 'attack',
       effects: [
-        { type:'tempDef', value: 10, duration: 2 }
+        { type:'tempDef', value: 5, duration: 2 }
       ]
     },
     {
@@ -12784,12 +12819,12 @@ const CHARACTERS = [
       desc: 'Grock invoca una barrera protectora y obtiene un fuerte escudo.',
       baseCooldown: 4,
       type: 'support',
-      effect: { type:'shield', value: 35 }
+      effect: { type:'shield', value: 30 }
     },
     {
       id: 'wild_charge',
       name: 'Wild Charge',
-      power: 25,
+      power: 24,
       acc: 0.9,
       desc: 'Grock embiste brutalmente, causando gran daño y reduciendo la SPD del enemigo.',
       baseCooldown: 4,
@@ -12800,14 +12835,15 @@ const CHARACTERS = [
     {
       id: 'ancestors_wrath',
       name: "Ancestor's Wrath",
-      power: 30,
-      acc: 1.0,
+      power: 24,
+      acc: 0.97,
       desc: 'Grock canaliza la ira de sus ancestros, causando daño a todos y fortaleciéndose.',
       baseCooldown: 6,
+      aoe: true,
       type: 'attack',
       effects: [
-        { type:'tempDef', value: 12, duration: 3 },
-        { type:'tempAtk', value: 8, duration: 2 }
+        { type:'tempDef', value: 10, duration: 3 },
+        { type:'tempAtk', value: 6, duration: 2 }
       ]
     }
   ]
@@ -14264,19 +14300,24 @@ const CHARACTERS = [
     } ]
     },
 	{ id: 'dyrroth', name: 'Dyrroth',  img: 'personajes/dyrroth.jpg',  classes: ['atacante'], hp: 140, atk: 30, def: 10, spd: 11,
+  passive: { type: 'tripleBasic', name: 'Furia del abismo', desc: 'Cada 3 veces que conecta Garras letales, el tercer golpe daña a TODOS los enemigos y Dyrroth recupera un 15% de su vida máxima.', moveId: 'dyr1', every: 3, healPercent: 0.15, readyDesc: '¡Golpe cargado! Daña a TODOS los enemigos y cura a Dyrroth' },
   moves: [
-    { id: 'dyr1', name: 'Garras letales', power: 20, acc: 0.80, desc: 'Ataque básico', 
+    { id: 'dyr1', name: 'Garras letales', power: 20, acc: 0.95, desc: 'Ataque básico. Cada 3 golpes, el siguiente es AoE y lo cura', 
       baseCooldown: 0, type: 'attack', effect: null
     },
     { id: 'dyr2', name: 'Ira del abismo', power: 25, acc: 0.80, desc: 'Ataque no muy potente', 
       baseCooldown: 2, type: 'attack', effect: null
     },
-    { id: 'dyr3', name: 'Paso del espectro', power: 30, acc: 0.98, desc: 'Ataque muy potente, reduce def', 
-      baseCooldown: 2, type: 'attack', effect: { type:'debuff', stat:'def', value:4, prob:1.0 ,
-        duration: 2}
+    { id: 'dyr3', name: 'Paso del espectro', power: 30, acc: 0.98, desc: 'Ataque muy potente, reduce DEF e ignora el escudo', 
+      baseCooldown: 2, type: 'attack', effects: [
+        { type:'debuff', stat:'def', value:4, prob:1.0, duration: 2 },
+        { type:'ignoreShield' }
+      ]
     },
-    { id: 'dyr4', name: 'Abysm Strike', power: 40, acc: 0.89, desc: 'Ataque extremadamente potente', 
-      baseCooldown: 6, type: 'attack', effect: null } ]
+    { id: 'dyr4', name: 'Abysm Strike', power: 38, acc: 0.89, desc: 'Ataque extremadamente potente: cuanta menos vida tenga el objetivo, más daño hace (hasta el doble). Reduce su curación', 
+      baseCooldown: 6, type: 'attack', missingHpBonus: 1.0, effects: [
+        { type:'healReduction', value:30, duration:2 }
+      ] } ]
     },
 	{id: 'kevin', name: 'Kevin', img: 'personajes/kevin.jpeg', classes: ['atacante', 'debilitador'], hp: 90, atk: 28, def: 12, spd: 13,
 

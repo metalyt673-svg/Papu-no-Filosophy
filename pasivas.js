@@ -25,12 +25,19 @@
                                                 (value de vida por turno durante duration turnos).
      hitCooldown       amount (def. 1)          Al recibir daño, la habilidad suya con más enfriamiento
                                                 pendiente se recarga `amount` turno(s) (máx. 1 vez por turno).
+     tripleBasic       moveId, every (def. 3),  Cada `every` golpes CONECTADOS con esa habilidad (su básico), el
+                       healPercent, readyDesc   último es AoE (daña a todos los enemigos vivos) y el personaje se
+                                                cura healPercent de su vida máxima. Mientras el golpe está
+                                                "cargado" la habilidad se marca como AoE y muestra readyDesc.
      endTurnRecover    heal, shield, max        Al TERMINAR su turno estando activo: recupera `heal` de vida
                                                 (cantidad fija) y gana `shield` de escudo (si pones `max`,
                                                 el escudo no pasa de ese tope). No salta si se cambia por
                                                 otro consumiendo el turno (ya no está en combate).
                                                 Ej.: passive: { type:'endTurnRecover', name:'…', desc:'…',
                                                                 heal: 10, shield: 8, max: 40 }
+
+   HABILIDAD (no pasiva): missingHpBonus: N en una habilidad de ataque → cuanta menos vida tenga el
+   objetivo, más daño hace (hasta +N×100% cuando está a punto de morir). Es daño directo, como el remate.
 
    Cómo funciona (no modifica game.js; sirve en todos los modos, también contra la IA):
      - Envuelve applyDamage() (golpes, bajas, remate, represalias), startTurnActions()
@@ -45,7 +52,7 @@
   'use strict';
 
   const TYPES = new Set(['ultKillExtraTurn', 'dodge', 'lastStand', 'turnShield', 'turnRegen',
-    'openingShield', 'openingBuff', 'executeDamage', 'onKill', 'onHitDebuff', 'hitCooldown', 'onHitBurnAll', 'endTurnRecover']);
+    'openingShield', 'openingBuff', 'executeDamage', 'onKill', 'onHitDebuff', 'hitCooldown', 'onHitBurnAll', 'endTurnRecover', 'tripleBasic']);
   const getPassive = (ch, type) => (ch && ch.passive && ch.passive.type === type) ? ch.passive : null;
   const pname = ch => (ch.passive && ch.passive.name) || 'Pasiva';
   const enemyOf = key => key === 'p1' ? 'p2' : 'p1';
@@ -74,6 +81,19 @@ const hitCdTurn = new WeakMap();    // personaje -> último turno en que hitCool
   /* ---------- 1) golpes: remate, bajas, última resistencia, represalia, ULT ---------- */
   function afterHit(actor, target, move, before, frac) {
     const dealt = before - target.hp;
+
+    // Habilidad que escala con la vida que le falta al objetivo (move.missingHpBonus):
+    // daño extra = vida perdida en el golpe × bonus × (1 − fracción de vida que tenía).
+    // Con bonus 1: ×1 a vida llena, ×1.5 con la mitad de vida, casi ×2 con muy poca.
+    const mb = move ? Number(move.missingHpBonus) : 0;
+    if (mb > 0 && Number(move.power) > 0 && !move._isCounter && target.hp > 0 && dealt > 0 && frac < 1) {
+      const extra = Math.round(dealt * mb * (1 - frac));
+      if (extra > 0) {
+        target.hp = Math.max(0, target.hp - extra);
+        log(`🩸 ${move.name}: +${extra} de daño a ${target.name} por su poca vida.`);
+        if (target.hp <= 0) tryPassiveRevive(target);
+      }
+    }
 
     // Remate (executeDamage): daño extra a enemigos ya débiles.
     const ex = getPassive(actor, 'executeDamage');
@@ -146,6 +166,56 @@ const hitCdTurn = new WeakMap();    // personaje -> último turno en que hitCool
     }
   }
 
+  /* ---------- básico en ciclo (tripleBasic) ---------- */
+  const tbCount = new WeakMap();      // personaje -> golpes conectados del ciclo actual
+  let tbUse = null;                   // uso en curso: { actor, p, hit }
+
+  function tbSync(ch) {
+    const p = getPassive(ch, 'tripleBasic');
+    if (!p || !ch.moves) return;
+    const mv = ch.moves.find(m => m.id === p.moveId);
+    if (!mv) return;
+    if (mv._tbDesc === undefined) mv._tbDesc = mv.desc;
+    const ready = (tbCount.get(ch) || 0) >= (Number(p.every) || 3) - 1;
+    mv.aoe = ready;                   // el golpe cargado es AoE (también lo ve la previsualización)
+    mv.desc = (ready && p.readyDesc) ? p.readyDesc : mv._tbDesc;
+  }
+
+  function tbOnHit(actor, move) {
+    if (!tbUse || tbUse.hit || tbUse.actor !== actor || !move || move.id !== tbUse.p.moveId) return;
+    tbUse.hit = true;                 // cuenta una sola vez por uso, aunque sea AoE
+    const p = tbUse.p, every = Number(p.every) || 3;
+    const n = (tbCount.get(actor) || 0) + 1;
+    if (n >= every) {
+      tbCount.set(actor, 0);
+      heal(actor, Number(p.healPercent) || 0);
+      announce(actor, ': ¡el golpe alcanza a todos los enemigos y se cura!');
+    } else {
+      tbCount.set(actor, n);
+    }
+    tbSync(actor);
+  }
+
+  function hookResolve() {
+    const _res = window.resolveMove;
+    if (typeof _res !== 'function') return;
+    window.resolveMove = async function (playerKey, moveId) {
+      let mine = null;
+      try {
+        const actor = getActive(playerKey);
+        const p = getPassive(actor, 'tripleBasic');
+        if (p && moveId === p.moveId) { tbSync(actor); mine = { actor, p, hit: false }; }
+      } catch (e) { console.warn('[pasivas.js]', e); }
+      const prev = tbUse;
+      tbUse = mine;
+      try { return await _res.apply(this, arguments); }
+      finally {
+        tbUse = prev;
+        if (mine) { try { tbSync(mine.actor); } catch (e) { /* ignorar */ } }
+      }
+    };
+  }
+
   function hookDamage() {
     const _dmg = window.applyDamage;
     window.applyDamage = function (actor, target, move) {
@@ -155,6 +225,7 @@ const hitCdTurn = new WeakMap();    // personaje -> último turno en que hitCool
       try {
         if (target && before > 0 && actor && typeof state !== 'undefined' && state.phase === 'battle') {
           afterHit(actor, target, move, before, frac);
+          tbOnHit(actor, move);
         }
       } catch (e) { console.warn('[pasivas.js]', e); }
       return r;
@@ -165,6 +236,7 @@ const hitCdTurn = new WeakMap();    // personaje -> último turno en que hitCool
   function onTurnStart(a) {
     const p = a.passive;
     if (!p) return;
+    tbSync(a);
 
     if (!entered.has(a)) {
       entered.add(a);
@@ -376,12 +448,12 @@ const hitCdTurn = new WeakMap();    // personaje -> último turno en que hitCool
   } });
 
   function init() {
-    const need = ['applyDamage', 'endTurn', 'startTurnActions', 'getKeyOfTarget', 'applyHealing', 'applyEffect', 'applyDebuff', 'tryPassiveRevive', 'applyStatusEffect', 'getAliveChars'];
+    const need = ['applyDamage', 'endTurn', 'startTurnActions', 'getKeyOfTarget', 'applyHealing', 'applyEffect', 'applyDebuff', 'tryPassiveRevive', 'applyStatusEffect', 'getAliveChars', 'resolveMove', 'getActive'];
     if (need.some(n => typeof window[n] !== 'function')) {
       console.warn('[pasivas.js] no se encontró el motor de combate; pasivas desactivadas');
       return;
     }
-    hookDamage(); hookTurnStart(); hookAccuracy(); hookEndTurn(); hookUI();
+    hookDamage(); hookResolve(); hookTurnStart(); hookAccuracy(); hookEndTurn(); hookUI();
     console.log('[pasivas.js] pasivas de evento activas');
   }
 

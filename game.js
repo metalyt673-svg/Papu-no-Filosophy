@@ -1572,12 +1572,21 @@ async function resolveMove(playerKey, moveId){
     const targets = getAliveTeam(playerKey);
     const selfOnly = (effects.length > 0 && effects.every(e => e && (e.type === 'counter' || (e.type === 'cleanse' && e.target !== 'ally'))))
       || effects.some(e => e && e.type === 'invulnerable');   // la invulnerabilidad siempre es para el lanzador
-    const chosen = selfOnly ? null : await openTargetModal(playerKey, targets);
-    const targetChar = chosen == null ? actor : state.teams[playerKey][chosen];
+    if(move.aoe && !selfOnly){
+      // Apoyo AoE: los efectos se aplican a TODO el equipo vivo, sin selector de objetivo.
+      getAliveChars(playerKey).forEach(ally => {
+        effects.forEach(e =>
+          applyEffect(actor, ally, { ...move, effect: e })
+        );
+      });
+    }else{
+      const chosen = selfOnly ? null : await openTargetModal(playerKey, targets);
+      const targetChar = chosen == null ? actor : state.teams[playerKey][chosen];
 
-    effects.forEach(e =>
-      applyEffect(actor, targetChar, { ...move, effect: e })
-    );
+      effects.forEach(e =>
+        applyEffect(actor, targetChar, { ...move, effect: e })
+      );
+    }
   }else{
     // Efectos ofensivos que pertenecen al propio ataque se aplican antes
     // del golpe. Así el mismo ataque puede robar vida, aumentar crítico
