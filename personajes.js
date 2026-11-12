@@ -2717,7 +2717,7 @@ const CHARACTERS = [
 },
 
 {
-  id: 'orochimaru_f',
+  id: 'orochigirl',
   name: 'Orochimaru',
   img: 'personajes/orochigirl.jpg',
   classes: ['control', 'debilitador', 'soporte'],
@@ -4500,13 +4500,13 @@ const CHARACTERS = [
         },
         {
           type: 'tempDef',
-          value: 5,
+          value: 4,
           duration: 2,
           prob: 0.9
         },
         {
           type: 'tempSpd',
-          value: 5,
+          value: 4,
           duration: 2,
           prob: 0.9
         }
@@ -4541,6 +4541,24 @@ const CHARACTERS = [
 
     {
       id: 'guijarro3',
+      name: 'La Técnica De Los Orduños',
+      power: 20,
+      acc: 0.95,
+      desc: 'Guijarro desata la técnica de sus cojones como puños para intentar sembrar el terror en su oponente.',
+      baseCooldown: 4,
+      type: 'attack',
+      effects: [
+        {
+          type: 'fear',
+          failChance: 0.5,
+          duration: 2,
+          prob: 0.97
+        }
+      ]
+    },
+
+    {
+      id: 'guijarro3',
       name: 'En Tanto Que De Rosa Y Azucena',
       power: 0,
       acc: 0.95,
@@ -4551,7 +4569,7 @@ const CHARACTERS = [
         {
           type: 'stun',
           duration: 1,
-          prob: 1
+          prob: 0.95
         },
         {
           type: 'accuracyDown',
@@ -4587,7 +4605,7 @@ const CHARACTERS = [
       id: 'guijarro4',
       name: 'TÉCNICA DEFINITIVA: Desmayarse, Atreverse, Estar Furioso',
       power: 26,
-      acc: 0.95,
+      acc: 0.9,
       desc: 'Guijarro recita el famoso soneto de Lope de Vega, dándole un chance de distorsionar la mente de su rival y hacer que ataque a sus aliados.',
       baseCooldown: 7,
       type: 'attack',
@@ -4595,7 +4613,7 @@ const CHARACTERS = [
         {
           type: 'charm',
           duration: 2,
-          prob: 0.7
+          prob: 0.6
         }
       ]
     }

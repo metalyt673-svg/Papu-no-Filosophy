@@ -718,6 +718,90 @@
     { id: 'mint10',          charId: 'mint_nte', name: 'Mint · Night City',     img: 'personajes/mint10.jpg', rarity: 'epic' },
     { id: 'mint11',          charId: 'mint_nte', name: 'Mint · Cheer',          img: 'personajes/mint11.jpg', rarity: 'epic' },
 
+    /* ——— Yumeko Jabami ——— */
+    { id: 'yumeko1',         charId: 'yumeko_jabami', name: 'Yumeko · Manic',       img: 'personajes/yumeko1.jpg',  rarity: 'legend' },
+    { id: 'yumeko2',         charId: 'yumeko_jabami', name: 'Yumeko · School',      img: 'personajes/yumeko2.jpg',  rarity: 'rare' },
+    { id: 'yumeko3',         charId: 'yumeko_jabami', name: 'Yumeko · Excited',     img: 'personajes/yumeko3.jpg',  rarity: 'epic' },
+    { id: 'yumeko4',         charId: 'yumeko_jabami', name: 'Yumeko · Cards',       img: 'personajes/yumeko4.jpg',  rarity: 'epic' },
+    { id: 'yumeko5',         charId: 'yumeko_jabami', name: 'Yumeko · Queen',       img: 'personajes/yumeko5.jpg',  rarity: 'legend' },
+    { id: 'yumeko6',         charId: 'yumeko_jabami', name: 'Yumeko · Deal',        img: 'personajes/yumeko6.jpg',  rarity: 'epic' },
+    { id: 'yumeko7',         charId: 'yumeko_jabami', name: 'Yumeko · Casino',      img: 'personajes/yumeko7.jpg',  rarity: 'epic' },
+    { id: 'yumeko8',         charId: 'yumeko_jabami', name: 'Yumeko · Artistic',    img: 'personajes/yumeko8.jpg',  rarity: 'rare' },
+    { id: 'yumeko9',         charId: 'yumeko_jabami', name: 'Yumeko · Formal',      img: 'personajes/yumeko9.jpg',  rarity: 'legend' },
+    { id: 'yumeko10',        charId: 'yumeko_jabami', name: 'Yumeko · Gamble',      img: 'personajes/yumeko10.jpg', rarity: 'epic' },
+    { id: 'yumeko_bunny',    charId: 'yumeko_jabami', name: 'Yumeko · Bunny',       img: 'personajes/yumeko11.jpg', rarity: 'event' },
+
+    /* ——— Kirara Hoshi ——— */
+    { id: 'kirara1',         charId: 'kirara_hoshi', name: 'Kirara · Starlight',   img: 'personajes/kirara1.jpg',  rarity: 'legend' },
+    { id: 'kirara2',         charId: 'kirara_hoshi', name: 'Kirara · Crop',        img: 'personajes/kirara2.jpg',  rarity: 'epic' },
+    { id: 'kirara3',         charId: 'kirara_hoshi', name: 'Kirara · Pop Star',    img: 'personajes/kirara3.jpg',  rarity: 'epic' },
+    { id: 'kirara4',         charId: 'kirara_hoshi', name: 'Kirara · Cafe',        img: 'personajes/kirara4.jpg',  rarity: 'rare' },
+    { id: 'kirara5',         charId: 'kirara_hoshi', name: 'Kirara · Poster',      img: 'personajes/kirara5.jpg',  rarity: 'legend' },
+
+    /* ——— Konan ——— */
+    { id: 'konan_chm',       charId: 'konan', name: 'Konan · Christmas',     img: 'personajes/konan1.jpg',  rarity: 'event' },
+    { id: 'konan2',          charId: 'konan', name: 'Konan · Paper Wings',   img: 'personajes/konan2.jpg',  rarity: 'legend' },
+    { id: 'konan3',          charId: 'konan', name: 'Konan · Qipao',         img: 'personajes/konan3.jpg',  rarity: 'epic' },
+    { id: 'konan_bunny',     charId: 'konan', name: 'Konan · Bunny',         img: 'personajes/konan4.jpg',  rarity: 'event' },
+    { id: 'konan5',          charId: 'konan', name: 'Konan · Festival',      img: 'personajes/konan5.jpg',  rarity: 'epic' },
+    { id: 'konan_summer',    charId: 'konan', name: 'Konan · Beach',         img: 'personajes/konan6.jpg',  rarity: 'event' },
+    { id: 'konan7',          charId: 'konan', name: 'Konan · Rain',          img: 'personajes/konan7.jpg',  rarity: 'epic' },
+    { id: 'konan8',          charId: 'konan', name: 'Konan · Plush',         img: 'personajes/konan8.jpg',  rarity: 'rare' },
+    { id: 'konan9',          charId: 'konan', name: 'Konan · Paper Storm',   img: 'personajes/konan9.jpg',  rarity: 'legend' },
+    { id: 'konan_frog',      charId: 'konan', name: 'Konan · Frog',          img: 'personajes/konan10.jpg', rarity: 'event' },
+    { id: 'konan11',         charId: 'konan', name: 'Konan · Street',        img: 'personajes/konan11.jpg', rarity: 'rare' },
+    { id: 'konan12',         charId: 'konan', name: 'Konan · Stage',         img: 'personajes/konan12.jpg', rarity: 'legend' },
+    { id: 'konan13',         charId: 'konan', name: 'Konan · Yukata',        img: 'personajes/konan13.jpg', rarity: 'epic' },
+
+    /* ——— Aqua ——— */
+    { id: 'aqua1',           charId: 'aqua', name: 'Aqua · Swimsuit',       img: 'personajes/aqua1.jpg',  rarity: 'epic' },
+    { id: 'aqua2',           charId: 'aqua', name: 'Aqua · Battle',         img: 'personajes/aqua2.jpg',  rarity: 'legend' },
+    { id: 'aqua_hw',         charId: 'aqua', name: 'Aqua · Halloween',      img: 'personajes/aqua3.jpg',  rarity: 'event' },
+    { id: 'aqua4',           charId: 'aqua', name: 'Aqua · Elegant',        img: 'personajes/aqua4.jpg',  rarity: 'legend' },
+    { id: 'aqua_summer',     charId: 'aqua', name: 'Aqua · Beach',          img: 'personajes/aqua5.jpg',  rarity: 'event' },
+    { id: 'aqua_chm',        charId: 'aqua', name: 'Aqua · Christmas',      img: 'personajes/aqua6.jpg',  rarity: 'event' },
+    { id: 'aqua7',           charId: 'aqua', name: 'Aqua · Drunk',          img: 'personajes/aqua7.jpg',  rarity: 'rare' },
+    { id: 'aqua_bunny',      charId: 'aqua', name: 'Aqua · Bunny',          img: 'personajes/aqua8.jpg',  rarity: 'event' },
+    { id: 'aqua9',           charId: 'aqua', name: 'Aqua · Water',          img: 'personajes/aqua9.jpg',  rarity: 'epic' },
+    { id: 'aqua_maid',       charId: 'aqua', name: 'Aqua · Maid',           img: 'personajes/aqua10.jpg', rarity: 'event' },
+    { id: 'aqua_summer2',    charId: 'aqua', name: 'Aqua · Magazine',       img: 'personajes/aqua11.jpg', rarity: 'event' },
+    { id: 'aqua12',          charId: 'aqua', name: 'Aqua · Classic',        img: 'personajes/aqua12.jpg', rarity: 'rare' },
+
+    /* ——— Orochimaru ——— */
+    { id: 'orochimaru1',     charId: 'orochimaru', name: 'Orochimaru · Snake Form',   img: 'personajes/orochimaru1.jpg', rarity: 'legend' },
+    { id: 'orochimaru2',     charId: 'orochimaru', name: 'Orochimaru · Tongue',       img: 'personajes/orochimaru2.jpg', rarity: 'epic' },
+    { id: 'orochimaru3',     charId: 'orochimaru', name: 'Orochimaru · Kusanagi',     img: 'personajes/orochimaru3.jpg', rarity: 'epic' },
+    { id: 'orochimaru4',     charId: 'orochimaru', name: 'Orochimaru · Summon',       img: 'personajes/orochimaru4.jpg', rarity: 'legend' },
+
+    /* ——— Orochi Girl ——— */
+    { id: 'orochigirl1',     charId: 'orochigirl', name: 'Orochi Girl · Mom',         img: 'personajes/orochigirl1.jpg', rarity: 'epic' },
+    { id: 'orochigirl_summer', charId: 'orochigirl', name: 'Orochi Girl · Beach',      img: 'personajes/orochigirl2.jpg', rarity: 'event' },
+    { id: 'orochigirl3',     charId: 'orochigirl', name: 'Orochi Girl · Seductive',   img: 'personajes/orochigirl3.jpg', rarity: 'legend' },
+    { id: 'orochigirl4',     charId: 'orochigirl', name: 'Orochi Girl · Snake\'s Pit', img: 'personajes/orochigirl4.jpg', rarity: 'epic' },
+
+    /* ——— Lilith ——— */
+    { id: 'lilith_bunny',    charId: 'lilith_fate', name: 'Lilith · Bunny',          img: 'personajes/lilith1.jpg',  rarity: 'event' },
+    { id: 'lilith2',         charId: 'lilith_fate', name: 'Lilith · Forbidden Fruit', img: 'personajes/lilith2.jpg',  rarity: 'legend' },
+    { id: 'lilith_summer',   charId: 'lilith_fate', name: 'Lilith · Street',         img: 'personajes/lilith3.jpg',  rarity: 'event' },
+    { id: 'lilith4',         charId: 'lilith_fate', name: 'Lilith · Morning',        img: 'personajes/lilith4.jpg',  rarity: 'rare' },
+    { id: 'lilith5',         charId: 'lilith_fate', name: 'Lilith · Snake Queen',    img: 'personajes/lilith5.jpg',  rarity: 'legend' },
+    { id: 'lilith_summer2',  charId: 'lilith_fate', name: 'Lilith · Car',            img: 'personajes/lilith6.jpg',  rarity: 'event' },
+    { id: 'lilith7',         charId: 'lilith_fate', name: 'Lilith · Cute',           img: 'personajes/lilith7.jpg',  rarity: 'epic' },
+    { id: 'lilith8',         charId: 'lilith_fate', name: 'Lilith · Skull',          img: 'personajes/lilith8.jpg',  rarity: 'epic' },
+    { id: 'lilith9',         charId: 'lilith_fate', name: 'Lilith · Elegant',        img: 'personajes/lilith9.jpg',  rarity: 'epic' },
+    { id: 'lilith_cheer',    charId: 'lilith_fate', name: 'Lilith · Cheer',          img: 'personajes/lilith10.jpg', rarity: 'event' },
+    { id: 'lilith_bunny2',   charId: 'lilith_fate', name: 'Lilith · Bunny Black',    img: 'personajes/lilith11.jpg', rarity: 'event' },
+    { id: 'lilith_summer3',  charId: 'lilith_fate', name: 'Lilith · Pool',           img: 'personajes/lilith12.jpg', rarity: 'event' },
+    { id: 'lilith13',        charId: 'lilith_fate', name: 'Lilith · Lollipop',       img: 'personajes/lilith13.jpg', rarity: 'legend' },
+
+    /* ——— Hibiscus ——— */
+    { id: 'hibiscus1',       charId: 'hibiscus', name: 'Hibiscus · Flute',         img: 'personajes/hibiscus1.jpg', rarity: 'epic' },
+    { id: 'hibiscus2',       charId: 'hibiscus', name: 'Hibiscus · Casual',        img: 'personajes/hibiscus2.jpg', rarity: 'rare' },
+    { id: 'hibiscus3',       charId: 'hibiscus', name: 'Hibiscus · Elegant',       img: 'personajes/hibiscus3.jpg', rarity: 'legend' },
+    { id: 'hibiscus4',       charId: 'hibiscus', name: 'Hibiscus · Formal',        img: 'personajes/hibiscus4.jpg', rarity: 'epic' },
+    { id: 'hibiscus5',       charId: 'hibiscus', name: 'Hibiscus · Winter',        img: 'personajes/hibiscus5.jpg', rarity: 'legend' },
+    { id: 'hibiscus6',       charId: 'hibiscus', name: 'Hibiscus · Battle',        img: 'personajes/hibiscus6.jpg', rarity: 'epic' },
+
         // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
   ];
 
@@ -833,7 +917,25 @@
     tokoyami_hw: true,
     tokoyami_bunny: true,
     tokoyami_summer2: true,
-    mint_summer: true
+    mint_summer: true,
+    yumeko_bunny: true,
+    konan_chm: true,
+    konan_bunny: true,
+    konan_summer: true,
+    konan_frog: true,
+    aqua_hw: true,
+    aqua_summer: true,
+    aqua_chm: true,
+    aqua_bunny: true,
+    aqua_maid: true,
+    aqua_summer2: true,
+    orochigirl_summer: true,
+    lilith_bunny: true,
+    lilith_summer: true,
+    lilith_summer2: true,
+    lilith_cheer: true,
+    lilith_bunny2: true,
+    lilith_summer3: true
   };
 
   const RARITY = {
@@ -845,7 +947,7 @@
   };
   const PRICES = { common: 150, rare: 300, epic: 600, legend: 1500, event: 2000 };       // monedas
   const RARITY_WEIGHT = { common: 5, rare: 3, epic: 1.3, event: 0.2, legend: 0.5 };       // % de cada RAREZA en los cofres (no por skin). Si una rareza no tiene skins disponibles, el resto se reparte hasta sumar 100 %
-  const COINS_MIN = 150, COINS_MAX = 450;                        // monedas por cofre
+  const COINS_MIN = 15, COINS_MAX = 45;                        // monedas por cofre
   const SKIN_CHANCE = 0.12;                                    // 12 % de que un cofre dé una skin
   const CHEST_PRICE = 50;                                      // cofre normal de la tienda (monedas)
   /* COFRES Y PAQUETES DE SKINS GARANTIZADAS DE LA TIENDA (siempre dan skins que aún no tengas).
