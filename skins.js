@@ -802,6 +802,89 @@
     { id: 'hibiscus5',       charId: 'hibiscus', name: 'Hibiscus · Winter',        img: 'personajes/hibiscus5.jpg', rarity: 'legend' },
     { id: 'hibiscus6',       charId: 'hibiscus', name: 'Hibiscus · Battle',        img: 'personajes/hibiscus6.jpg', rarity: 'epic' },
 
+    /* ——— Ganyu ——— */
+    { id: 'ganyu_maid',      charId: 'ganyu_genshin', name: 'Ganyu · Maid',            img: 'personajes/ganyu1.jpg',  rarity: 'event' },
+    { id: 'ganyu_hw',        charId: 'ganyu_genshin', name: 'Ganyu · Ghost',           img: 'personajes/ganyu2.jpg',  rarity: 'event' },
+    { id: 'ganyu3',          charId: 'ganyu_genshin', name: 'Ganyu · Glasses',         img: 'personajes/ganyu3.jpg',  rarity: 'rare' },
+    { id: 'ganyu4',          charId: 'ganyu_genshin', name: 'Ganyu · Meadow',          img: 'personajes/ganyu4.jpg',  rarity: 'legend' },
+    { id: 'ganyu5',          charId: 'ganyu_genshin', name: 'Ganyu · Cryo',            img: 'personajes/ganyu5.jpg',  rarity: 'legend' },
+    { id: 'ganyu_summer',    charId: 'ganyu_genshin', name: 'Ganyu · Beach',           img: 'personajes/ganyu10.jpg', rarity: 'event' },
+    { id: 'ganyu_summer2',   charId: 'ganyu_genshin', name: 'Ganyu · Bikini',          img: 'personajes/ganyu6.jpg',  rarity: 'event' },
+    { id: 'ganyu7',          charId: 'ganyu_genshin', name: 'Ganyu · Festival',        img: 'personajes/ganyu7.jpg',  rarity: 'epic' },
+    { id: 'ganyu8',          charId: 'ganyu_genshin', name: 'Ganyu · Captain',         img: 'personajes/ganyu8.jpg',  rarity: 'legend' },
+    { id: 'ganyu_chm',       charId: 'ganyu_genshin', name: 'Ganyu · Christmas',       img: 'personajes/ganyu9.jpg',  rarity: 'event' },
+
+    /* ——— Ankha ——— */
+    { id: 'ankha1',          charId: 'ankha_animalcrossing', name: 'Ankha · Classic',         img: 'personajes/ankha1.jpg', rarity: 'legend' },
+    { id: 'ankha_summer',    charId: 'ankha_animalcrossing', name: 'Ankha · Car Wash',        img: 'personajes/ankha2.jpg', rarity: 'event' },
+    { id: 'ankha_chm',       charId: 'ankha_animalcrossing', name: 'Ankha · Christmas',       img: 'personajes/ankha3.jpg', rarity: 'event' },
+    { id: 'ankha4',          charId: 'ankha_animalcrossing', name: 'Ankha · Confused',        img: 'personajes/ankha4.jpg', rarity: 'rare' },
+    { id: 'ankha5',          charId: 'ankha_animalcrossing', name: 'Ankha · White Dress',     img: 'personajes/ankha5.jpg', rarity: 'epic' },
+    { id: 'ankha6',          charId: 'ankha_animalcrossing', name: 'Ankha · Casual',          img: 'personajes/ankha6.jpg', rarity: 'epic' },
+    { id: 'ankha7',          charId: 'ankha_animalcrossing', name: 'Ankha · Goth',            img: 'personajes/ankha7.jpg', rarity: 'legend' },
+
+    /* ——— Emilou ——— */
+    { id: 'emilou1',         charId: 'emilou', name: 'Emilou · Resurrección',    img: 'personajes/emilou1.jpg', rarity: 'legend' },
+    { id: 'emilou2',         charId: 'emilou', name: 'Emilou · Casual',          img: 'personajes/emilou2.jpg', rarity: 'rare' },
+    { id: 'emilou3',         charId: 'emilou', name: 'Emilou · Monkey',          img: 'personajes/emilou3.jpg', rarity: 'epic' },
+    { id: 'emilou4',         charId: 'emilou', name: 'Emilou · Hollow Form',     img: 'personajes/emilou4.jpg', rarity: 'legend' },
+    { id: 'emilou5',         charId: 'emilou', name: 'Emilou · Antler',          img: 'personajes/emilou5.jpg', rarity: 'legend' },
+
+    /* ——— Nihilux ——— */
+    { id: 'nihilux1',        charId: 'nihilux', name: 'Nihilux · Cyber Idol',     img: 'personajes/nihilux1.jpg', rarity: 'legend' },
+    { id: 'nihilux2',        charId: 'nihilux', name: 'Nihilux · Mask',           img: 'personajes/nihilux2.jpg', rarity: 'legend' },
+    { id: 'nihilux3',        charId: 'nihilux', name: 'Nihilux · Queen',          img: 'personajes/nihilux3.jpg', rarity: 'legend' },
+    { id: 'nihilux4',        charId: 'nihilux', name: 'Nihilux · Sunglasses',     img: 'personajes/nihilux4.jpg', rarity: 'epic' },
+    { id: 'nihilux_summer',  charId: 'nihilux', name: 'Nihilux · Bikini',         img: 'personajes/nihilux5.jpg', rarity: 'event' },
+    { id: 'nihilux6',        charId: 'nihilux', name: 'Nihilux · Hacker',         img: 'personajes/nihilux6.jpg', rarity: 'epic' },
+    { id: 'nihilux7',        charId: 'nihilux', name: 'Nihilux · Teacher',        img: 'personajes/nihilux7.jpg', rarity: 'epic' },
+
+    /* ——— Soukaku ——— */
+    { id: 'soukaku1',        charId: 'soukaku', name: 'Soukaku · Casual',         img: 'personajes/soukaku1.jpg', rarity: 'epic' },
+    { id: 'soukaku2',        charId: 'soukaku', name: 'Soukaku · Hooded',         img: 'personajes/soukaku2.jpg', rarity: 'legend' },
+    { id: 'soukaku3',        charId: 'soukaku', name: 'Soukaku · Combat',         img: 'personajes/soukaku3.jpg', rarity: 'epic' },
+    { id: 'soukaku_autumn',  charId: 'soukaku', name: 'Soukaku · Autumn',         img: 'personajes/soukaku4.jpg', rarity: 'event' },
+    { id: 'soukaku5',        charId: 'soukaku', name: 'Soukaku · Snack',          img: 'personajes/soukaku5.jpg', rarity: 'epic' },
+    { id: 'soukaku6',        charId: 'soukaku', name: 'Soukaku · Shrine',         img: 'personajes/soukaku6.jpg', rarity: 'legend' },
+    { id: 'soukaku7',        charId: 'soukaku', name: 'Soukaku · Ice Cream',      img: 'personajes/soukaku7.jpg', rarity: 'rare' },
+    { id: 'soukaku8',        charId: 'soukaku', name: 'Soukaku · Dynamic',        img: 'personajes/soukaku8.jpg', rarity: 'legend' },
+    { id: 'soukaku9',        charId: 'soukaku', name: 'Soukaku · Masked',         img: 'personajes/soukaku9.jpg', rarity: 'legend' },
+    { id: 'soukaku_summer',  charId: 'soukaku', name: 'Soukaku · Bikini',         img: 'personajes/soukaku10.jpg', rarity: 'event' },
+
+    /* ——— Zani ——— */
+    { id: 'zani1',           charId: 'zani', name: 'Zani · Casual',            img: 'personajes/zani1.jpg', rarity: 'rare' },
+    { id: 'zani2',           charId: 'zani', name: 'Zani · Office',            img: 'personajes/zani2.jpg', rarity: 'epic' },
+    { id: 'zani3',           charId: 'zani', name: 'Zani · Soft',              img: 'personajes/zani3.jpg', rarity: 'epic' },
+    { id: 'zani4',           charId: 'zani', name: 'Zani · Tank',              img: 'personajes/zani4.jpg', rarity: 'legend' },
+    { id: 'zani_summer',     charId: 'zani', name: 'Zani · Black Bikini',      img: 'personajes/zani5.jpg', rarity: 'event' },
+    { id: 'zani_summer2',    charId: 'zani', name: 'Zani · Hawaiian',          img: 'personajes/zani6.jpg', rarity: 'event' },
+    { id: 'zani7',           charId: 'zani', name: 'Zani · Tea Time',          img: 'personajes/zani7.jpg', rarity: 'epic' },
+    { id: 'zani_summer3',    charId: 'zani', name: 'Zani · Gold Bikini',       img: 'personajes/zani8.jpg', rarity: 'event' },
+    { id: 'zani_summer4',    charId: 'zani', name: 'Zani · Pool',              img: 'personajes/zani9.jpg', rarity: 'event' },
+    { id: 'zani10',          charId: 'zani', name: 'Zani · Combat',            img: 'personajes/zani10.jpg', rarity: 'legend' },
+
+    /* ——— Reze ——— */
+    { id: 'reze_cat',        charId: 'reze', name: 'Reze · Cat Ears',          img: 'personajes/reze1.jpg', rarity: 'event' },
+    { id: 'reze2',           charId: 'reze', name: 'Reze · Flowers',           img: 'personajes/reze2.jpg', rarity: 'legend' },
+    { id: 'reze3',           charId: 'reze', name: 'Reze · Daisy',             img: 'personajes/reze3.jpg', rarity: 'rare' },
+    { id: 'reze4',           charId: 'reze', name: 'Reze · Dramatic',          img: 'personajes/reze4.jpg', rarity: 'epic' },
+    { id: 'reze5',           charId: 'reze', name: 'Reze · Bomb Hybrid',       img: 'personajes/reze5.jpg', rarity: 'legend' },
+    { id: 'reze6',           charId: 'reze', name: 'Reze · Candy Blast',       img: 'personajes/reze6.jpg', rarity: 'epic' },
+    { id: 'reze7',           charId: 'reze', name: 'Reze · Artistic',          img: 'personajes/reze7.jpg', rarity: 'epic' },
+    { id: 'reze8',           charId: 'reze', name: 'Reze · Pose',              img: 'personajes/reze8.jpg', rarity: 'epic' },
+    { id: 'reze9',           charId: 'reze', name: 'Reze · Cover',             img: 'personajes/reze9.jpg', rarity: 'rare' },
+    { id: 'reze_summer',     charId: 'reze', name: 'Reze · Pool',              img: 'personajes/reze10.jpg', rarity: 'event' },
+    { id: 'reze11',          charId: 'reze', name: 'Reze · Sporty',            img: 'personajes/reze11.jpg', rarity: 'rare' },
+    { id: 'reze_festival',   charId: 'reze', name: 'Reze · Yukata',            img: 'personajes/reze12.jpg', rarity: 'event' },
+    { id: 'reze13',          charId: 'reze', name: 'Reze · Festival',          img: 'personajes/reze13.jpg', rarity: 'epic' },
+    { id: 'reze14',          charId: 'reze', name: 'Reze · Hybrid Smoke',      img: 'personajes/reze14.jpg', rarity: 'legend' },
+    { id: 'reze15',          charId: 'reze', name: 'Reze · School',            img: 'personajes/reze15.jpg', rarity: 'epic' },
+    { id: 'reze16',          charId: 'reze', name: 'Reze · Blue Bow',          img: 'personajes/reze16.jpg', rarity: 'epic' },
+    { id: 'reze_bunny',      charId: 'reze', name: 'Reze · Bunny',             img: 'personajes/reze17.jpg', rarity: 'event' },
+    { id: 'reze18',          charId: 'reze', name: 'Reze · Bloom',             img: 'personajes/reze18.jpg', rarity: 'epic' },
+    { id: 'reze19',          charId: 'reze', name: 'Reze · Inferno',           img: 'personajes/reze19.jpg', rarity: 'legend' },
+    { id: 'reze_maid',       charId: 'reze', name: 'Reze · Maid',              img: 'personajes/reze20.jpg', rarity: 'event' },
+
         // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
   ];
 
@@ -935,7 +1018,26 @@
     lilith_summer2: true,
     lilith_cheer: true,
     lilith_bunny2: true,
-    lilith_summer3: true
+    lilith_summer3: true,
+    ganyu_maid: true,
+    ganyu_hw: true,
+    ganyu_summer: true,
+    ganyu_summer2: true,
+    ganyu_chm: true,
+    ankha_summer: true,
+    ankha_chm: true,
+    nihilux_summer: true,
+    soukaku_autumn: true,
+    soukaku_summer: true,
+    zani_summer: true,
+    zani_summer2: true,
+    zani_summer3: true,
+    zani_summer4: true,
+    reze_cat: true,
+    reze_summer: true,
+    reze_festival: true,
+    reze_bunny: true,
+    reze_maid: true
   };
 
   const RARITY = {
