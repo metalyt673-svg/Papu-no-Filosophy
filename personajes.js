@@ -14317,7 +14317,7 @@ const CHARACTERS = [
       baseCooldown: 6, type: 'attack', effect: null
     } ]
     },
-	{ id: 'dyrroth', name: 'Dyrroth',  img: 'personajes/dyrroth.jpg',  classes: ['atacante'], hp: 140, atk: 30, def: 10, spd: 11,
+	{ id: 'dyrroth', name: 'Dyrroth',  img: 'personajes/dyrroth.jpg',  classes: ['atacante'], hp: 140, atk: 30, def: 18, spd: 13,
   passive: { type: 'tripleBasic', name: 'Furia del abismo', desc: 'Cada 3 veces que conecta Garras letales, el tercer golpe daña a TODOS los enemigos y Dyrroth recupera un 15% de su vida máxima.', moveId: 'dyr1', every: 3, healPercent: 0.15, readyDesc: '¡Golpe cargado! Daña a TODOS los enemigos y cura a Dyrroth' },
   moves: [
     { id: 'dyr1', name: 'Garras letales', power: 20, acc: 0.95, desc: 'Ataque básico. Cada 3 golpes, el siguiente es AoE y lo cura', 
