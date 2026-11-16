@@ -231,6 +231,31 @@
       ],
       rewards: { coins: 600, chests: 3, firstCoins: 600, firstChests: 3, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.26 }
     },
+	{
+      id: 'coopboss_zombie_chef', name: 'Zombie Chef', icon: '👨‍🍳', c1: '#7c3aed', c2: '#12062b', tier: 3,
+      img: 'bosses_cooperativo/zombie_chef.png',
+      music: 'bosses_cooperativo/music/zombie_chef.mp3',
+      tagline: "Ex school cafeteria chef who's got revived by Clyde with the power of toxic alien goo in a form of Nazi Zombie.",
+      hp: 1100, atk: 27, def: 20, spd: 15, ccResist: 0.7,
+      phases: [
+        { at: 0.1, log: 'Zombie Chef is furious! Speed increases massively!', spd: 10 }
+      ],
+      moves: [
+        { id: 'chef1', name: 'Spatula Attack', power: 27, acc: 0.7, baseCooldown: 1, type: 'attack',
+          desc: 'Swings his giant cooking spatula and strikes you.' },
+        { id: 'chef2', name: 'Chocolate Salty Balls', power: 14, acc: 0.95, baseCooldown: 1, type: 'attack',
+          effects: [{ type: 'damageOverTime', status: 'poison', value: 7, duration: 2, prob: 0.85 }, { type: 'healReduction', value: 30, duration: 2 }],
+          desc: 'Pulls out chocolate salty balls from his chest cavity inflicts and hurles them at you, dealing poison damage and reducing healing.' },
+        { id: 'chef3', name: 'Hello Children (Zombie Bite)', power: 90, acc: 0.5, baseCooldown: 4, type: 'attack', aiWeight: 0.8,
+          effects: [{ type: 'lifesteal', value: 90, duration: 1 }, { type: 'selfHealPct', value: 0.02 }],
+          desc: 'Chef lunges forward to bite one of your characters.' },
+        { id: 'chef4', name: 'ULTRA: Flaming Suicide Rush', power: 40, acc: 0.95, baseCooldown: 99, type: 'attack', aoe: true, ult: true, 
+		  selfDestruct: true, finalAt: 0.1,
+          effects: [{ type: 'damageOverTime', status: 'burn', value: 8, duration: 2, prob: 1 }],
+          desc: 'Zombie Chef ignites himself and charges at both opponents, inflicting massive damage and burning them. He dies after the attack.' }
+      ],
+      rewards: { coins: 600, chests: 3, firstCoins: 600, firstChests: 3, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.26 }
+    },
   ];
   BOSSES.forEach(b => {
     if (!b.img) b.img = bossSvg(b.icon, b.c1, b.c2);
@@ -816,7 +841,18 @@
       const mv = chooseBossMove(boss);
       acted = true;
       if (!mv) { safeLog(`${esc(boss.name)} no puede hacer nada este turno.`); W.endTurn(boss); }
-      else await orig.onUseMove.call(W, 'p2', mv.id);
+      else {
+		await orig.onUseMove.call(W, 'p2', mv.id);
+		if (mv.selfDestruct && state.phase === 'battle') {
+			boss.hp = 0;
+			boss.shield = 0;
+
+			safeLog(`💥 ${esc(boss.name)} self-destroys with ${esc(mv.name)}!`);
+
+			W.updateArena();
+			checkEnd();
+		}
+	  }
     } finally {
       if (CO.bossTok === tok) CO.bossBusy = false;
     }
@@ -828,6 +864,13 @@
     if (!avail.length) return null;
     const fronts = frontAlive().length;
     const hpPct = boss.hp / boss.maxHp;
+	const finalMove = boss.moves.find(
+		m => m.selfDestruct &&
+		m.finalAt != null &&
+		hpPct <= m.finalAt &&
+		m.cd === 0
+	);
+	if (finalMove) return finalMove;
     const ws = avail.map(m => {
       let w = Number(m.aiWeight) || 1;
       if (m.aoe) w *= fronts >= 2 ? 1.7 : 0.6;
