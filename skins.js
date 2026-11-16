@@ -737,6 +737,8 @@
     { id: 'kirara3',         charId: 'kirara_hoshi', name: 'Kirara · Pop Star',    img: 'personajes/kirara3.jpg',  rarity: 'epic' },
     { id: 'kirara4',         charId: 'kirara_hoshi', name: 'Kirara · Cafe',        img: 'personajes/kirara4.jpg',  rarity: 'rare' },
     { id: 'kirara5',         charId: 'kirara_hoshi', name: 'Kirara · Poster',      img: 'personajes/kirara5.jpg',  rarity: 'legend' },
+    { id: 'kirara6',         charId: 'kirara_hoshi', name: 'Kirara · Bandaged',    img: 'personajes/kirara6.jpg',  rarity: 'legend' },
+    { id: 'kirara7',         charId: 'kirara_hoshi', name: 'Kirara · Choker',      img: 'personajes/kirara7.jpg',  rarity: 'epic' },
 
     /* ——— Konan ——— */
     { id: 'konan_chm',       charId: 'konan', name: 'Konan · Christmas',     img: 'personajes/konan1.jpg',  rarity: 'event' },
