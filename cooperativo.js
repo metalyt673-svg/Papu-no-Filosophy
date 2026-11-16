@@ -859,9 +859,9 @@
     if (acted) afterAction();
   }
 
-  function chooseBossMove(boss) {
-    const hpPct = boss.hp / boss.maxHp;
-	const finalMove = boss.moves.find(+
+function chooseBossMove(boss) {
+	const hpPct = boss.hp / boss.maxHp;
+	const finalMove = boss.moves.find(m =>
 		m.finalAt != null &&
 		hpPct <= m.finalAt &&
 		m.cd === 0
@@ -869,24 +869,24 @@
 
 	if (finalMove) return finalMove;
 
-    const avail = boss.moves.filter(m => m.cd === 0 && m.finalAt == null);
-    if (!avail.length) return null;
-    const fronts = frontAlive().length;
-    const ws = avail.map(m => {
-      let w = Number(m.aiWeight) || 1;
-      if (m.aoe) w *= fronts >= 2 ? 1.7 : 0.6;
-      if (m.ult) w *= 3.5;
-      if (m.type === 'support') {
-        w *= hpPct > 0.7 ? 0.25 : 0.9;
-        if (boss.shield > 0 && (m.effects || []).some(e => e.type === 'shield')) w *= 0.2;
-      }
-      return Math.max(0.01, w);
-    });
-    const total = ws.reduce((a, b) => a + b, 0);
-    let r = rnd() * total;
-    for (let i = 0; i < avail.length; i++) { r -= ws[i]; if (r <= 0) return avail[i]; }
-    return avail[avail.length - 1];
-  }
+	const avail = boss.moves.filter(m => m.cd === 0 && m.finalAt == null);
+	if (!avail.length) return null;
+	const fronts = frontAlive().length;
+	const ws = avail.map(m => {
+		let w = Number(m.aiWeight) || 1;
+		if (m.aoe) w *= fronts >= 2 ? 1.7 : 0.6;
+		if (m.ult) w *= 3.5;
+		if (m.type === 'support') {
+		w *= hpPct > 0.7 ? 0.25 : 0.9;
+		if (boss.shield > 0 && (m.effects || []).some(e => e.type === 'shield')) w *= 0.2;
+		}
+		return Math.max(0.01, w);
+	});
+	const total = ws.reduce((a, b) => a + b, 0);
+	let r = rnd() * total;
+	for (let i = 0; i < avail.length; i++) { r -= ws[i]; if (r <= 0) return avail[i]; }
+	return avail[avail.length - 1];
+}
 
   function applyPhases() {
     const boss = bossChar();
