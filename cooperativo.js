@@ -254,7 +254,7 @@
           effects: [{ type: 'damageOverTime', status: 'burn', value: 8, duration: 2, prob: 1 }],
           desc: 'Zombie Chef ignites himself and charges at both opponents, inflicting massive damage and burning them. He dies after the attack.' }
       ],
-      rewards: { coins: 600, chests: 3, firstCoins: 600, firstChests: 3, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.26 }
+      rewards: { coins: 0, chests: 0, firstCoins: 600, firstChests: 3, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.26 }
     },
   ];
   BOSSES.forEach(b => {
@@ -860,17 +860,18 @@
   }
 
   function chooseBossMove(boss) {
-    const avail = boss.moves.filter(m => m.cd === 0);
-    if (!avail.length) return null;
-    const fronts = frontAlive().length;
     const hpPct = boss.hp / boss.maxHp;
-	const finalMove = boss.moves.find(
-		m => m.selfDestruct &&
+	const finalMove = boss.moves.find(+
 		m.finalAt != null &&
 		hpPct <= m.finalAt &&
 		m.cd === 0
 	);
+
 	if (finalMove) return finalMove;
+
+    const avail = boss.moves.filter(m => m.cd === 0 && m.finalAt == null);
+    if (!avail.length) return null;
+    const fronts = frontAlive().length;
     const ws = avail.map(m => {
       let w = Number(m.aiWeight) || 1;
       if (m.aoe) w *= fronts >= 2 ? 1.7 : 0.6;
