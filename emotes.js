@@ -65,19 +65,23 @@
     '739545-sleep.png',
     '388298-catgirl.gif',
     '16794-jhu.gif',
-    '267549-catgirlcool.png'
+    '267549-catgirlcool.png',
+	'woody-dissapointeed.webp',
+	'komabummer.webp',
+	'1150135023765303387.webp',
+	'47a99ab59d6d91cf2b419f53357c63ff.jpg',
   ];
 
   /* Qué emotes usa la IA según su "estado de ánimo". */
   const MOODS = {
     greet: ['4880-gojo.gif', '626614-hatsunemiku.png', '709181-hatsunemiku.png', '126240-merucozy.png', '772968-kawaii.png', '29302-okay.gif', '388298-catgirl.gif', '727036-y-hug-az.gif'],
-    taunt: ['233341-smug.png', '594644-merutease.png', '355167-shikamarunarawink.png', '215443-hehe.gif', '706618-hhhahaah.png', '970307-funny.gif', '860574-thelarpisreal.png', '267549-catgirlcool.png'],
+    taunt: ['233341-smug.png', '594644-merutease.png', '355167-shikamarunarawink.png', '215443-hehe.gif', '706618-hhhahaah.png', '970307-funny.gif', '860574-thelarpisreal.png', '267549-catgirlcool.png', '1150135023765303387.webp'],
     hurt:  ['384704-merushock.png', '940421-meruhmph.png', '953620-bruh.png', '975785-hmmm.png', '282817-panickedno.gif', '988425-ohmygod.gif'],
     kill:  ['233341-smug.png', '215443-hehe.gif', '706618-hhhahaah.png', '608482-osaka.gif', '355167-shikamarunarawink.png', '970307-funny.gif', '267549-catgirlcool.png'],
-    lost:  ['384704-merushock.png', '953620-bruh.png', '940421-meruhmph.png', '993008-mhmmm.png', '282817-panickedno.gif', '988425-ohmygod.gif'],
+    lost:  ['384704-merushock.png', '953620-bruh.png', '940421-meruhmph.png', '993008-mhmmm.png', '282817-panickedno.gif', '988425-ohmygod.gif', 'komabummer.webp', 'woody-dissapointeed.webp', '47a99ab59d6d91cf2b419f53357c63ff.jpg'],
     win:   ['233341-smug.png', '706618-hhhahaah.png', '215443-hehe.gif', '4880-gojo.gif', '594644-merutease.png', '388298-catgirl.gif', '267549-catgirlcool.png', '16794-jhu.gif'],
-    defeat:['953620-bruh.png', '384704-merushock.png', '940421-meruhmph.png', '126240-merucozy.png', '282817-panickedno.gif', '988425-ohmygod.gif', '727036-y-hug-az.gif'],
-    idle:  ['975785-hmmm.png', '993008-mhmmm.png', '277773-merupopcorn.png', '422176-asa.png', '958845-osaka.gif', '380069-chilled.png', '739545-sleep.png'],
+    defeat:['953620-bruh.png', '384704-merushock.png', '940421-meruhmph.png', '126240-merucozy.png', '282817-panickedno.gif', '988425-ohmygod.gif', '727036-y-hug-az.gif', 'komabummer.webp', 'woody-dissapointeed.webp'],
+    idle:  ['975785-hmmm.png', '993008-mhmmm.png', '277773-merupopcorn.png', '422176-asa.png', '958845-osaka.gif', '380069-chilled.png', '739545-sleep.png', '1150135023765303387.webp'],
     reply: ['594644-merutease.png', '215443-hehe.gif', '772968-kawaii.png', '958845-osaka.gif', '975785-hmmm.png', '706618-hhhahaah.png', '29302-okay.gif', '970307-funny.gif', '16794-jhu.gif']
   };
 
