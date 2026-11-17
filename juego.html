@@ -574,6 +574,109 @@
       margin-top:20px;
     }
 
+    /* ---------- Fondo del juego (carpeta background/fondo1..8.png) ---------- */
+    /* El elemento es un 16% más grande que la pantalla para poder desplazarlo
+       de una esquina a otra sin que se vean bordes vacíos. */
+    #app-bg{
+      position:fixed;
+      top:-8%;
+      left:-8%;
+      width:116%;
+      height:116%;
+      z-index:-1;
+      pointer-events:none;
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+      display:none;
+      will-change:transform;
+      animation:bgDrift 45s ease-in-out infinite alternate;
+    }
+
+    /* Movimiento en bucle: esquina superior izquierda ⇄ esquina inferior derecha.
+       Para cambiar la velocidad, modifica los 45s de arriba (más = más lento). */
+    @keyframes bgDrift{
+      from{ transform:translate3d(-6%,-6%,0); }
+      to{   transform:translate3d(6%,6%,0); }
+    }
+
+    /* Capa oscura encima de la imagen para que el texto siga siendo legible */
+    #app-bg::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg,rgba(2,6,23,.35),rgba(2,6,23,.55));
+    }
+
+    html.has-bg #app-bg{display:block}
+
+    /* Con fondo activo, las pantallas a pantalla completa se vuelven translúcidas
+       para dejar ver la imagen. */
+    html.has-bg #main-menu{
+      background:
+        radial-gradient(circle at 50% 35%,rgba(139,92,246,.10),transparent 30%),
+        rgba(2,6,23,.28);
+    }
+    html.has-bg #ban-phase,
+    html.has-bg #glossary-screen,
+    html.has-bg #story-screen{
+      background:rgba(2,6,23,.55);
+    }
+    html.has-bg .card{
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.015)),
+        rgba(11,20,39,.78);
+    }
+
+    /* Selector de fondo en Configuración */
+    .bg-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
+      gap:10px;
+    }
+
+    .bg-option{
+      position:relative;
+      height:68px;
+      padding:0;
+      overflow:hidden;
+      border:1px solid rgba(148,163,184,.16);
+      border-radius:12px;
+      background-color:#071122;
+      background-size:cover;
+      background-position:center;
+      cursor:pointer;
+      transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease;
+    }
+
+    .bg-option:hover{
+      transform:translateY(-2px);
+      border-color:rgba(167,139,250,.45);
+    }
+
+    .bg-option.active{
+      border-color:rgba(139,92,246,.85);
+      box-shadow:0 0 0 2px rgba(139,92,246,.25);
+    }
+
+    .bg-option.missing{
+      opacity:.5;
+      border-style:dashed;
+    }
+
+    .bg-option-label{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      padding:3px 6px;
+      font-size:11px;
+      font-weight:700;
+      text-align:center;
+      color:#fff;
+      background:rgba(2,6,23,.72);
+    }
+
     /* ---------- Fase de baneos ---------- */
     #ban-phase{
       position:fixed;
@@ -2001,6 +2104,7 @@
   </style>
 </head>
 <body>
+  <div id="app-bg"></div>
   <audio id="battle-music" loop>
     <source src="battle-music.mp3" type="audio/mpeg">
   </audio>
@@ -2266,7 +2370,17 @@
   <div id="settings-modal" class="modal" style="display:none">
     <div class="settings-card">
       <h3>⚙️ Configuración</h3>
-      <p class="small">Elige la música de fondo que sonará durante la batalla.</p>
+      <p class="small">Personaliza el fondo del juego y la música.</p>
+
+      <div class="settings-section">
+        <h4>🖼️ Fondo del juego</h4>
+        <div id="bg-list" class="bg-grid"></div>
+        <div id="bg-status" class="settings-status"></div>
+        <div class="small" style="line-height:1.7;margin-top:6px">
+          Guarda tus imágenes en la carpeta <strong>background</strong> con los nombres
+          <strong>fondo1.png</strong> … <strong>fondo8.png</strong>.
+        </div>
+      </div>
 
       <div class="settings-section">
         <h4>🎵 Música de fondo</h4>
@@ -2698,6 +2812,98 @@
       });
     }
 
+    /* ============================================================
+       FONDO DEL JUEGO
+       Imágenes en la carpeta "background": fondo1.png … fondo8.png
+       ============================================================ */
+    const BG_COUNT = 8;
+    const BG_OPTIONS = [{ id:'none', name:'Sin fondo', src:'' }];
+    for(let i = 1; i <= BG_COUNT; i++){
+      BG_OPTIONS.push({ id:'fondo' + i, name:'Fondo ' + i, src:'background/fondo' + i + '.png' });
+    }
+
+    const bgSettings = { id: 'fondo1' };
+    const bgStatus = {};
+    let bgChecked = false;
+
+    function saveBgSettings(){
+      try{ localStorage.setItem('batalla-bg-config', JSON.stringify(bgSettings)); }catch(e){}
+    }
+
+    function loadBgSettings(){
+      try{
+        const raw = localStorage.getItem('batalla-bg-config');
+        if(!raw) return;
+        const saved = JSON.parse(raw);
+        if(saved && BG_OPTIONS.some(o => o.id === saved.id)) bgSettings.id = saved.id;
+      }catch(e){}
+    }
+
+    function getCurrentBg(){
+      return BG_OPTIONS.find(o => o.id === bgSettings.id) || BG_OPTIONS[0];
+    }
+
+    function applyBackground(){
+      const bg = getCurrentBg();
+      const el = document.getElementById('app-bg');
+      if(bg.src){
+        el.style.backgroundImage = 'url("' + bg.src + '")';
+        document.documentElement.classList.add('has-bg');
+      } else {
+        el.style.backgroundImage = '';
+        document.documentElement.classList.remove('has-bg');
+      }
+    }
+
+    function setBgStatus(msg, kind){
+      const el = document.getElementById('bg-status');
+      if(!el) return;
+      el.className = 'settings-status' + (kind ? ' ' + kind : '');
+      el.innerText = msg || '';
+    }
+
+    function checkBackgrounds(){
+      if(bgChecked) return;
+      bgChecked = true;
+      BG_OPTIONS.forEach(opt => {
+        if(!opt.src) return;
+        const probe = new Image();
+        probe.onload = () => { bgStatus[opt.id] = 'ok'; renderBgList(); };
+        probe.onerror = () => { bgStatus[opt.id] = 'missing'; renderBgList(); };
+        probe.src = opt.src;
+      });
+    }
+
+    function renderBgList(){
+      const cont = document.getElementById('bg-list');
+      if(!cont) return;
+      cont.innerHTML = '';
+      BG_OPTIONS.forEach(opt => {
+        const missing = bgStatus[opt.id] === 'missing';
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'bg-option' + (opt.id === bgSettings.id ? ' active' : '') + (missing ? ' missing' : '');
+        if(opt.src && !missing) btn.style.backgroundImage = 'url("' + opt.src + '")';
+        btn.onclick = () => {
+          bgSettings.id = opt.id;
+          saveBgSettings();
+          applyBackground();
+          renderBgList();
+          if(!opt.src) setBgStatus('Sin imagen de fondo.', 'ok');
+          else if(missing) setBgStatus('Falta el archivo «' + opt.src + '».', 'error');
+          else setBgStatus('Fondo seleccionado: ' + opt.name, 'ok');
+        };
+        const label = document.createElement('span');
+        label.className = 'bg-option-label';
+        label.textContent = (opt.id === bgSettings.id ? '✅ ' : '') + (opt.src ? opt.name : '🚫 ' + opt.name);
+        btn.appendChild(label);
+        cont.appendChild(btn);
+      });
+    }
+
+    loadBgSettings();
+    applyBackground();
+
     /* ---------- Panel de configuración ---------- */
     const settingsModal = document.getElementById('settings-modal');
 
@@ -2805,6 +3011,9 @@
     }
 
     function openSettings(){
+      checkBackgrounds();
+      renderBgList();
+      setBgStatus('');
       checkTracks();
       renderTrackList();
       const slider = document.getElementById('volume-slider');

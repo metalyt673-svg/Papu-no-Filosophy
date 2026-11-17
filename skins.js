@@ -887,6 +887,26 @@
     { id: 'reze19',          charId: 'reze', name: 'Reze · Inferno',           img: 'personajes/reze19.jpg', rarity: 'legend' },
     { id: 'reze_maid',       charId: 'reze', name: 'Reze · Maid',              img: 'personajes/reze20.jpg', rarity: 'event' },
 
+    /* ——— Sadako ——— */
+    { id: 'sadako1',         charId: 'sadako', name: 'Sadako · Angel Candy',     img: 'personajes/sadako1.jpg',  rarity: 'legend' },
+    { id: 'sadako2',         charId: 'sadako', name: 'Sadako · Cassette',        img: 'personajes/sadako2.jpg',  rarity: 'epic' },
+    { id: 'sadako3',         charId: 'sadako', name: 'Sadako · Floor',           img: 'personajes/sadako3.jpg',  rarity: 'rare' },
+    { id: 'sadako4',         charId: 'sadako', name: 'Sadako · TV Monster',      img: 'personajes/sadako4.jpg',  rarity: 'legend' },
+    { id: 'sadako5',         charId: 'sadako', name: 'Sadako · Classic',         img: 'personajes/sadako5.jpg',  rarity: 'legend' },
+    { id: 'sadako6',         charId: 'sadako', name: 'Sadako · Succubus',        img: 'personajes/sadako6.jpg',  rarity: 'epic' },
+    { id: 'sadako7',         charId: 'sadako', name: 'Sadako · Gothic Crop',     img: 'personajes/sadako7.jpg',  rarity: 'epic' },
+    { id: 'sadako_joker',    charId: 'sadako', name: 'Sadako · Joker',           img: 'personajes/sadako8.jpg',  rarity: 'event' },
+    { id: 'sadako9',         charId: 'sadako', name: 'Sadako · Shadow',          img: 'personajes/sadako9.jpg',  rarity: 'rare' },
+    { id: 'sadako_summer',   charId: 'sadako', name: 'Sadako · Pool',            img: 'personajes/sadako10.jpg', rarity: 'event' },
+    { id: 'sadako11',        charId: 'sadako', name: 'Sadako · Punk',            img: 'personajes/sadako11.jpg', rarity: 'epic' },
+    { id: 'sadako_chm',      charId: 'sadako', name: 'Sadako · Christmas',       img: 'personajes/sadako12.jpg', rarity: 'event' },
+    { id: 'sadako13',        charId: 'sadako', name: 'Sadako · Well',            img: 'personajes/sadako13.jpg', rarity: 'legend' },
+    { id: 'sadako_chm2',     charId: 'sadako', name: 'Sadako · Santa',           img: 'personajes/sadako14.jpg', rarity: 'event' },
+    { id: 'sadako15',        charId: 'sadako', name: 'Sadako · TV Crawl',        img: 'personajes/sadako15.jpg', rarity: 'legend' },
+    { id: 'sadako_hw',       charId: 'sadako', name: 'Sadako · Witch',           img: 'personajes/sadako16.jpg', rarity: 'event' },
+    { id: 'sadako17',        charId: 'sadako', name: 'Sadako · Suit',            img: 'personajes/sadako17.jpg', rarity: 'epic' },
+    { id: 'sadako_bunny',    charId: 'sadako', name: 'Sadako · Bunny',           img: 'personajes/sadako18.jpg', rarity: 'event' },
+
         // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
   ];
 
@@ -1039,7 +1059,13 @@
     reze_summer: true,
     reze_festival: true,
     reze_bunny: true,
-    reze_maid: true
+    reze_maid: true,
+    sadako_joker: true,
+    sadako_summer: true,
+    sadako_chm: true,
+    sadako_chm2: true,
+    sadako_hw: true,
+    sadako_bunny: true
   };
 
   const RARITY = {

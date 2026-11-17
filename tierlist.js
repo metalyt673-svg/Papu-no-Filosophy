@@ -18,7 +18,7 @@
 
   const BASE = 'face icons';
   const STORE_KEY = 'tierlist-v1';
-  const COVER = 'personajes/tierlist.png';          // portada del panel (opcional; si no existe sale un 🏆)
+  const COVER = 'personajes/tierlist.jpg';          // portada del panel (opcional; si no existe sale un 🏆)
 
   /* ---------- iconos por carpeta (sin .png) ---------- */
   const FOLDER_FILES = {
