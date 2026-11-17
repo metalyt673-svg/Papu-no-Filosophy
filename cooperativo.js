@@ -244,9 +244,9 @@
         { id: 'chef1', name: 'Spatula Attack', power: 27, acc: 0.7, baseCooldown: 1, type: 'attack',
           desc: 'Swings his giant cooking spatula and strikes you.' },
         { id: 'chef2', name: 'Chocolate Salty Balls', power: 14, acc: 0.95, baseCooldown: 1, type: 'attack',
-          effects: [{ type: 'damageOverTime', status: 'poison', value: 7, duration: 2, prob: 0.85 }, { type: 'healReduction', value: 30, duration: 2 }],
+          effects: [{ type: 'damageOverTime', status: 'poison', value: 7, duration: 5, prob: 0.85 }, { type: 'healReduction', value: 30, duration: 5 }],
           desc: 'Pulls out chocolate salty balls from his chest cavity inflicts and hurles them at you, dealing poison damage and reducing healing.' },
-        { id: 'chef3', name: 'Hello Children (Zombie Bite)', power: 90, acc: 0.5, baseCooldown: 4, type: 'attack', aiWeight: 0.8,
+        { id: 'chef3', name: 'Zombie Bite', power: 90, acc: 0.5, baseCooldown: 4, type: 'attack', aiWeight: 0.8,
           effects: [{ type: 'lifesteal', value: 90, duration: 1 }, { type: 'selfHealPct', value: 0.02 }],
           desc: 'Chef lunges forward to bite one of your characters.' },
         { id: 'chef4', name: 'ULTRA: Flaming Suicide Rush', power: 40, acc: 0.95, baseCooldown: 99, type: 'attack', aoe: true, ult: true, 
@@ -254,7 +254,7 @@
           effects: [{ type: 'damageOverTime', status: 'burn', value: 8, duration: 2, prob: 1 }],
           desc: 'Zombie Chef ignites himself and charges at both opponents, inflicting massive damage and burning them. He dies after the attack.' }
       ],
-      rewards: { coins: 0, chests: 0, firstCoins: 600, firstChests: 3, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.26 }
+      rewards: { coins: 300, chests: 2, firstCoins: 600, firstChests: 3, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.26 }
     },
   ];
   BOSSES.forEach(b => {
