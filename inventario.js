@@ -7,6 +7,10 @@
      (al azar) que se suman a tu perfil y te ayudan a subir de rango.
      Puedes abrirlas de una en una o todas de golpe.
 
+   EMOTES: cada caja abierta tiene un 30% de dar además un emote nuevo
+   (lo gestiona emotes.js con Emotes.rollChest). Se ven y equipan en
+   Glosario > Emotes.
+
    NO dan caja: Historia, Desafío, Infierno, Torneo, PvP local ni Multijugador
    (solo cuenta la batalla libre "Jugador vs IA" y "Jugador vs IA con baneos").
 
@@ -232,6 +236,12 @@
     .inv-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-height:96px;overflow:auto;margin-top:6px}
     .inv-chips i{font-style:normal;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:800;color:#86efac;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.4)}
     .inv-chips i.top{color:#fde047;background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.55)}
+    .inv-emotes{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:10px}
+    .inv-emote{display:flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border-radius:14px;text-align:left;
+      border:1px solid rgba(167,139,250,.7);background:rgba(139,92,246,.14);animation:inv-burst .6s .5s cubic-bezier(.2,1.4,.4,1) both}
+    .inv-emote img{width:52px;height:52px;object-fit:contain;border-radius:10px;background:rgba(255,255,255,.05)}
+    .inv-emote b{display:block;font-size:14px;color:#ddd6fe}
+    .inv-emote small{display:block;font-size:11.5px;color:#c4b5fd}
     .inv-msg{font-size:14px;color:#c9b9a4;min-height:20px}
     .inv-after{width:100%;max-width:400px;display:flex;flex-direction:column;gap:6px;animation:inv-fade .4s}
     .inv-after .pf-xp{max-width:none}
@@ -253,7 +263,7 @@
     @keyframes inv-shake{0%,100%{transform:rotate(0) scale(1)}20%{transform:rotate(-7deg) scale(1.04)}40%{transform:rotate(7deg) scale(1.07)}60%{transform:rotate(-5deg) scale(1.08)}80%{transform:rotate(5deg) scale(1.05)}}
     @keyframes inv-burst{0%{opacity:0;transform:scale(.3)}100%{opacity:1;transform:scale(1)}}
     @keyframes inv-toast{from{opacity:0;transform:translate(-50%,24px)}to{opacity:1;transform:translate(-50%,0)}}
-    @media (prefers-reduced-motion:reduce){.inv-box,.inv-chip.has .inv-badge,.inv-boxbtn.shake,.inv-up,.inv-prize,.inv-reveal,.inv-modal,.inv-toast{animation:none!important}}
+    @media (prefers-reduced-motion:reduce){.inv-box,.inv-chip.has .inv-badge,.inv-boxbtn.shake,.inv-up,.inv-prize,.inv-emote,.inv-reveal,.inv-modal,.inv-toast{animation:none!important}}
     @media (max-width:560px){.inv-slot{justify-content:center;text-align:center}.inv-btns{justify-content:center}}
     `;
     document.head.appendChild(st);
@@ -470,7 +480,10 @@
     save();                      // se guarda ya: cerrar la ventana a medias no pierde nada
     const after = snap();
     const bonus = window.SKINS ? window.SKINS.rollChest(n) : null;
-    showReveal({ results, before, after, left: S.boxes, bonus });
+    let emotes = [];
+    try { emotes = window.Emotes && typeof window.Emotes.rollChest === 'function' ? window.Emotes.rollChest(n) : []; }
+    catch (e) { emotes = []; }
+    showReveal({ results, before, after, left: S.boxes, bonus, emotes });
   }
 
   function showReveal(d) {
@@ -508,6 +521,14 @@
     requestAnimationFrame(tick);
   }
 
+  function emotesHTML(list) {
+    if (!list || !list.length) return '';
+    const folder = (window.Emotes && window.Emotes.folder) || 'emotes/';
+    return `<div class="inv-emotes">${list.map(f => `<div class="inv-emote">
+        <img src="${esc(folder + f)}" alt="" decoding="async">
+        <span><b>😀 ¡Emote nuevo!</b><small>Equípalo en Glosario → Emotes</small></span></div>`).join('')}</div>`;
+  }
+
   function doReveal() {
     const d = revealData, stage = byId('inv-stage');
     if (!d || !stage || stage.dataset.done) return;
@@ -522,6 +543,7 @@
       <small>puntos de gloria${many ? ` · ${d.results.length} cajas` : ''}</small>
       ${many ? `<div class="inv-chips">${d.results.map(p => `<i${p === max && p >= 45 ? ' class="top"' : ''}>+${p}</i>`).join('')}</div>` : ''}
       ${window.SKINS && d.bonus ? window.SKINS.describeBonus(d.bonus) : ''}
+      ${emotesHTML(d.emotes)}
     </div>`;
     countUp(byId('inv-num'), total);
     byId('inv-msg').textContent = !many && total >= 45 ? '¡Caja de oro! 🌟' : (!many && total <= 5 ? 'Mala suerte… la próxima será mejor.' : '');

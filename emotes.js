@@ -17,6 +17,15 @@
    FILES. Si un archivo de la lista no existe, no aparece en el selector.
    Para cambiar las "personalidades" de la IA, edita MOODS más abajo.
 
+   COLECCIÓN (desbloqueo y equipo):
+     - Empiezas con STARTERS desbloqueados; el resto se consigue en las cajas
+       del Inventario (CHEST_CHANCE = 30% por caja, al abrirla).
+     - En 📖 Glosario > pestaña "Emotes" ves todos, y eliges hasta
+       MAX_EQUIPPED (10) para llevar a las partidas. El selector en partida
+       solo muestra los equipados.
+     - La IA (y el jefe del cooperativo) usan TODOS los emotes, sin límite.
+     - Se guarda en localStorage ('batalla-emotes-coleccion').
+
    API:
      Emotes.show(side, 'archivo.png')   side: 'p1' | 'p2' | 'boss'
      Emotes.onSend = (side, file) => {}
@@ -45,20 +54,31 @@
     '953620-bruh.png',
     '958845-osaka.gif',
     '975785-hmmm.png',
-    '993008-mhmmm.png'
+    '993008-mhmmm.png',
+    '29302-okay.gif',
+    '380069-chilled.png',
+    '860574-thelarpisreal.png',
+    '970307-funny.gif',
+    '727036-y-hug-az.gif',
+    '282817-panickedno.gif',
+    '988425-ohmygod.gif',
+    '739545-sleep.png',
+    '388298-catgirl.gif',
+    '16794-jhu.gif',
+    '267549-catgirlcool.png'
   ];
 
   /* Qué emotes usa la IA según su "estado de ánimo". */
   const MOODS = {
-    greet: ['4880-gojo.gif', '626614-hatsunemiku.png', '709181-hatsunemiku.png', '126240-merucozy.png', '772968-kawaii.png'],
-    taunt: ['233341-smug.png', '594644-merutease.png', '355167-shikamarunarawink.png', '215443-hehe.gif', '706618-hhhahaah.png'],
-    hurt:  ['384704-merushock.png', '940421-meruhmph.png', '953620-bruh.png', '975785-hmmm.png'],
-    kill:  ['233341-smug.png', '215443-hehe.gif', '706618-hhhahaah.png', '608482-osaka.gif', '355167-shikamarunarawink.png'],
-    lost:  ['384704-merushock.png', '953620-bruh.png', '940421-meruhmph.png', '993008-mhmmm.png'],
-    win:   ['233341-smug.png', '706618-hhhahaah.png', '215443-hehe.gif', '4880-gojo.gif', '594644-merutease.png'],
-    defeat:['953620-bruh.png', '384704-merushock.png', '940421-meruhmph.png', '126240-merucozy.png'],
-    idle:  ['975785-hmmm.png', '993008-mhmmm.png', '277773-merupopcorn.png', '422176-asa.png', '958845-osaka.gif'],
-    reply: ['594644-merutease.png', '215443-hehe.gif', '772968-kawaii.png', '958845-osaka.gif', '975785-hmmm.png', '706618-hhhahaah.png']
+    greet: ['4880-gojo.gif', '626614-hatsunemiku.png', '709181-hatsunemiku.png', '126240-merucozy.png', '772968-kawaii.png', '29302-okay.gif', '388298-catgirl.gif', '727036-y-hug-az.gif'],
+    taunt: ['233341-smug.png', '594644-merutease.png', '355167-shikamarunarawink.png', '215443-hehe.gif', '706618-hhhahaah.png', '970307-funny.gif', '860574-thelarpisreal.png', '267549-catgirlcool.png'],
+    hurt:  ['384704-merushock.png', '940421-meruhmph.png', '953620-bruh.png', '975785-hmmm.png', '282817-panickedno.gif', '988425-ohmygod.gif'],
+    kill:  ['233341-smug.png', '215443-hehe.gif', '706618-hhhahaah.png', '608482-osaka.gif', '355167-shikamarunarawink.png', '970307-funny.gif', '267549-catgirlcool.png'],
+    lost:  ['384704-merushock.png', '953620-bruh.png', '940421-meruhmph.png', '993008-mhmmm.png', '282817-panickedno.gif', '988425-ohmygod.gif'],
+    win:   ['233341-smug.png', '706618-hhhahaah.png', '215443-hehe.gif', '4880-gojo.gif', '594644-merutease.png', '388298-catgirl.gif', '267549-catgirlcool.png', '16794-jhu.gif'],
+    defeat:['953620-bruh.png', '384704-merushock.png', '940421-meruhmph.png', '126240-merucozy.png', '282817-panickedno.gif', '988425-ohmygod.gif', '727036-y-hug-az.gif'],
+    idle:  ['975785-hmmm.png', '993008-mhmmm.png', '277773-merupopcorn.png', '422176-asa.png', '958845-osaka.gif', '380069-chilled.png', '739545-sleep.png'],
+    reply: ['594644-merutease.png', '215443-hehe.gif', '772968-kawaii.png', '958845-osaka.gif', '975785-hmmm.png', '706618-hhhahaah.png', '29302-okay.gif', '970307-funny.gif', '16794-jhu.gif']
   };
 
   const SHOW_MS = 2600;        // cuánto dura el emote en pantalla
@@ -74,6 +94,34 @@
   function saveCfg(){
     try{ localStorage.setItem(LS_KEY, JSON.stringify(cfg)); }catch(e){}
   }
+
+  /* ---------- Colección: desbloqueados y equipados ---------- */
+  const COL_KEY = 'batalla-emotes-coleccion';
+  const MAX_EQUIPPED = 10;     // emotes que puedes llevar a la partida
+  const CHEST_CHANCE = 0.30;   // probabilidad de que una caja dé un emote nuevo
+  const STARTERS = [           // los que tienes desde el principio
+    '4880-gojo.gif', '233341-smug.png', '384704-merushock.png',
+    '953620-bruh.png', '975785-hmmm.png', '772968-kawaii.png'
+  ];
+  const col = { owned: {}, equipped: [] };
+  function loadCol(){
+    let d = null;
+    try{ d = JSON.parse(localStorage.getItem(COL_KEY) || 'null'); }catch(e){}
+    col.owned = {};
+    STARTERS.forEach(f => { if(FILES.includes(f)) col.owned[f] = 1; });
+    if(d && d.owned && typeof d.owned === 'object'){
+      Object.keys(d.owned).forEach(f => { if(FILES.includes(f)) col.owned[f] = 1; });
+    }
+    const eq = (d && Array.isArray(d.equipped)) ? d.equipped : STARTERS;
+    col.equipped = [];
+    eq.forEach(f => {
+      if(col.owned[f] && !col.equipped.includes(f) && col.equipped.length < MAX_EQUIPPED) col.equipped.push(f);
+    });
+  }
+  function saveCol(){
+    try{ localStorage.setItem(COL_KEY, JSON.stringify(col)); }catch(e){}
+  }
+  loadCol();
 
   /* ---------- Estilos ---------- */
   const style = document.createElement('style');
@@ -139,6 +187,46 @@
     @media (max-width:760px){
       .emo-bubble img{ width:72px; height:72px; }
     }
+    .emo-empty{ grid-column:1/-1; padding:14px 6px; text-align:center;
+      font-size:12.5px; line-height:1.5; color:#9db0cc; }
+
+    /* --- Pestañas y colección dentro del Glosario --- */
+    .emo-hide{ display:none !important; }
+    .emo-tabs{ display:flex; gap:8px; margin:14px 0 10px; flex-wrap:wrap; }
+    .emo-tab{ padding:9px 16px; border-radius:12px; cursor:pointer; font:inherit; font-weight:800; font-size:14px;
+      color:#cbd5e1; background:rgba(255,255,255,.04); border:1px solid rgba(148,163,184,.25);
+      transition:transform .12s, filter .12s; }
+    .emo-tab:hover{ transform:translateY(-1px); filter:brightness(1.15); }
+    .emo-tab.on{ color:#fff; border-color:rgba(167,139,250,.8); background:rgba(139,92,246,.25);
+      box-shadow:0 0 18px rgba(139,92,246,.25); }
+    #emo-col{ display:flex; flex-direction:column; gap:14px; color:#e5edf9; }
+    .emc-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+    .emc-top b{ font-size:16px; }
+    .emc-sub{ font-size:12.5px; color:#9db0cc; line-height:1.5; }
+    .emc-slots{ display:grid; grid-template-columns:repeat(auto-fill,minmax(58px,1fr)); gap:8px;
+      padding:12px; border-radius:16px; background:rgba(139,92,246,.08); border:1px solid rgba(167,139,250,.3); }
+    .emc-slot{ aspect-ratio:1; border-radius:12px; padding:4px; display:flex; align-items:center; justify-content:center;
+      border:1px dashed rgba(148,163,184,.35); background:rgba(255,255,255,.02); color:#64748b; font-size:12px; }
+    button.emc-slot{ border:1px solid rgba(167,139,250,.7); background:rgba(139,92,246,.16); cursor:pointer; }
+    button.emc-slot:hover{ border-color:#f87171; background:rgba(248,113,113,.14); }
+    .emc-slot img{ width:100%; height:100%; object-fit:contain; display:block; }
+    .emc-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(84px,1fr)); gap:10px; }
+    .emc-item{ position:relative; aspect-ratio:1; padding:8px; border-radius:14px; cursor:pointer; font:inherit;
+      border:1px solid rgba(148,163,184,.2); background:rgba(255,255,255,.04);
+      transition:transform .12s, border-color .12s, background .12s; }
+    .emc-item img{ width:100%; height:100%; object-fit:contain; display:block; }
+    button.emc-item:hover{ transform:scale(1.06); border-color:rgba(167,139,250,.7); }
+    .emc-item.on{ border-color:#a78bfa; background:rgba(139,92,246,.2); box-shadow:0 0 16px rgba(139,92,246,.3); }
+    .emc-tick{ position:absolute; top:-6px; right:-6px; width:22px; height:22px; border-radius:50%;
+      display:none; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:#fff;
+      background:#7c3aed; border:2px solid #0b1427; }
+    .emc-item.on .emc-tick{ display:flex; }
+    .emc-item.locked{ cursor:default; border-style:dashed; background:rgba(255,255,255,.02); }
+    .emc-item.locked img{ filter:brightness(0) opacity(.28); }
+    .emc-lock{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:22px; }
+    .emc-msg{ min-height:18px; font-size:13px; color:#fcd34d; }
+    .emc-clear{ padding:7px 12px; border-radius:10px; cursor:pointer; font:inherit; font-size:12px; font-weight:700;
+      color:#fecaca; background:rgba(248,113,113,.1); border:1px solid rgba(248,113,113,.4); }
   `;
   document.head.appendChild(style);
 
@@ -210,24 +298,36 @@
   const lastSent = { p1: 0, p2: 0 };
   let openSide = null;
 
-  FILES.forEach(file => {
-    const item = document.createElement('button');
-    item.type = 'button';
-    item.className = 'emo-item';
-    item.dataset.file = file;
-    const img = document.createElement('img');
-    img.alt = file;
-    img.loading = 'lazy';
-    img.src = FOLDER + file;
-    img.onerror = () => {                 // archivo que no existe: no se muestra
-      missing.add(file);
-      item.remove();
-    };
-    item.appendChild(img);
-    item.addEventListener('click', () => sendEmote(openSide, file));
-    grid.appendChild(item);
-  });
   const missing = new Set();
+
+  /* El selector solo muestra los emotes EQUIPADOS (Glosario > Emotes). */
+  function buildPicker(){
+    grid.innerHTML = '';
+    if(!col.equipped.length){
+      const p = document.createElement('div');
+      p.className = 'emo-empty';
+      p.textContent = 'No llevas ningún emote. Equípalos en 📖 Glosario → Emotes.';
+      grid.appendChild(p);
+      return;
+    }
+    col.equipped.forEach(file => {
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'emo-item';
+      item.dataset.file = file;
+      const img = document.createElement('img');
+      img.alt = file;
+      img.src = FOLDER + file;
+      img.onerror = () => {               // archivo que no existe: no se muestra
+        missing.add(file);
+        item.remove();
+      };
+      item.appendChild(img);
+      item.addEventListener('click', () => sendEmote(openSide, file));
+      grid.appendChild(item);
+    });
+  }
+  buildPicker();
 
   function togglePicker(side){
     if(openSide === side){ closePicker(); return; }
@@ -236,6 +336,7 @@
     const c = ctx();
     picker.querySelector('#emo-title').textContent =
       c.sides.length === 1 ? 'Emotes' : (side === 'p1' ? 'Emotes — Jugador 1' : 'Emotes — Jugador 2');
+    buildPicker();
     picker.style.display = 'block';
   }
   function closePicker(){
@@ -248,6 +349,7 @@
   /* ---------- Envío ---------- */
   function sendEmote(side, file){
     if(!side) return;
+    if(!col.equipped.includes(file)) return;      // solo los equipados
     const now = Date.now();
     if(now - lastSent[side] < COOLDOWN_MS) return;
     lastSent[side] = now;
@@ -270,6 +372,123 @@
     grid.querySelectorAll('.emo-item').forEach(el => el.classList.add('cool'));
     setTimeout(() => grid.querySelectorAll('.emo-item').forEach(el => el.classList.remove('cool')), COOLDOWN_MS);
   }
+
+  /* ---------- Cofres: 30% de emote nuevo por caja ---------- */
+  function rollChest(n){
+    n = Math.max(0, Math.floor(Number(n)) || 0);
+    const got = [];
+    for(let i = 0; i < n; i++){
+      if(Math.random() >= CHEST_CHANCE) continue;
+      const pool = FILES.filter(f => !col.owned[f]);
+      if(!pool.length) break;                      // ya los tienes todos
+      const f = pool[Math.floor(Math.random() * pool.length)];
+      col.owned[f] = 1;
+      got.push(f);
+      if(col.equipped.length < MAX_EQUIPPED) col.equipped.push(f);   // se equipa solo si hay hueco
+    }
+    if(got.length){ saveCol(); buildPicker(); renderCollection(); }
+    return got;
+  }
+
+  /* ---------- Glosario > pestaña Emotes ---------- */
+  const colUI = { msg: '', setTab: null };
+  const escA = s => String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+
+  function renderCollection(){
+    const box = document.getElementById('emo-col');
+    if(!box) return;
+    const owned = FILES.filter(f => col.owned[f]).length;
+    let slots = '';
+    for(let i = 0; i < MAX_EQUIPPED; i++){
+      const f = col.equipped[i];
+      slots += f
+        ? '<button type="button" class="emc-slot" data-act="unequip" data-file="' + escA(f) + '" title="Quitar"><img src="' + FOLDER + escA(f) + '" alt=""></button>'
+        : '<div class="emc-slot">' + (i + 1) + '</div>';
+    }
+    const items = FILES.map(f => {
+      if(!col.owned[f]){
+        return '<div class="emc-item locked" title="Bloqueado: consíguelo en las cajas"><img src="' + FOLDER + escA(f) + '" alt="">' +
+               '<span class="emc-lock">🔒</span></div>';
+      }
+      const on = col.equipped.includes(f);
+      return '<button type="button" class="emc-item' + (on ? ' on' : '') + '" data-act="toggle" data-file="' + escA(f) + '" ' +
+             'title="' + (on ? 'Pulsa para quitar' : 'Pulsa para equipar') + '"><img src="' + FOLDER + escA(f) + '" alt="">' +
+             '<span class="emc-tick">✓</span></button>';
+    }).join('');
+    box.innerHTML =
+      '<div class="emc-top"><div><b>😀 Mis emotes</b>' +
+        '<div class="emc-sub">Desbloqueados: <b>' + owned + ' / ' + FILES.length + '</b> · Equipados: <b>' + col.equipped.length + ' / ' + MAX_EQUIPPED + '</b></div></div>' +
+        '<button type="button" class="emc-clear" data-act="clear">Quitar todos</button></div>' +
+      '<div class="emc-sub">Estos son los que llevas a las partidas (máx. ' + MAX_EQUIPPED + '). Pulsa uno equipado para quitarlo. ' +
+        'Consigue más emotes abriendo cajas del Inventario (' + Math.round(CHEST_CHANCE * 100) + '% de probabilidad por caja).</div>' +
+      '<div class="emc-slots">' + slots + '</div>' +
+      '<div class="emc-msg">' + colUI.msg + '</div>' +
+      '<div class="emc-grid">' + items + '</div>';
+  }
+
+  function onColClick(e){
+    const b = e.target.closest('[data-act]');
+    if(!b) return;
+    const act = b.dataset.act, f = b.dataset.file;
+    colUI.msg = '';
+    if(act === 'toggle' && col.owned[f]){
+      const i = col.equipped.indexOf(f);
+      if(i >= 0) col.equipped.splice(i, 1);
+      else if(col.equipped.length >= MAX_EQUIPPED) colUI.msg = 'Ya llevas ' + MAX_EQUIPPED + ' emotes: quita uno antes de equipar otro.';
+      else col.equipped.push(f);
+    } else if(act === 'unequip'){
+      const i = col.equipped.indexOf(f);
+      if(i >= 0) col.equipped.splice(i, 1);
+    } else if(act === 'clear'){
+      col.equipped = [];
+    }
+    saveCol();
+    buildPicker();
+    renderCollection();
+  }
+
+  function setupGlossary(){
+    const scr = document.getElementById('glossary-screen');
+    if(!scr) return false;
+    const card = scr.querySelector('.glossary-card');
+    if(!card) return false;
+    if(card.querySelector('.emo-tabs')) return true;
+    const head = card.querySelector('.glossary-head');
+    const tabs = document.createElement('div');
+    tabs.className = 'emo-tabs';
+    tabs.innerHTML =
+      '<button type="button" class="emo-tab on" data-tab="chars">🧑 Personajes</button>' +
+      '<button type="button" class="emo-tab" data-tab="emotes">😀 Emotes</button>';
+    const panel = document.createElement('div');
+    panel.id = 'emo-col';
+    panel.style.display = 'none';
+    if(head) head.after(tabs); else card.prepend(tabs);
+    tabs.after(panel);
+
+    const others = () => ['.search-row', '#glossary-filters', '#glossary-count', '#glossary-grid']
+      .map(sel => card.querySelector(sel)).filter(Boolean);
+    function setTab(t){
+      const em = t === 'emotes';
+      tabs.querySelectorAll('.emo-tab').forEach(btn => btn.classList.toggle('on', btn.dataset.tab === t));
+      others().forEach(el => el.classList.toggle('emo-hide', em));
+      panel.style.display = em ? 'flex' : 'none';
+      if(em){ colUI.msg = ''; renderCollection(); }
+    }
+    colUI.setTab = setTab;
+    tabs.addEventListener('click', e => {
+      const btn = e.target.closest('.emo-tab');
+      if(btn) setTab(btn.dataset.tab);
+    });
+    panel.addEventListener('click', onColClick);
+    // Al cerrar el glosario, la próxima vez vuelve a abrirse en "Personajes".
+    if(window.MutationObserver){
+      new MutationObserver(() => {
+        if(getComputedStyle(scr).display === 'none') setTab('chars');
+      }).observe(scr, { attributes: true, attributeFilter: ['style', 'class'] });
+    }
+    return true;
+  }
+  setupGlossary();
 
   /* ---------- Recepción (online / cooperativo) ---------- */
   function onNetData(msg){
@@ -341,6 +560,7 @@
   }
 
   function refresh(){
+    setupGlossary();
     const inGame = inGameNow();
     const c = ctx();
     if(inGame) bindNet(c);
@@ -454,7 +674,13 @@
     onSend: null,     // función (side, file) opcional
     hideP2: false,    // true para ocultar siempre el botón de J2
     aiEnabled: true,  // false para que la IA no lance emotes
-    files: FILES.slice()
+    files: FILES.slice(),
+    folder: FOLDER,
+    rollChest,        // (nCajas) -> [archivos de emotes nuevos]; lo usa inventario.js
+    owned: () => FILES.filter(f => col.owned[f]),
+    equipped: () => col.equipped.slice(),
+    maxEquipped: MAX_EQUIPPED,
+    chestChance: CHEST_CHANCE
   };
   window.Emotes = api;
 })();
