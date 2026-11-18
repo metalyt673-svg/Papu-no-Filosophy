@@ -65,20 +65,40 @@
     '739545-sleep.png',
     '388298-catgirl.gif',
     '16794-jhu.gif',
-    '267549-catgirlcool.png'
+    '267549-catgirlcool.png',
+    '2164-albedo-peek.png',
+    '3710-overlord-albedo1.gif',
+    '3978-overlord-albedo2.gif',
+    '6734_albedotalk.gif',
+    '6783-albedofawn.gif',
+    '12768-stink.gif',
+    '17302-anime-albedoscold.png',
+    '39258-que.png',
+    '77550-albedostare.png',
+    '169085-mikohmm.png',
+    '182652-idiot.png',
+    '207091-pepewow.gif',
+    '456311-pepesweat.gif',
+    '503471-anime-fire.gif',
+    '606087-csm-blush.png',
+    '620058-jackhey.png',
+    '668887-afrogisreadingabook.png',
+    '706262-anime-thicc.gif',
+    '912687-tonguechi.png',
+    '995589-misa-thumb.gif'
   ];
 
   /* Qué emotes usa la IA según su "estado de ánimo". */
   const MOODS = {
-    greet: ['4880-gojo.gif', '626614-hatsunemiku.png', '709181-hatsunemiku.png', '126240-merucozy.png', '772968-kawaii.png', '29302-okay.gif', '388298-catgirl.gif', '727036-y-hug-az.gif'],
-    taunt: ['233341-smug.png', '594644-merutease.png', '355167-shikamarunarawink.png', '215443-hehe.gif', '706618-hhhahaah.png', '970307-funny.gif', '860574-thelarpisreal.png', '267549-catgirlcool.png'],
-    hurt:  ['384704-merushock.png', '940421-meruhmph.png', '953620-bruh.png', '975785-hmmm.png', '282817-panickedno.gif', '988425-ohmygod.gif'],
-    kill:  ['233341-smug.png', '215443-hehe.gif', '706618-hhhahaah.png', '608482-osaka.gif', '355167-shikamarunarawink.png', '970307-funny.gif', '267549-catgirlcool.png'],
-    lost:  ['384704-merushock.png', '953620-bruh.png', '940421-meruhmph.png', '993008-mhmmm.png', '282817-panickedno.gif', '988425-ohmygod.gif'],
-    win:   ['233341-smug.png', '706618-hhhahaah.png', '215443-hehe.gif', '4880-gojo.gif', '594644-merutease.png', '388298-catgirl.gif', '267549-catgirlcool.png', '16794-jhu.gif'],
-    defeat:['953620-bruh.png', '384704-merushock.png', '940421-meruhmph.png', '126240-merucozy.png', '282817-panickedno.gif', '988425-ohmygod.gif', '727036-y-hug-az.gif'],
-    idle:  ['975785-hmmm.png', '993008-mhmmm.png', '277773-merupopcorn.png', '422176-asa.png', '958845-osaka.gif', '380069-chilled.png', '739545-sleep.png'],
-    reply: ['594644-merutease.png', '215443-hehe.gif', '772968-kawaii.png', '958845-osaka.gif', '975785-hmmm.png', '706618-hhhahaah.png', '29302-okay.gif', '970307-funny.gif', '16794-jhu.gif']
+    greet: ['4880-gojo.gif', '626614-hatsunemiku.png', '709181-hatsunemiku.png', '126240-merucozy.png', '772968-kawaii.png', '29302-okay.gif', '388298-catgirl.gif', '727036-y-hug-az.gif', '2164-albedo-peek.png', '6734_albedotalk.gif', '6783-albedofawn.gif', '606087-csm-blush.png', '620058-jackhey.png', '995589-misa-thumb.gif'],
+    taunt: ['233341-smug.png', '594644-merutease.png', '355167-shikamarunarawink.png', '215443-hehe.gif', '706618-hhhahaah.png', '970307-funny.gif', '860574-thelarpisreal.png', '267549-catgirlcool.png', '3710-overlord-albedo1.gif', '3978-overlord-albedo2.gif', '12768-stink.gif', '17302-anime-albedoscold.png', '77550-albedostare.png', '182652-idiot.png', '503471-anime-fire.gif', '706262-anime-thicc.gif', '912687-tonguechi.png'],
+    hurt:  ['384704-merushock.png', '940421-meruhmph.png', '953620-bruh.png', '975785-hmmm.png', '282817-panickedno.gif', '988425-ohmygod.gif', '12768-stink.gif', '17302-anime-albedoscold.png', '39258-que.png', '456311-pepesweat.gif'],
+    kill:  ['233341-smug.png', '215443-hehe.gif', '706618-hhhahaah.png', '608482-osaka.gif', '355167-shikamarunarawink.png', '970307-funny.gif', '267549-catgirlcool.png', '3978-overlord-albedo2.gif', '182652-idiot.png', '207091-pepewow.gif', '503471-anime-fire.gif'],
+    lost:  ['384704-merushock.png', '953620-bruh.png', '940421-meruhmph.png', '993008-mhmmm.png', '282817-panickedno.gif', '988425-ohmygod.gif', '39258-que.png', '456311-pepesweat.gif', '182652-idiot.png'],
+    win:   ['233341-smug.png', '706618-hhhahaah.png', '215443-hehe.gif', '4880-gojo.gif', '594644-merutease.png', '388298-catgirl.gif', '267549-catgirlcool.png', '16794-jhu.gif', '3710-overlord-albedo1.gif', '6783-albedofawn.gif', '207091-pepewow.gif', '503471-anime-fire.gif', '912687-tonguechi.png', '995589-misa-thumb.gif'],
+    defeat:['953620-bruh.png', '384704-merushock.png', '940421-meruhmph.png', '126240-merucozy.png', '282817-panickedno.gif', '988425-ohmygod.gif', '727036-y-hug-az.gif', '456311-pepesweat.gif', '39258-que.png', '12768-stink.gif'],
+    idle:  ['975785-hmmm.png', '993008-mhmmm.png', '277773-merupopcorn.png', '422176-asa.png', '958845-osaka.gif', '380069-chilled.png', '739545-sleep.png', '2164-albedo-peek.png', '39258-que.png', '77550-albedostare.png', '169085-mikohmm.png', '668887-afrogisreadingabook.png'],
+    reply: ['594644-merutease.png', '215443-hehe.gif', '772968-kawaii.png', '958845-osaka.gif', '975785-hmmm.png', '706618-hhhahaah.png', '29302-okay.gif', '970307-funny.gif', '16794-jhu.gif', '6734_albedotalk.gif', '6783-albedofawn.gif', '169085-mikohmm.png', '207091-pepewow.gif', '606087-csm-blush.png', '620058-jackhey.png', '706262-anime-thicc.gif', '995589-misa-thumb.gif']
   };
 
   const SHOW_MS = 2600;        // cuánto dura el emote en pantalla
