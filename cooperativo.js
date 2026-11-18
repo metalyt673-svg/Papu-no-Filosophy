@@ -256,6 +256,32 @@
       ],
       rewards: { coins: 0, chests: 0, firstCoins: 600, firstChests: 3, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.26 }
     },
+    {
+      id: 'coopboss_cremaligno', name: 'Cremaligno', icon: '🥛', c1: '#e5e7eb', c2: '#1e293b', tier: 4,
+      img: 'bosses_cooperativo/cremaligno.jpg',
+      music: 'bosses_cooperativo/music/cremaligno.mp3',
+      tagline: 'Un engendro espeso y pegajoso que lo embadurna todo. Ralentiza, debilita la curación y se regenera: hay que tumbarlo rápido.',
+      hp: 1400, atk: 28, def: 16, spd: 20, ccResist: 0.75,
+      phases: [
+        { at: 0.5, log: 'Cremaligno hierve de rabia: ¡más ATK y más velocidad!', atk: 3, spd: 3 },
+        { at: 0.25, log: '¡Cremaligno pierde el control y ataca DOS veces por ronda!', atk: 2, actions: 2 }
+      ],
+      moves: [
+        { id: 'crema1', name: 'Aliento Lefoso', power: 27, acc: 0.95, baseCooldown: 0, type: 'attack',
+          effects: [{ type: 'debuff', stat: 'def', value: 2, duration: 2 }],
+          desc: 'Un aliento espeso y apestoso contra uno de los dos del frente. Reduce su DEF.' },
+        { id: 'crema2', name: 'Chorreón Pegajoso', power: 14, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
+          effects: [{ type: 'slow', value: 20, duration: 2, prob: 0.85 }, { type: 'accuracyDown', value: 10, duration: 2 }],
+          desc: 'Un chorreón de lefa sobre los dos del frente. Los ralentiza y resta precisión.' },
+        { id: 'crema3', name: 'Baño de Crema', power: 0, acc: 1, baseCooldown: 4, type: 'support', aiWeight: 0.8,
+          effects: [{ type: 'selfHealPct', value: 0.06 }, { type: 'shield', value: 70 }, { type: 'tempDef', value: 3, duration: 2 }],
+          desc: 'Se rebozan en su propia lefa: recupera vida, gana escudo y más DEF durante 2 turnos.' },
+        { id: 'crema4', name: 'ULTRA: Tsunami Lefoso', power: 31, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
+          effects: [{ type: 'damageOverTime', status: 'poison', value: 5, duration: 3, prob: 0.85 }, { type: 'healReduction', value: 30, duration: 2 }],
+          desc: 'Una ola gigante de lefa sobre el frente. Puede envenenar y reduce la curación recibida.' }
+      ],
+      rewards: { coins: 700, chests: 4, firstCoins: 700, firstChests: 3, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.28 }
+    },
   ];
   BOSSES.forEach(b => {
     if (!b.img) b.img = bossSvg(b.icon, b.c1, b.c2);
