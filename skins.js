@@ -907,6 +907,71 @@
     { id: 'sadako17',        charId: 'sadako', name: 'Sadako · Suit',            img: 'personajes/sadako17.jpg', rarity: 'epic' },
     { id: 'sadako_bunny',    charId: 'sadako', name: 'Sadako · Bunny',           img: 'personajes/sadako18.jpg', rarity: 'event' },
 
+    /* ——— Douji ——— */
+    { id: 'douji1',          charId: 'ibuki_douji', name: 'Douji · Oni',              img: 'personajes/douji1.jpg',  rarity: 'legend' },
+    { id: 'douji2',          charId: 'ibuki_douji', name: 'Douji · Visor',            img: 'personajes/douji2.jpg',  rarity: 'epic' },
+    { id: 'douji_summer',    charId: 'ibuki_douji', name: 'Douji · Swimsuit',         img: 'personajes/douji3.jpg',  rarity: 'event' },
+    { id: 'douji4',          charId: 'ibuki_douji', name: 'Douji · Purple Armor',     img: 'personajes/douji4.jpg',  rarity: 'legend' },
+    { id: 'douji5',          charId: 'ibuki_douji', name: 'Douji · Festival',         img: 'personajes/douji5.jpg',  rarity: 'epic' },
+    { id: 'douji_ny',        charId: 'ibuki_douji', name: 'Douji · New Year',         img: 'personajes/douji6.jpg',  rarity: 'event' },
+    { id: 'douji_ny2',       charId: 'ibuki_douji', name: 'Douji · Kimono Snake',     img: 'personajes/douji7.jpg',  rarity: 'event' },
+    { id: 'douji8',          charId: 'ibuki_douji', name: 'Douji · Black Serpent',    img: 'personajes/douji8.jpg',  rarity: 'legend' },
+    { id: 'douji9',          charId: 'ibuki_douji', name: 'Douji · Sword',            img: 'personajes/douji9.jpg',  rarity: 'legend' },
+    { id: 'douji10',         charId: 'ibuki_douji', name: 'Douji · Stadium',          img: 'personajes/douji10.jpg', rarity: 'epic' },
+
+    /* ——— Vexoria ——— */
+    { id: 'vexoria_chm',     charId: 'vexoria', name: 'Vexoria · Christmas',       img: 'personajes/vexoria1.jpg', rarity: 'event' },
+    { id: 'vexoria2',        charId: 'vexoria', name: 'Vexoria · Ice Queen',       img: 'personajes/vexoria2.jpg', rarity: 'legend' },
+    { id: 'vexoria3',        charId: 'vexoria', name: 'Vexoria · Medusa',          img: 'personajes/vexoria3.jpg', rarity: 'legend' },
+    { id: 'vexoria4',        charId: 'vexoria', name: 'Vexoria · Selfie',          img: 'personajes/vexoria4.jpg', rarity: 'epic' },
+    { id: 'vexoria5',        charId: 'vexoria', name: 'Vexoria · Ice Lounge',      img: 'personajes/vexoria5.jpg', rarity: 'legend' },
+    { id: 'vexoria6',        charId: 'vexoria', name: 'Vexoria · Golden Orb',      img: 'personajes/vexoria6.jpg', rarity: 'legend' },
+    { id: 'vexoria7',        charId: 'vexoria', name: 'Vexoria · Inferno',         img: 'personajes/vexoria7.jpg', rarity: 'legend' },
+
+    /* ——— Chel ——— */
+    { id: 'chel_summer',     charId: 'chel', name: 'Chel · Summer',            img: 'personajes/chel1.jpg', rarity: 'event' },
+    { id: 'chel2',           charId: 'chel', name: 'Chel · Latex',             img: 'personajes/chel2.jpg', rarity: 'legend' },
+    { id: 'chel3',           charId: 'chel', name: 'Chel · Pink Top',          img: 'personajes/chel3.jpg', rarity: 'epic' },
+    { id: 'chel4',           charId: 'chel', name: 'Chel · Playful',           img: 'personajes/chel4.jpg', rarity: 'epic' },
+    { id: 'chel5',           charId: 'chel', name: 'Chel · Bandeau',           img: 'personajes/chel5.jpg', rarity: 'legend' },
+    { id: 'chel6',           charId: 'chel', name: 'Chel · Real Treasure',     img: 'personajes/chel6.jpg', rarity: 'epic' },
+    { id: 'chel7',           charId: 'chel', name: 'Chel · Wild Woman',        img: 'personajes/chel7.jpg', rarity: 'legend' },
+    { id: 'chel8',           charId: 'chel', name: 'Chel · Selfie',            img: 'personajes/chel8.jpg', rarity: 'epic' },
+
+    /* ——— Atlantis ——— */
+    { id: 'atlantis1',       charId: 'atlantis', name: 'Atlantis · Kick',            img: 'personajes/atlantis1.jpg', rarity: 'legend' },
+    { id: 'atlantis2',       charId: 'atlantis', name: 'Atlantis · Water Spiral',    img: 'personajes/atlantis2.jpg', rarity: 'epic' },
+    { id: 'atlantis3',       charId: 'atlantis', name: 'Atlantis · Leap',            img: 'personajes/atlantis3.jpg', rarity: 'epic' },
+    { id: 'atlantis4',       charId: 'atlantis', name: 'Atlantis · Claw Slash',      img: 'personajes/atlantis4.jpg', rarity: 'legend' },
+    { id: 'atlantis5',       charId: 'atlantis', name: 'Atlantis · Wave Rise',       img: 'personajes/atlantis5.jpg', rarity: 'legend' },
+    { id: 'atlantis6',       charId: 'atlantis', name: 'Atlantis · Grin',            img: 'personajes/atlantis6.jpg', rarity: 'rare' },
+
+    /* ——— Izumi ——— */
+    { id: 'izumi1',          charId: 'izumi', name: 'Izumi · School Slime',      img: 'personajes/izumi1.jpg', rarity: 'epic' },
+    { id: 'izumi2',          charId: 'izumi', name: 'Izumi · Burger',            img: 'personajes/izumi2.jpg', rarity: 'epic' },
+    { id: 'izumi_summer',    charId: 'izumi', name: 'Izumi · Summer',            img: 'personajes/izumi3.jpg', rarity: 'event' },
+    { id: 'izumi4',          charId: 'izumi', name: 'Izumi · Chef',              img: 'personajes/izumi4.jpg', rarity: 'legend' },
+
+    /* ——— Typhon ——— */
+    { id: 'typhon1',         charId: 'typhon', name: 'Typhon · Winter',           img: 'personajes/typhon1.jpg',  rarity: 'legend' },
+    { id: 'typhon2',         charId: 'typhon', name: 'Typhon · Combat Burst',     img: 'personajes/typhon2.jpg',  rarity: 'legend' },
+    { id: 'typhon3',         charId: 'typhon', name: 'Typhon · Window',           img: 'personajes/typhon3.jpg',  rarity: 'epic' },
+    { id: 'typhon4',         charId: 'typhon', name: 'Typhon · Aim',              img: 'personajes/typhon4.jpg',  rarity: 'epic' },
+    { id: 'typhon5',         charId: 'typhon', name: 'Typhon · Energy Grid',      img: 'personajes/typhon5.jpg',  rarity: 'legend' },
+    { id: 'typhon6',         charId: 'typhon', name: 'Typhon · Spear',            img: 'personajes/typhon6.jpg',  rarity: 'legend' },
+    { id: 'typhon_summer',   charId: 'typhon', name: 'Typhon · Summer',           img: 'personajes/typhon7.jpg',  rarity: 'event' },
+    { id: 'typhon_summer2',  charId: 'typhon', name: 'Typhon · Beach Casual',     img: 'personajes/typhon8.jpg',  rarity: 'event' },
+    { id: 'typhon_cheer',    charId: 'typhon', name: 'Typhon · Cheerleader',      img: 'personajes/typhon9.jpg',  rarity: 'event' },
+    { id: 'typhon10',        charId: 'typhon', name: 'Typhon · Snow Night',       img: 'personajes/typhon10.jpg', rarity: 'legend' },
+
+    /* ——— Rades ——— */
+    { id: 'rades1',          charId: 'rades', name: 'Rades · Inferno Gaze',      img: 'personajes/rades1.jpg', rarity: 'legend' },
+    { id: 'rades2',          charId: 'rades', name: 'Rades · Shout',             img: 'personajes/rades2.jpg', rarity: 'epic' },
+    { id: 'rades3',          charId: 'rades', name: 'Rades · Purple Flame',      img: 'personajes/rades3.jpg', rarity: 'legend' },
+    { id: 'rades4',          charId: 'rades', name: 'Rades · Soul Burst',        img: 'personajes/rades4.jpg', rarity: 'legend' },
+    { id: 'rades5',          charId: 'rades', name: 'Rades · Manga',             img: 'personajes/rades5.jpg', rarity: 'epic' },
+    { id: 'rades6',          charId: 'rades', name: 'Rades · Grin',              img: 'personajes/rades6.jpg', rarity: 'rare' },
+
         // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
   ];
 
@@ -1065,7 +1130,16 @@
     sadako_chm: true,
     sadako_chm2: true,
     sadako_hw: true,
-    sadako_bunny: true
+    sadako_bunny: true,
+    douji_summer: true,
+    douji_ny: true,
+    douji_ny2: true,
+    vexoria_chm: true,
+    chel_summer: true,
+    izumi_summer: true,
+    typhon_summer: true,
+    typhon_summer2: true,
+    typhon_cheer: true
   };
 
   const RARITY = {

@@ -16,6 +16,7 @@
                                mckraken.mp3, lilhunter.mp3,
                                castelo-vandana.mp3
        (Friend usa "music": desafio/20th century boys.mp3)
+       (Musashi usa "music": desafio/musashi miyamoto.mp3)
    Si falta el archivo de un boss se usa combate.mp3; si tampoco está, no suena
    nada. Volumen y "música activada" se toman de la Configuración del juego.
 
@@ -28,6 +29,7 @@
        personajes/<id>.jpg      → retrato de cada boss (mismo id que arriba)
        personajes/mckraken2.jpg → retrato de la segunda fase de McKraken
        personajes/friend_20thcenturyboys.jpg → retrato de Friend
+       personajes/musashi miyamoto.jpg → retrato de Musashi Miyamoto
 
    Además de los 3 niveles de dificultad (Normal/Difícil/Pesadilla), cada boss
    puede tener un 4º modo opcional: "Equipo temático". Usa SIEMPRE los mismos
@@ -204,7 +206,7 @@
         },
       ]
     },
-    /* Friend (20th Century Boys). Último boss de la lista. La canción es
+    /* Friend (20th Century Boys). La canción es
        desafio/20th century boys.mp3 (campo "music", sin .mp3). */
     {
       id: 'friend',
@@ -226,6 +228,37 @@
         { id: 'fri4', name: 'Robot Gigante', power: 33, acc: 0.9, baseCooldown: 5, type: 'attack',
           desc: 'Invoca a su robot gigante, que aplasta al objetivo y quiebra su defensa.',
           effects: [{ type: 'debuff', stat: 'def', value: 6, duration: 2, prob: 1.0 }] }
+      ]
+    },
+    /* Musashi Miyamoto (Baki). Espadachín rápido y de poca defensa: castiga con
+       sangrado y contraataques, pero se rompe si le aguantas el ritmo.
+       Canción: desafio/musashi miyamoto.mp3 (campo "music", sin .mp3). */
+    {
+      id: 'musashi',
+      name: 'Musashi Miyamoto',
+      img: 'personajes/musashi miyamoto.jpg',
+      music: 'musashi miyamoto',
+      classes: ['atacante', 'debilitador'],
+      hp: 270, atk: 26, def: 15, spd: 22,
+      moves: [
+        { id: 'mus1', name: 'Nito Ichi-ryu', power: 21, acc: 0.97, baseCooldown: 0, type: 'attack',
+          desc: 'Dos espadas, un solo movimiento: un tajo cruzado rápido y limpio contra el objetivo.', effect: null },
+        { id: 'mus2', name: 'Postura del Agua', power: 0, acc: 1, baseCooldown: 4, type: 'support',
+          desc: 'Adopta la guardia del agua: se mueve más rápido y devuelve parte del daño que reciba durante 2 turnos.',
+          effects: [{ type: 'reflectDamage', value: 8, duration: 2 },
+                    { type: 'tempSpd', value: 5, duration: 2 }] },
+        { id: 'mus3', name: 'Tajo Sin Sombra', power: 25, acc: 0.88, baseCooldown: 3, type: 'attack',
+          desc: 'Un corte tan veloz que el rival no lo ve venir: puede dejarle una herida que sangra.',
+          effects: [{ type: 'damageOverTime', status: 'bleed', value: 5, duration: 3, prob: 0.8 }] },
+        { id: 'mus4', name: 'Libro de los Cinco Anillos', power: 0, acc: 1, baseCooldown: 6, type: 'support',
+          desc: 'Medita sobre su propio camino: recupera algo de vida y afila su ataque y su defensa durante 3 turnos.',
+          effects: [{ type: 'selfHealPct', value: 0.06 },
+                    { type: 'tempAtk', value: 5, duration: 3 },
+                    { type: 'tempDef', value: 4, duration: 3 }] },
+        { id: 'mus5', name: 'Corte del Vacio', power: 32, acc: 0.85, baseCooldown: 5, type: 'attack',
+          desc: 'Su técnica final: un tajo que parece cortar el aire mismo, quiebra la defensa y puede aturdir al rival.',
+          effects: [{ type: 'debuff', stat: 'def', value: 5, duration: 2, prob: 1.0 },
+                    { type: 'stun', prob: 0.25, duration: 1 }] }
       ]
     }
   ];
@@ -253,6 +286,10 @@
       reward: { coins: 250, boxes: 2 },
       normalMod: { hp: 0.85, atk: 0.90, def: 0.92, spd: 0.95, power: 0.95 },
       intro: 'Nadie ha visto su verdadero rostro. Tras la máscara, un culto entero lo sigue mientras planea el fin del mundo desde las sombras.',
+      themeTeam: [] },
+    { id: 'musashi', emoji: '⚔️', title: 'El espadachín invicto que regresó de entre los muertos.',
+      reward: { coins: 120, boxes: 1 },
+      intro: 'Dicen que jamás perdió un duelo. Ha vuelto al mundo moderno con sus dos espadas y solo busca un rival digno. Es rápido y letal, pero apenas aguanta golpes: no le des tiempo a respirar.',
       themeTeam: [] }
   ];
 
