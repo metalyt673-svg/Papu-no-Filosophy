@@ -14,8 +14,8 @@
        desafio/combate.mp3   → música de combate por defecto (opcional)
        desafio/<id>.mp3      → música propia de cada boss (opcional), por ejemplo:
                                mckraken.mp3, lilhunter.mp3,
-                               castelo-vandana.mp3, verdugo_carmesi.mp3,
-                               emperador_vacio.mp3
+                               castelo-vandana.mp3
+       (Friend usa "music": desafio/20th century boys.mp3)
    Si falta el archivo de un boss se usa combate.mp3; si tampoco está, no suena
    nada. Volumen y "música activada" se toman de la Configuración del juego.
 
@@ -27,6 +27,7 @@
        personajes/desafio.jpg   → portada del panel del menú (opcional)
        personajes/<id>.jpg      → retrato de cada boss (mismo id que arriba)
        personajes/mckraken2.jpg → retrato de la segunda fase de McKraken
+       personajes/friend_20thcenturyboys.jpg → retrato de Friend
 
    Además de los 3 niveles de dificultad (Normal/Difícil/Pesadilla), cada boss
    puede tener un 4º modo opcional: "Equipo temático". Usa SIEMPRE los mismos
@@ -56,6 +57,19 @@
   const PROGRESS_KEY = 'batalla-desafio-progress';
   const STORY_MUSIC_CFG = 'batalla-story-music-config';   // volumen / activada (Configuración)
   const TEAM_SIZE    = 3;
+
+  /* ---------------------------------------------------------
+     RECOMPENSAS (monedas de skins.js y cajas de inventario.js)
+     Cada boss define "reward: { coins, boxes }" en CHALLENGE_META (valores del
+     Nivel 1; si no lo define se usa REWARD_DEFAULT).
+       - PRIMERA vez que superas un nivel (o el Equipo temático): todas las
+         monedas del boss × el multiplicador del nivel + las cajas del boss.
+       - Al REPETIR un nivel ya superado: solo REWARD_REPEAT_PCT de las monedas
+         (pon 0 para que repetir no dé nada) y ninguna caja.
+     --------------------------------------------------------- */
+  const REWARD_DEFAULT     = { coins: 80, boxes: 1 };
+  const REWARD_COINS_MULT  = { 1: 1, 2: 1.5, 3: 2.5, tema: 1.5 };
+  const REWARD_REPEAT_PCT  = 0.25;
 
   /* ---------------------------------------------------------
      NIVELES: multiplicadores sobre las stats base del boss.
@@ -190,44 +204,28 @@
         },
       ]
     },
+    /* Friend (20th Century Boys). Último boss de la lista. La canción es
+       desafio/20th century boys.mp3 (campo "music", sin .mp3). */
     {
-      id: 'verdugo_carmesi',
-      name: 'Verdugo Carmesí',
-      img: 'personajes/verdugo_carmesi.jpg',
-      classes: ['atacante'],
-      hp: 285, atk: 30, def: 14, spd: 26,
+      id: 'friend',
+      name: 'Friend',
+      img: 'personajes/friend_20thcenturyboys.jpg',
+      music: '20th century boys',
+      classes: ['mago', 'control'],
+      hp: 370, atk: 26, def: 19, spd: 16,
       moves: [
-        { id: 'ver1', name: 'Hacha Veloz', power: 22, acc: 0.98, baseCooldown: 0, type: 'attack',
-          desc: 'Un hachazo rapidísimo.', effect: null },
-        { id: 'ver2', name: 'Sed de Sangre', power: 0, acc: 1, baseCooldown: 3, type: 'support',
-          desc: 'Entra en trance: más ataque y más probabilidad de crítico.',
-          effects: [{ type: 'tempAtk', value: 10, duration: 3 }, { type: 'critChance', value: 20, duration: 3 }] },
-        { id: 'ver3', name: 'Decapitación', power: 34, acc: 0.9, baseCooldown: 2, type: 'attack',
-          desc: 'Un tajo letal que deja una hemorragia.',
-          effects: [{ type: 'damageOverTime', status: 'bleed', value: 7, duration: 3, prob: 0.85 }] },
-        { id: 'ver4', name: 'Frenesí', power: 18, acc: 0.95, baseCooldown: 1, type: 'attack',
-          desc: 'Ataca sin control y recupera parte de la vida.',
-          effects: [{ type: 'lifesteal', value: 35 }] }
-      ]
-    },
-    {
-      id: 'emperador_vacio',
-      name: 'Emperador del Vacío',
-      img: 'personajes/emperador_vacio.jpg',
-      classes: ['mago', 'atacante'],
-      hp: 370, atk: 28, def: 20, spd: 18,
-      moves: [
-        { id: 'emp1', name: 'Rayo del Vacío', power: 26, acc: 0.98, baseCooldown: 0, type: 'attack',
-          desc: 'Un haz de energía oscura que atraviesa todo.', effect: null },
-        { id: 'emp2', name: 'Eclipse', power: 0, acc: 1, baseCooldown: 4, type: 'support',
-          desc: 'Oscurece el campo: gana escudo y ataque.',
-          effects: [{ type: 'shield', value: 50 }, { type: 'tempAtk', value: 8, duration: 3 }] },
-        { id: 'emp3', name: 'Silencio Eterno', power: 22, acc: 0.93, baseCooldown: 3, type: 'attack',
-          desc: 'Puede aturdir al rival y lo ralentiza.',
-          effects: [{ type: 'stun', prob: 0.3, duration: 1 }, { type: 'slow', value: 20, duration: 2, prob: 1.0 }] },
-        { id: 'emp4', name: 'Colapso Estelar', power: 40, acc: 0.9, baseCooldown: 4, type: 'attack',
-          desc: 'Una estrella se derrumba sobre el objetivo y debilita su defensa.',
-          effects: [{ type: 'debuff', stat: 'def', value: 10, duration: 2, prob: 1.0 }] }
+        { id: 'fri1', name: 'Saludo del Amigo', power: 23, acc: 0.98, baseCooldown: 0, type: 'attack',
+          desc: 'Alza la mano con el signo del ojo y lanza un golpe certero contra el objetivo.', effect: null },
+        { id: 'fri2', name: 'Culto de los Amigos', power: 0, acc: 1, baseCooldown: 4, type: 'support',
+          desc: 'Sus seguidores le rinden devoción: gana escudo y ataque.',
+          effects: [{ type: 'shield', value: 20 }, { type: 'tempAtk', value: 4, duration: 3 }] },
+        { id: 'fri3', name: 'Virus Amigo', power: 20, acc: 0.95, baseCooldown: 3, type: 'attack',
+          desc: 'Libera un virus mortal que envenena al rival y le debilita el ataque.',
+          effects: [{ type: 'damageOverTime', status: 'poison', value: 5, duration: 3, prob: 0.9 },
+                    { type: 'debuff', stat: 'atk', value: 5, duration: 2, prob: 1.0 }] },
+        { id: 'fri4', name: 'Robot Gigante', power: 33, acc: 0.9, baseCooldown: 5, type: 'attack',
+          desc: 'Invoca a su robot gigante, que aplasta al objetivo y quiebra su defensa.',
+          effects: [{ type: 'debuff', stat: 'def', value: 6, duration: 2, prob: 1.0 }] }
       ]
     }
   ];
@@ -236,21 +234,25 @@
      lista es el orden en que se desbloquean. */
   const CHALLENGE_META = [
     { id: 'mckraken',         emoji: '🦑', title: 'El dictador del Mundo Yo-kai.',
+      reward: { coins: 80, boxes: 1 },
       phase2: 'mckraken2',
       phase2Log: '💥 ¡McKraken se hincha con la energía espiritual que ha absorbido y se transforma!',
       intro: 'Quiere someter a la humanidad y absorbe toda la energía que toca con sus manos. Este es solo su primera forma.',
       themeTeam: ['tyrat', 'pifiasus', 'cantonio', 'buhu', 'blizzaria', 'doblilete', 'chansin'] },
     { id: 'lilhunter',   emoji: '🔫🤪', title: 'El cazador de mutantes que fue abandonado por su escuadrón.',
+      reward: { coins: 120, boxes: 1 },
       intro: 'Ha pasado tantos años perdido en la nieve, que se ha convertido en uno de los salvajes. Reza para que su locura sea mayor que su puntería.',
       themeTeam: ['yv', 'horror', 'chicken']  },
     { id: 'castelo-vandana', emoji: '🥒', title: 'The Only Pickle King Who Kill Maka Monsters.',
+      reward: { coins: 160, boxes: 2 },
       intro: 'Era una fría y oscura noche de Halloween... El famosísimo pepinillo cazador de Maka Monsters busca venganza y piensa conseguirla aunque tenga que arrasar con todo a su camino.',
       themeTeam: ['gorilla_villaje', 'kevin', 'maka' ] },
-    { id: 'verdugo_carmesi',  emoji: '🪓', title: 'El que nunca falla',
-      intro: 'Frágil como el cristal y rápido como un rayo. El que golpea primero, gana.',
-      themeTeam: [] },
-    { id: 'emperador_vacio',  emoji: '🌌', title: 'Señor del último abismo',
-      intro: 'Al final del camino espera él. Si caes aquí, puedes volver a intentarlo cuando quieras.',
+    { id: 'friend',  emoji: '🎭', title: 'El líder de la secta de los Amigos.',
+      /* Ajuste SOLO del Nivel 1 (Normal): se multiplica por encima de LEVELS[0].
+         Se aplica a TODAS las fases del boss (si algún día añades "phase2"). */
+      reward: { coins: 250, boxes: 2 },
+      normalMod: { hp: 0.85, atk: 0.90, def: 0.92, spd: 0.95, power: 0.95 },
+      intro: 'Nadie ha visto su verdadero rostro. Tras la máscara, un culto entero lo sigue mientras planea el fin del mundo desde las sombras.',
       themeTeam: [] }
   ];
 
@@ -338,6 +340,38 @@
     return { wasNew, record: record && turns > 0 };
   }
 
+  /* ---------- Recompensas ---------- */
+  function rewardFor(bossId, lvl, first) {
+    const base = Object.assign({}, REWARD_DEFAULT, bossMeta(bossId).reward || {});
+    const mult = REWARD_COINS_MULT[isThemeLevel(lvl) ? THEME_LEVEL.key : lvl] || 1;
+    return first
+      ? { coins: Math.round(base.coins * mult), boxes: base.boxes }
+      : { coins: Math.round(base.coins * mult * REWARD_REPEAT_PCT), boxes: 0 };
+  }
+
+  // Entrega la recompensa; si skins.js / inventario.js no están cargados, esa parte queda en 0.
+  function giveReward(bossId, lvl, first) {
+    const r = rewardFor(bossId, lvl, first);
+    try {
+      if (r.coins > 0 && window.SKINS && typeof window.SKINS.addCoins === 'function') window.SKINS.addCoins(r.coins);
+      else r.coins = 0;
+    } catch (e) { r.coins = 0; }
+    try {
+      if (r.boxes > 0 && window.INVENTARIO && typeof window.INVENTARIO.add === 'function') window.INVENTARIO.add(r.boxes);
+      else r.boxes = 0;
+    } catch (e) { r.boxes = 0; }
+    return r;
+  }
+
+  function coinIcon() {
+    try { const c = window.SKINS && window.SKINS.coinImg && window.SKINS.coinImg(); if (typeof c === 'string' && c) return c; } catch (e) { /* ignorar */ }
+    return '🪙';
+  }
+  const rewardText = r => [
+    r.coins > 0 ? `${coinIcon()} +${r.coins} monedas` : '',
+    r.boxes > 0 ? `📦 +${r.boxes} ${r.boxes === 1 ? 'caja' : 'cajas'}` : ''
+  ].filter(Boolean).join(' · ');
+
   /* =========================================================
      MÚSICA (carpeta desafio/)
      ========================================================= */
@@ -400,14 +434,34 @@
     return CHARACTERS.find(c => c.id === id);
   };
 
-  function buildBoss(bossId, lvl) {
+  /* Multiplicadores reales de un boss en un nivel: los de LEVELS (o del Equipo
+     temático) y, solo en el Nivel 1, el "normalMod" del boss si lo tiene.
+     metaId = id del boss en CHALLENGE_META (en la fase 2 es el de la fase 1). */
+  function effLevel(metaId, lvl) {
     const L = levelInfo(lvl);
+    const mod = (!isThemeLevel(lvl) && lvl === 1) ? (bossMeta(metaId).normalMod || {}) : {};
+    return {
+      hp:  L.hp  * (mod.hp  || 1),
+      atk: L.atk * (mod.atk || 1),
+      def: L.def * (mod.def || 1),
+      spd: L.spd * (mod.spd || 1),
+      shield: L.shield,
+      power: mod.power || 1
+    };
+  }
+
+  function buildBoss(bossId, lvl, metaId) {
+    const L = effLevel(metaId || bossId, lvl);
     const b = cloneCharacter(bossBase(bossId));
     b.maxHp = Math.round(b.maxHp * L.hp);  b.hp = b.maxHp;
     b.atk   = Math.round(b.atk * L.atk);
     b.def   = Math.round(b.def * L.def);
     b.spd   = Math.round(b.spd * L.spd);
     b.shield = L.shield ? Math.round(b.maxHp * L.shield) : 0;
+    if (L.power !== 1 && Array.isArray(b.moves)) {
+      // Copias nuevas de los movimientos: no tocan los datos base del boss.
+      b.moves = b.moves.map(mv => (mv.power > 0 ? Object.assign({}, mv, { power: Math.max(1, Math.round(mv.power * L.power)) }) : mv));
+    }
     return b;
   }
 
@@ -474,7 +528,7 @@
      del nivel), se mantiene el estado del equipo y se reanuda el turno. */
   function startPhase2() {
     const meta = bossMeta(C.bossId);
-    const boss2 = buildBoss(meta.phase2, C.level);
+    const boss2 = buildBoss(meta.phase2, C.level, C.bossId);
     C.phase = 2;
 
     // Los turnos vuelven a 0 en la segunda fase (solo el contador: la vida, los
@@ -529,7 +583,8 @@
 
     if (result === 'win') {
       const info = isThemeLevel(lvl) ? recordThemeWin(bossId, turns) : recordWin(bossId, lvl, turns);
-      renderResult(bossId, lvl, true, { turns, teamIds, ...info });
+      const reward = giveReward(bossId, lvl, info.wasNew);
+      renderResult(bossId, lvl, true, { turns, teamIds, reward, ...info });
     } else {
       renderResult(bossId, lvl, false, { turns, teamIds });
     }
@@ -737,7 +792,7 @@
     ui.view = 'setup';
     const p = loadProgress();
     const b = bossBase(ui.bossId), m = bossMeta(ui.bossId);
-    const L = levelInfo(ui.level);
+    const L = effLevel(ui.bossId, ui.level);
 
     const levelBtns = LEVELS.map(l => {
       const open = levelUnlocked(p, ui.bossId, l.n);
@@ -761,6 +816,10 @@
         <small>${open ? (done ? `${best ? `  Récord: ${best} turnos` : ''}` : 'Tienes un róster limitado de personajes. Dificultad media.') : '🔒 Supera el Nivel 1 primero'}</small>
       </button>`;
     }
+
+    const first = isThemeLevel(ui.level) ? !themeIsCleared(p, ui.bossId) : ui.level > clearedLevel(p, ui.bossId);
+    const rFirst = rewardFor(ui.bossId, ui.level, true), rRep = rewardFor(ui.bossId, ui.level, false);
+    const rewardLine = `<div class="ch-note" style="margin:4px 0;max-width:none">🎁 ${first ? 'Primera victoria' : 'Ya superado — repetir'}: <b>${rewardText(first ? rFirst : rRep) || 'sin recompensa'}</b>${first && rRep.coins > 0 ? ` <span class="ch-sub">(al repetir: ${rewardText(rRep)})</span>` : ''}</div>`;
 
     const stat = (k, v) => `<span class="ch-stat">${k} <b>${v}</b></span>`;
     const moves = b.moves.map(mv => `<div class="ch-move"><b>${esc(mv.name)}</b> — ${esc(mv.desc)}</div>`).join('');
@@ -788,6 +847,7 @@
         </div>
       </div>
       <div class="ch-levels">${levelBtns}${themeBtn}</div>
+      ${rewardLine}
       <h4 style="margin:14px 0 4px">👥 Tu equipo (${TEAM_SIZE})</h4>
       ${themeNote}
       <div id="ch-team" class="ch-team"></div>
@@ -872,6 +932,7 @@
         <h3 class="ch-win">¡${esc(b.name)} derrotado!</h3>
         <div class="ch-sub">${modeLabel} — ${info.turns} turnos</div>
         ${info.wasNew ? `<div class="ch-note">${firstClearNote}</div>` : ''}
+        ${info.reward && rewardText(info.reward) ? `<div class="ch-note">🎁 Recompensa${info.wasNew ? '' : ' (repetición)'}: <b>${rewardText(info.reward)}</b></div>` : ''}
         ${info.record ? `<div class="ch-note">⏱️ ¡Nuevo récord de turnos!</div>` : ''}
         <div class="ch-row" style="justify-content:center;margin-top:16px">
           ${nextLevel ? `<button id="ch-next" class="class-btn ch-primary">▶ Nivel ${lvl + 1}</button>` : ''}

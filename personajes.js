@@ -14545,7 +14545,7 @@ moves: [
       id: 'alb5',
       name: 'ULTI: Guerrera de la Destrucción',
       power: 30,
-      acc: 0.89,
+      acc: 0.91,
       desc: 'Albedo libera todo su poder como Guardiana de Nazarick, debilitando al enemigo mientras se protege con una enorme resistencia.',
       baseCooldown: 8,
       type: 'attack',
