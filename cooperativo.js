@@ -32,11 +32,15 @@
    Para que suene una música propia durante el combate contra ese jefe:
        music: 'bosses_cooperativo/music/mi-jefe.mp3'
    (si no pones img se genera un retrato con el emoji `icon`).
+
+   JEFES DOBLES (duo:true) — ejemplo: «Nahamah y Lilith». Llevan `members` (los dos jefes, con
+   su img/music/moves) y `stage2` (el jefe de la segunda fase, con `intro`). Ver el comentario
+   sobre ese jefe más abajo para las mecánicas (special: chains / doom / guard / bloodpact).
    ------------------------------------------------------------------------- */
 (function () {
   'use strict';
 
-  const VERSION = 1;
+  const VERSION = 2;                       // v2: jefes dobles (nuevo protocolo de acciones)
   const PEER_SOURCES = [
     'https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js',
     'https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js'
@@ -282,11 +286,119 @@
       ],
       rewards: { coins: 700, chests: 4, firstCoins: 700, firstChests: 3, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.28 }
     },
+    /* ---------------------------------------------------------------
+       JEFE DOBLE (duo:true): dos jefes a la vez (members) y, al derrotarlos a los dos,
+       una SEGUNDA FASE (stage2) contra un único jefe. Mecánicas propias de este combate:
+         · Resurrección Gemela ... un gemelo caído revive UNA vez (reviveAfter rondas) con
+                                    reviveHpPct de vida, salvo que mates al otro antes.
+         · Furia de Luto .......... el gemelo superviviente gana ATK/SPD cuando el otro cae.
+         · special:'chains' ....... Cadenas: el objetivo no puede ser cambiado por la reserva.
+         · special:'doom' ......... Condena: tras N rondas el marcado pierde % de su vida máx.
+                                    (se rompe si cae quien la lanzó).
+         · special:'guard' ........ Guardia Gemela: los ataques dirigidos al otro gemelo se
+                                    desvían a quien guarda.
+         · special:'bloodpact' .... Pacto Carmesí: sacrifica vida propia por robo de vida y ATK
+                                    para los dos gemelos.
+       Al atacar a un jefe doble eliges objetivo (clic en su panel o botones 🎯).
+       --------------------------------------------------------------- */
+    {
+      id: 'coopboss_gemelos', name: 'Nahamah y Lilith', icon: '👿', c1: '#7c3aed', c2: '#1e0a3c', tier: 5,
+      duo: true,
+      music: 'bosses_cooperativo/music/gemelos.mp3',
+      tagline: 'Dos hermanas demoníacas a la vez: Nahamah, la sangre, y Lilith, el hielo. Si una cae puede volver… y al final se fusionan.',
+      reviveAfter: 3, reviveHpPct: 0.4, reviveMax: 1, mournAtk: 3, mournSpd: 2,
+      members: [
+        {
+          id: 'coopboss_nahamah', name: 'Nahamah', icon: '🩸', c1: '#dc2626', c2: '#2a0606',
+          img: 'bosses_cooperativo/nahamah.jpg',
+          hp: 880, atk: 26, def: 14, spd: 21, ccResist: 0.7,
+          phases: [
+            { at: 0.4, log: 'Nahamah se desata: ¡más ATK!', atk: 3 }
+          ],
+          moves: [
+            { id: 'naha1', name: 'Desgarro Carmesí', power: 26, acc: 0.95, baseCooldown: 0, type: 'attack',
+              effects: [{ type: 'damageOverTime', status: 'bleed', value: 4, duration: 3, prob: 0.6 }],
+              desc: 'Un zarpazo que puede provocar sangrado a uno de los dos del frente.' },
+            { id: 'naha2', name: 'Lluvia de Sangre', power: 13, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
+              effects: [{ type: 'damageOverTime', status: 'bleed', value: 4, duration: 3, prob: 0.8 }, { type: 'healReduction', value: 25, duration: 2 }],
+              desc: 'Una lluvia roja sobre el frente. Sangrado y menos curación recibida.' },
+            { id: 'naha3', name: 'Pacto Carmesí', power: 0, acc: 1, baseCooldown: 5, type: 'support', aiWeight: 0.9, special: 'bloodpact',
+              effects: [{ type: 'special' }],
+              desc: 'Sacrifica el 8 % de su vida: ella y su hermana ganan robo de vida y ATK durante 3 turnos.' },
+            { id: 'naha4', name: 'ULTRA: Festín de Sangre', power: 29, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
+              effects: [{ type: 'lifesteal', value: 35, duration: 1 }, { type: 'damageOverTime', status: 'bleed', value: 5, duration: 3, prob: 0.9 }],
+              desc: 'Devora al frente: daño en área, sangrado casi seguro y se cura con lo que roba.' }
+          ]
+        },
+        {
+          id: 'coopboss_lilith', name: 'Lilith', icon: '❄️', c1: '#38bdf8', c2: '#0c1a3a',
+          img: 'bosses_cooperativo/lilith.jpg',
+          hp: 840, atk: 25, def: 15, spd: 19, ccResist: 0.7,
+          phases: [
+            { at: 0.4, log: 'Lilith se enfurece: ¡más velocidad y ATK!', atk: 2, spd: 3 }
+          ],
+          moves: [
+            { id: 'lili1', name: 'Cadenas Gélidas', power: 24, acc: 0.95, baseCooldown: 2, type: 'attack', special: 'chains',
+              effects: [{ type: 'slow', value: 20, duration: 2, prob: 0.8 }],
+              desc: 'Un golpe helado que ralentiza y ENCADENA: el objetivo no podrá ser cambiado por la reserva durante 2 turnos suyos.' },
+            { id: 'lili2', name: 'Ventisca Lunar', power: 13, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
+              effects: [{ type: 'freeze', prob: 0.25, duration: 1 }, { type: 'accuracyDown', value: 10, duration: 2 }],
+              desc: 'Una ventisca sobre el frente. Puede congelar y resta precisión.' },
+            { id: 'lili3', name: 'Velo Gemelo', power: 0, acc: 1, baseCooldown: 5, type: 'support', aiWeight: 0.9, special: 'guard',
+              effects: [{ type: 'shield', value: 60 }, { type: 'special' }],
+              desc: 'Gana escudo y protege a su hermana: los ataques dirigidos a ella se desvían a Lilith durante 2 rondas.' },
+            { id: 'lili4', name: 'ULTRA: Condena de Medianoche', power: 22, acc: 0.9, baseCooldown: 7, type: 'attack', aoe: true, ult: true, special: 'doom',
+              effects: [{ type: 'slow', value: 15, duration: 2, prob: 0.7 }],
+              desc: 'Daño en área y CONDENA a los dos del frente: en 3 rondas perderán el 35 % de su vida máx. Se rompe si Lilith cae.' }
+          ]
+        }
+      ],
+      stage2: {
+        id: 'coopboss_fusion', name: 'Fusión Demoníaca', icon: '🌌', c1: '#a855f7', c2: '#0b0620',
+        img: 'bosses_cooperativo/combined.jpg',
+        music: 'bosses_cooperativo/music/combined.mp3',
+        intro: '¡Nahamah y Lilith se funden en un solo ser! FUSIÓN DEMONÍACA: las rondas se reinician y los supervivientes recuperan toda su vida.',
+        hp: 1500, atk: 29, def: 17, spd: 21, ccResist: 0.8,
+        phases: [
+          { at: 0.6, log: 'La Fusión Demoníaca se estabiliza: ¡más ATK!', atk: 3 },
+          { at: 0.3, log: '¡La Fusión Demoníaca se desgarra! Más ATK y SPD, y ataca DOS veces por ronda.', atk: 2, spd: 2, actions: 2 }
+        ],
+        moves: [
+          { id: 'fus1', name: 'Garra Dual', power: 28, acc: 0.95, baseCooldown: 0, type: 'attack',
+            effects: [{ type: 'damageOverTime', status: 'bleed', value: 5, duration: 3, prob: 0.55 }, { type: 'debuff', stat: 'spd', value: 3, duration: 2 }],
+            desc: 'Un zarpazo de sangre y hielo contra uno del frente. Puede sangrar y reduce su SPD.' },
+          { id: 'fus2', name: 'Aullido Dual', power: 14, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
+            effects: [{ type: 'freeze', prob: 0.2, duration: 1 }, { type: 'healReduction', value: 25, duration: 2 }, { type: 'accuracyDown', value: 10, duration: 2 }],
+            desc: 'Un aullido doble sobre el frente: puede congelar, resta precisión y reduce la curación.' },
+          { id: 'fus3', name: 'Espejo Abisal', power: 0, acc: 1, baseCooldown: 5, type: 'support', aiWeight: 0.8,
+            effects: [{ type: 'shield', value: 90 }, { type: 'tempDef', value: 4, duration: 2 }, { type: 'reflectDamage', value: 30, duration: 2 }],
+            desc: 'Escudo, más DEF y reflejo del 30 % del daño recibido durante 2 turnos.' },
+          { id: 'fus4', name: 'Cadenas del Abismo', power: 15, acc: 0.95, baseCooldown: 4, type: 'attack', aoe: true, special: 'chains', aiWeight: 0.9,
+            effects: [{ type: 'slow', value: 15, duration: 2, prob: 0.7 }],
+            desc: 'Encadena a los dos del frente: no podrán cambiar de personaje durante 2 turnos suyos.' },
+          { id: 'fus5', name: 'ULTRA: Cataclismo Gemelo', power: 33, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
+            effects: [{ type: 'damageOverTime', status: 'bleed', value: 5, duration: 3, prob: 0.9 }, { type: 'healReduction', value: 30, duration: 2 }],
+            desc: 'Un cataclismo de sangre y hielo sobre el frente. Sangrado casi seguro y menos curación.' }
+        ]
+      },
+      rewards: { coins: 1000, chests: 5, firstCoins: 1000, firstChests: 4, skinAllow: ['epic', 'legend'], repeatSkinChance: 0.3 }
+    },
   ];
-  BOSSES.forEach(b => {
+  const finishBoss = b => {
     if (!b.img) b.img = bossSvg(b.icon, b.c1, b.c2);
     b.classes = [];
     b.isBoss = true;
+  };
+  BOSSES.forEach(b => {
+    if (b.duo) {
+      b.members.forEach(finishBoss);
+      finishBoss(b.stage2);
+      b.img = b.members[0].img;
+      b.hp = b.members.reduce((a, m) => a + m.hp, 0);
+      b.atk = b.members.map(m => m.atk).join('/');
+      b.def = b.members.map(m => m.def).join('/');
+    }
+    finishBoss(b);
   });
   const bossById = id => BOSSES.find(b => b.id === id) || null;
   const stars = n => '★'.repeat(n) + '☆'.repeat(5 - n);
@@ -317,6 +429,7 @@
     rematch: { me: false, opp: false }, desyncs: 0,
     front: [0, 3], order: [], pos: 0, round: 0, cur: null, seq: 0,
     bossBusy: false, bossTok: 0, lastTarget: null, rewarded: false, result: null,
+    stage: 1, focus: 0, extraThink: 0,
     timer: { key: null, deadline: 0, firedKey: null, int: null }
   };
   const orig = {};
@@ -326,14 +439,22 @@
   const slotAlive = k => aliveIn(k).length > 0;
   const slotChar = k => state.teams.p1[CO.front[k]];
   const bossChar = () => state.teams.p2[0];
+  const bosses = () => state.teams.p2;
+  const bossDef = () => bossById(CO.bossId);
+  const bId = i => 'b' + i;                                   // id de turno de un jefe: 'b0', 'b1'
+  const bIdx = id => (typeof id === 'string' && id.charAt(0) === 'b' ? Number(id.slice(1)) : -1);
+  const isBossTurn = () => bIdx(CO.cur) >= 0;
+  const curBoss = () => state.teams.p2[bIdx(CO.cur)];
+  const isBossChar = c => !!c && state.teams.p2.includes(c);
+  const aliveBossIdx = () => state.teams.p2.map((b, i) => (b && b.hp > 0 ? i : -1)).filter(i => i >= 0);
+  const finalName = b => (b.duo ? b.stage2.name : b.name);
   const mySeats = () => (CO.local ? [0, 1] : [CO.seat]);
   const isMine = k => mySeats().includes(k);
   const isMyTurn = () => typeof CO.cur === 'number' && isMine(CO.cur) && state.phase === 'battle' && CO.started;
   const frontAlive = () => [0, 1].map(slotChar).filter(c => c && c.hp > 0);
   const seatOfIndex = i => (i < 3 ? 0 : 1);
   const seatName = k => (CO.local ? 'Jugador ' + (k + 1) : (k === CO.seat ? CO.nick.me : CO.nick.opp));
-  const bossActs = () => {
-    const b = bossChar();
+  const bossActs = b => {
     if (!b || !Array.isArray(b.phases)) return 1;
     return b.phases.slice(0, b.phaseIdx || 0).reduce((m, p) => Math.max(m, p.actions || 1), 1);
   };
@@ -368,13 +489,14 @@
   }
 
   function hashState() {
-    const parts = [CO.round, CO.pos, String(CO.cur), CO.front.join(','), state.turnCount, state.phase,
+    const parts = [CO.stage, CO.round, CO.pos, String(CO.cur), CO.front.join(','), state.turnCount, state.phase,
       state.activeIndex.p1, state.turnOwner, rngS];
     ['p1', 'p2'].forEach(p => state.teams[p].forEach(c => {
       parts.push(c.id, c.hp, c.shield, c.stunned, c.tempAtk, c.tempDef, c.tempSpd, c.atk, c.def, c.spd,
         c.moves.map(m => m.cd).join(','),
         (c.statusEffects || []).length, (c.controlEffects || []).length,
-        (c.debuffEffects || []).length, (c.tempEffects || []).length, (c.specialEffects || []).length);
+        (c.debuffEffects || []).length, (c.tempEffects || []).length, (c.specialEffects || []).length,
+        c.reviveIn || 0, c.reviveLeft || 0, c.noSwap || 0, c.doom ? c.doom.rounds : 0, c.guardTurns || 0);
     }));
     const s = parts.join('|');
     let h = 0x811c9dc5;
@@ -627,6 +749,7 @@
     CO.ended = false; CO.rewarded = false; CO.result = null;
     CO.front = [0, 3]; CO.order = []; CO.pos = 0; CO.round = 0; CO.cur = null; CO.seq = 0;
     CO.bossBusy = false; CO.bossTok++; CO.lastTarget = null;
+    CO.stage = 1; CO.focus = 0; CO.extraThink = 0;
     CO.timer = { key: null, deadline: 0, firedKey: null, int: CO.timer.int };
   }
 
@@ -738,8 +861,13 @@
   function beginBattle(hostChars, guestChars) {
     const boss = bossById(CO.bossId);
     state.teams.p1 = hostChars.concat(guestChars);
-    state.teams.p2 = [cloneCharacter(boss)];
-    state.teams.p2[0].phaseIdx = 0;
+    state.teams.p2 = (boss.duo ? boss.members : [boss]).map(m => {
+      const c = cloneCharacter(m);
+      c.phaseIdx = 0; c.guardTurns = 0; c.reviveIn = 0; c.fallen = false;
+      c.reviveLeft = boss.duo ? (boss.reviveMax || 0) : 0;
+      return c;
+    });
+    CO.stage = 1; CO.focus = 0;
     playBossMusic(boss);
     CO.front = [0, 3];
     CO.order = []; CO.pos = 0; CO.round = 0; CO.cur = null; CO.seq = 0;
@@ -784,22 +912,64 @@
     return true;
   }
 
+  /* Al empezar cada ronda: temporizadores de los jefes dobles (guardia, resurrección) y Condena. */
+  function reviveBoss(b) {
+    const def = bossDef();
+    b.hp = Math.max(1, Math.round(b.maxHp * (def.reviveHpPct || 0.4)));
+    b.fallen = false; b.reviveIn = 0; b.shield = 0; b.stunned = 0; b.guardTurns = 0;
+    b.statusEffects = []; b.controlEffects = []; b.debuffEffects = []; b.specialEffects = [];
+    b.tempEffects = []; b.tempAtk = 0; b.tempDef = 0; b.tempSpd = 0;
+    b.moves.forEach(m => { m.cd = 0; });
+    safeLog(`⚡ <strong>¡${esc(b.name)} se levanta de nuevo con ${b.hp} HP!</strong> (Resurrección Gemela)`);
+    showBanner(`⚡ ¡${b.name} revive!`);
+    bosses().forEach(o => { if (o !== b && o.hp > 0) o.shield += 50; });
+  }
+
+  function roundUpkeep() {
+    const bs = bosses();
+    bs.forEach(b => { if (b.guardTurns > 0) b.guardTurns--; });
+    bs.forEach(b => {
+      if (b.hp <= 0 && b.reviveIn > 0) {
+        b.reviveIn--;
+        if (b.reviveIn <= 0) {
+          if (bs.some(o => o !== b && o.hp > 0)) reviveBoss(b);
+        } else safeLog(`⏳ ${esc(b.name)} revivirá en ${b.reviveIn} ronda(s) si su hermana sigue en pie.`);
+      }
+    });
+    state.teams.p1.forEach(c => {
+      if (c.hp <= 0 || !c.doom) return;
+      const src = bs.find(b => b.id === c.doom.src);
+      if (!src || src.hp <= 0) { delete c.doom; return; }
+      c.doom.rounds--;
+      if (c.doom.rounds > 0) { safeLog(`💀 La Condena sobre ${esc(c.name)} se cumple en ${c.doom.rounds} ronda(s).`); return; }
+      delete c.doom;
+      if (isInvulnerable(c)) { safeLog(`🛡️✨ ${esc(c.name)} es invulnerable: la Condena no le afecta.`); return; }
+      const before = c.hp, dmg = Math.round(c.maxHp * 0.35);
+      c.hp = Math.max(0, c.hp - dmg);
+      if (c.hp <= 0) c.shield = 0;
+      safeLog(`💀 ¡La Condena de ${esc(src.name)} se cumple! ${esc(c.name)} pierde ${before - c.hp} HP.`);
+      if (before > 0 && c.hp <= 0) tryPassiveRevive(c);
+    });
+  }
+
   function startRound() {
     CO.round++;
+    roundUpkeep();
     const items = [];
     [0, 1].forEach(k => {
       if (slotAlive(k) && ensureFront(k)) items.push({ id: k, spd: getEffectiveStat(slotChar(k), 'spd'), r: rnd() });
     });
-    items.push({ id: 'boss', spd: getEffectiveStat(bossChar(), 'spd'), r: rnd() });
+    bosses().forEach((b, i) => { if (b.hp > 0) items.push({ id: bId(i), spd: getEffectiveStat(b, 'spd'), r: rnd() }); });
     items.sort((a, b) => (b.spd - a.spd) || (a.r - b.r));
     CO.order = items.map(i => i.id);
-    for (let i = 1; i < bossActs(); i++) CO.order.push('boss');
+    bosses().forEach((b, i) => { if (b.hp > 0) for (let n = 1; n < bossActs(b); n++) CO.order.push(bId(i)); });
     CO.pos = 0;
     safeLog(`<strong>— Ronda ${CO.round} —</strong> orden: ${CO.order.map(orderLabel).join(' → ')}`);
   }
 
   function orderLabel(id) {
-    if (id === 'boss') return '👹 ' + esc(bossChar().name);
+    const bi = bIdx(id);
+    if (bi >= 0) { const b = state.teams.p2[bi]; return '👹 ' + esc(b ? b.name : '?'); }
     const c = slotChar(id);
     return '⚔️ ' + esc(c ? c.name : '?');
   }
@@ -810,14 +980,21 @@
     CO.pos++;
     let guard = 0;
     while (guard++ < 24) {
-      if (CO.pos >= CO.order.length) startRound();
+      if (CO.pos >= CO.order.length) {
+        startRound();
+        if (state.teams.p1.every(c => c.hp <= 0)) { finish('lose'); return; }
+      }
       const id = CO.order[CO.pos];
-      if (id === 'boss' || (slotAlive(id) && ensureFront(id))) { CO.cur = id; break; }
+      const bi = bIdx(id);
+      if (bi >= 0 ? (state.teams.p2[bi] && state.teams.p2[bi].hp > 0) : (slotAlive(id) && ensureFront(id))) { CO.cur = id; break; }
       CO.pos++;
     }
-    if (typeof CO.cur === 'number') { state.turnOwner = 'p1'; state.activeIndex.p1 = CO.front[CO.cur]; }
-    else { state.turnOwner = 'p2'; }
-    state.activeIndex.p2 = 0;
+    if (typeof CO.cur === 'number') {
+      state.turnOwner = 'p1'; state.activeIndex.p1 = CO.front[CO.cur];
+      state.activeIndex.p2 = Math.max(0, aliveBossIdx()[0] || 0);
+    } else {
+      state.turnOwner = 'p2'; state.activeIndex.p2 = Math.max(0, bIdx(CO.cur));
+    }
     beginTurn();
   }
 
@@ -825,13 +1002,15 @@
     const seq = CO.seq;
     orig.startTurnActions.call(W);        // DoT, cooldowns, aturdido/congelado/miedo (puede saltar el turno)
     if (CO.seq !== seq || state.phase !== 'battle') return;
+    const bi = bIdx(CO.cur);
+    if (bi >= 0 && (!state.teams.p2[bi] || state.teams.p2[bi].hp <= 0)) { advance(); return; }   // murió por un DoT al empezar su turno
     if (typeof CO.cur === 'number' && (!slotAlive(CO.cur) || !slotChar(CO.cur) || slotChar(CO.cur).hp <= 0)) {
       if (!ensureFront(CO.cur)) { advance(); return; }
       state.activeIndex.p1 = CO.front[CO.cur];
     }
     W.updateTurnInfo();
     W.updateArena();
-    if (CO.cur === 'boss') scheduleBoss();
+    if (bi >= 0) scheduleBoss();
     else startTimerFor();
   }
 
@@ -839,6 +1018,7 @@
   W.COOP_HOOK = {
     active: false,
     pick(p) {
+      if (CO.active && CO.started && p === 'p2') return -1;     // un jefe caído por un DoT no es sustituido por su hermano: el turno se salta
       if (!CO.active || !CO.started || p !== 'p1' || typeof CO.cur !== 'number') return undefined;
       const idx = aliveIn(CO.cur)[0];
       if (idx === undefined) return -1;
@@ -850,10 +1030,51 @@
   /* =====================================================================
      IA DEL JEFE (determinista: usa la misma semilla en los dos navegadores)
      ===================================================================== */
+  /* Mecánicas especiales de los jefes (campo `special` de la habilidad):
+       hit(actor, objetivo) .... se ejecuta tras golpear a cada objetivo (ataques)
+       use(actor) .............. se ejecuta al usarla (apoyo: lleva el efecto {type:'special'}) */
+  const SPECIALS = {
+    chains: {
+      hit(actor, t) {
+        if (!t || t.hp <= 0 || isBossChar(t)) return;
+        t.noSwap = Math.max(t.noSwap || 0, 2);
+        safeLog(`⛓️ ${esc(t.name)} queda ENCADENADO: no podrá cambiar de personaje durante 2 turnos suyos.`);
+      }
+    },
+    doom: {
+      hit(actor, t) {
+        if (!t || t.hp <= 0 || isBossChar(t) || t.doom) return;
+        t.doom = { rounds: 3, src: actor.id };
+        safeLog(`💀 ${esc(t.name)} está CONDENADO por ${esc(actor.name)}: en 3 rondas perderá el 35 % de su vida máxima (se rompe si ${esc(actor.name)} cae).`);
+      }
+    },
+    guard: {
+      use(actor) {
+        actor.guardTurns = 2;
+        const o = bosses().find(b => b !== actor && b.hp > 0);
+        safeLog(o ? `🛡️ ${esc(actor.name)} protege a ${esc(o.name)}: los ataques contra ella se desvían a ${esc(actor.name)} durante 2 rondas.`
+                  : `🛡️ ${esc(actor.name)} se pone en guardia.`);
+      }
+    },
+    bloodpact: {
+      use(actor) {
+        const cost = Math.max(0, Math.min(Math.round(actor.maxHp * 0.08), actor.hp - 1));
+        actor.hp -= cost;
+        safeLog(`🩸 ${esc(actor.name)} sacrifica ${cost} HP en un Pacto Carmesí.`);
+        bosses().filter(b => b.hp > 0).forEach(b => {
+          applySpecialEffect(actor, b, { type: 'lifesteal', value: 25, duration: 3 });
+          orig.applyEffect.call(W, actor, b, { name: 'Pacto Carmesí', effect: { type: 'tempAtk', value: 4, duration: 3 } });
+        });
+      }
+    }
+  };
+
   function scheduleBoss() {
     CO.bossBusy = true;
     const tok = ++CO.bossTok;
-    setTimeout(() => runBossTurn(tok), BOSS_THINK_MS);
+    const delay = BOSS_THINK_MS + (CO.extraThink || 0);
+    CO.extraThink = 0;
+    setTimeout(() => runBossTurn(tok), delay);
   }
 
   async function runBossTurn(tok) {
@@ -861,73 +1082,118 @@
     try {
       if (tok !== CO.bossTok) return;
       await waitFor(() => !CO.frozen && !state.moveLock && !CO.busy, 8000);
-      if (state.phase !== 'battle' || CO.cur !== 'boss' || tok !== CO.bossTok) return;
-      const boss = bossChar();
+      if (state.phase !== 'battle' || !isBossTurn() || tok !== CO.bossTok) return;
+      const boss = curBoss();
       if (!boss || boss.hp <= 0) return;
+      state.activeIndex.p2 = bIdx(CO.cur);
       const mv = chooseBossMove(boss);
       acted = true;
       if (!mv) { safeLog(`${esc(boss.name)} no puede hacer nada este turno.`); W.endTurn(boss); }
       else {
-		await orig.onUseMove.call(W, 'p2', mv.id);
-		if (mv.selfDestruct && state.phase === 'battle') {
-			boss.hp = 0;
-			boss.shield = 0;
-
-			safeLog(`💥 ${esc(boss.name)} self-destroys with ${esc(mv.name)}!`);
-
-			W.updateArena();
-			checkEnd();
-		}
-	  }
+        await orig.onUseMove.call(W, 'p2', mv.id);
+        if (mv.selfDestruct && state.phase === 'battle') {
+          boss.hp = 0;
+          boss.shield = 0;
+          safeLog(`💥 ${esc(boss.name)} self-destroys with ${esc(mv.name)}!`);
+          W.updateArena();
+          checkEnd();
+        }
+      }
     } finally {
       if (CO.bossTok === tok) CO.bossBusy = false;
     }
     if (acted) afterAction();
   }
 
-function chooseBossMove(boss) {
-	const hpPct = boss.hp / boss.maxHp;
-	const finalMove = boss.moves.find(m =>
-		m.finalAt != null &&
-		hpPct <= m.finalAt &&
-		m.cd === 0
-	);
+  function chooseBossMove(boss) {
+    const hpPct = boss.hp / boss.maxHp;
+    const finalMove = boss.moves.find(m => m.finalAt != null && hpPct <= m.finalAt && m.cd === 0);
+    if (finalMove) return finalMove;
 
-	if (finalMove) return finalMove;
-
-	const avail = boss.moves.filter(m => m.cd === 0 && m.finalAt == null);
-	if (!avail.length) return null;
-	const fronts = frontAlive().length;
-	const ws = avail.map(m => {
-		let w = Number(m.aiWeight) || 1;
-		if (m.aoe) w *= fronts >= 2 ? 1.7 : 0.6;
-		if (m.ult) w *= 3.5;
-		if (m.type === 'support') {
-		w *= hpPct > 0.7 ? 0.25 : 0.9;
-		if (boss.shield > 0 && (m.effects || []).some(e => e.type === 'shield')) w *= 0.2;
-		}
-		return Math.max(0.01, w);
-	});
-	const total = ws.reduce((a, b) => a + b, 0);
-	let r = rnd() * total;
-	for (let i = 0; i < avail.length; i++) { r -= ws[i]; if (r <= 0) return avail[i]; }
-	return avail[avail.length - 1];
-}
+    const avail = boss.moves.filter(m => m.cd === 0 && m.finalAt == null);
+    if (!avail.length) return null;
+    const fronts = frontAlive();
+    const sibling = bosses().some(o => o !== boss && o.hp > 0);
+    const ws = avail.map(m => {
+      let w = Number(m.aiWeight) || 1;
+      if (m.aoe) w *= fronts.length >= 2 ? 1.7 : 0.6;
+      if (m.ult) w *= 3.5;
+      if (m.type === 'support') {
+        w *= hpPct > 0.7 ? 0.25 : 0.9;
+        if (boss.shield > 0 && (m.effects || []).some(e => e.type === 'shield')) w *= 0.2;
+      }
+      if (m.special === 'guard' && !sibling) w *= 0.3;
+      if (m.special === 'bloodpact' && hpPct < 0.3) w *= 0.1;
+      if (m.special === 'doom' && fronts.every(c => c.doom)) w *= 0.15;
+      if (m.special === 'chains' && fronts.every(c => c.noSwap > 0)) w *= 0.25;
+      return Math.max(0.01, w);
+    });
+    const total = ws.reduce((a, b) => a + b, 0);
+    let r = rnd() * total;
+    for (let i = 0; i < avail.length; i++) { r -= ws[i]; if (r <= 0) return avail[i]; }
+    return avail[avail.length - 1];
+  }
 
   function applyPhases() {
-    const boss = bossChar();
-    if (!boss || boss.hp <= 0 || !Array.isArray(boss.phases)) return;
-    boss.phaseIdx = boss.phaseIdx || 0;
-    while (boss.phaseIdx < boss.phases.length && boss.hp / boss.maxHp <= boss.phases[boss.phaseIdx].at) {
-      const ph = boss.phases[boss.phaseIdx++];
-      safeLog(`🔥 <strong>${esc(ph.log)}</strong>`);
-      if (ph.atk) boss.atk += ph.atk;
-      if (ph.def) boss.def += ph.def;
-      if (ph.spd) boss.spd += ph.spd;
-      if (ph.heal) boss.hp = Math.min(boss.maxHp, boss.hp + Math.round(boss.maxHp * ph.heal));
-      if (ph.shield) boss.shield += ph.shield;
-      if (ph.cleanse) { boss.statusEffects = []; boss.controlEffects = []; boss.debuffEffects = []; boss.stunned = 0; }
-    }
+    bosses().forEach(boss => {
+      if (!boss || boss.hp <= 0 || !Array.isArray(boss.phases)) return;
+      boss.phaseIdx = boss.phaseIdx || 0;
+      while (boss.phaseIdx < boss.phases.length && boss.hp / boss.maxHp <= boss.phases[boss.phaseIdx].at) {
+        const ph = boss.phases[boss.phaseIdx++];
+        safeLog(`🔥 <strong>${esc(ph.log)}</strong>`);
+        if (ph.atk) boss.atk += ph.atk;
+        if (ph.def) boss.def += ph.def;
+        if (ph.spd) boss.spd += ph.spd;
+        if (ph.heal) boss.hp = Math.min(boss.maxHp, boss.hp + Math.round(boss.maxHp * ph.heal));
+        if (ph.shield) boss.shield += ph.shield;
+        if (ph.cleanse) { boss.statusEffects = []; boss.controlEffects = []; boss.debuffEffects = []; boss.stunned = 0; }
+      }
+    });
+  }
+
+  /* Un gemelo cae: su Condena se rompe, el otro entra en Furia de Luto y, si aún le queda,
+     el caído revivirá tras `reviveAfter` rondas (Resurrección Gemela). */
+  function handleFalls() {
+    const def = bossDef(), bs = bosses();
+    bs.forEach(b => {
+      if (b.hp > 0 || b.fallen) return;
+      b.fallen = true; b.guardTurns = 0;
+      state.teams.p1.forEach(c => {
+        if (c.doom && c.doom.src === b.id) { delete c.doom; safeLog(`✨ La Condena de ${esc(b.name)} se rompe.`); }
+      });
+      if (!def.duo || CO.stage !== 1) return;
+      const other = bs.find(o => o !== b && o.hp > 0);
+      if (!other) return;
+      if ((b.reviveLeft || 0) > 0) {
+        b.reviveLeft--; b.reviveIn = def.reviveAfter;
+        safeLog(`⏳ ${esc(b.name)} ha caído… ¡pero revivirá en ${def.reviveAfter} rondas si ${esc(other.name)} sigue en pie! (Resurrección Gemela)`);
+      } else safeLog(`☠️ ${esc(b.name)} cae definitivamente.`);
+      other.atk += def.mournAtk || 0; other.spd += def.mournSpd || 0;
+      safeLog(`😡 <strong>${esc(other.name)} ruge de dolor: ¡+${def.mournAtk || 0} ATK y +${def.mournSpd || 0} SPD!</strong> (Furia de Luto)`);
+    });
+  }
+
+  /* Segunda fase: los gemelos se funden. Rondas y contador de turnos a cero, sin muerte súbita,
+     y todos los aliados que no están KO recuperan TODA su vida. */
+  function startStage2() {
+    const st = bossDef().stage2;
+    CO.stage = 2;
+    safeLog(`🌌 <strong>${esc(st.intro)}</strong>`);
+    showBanner('🌌 ' + st.name.toUpperCase());
+    state.teams.p1.forEach(c => {
+      delete c.doom; delete c.noSwap;
+      if (c.hp > 0) c.hp = c.maxHp;
+    });
+    state.turnCount = 0; state.suddenDeath = false;
+    CO.round = 0; CO.order = []; CO.pos = -1; CO.cur = null; CO.lastTarget = null; CO.focus = 0;
+    const f = cloneCharacter(st);
+    f.phaseIdx = 0; f.guardTurns = 0; f.reviveIn = 0; f.fallen = false; f.reviveLeft = 0;
+    state.teams.p2 = [f];
+    state.activeIndex.p2 = 0;
+    playBossMusic(st);
+    CO.extraThink = 2600;               // pausa para leer la transición si empieza el jefe
+    W.updateArena();
+    advance();
   }
 
   /* =====================================================================
@@ -935,9 +1201,13 @@ function chooseBossMove(boss) {
      ===================================================================== */
   function checkEnd() {
     if (state.phase === 'ended') return true;
+    handleFalls();
     applyPhases();
-    const boss = bossChar();
-    if (boss.hp <= 0) { finish('win'); return true; }
+    const def = bossDef();
+    if (bosses().every(b => b.hp <= 0)) {
+      if (def.duo && CO.stage === 1) { startStage2(); return true; }
+      finish('win'); return true;
+    }
     if (state.teams.p1.every(c => c.hp <= 0)) { finish('lose'); return true; }
     [0, 1].forEach(k => {
       const ch = slotChar(k);
@@ -1020,11 +1290,11 @@ function chooseBossMove(boss) {
     const data = JSON.parse(JSON.stringify({
       teams: state.teams, activeIndex: state.activeIndex, turnOwner: state.turnOwner, turnCount: state.turnCount,
       phase: state.phase, rng: rngS, applied: CO.applied,
-      front: CO.front, order: CO.order, pos: CO.pos, round: CO.round, cur: CO.cur, seq: CO.seq
+      front: CO.front, order: CO.order, pos: CO.pos, round: CO.round, cur: CO.cur, seq: CO.seq, stage: CO.stage
     }));
     send({ t: 'snap', data });
     CO.frozen = false;
-    if (state.phase === 'battle') { W.updateArena(); if (CO.cur === 'boss' && !CO.bossBusy) scheduleBoss(); }
+    if (state.phase === 'battle') { W.updateArena(); if (isBossTurn() && !CO.bossBusy) scheduleBoss(); }
   }
 
   function applySnapshot(d) {
@@ -1034,11 +1304,13 @@ function chooseBossMove(boss) {
     state.activeIndex = d.activeIndex; state.turnOwner = d.turnOwner; state.turnCount = d.turnCount; state.phase = d.phase;
     rngS = d.rng >>> 0; CO.applied = d.applied;
     CO.front = d.front; CO.order = d.order; CO.pos = d.pos; CO.round = d.round; CO.cur = d.cur; CO.seq = d.seq;
+    const newStage = d.stage || 1;
+    if (newStage !== CO.stage) { CO.stage = newStage; const bd = bossDef(); playBossMusic(newStage === 2 && bd.stage2 ? bd.stage2 : bd); }
     state.moveLock = false; CO.busy = false; CO.frozen = false; CO.bossBusy = false; CO.bossTok++;
     CO.hashes = { me: {}, opp: {} };
     W.updateArena(); W.updateTurnInfo();
     safeLog('✅ Partida resincronizada con el anfitrión.');
-    if (state.phase === 'battle' && CO.cur === 'boss') scheduleBoss();
+    if (state.phase === 'battle' && isBossTurn()) scheduleBoss();
   }
 
   async function drain() {
@@ -1079,6 +1351,7 @@ function chooseBossMove(boss) {
       const actor = slotChar(oppSeat);
       const move = actor && actor.moves.find(m => m.id === msg.moveId);
       if (!actor || !move || move.cd > 0) return desync(CO.applied);
+      if (typeof msg.req === 'number') state.activeIndex.p2 = resolveFocus(msg.req);
       CO.applyingRemote = true;
       CO.presetTarget = { value: (msg.target === undefined ? null : msg.target) };
       try { await orig.onUseMove.call(W, 'p1', msg.moveId); }
@@ -1089,7 +1362,35 @@ function chooseBossMove(boss) {
 
   function canSwap(k, idx) {
     const t = state.teams.p1[idx];
+    const cur = slotChar(k);
+    if (cur && cur.hp > 0 && cur.noSwap > 0) return false;        // ENCADENADO
     return !!t && t.hp > 0 && slotRange(k).includes(idx) && idx !== CO.front[k];
+  }
+
+  /* ---------------- Objetivo en jefes dobles ---------------- */
+  function pickFocus() {
+    const alive = aliveBossIdx();
+    return alive.includes(CO.focus) ? CO.focus : (alive[0] || 0);
+  }
+  // Devuelve el jefe que recibirá un ataque a un objetivo; la Guardia Gemela lo desvía.
+  function resolveFocus(req) {
+    const alive = aliveBossIdx();
+    if (!alive.length) return 0;
+    let idx = alive.includes(req) ? req : alive[0];
+    const g = alive.find(i => i !== idx && bosses()[i].guardTurns > 0);
+    if (g !== undefined) {
+      safeLog(`🛡️ ${esc(bosses()[g].name)} intercepta el ataque dirigido a ${esc(bosses()[idx].name)}.`);
+      idx = g;
+    }
+    return idx;
+  }
+  function showBanner(text) {
+    let el = byId('co-banner');
+    if (!el) { el = document.createElement('div'); el.id = 'co-banner'; document.body.appendChild(el); }
+    el.textContent = text;
+    el.className = 'show';
+    clearTimeout(showBanner.t);
+    showBanner.t = setTimeout(() => { el.className = ''; }, 3600);
   }
   function doSwap(k, idx, consume) {
     CO.front[k] = idx;                     // antes de llamar al motor: su endTurn ya debe ver el nuevo frontal
@@ -1173,7 +1474,7 @@ function chooseBossMove(boss) {
     CO.installed = true;
     ['toggleSelectChar', 'updateStartBtn', 'startBattle', 'initAll', 'renderMovesArea', 'onUseMove', 'performSwap',
       'openTargetModal', 'updateTurnInfo', 'checkKO', 'endTurn', 'startTurnActions', 'updateArena',
-      'getNormalMoveTargets', 'applyStatusEffect', 'applyDamage', 'animateAttack', 'flashHit'
+      'getNormalMoveTargets', 'applyStatusEffect', 'applyDamage', 'applyEffect', 'animateAttack', 'flashHit'
     ].forEach(n => { orig[n] = W[n]; });
 
     /* ----- selección de equipo ----- */
@@ -1233,6 +1534,7 @@ function chooseBossMove(boss) {
       if (state.phase !== 'battle') return;
       const actor = finished || (state.turnOwner ? getActive(state.turnOwner) : null);
       if (actor) { try { processEndOfTurnEffects(actor); } catch (e) { /* ignorar */ } }
+      if (actor && actor.noSwap > 0) actor.noSwap--;          // el encadenamiento dura N turnos del propio personaje
       if (W.checkKO()) return;
       advance();
     };
@@ -1257,7 +1559,7 @@ function chooseBossMove(boss) {
 
     W.openTargetModal = function (player, targets) {
       if (inBattle()) {
-        if (player === 'p2') return Promise.resolve(0);            // el jefe siempre se apoya a sí mismo
+        if (player === 'p2') return Promise.resolve(state.activeIndex.p2);   // el jefe siempre se apoya a sí mismo
         if (CO.presetTarget) {
           const v = CO.presetTarget.value;
           CO.presetTarget = null;
@@ -1268,7 +1570,7 @@ function chooseBossMove(boss) {
     };
 
     W.applyStatusEffect = function (actor, target, effect) {
-      if (inBattle() && target && target === bossChar() && effect &&
+      if (inBattle() && target && isBossChar(target) && effect &&
           ['stun', 'freeze', 'charm', 'fear'].includes(effect.type)) {
         const resist = Number(target.ccResist);
         if (resist > 0 && rnd() < resist) {
@@ -1282,9 +1584,24 @@ function chooseBossMove(boss) {
       return orig.applyStatusEffect.apply(this, arguments);
     };
 
-    W.applyDamage = function (actor, target) {
+    W.applyDamage = function (actor, target, move) {
       if (inBattle()) CO.lastTarget = target;
-      return orig.applyDamage.apply(this, arguments);
+      const r = orig.applyDamage.apply(this, arguments);
+      if (inBattle() && move && move.special && !move._isCounter && isBossChar(actor)) {
+        const sp = SPECIALS[move.special];
+        if (sp && sp.hit) sp.hit(actor, target, move);
+      }
+      return r;
+    };
+
+    // Habilidades de apoyo especiales del jefe: llevan el efecto {type:'special'}.
+    W.applyEffect = function (actor, target, move) {
+      if (inBattle() && isBossChar(actor) && move && move.effect && move.effect.type === 'special') {
+        const sp = SPECIALS[move.special];
+        if (sp && sp.use) sp.use(actor, move);
+        return;
+      }
+      return orig.applyEffect.apply(this, arguments);
     };
 
     W.onUseMove = async function (playerKey, moveId) {
@@ -1302,7 +1619,13 @@ function chooseBossMove(boss) {
           target = chosen == null ? null : chosen;
         }
         if (state.phase !== 'battle' || CO.cur !== slot) return;
-        send({ t: 'move', slot, moveId, target });
+        // Jefe doble: los ataques a un objetivo van al jefe elegido (la Guardia Gemela puede desviarlos).
+        let req;
+        if (bosses().length > 1 && !isSupportMove(move) && !move.aoe) {
+          req = pickFocus();
+          state.activeIndex.p2 = resolveFocus(req);
+        }
+        send({ t: 'move', slot, moveId, target, req });
         CO.presetTarget = { value: target };
         lockButtons();
         await orig.onUseMove.call(W, 'p1', moveId);
@@ -1347,7 +1670,7 @@ function chooseBossMove(boss) {
             ? `Esperando a ${CO.nick.opp}…${CO.ready.opp ? ' (ya está listo)' : ''}`
             : `Elige 3 personajes y pulsa «Estoy listo»${CO.ready.opp ? ` — ${CO.nick.opp} ya está listo` : ''}`);
       } else if (state.phase === 'battle' && CO.started) {
-        const who = CO.cur === 'boss' ? '👹 ' + bossChar().name : (typeof CO.cur === 'number' ? seatName(CO.cur) + (isMine(CO.cur) && !CO.local ? ' (tú)' : '') : '…');
+        const who = isBossTurn() ? '👹 ' + (curBoss() ? curBoss().name : '?') : (typeof CO.cur === 'number' ? seatName(CO.cur) + (isMine(CO.cur) && !CO.local ? ' (tú)' : '') : '…');
         el.innerText = `Ronda ${CO.round} · Turno de ${who}`;
       }
       return r;
@@ -1356,7 +1679,7 @@ function chooseBossMove(boss) {
     W.animateAttack = function (player) {
       if (!inBattle()) return orig.animateAttack.apply(this, arguments);
       return new Promise(res => {
-        const img = byId(player === 'p2' ? 'co-img-b' : 'co-img-' + CO.cur);
+        const img = byId(player === 'p2' ? 'co-img-b' + state.activeIndex.p2 : 'co-img-' + CO.cur);
         if (!img) return setTimeout(res, 650);
         const dir = player === 'p2' ? -1 : 1;
         img.style.transform = `translateX(${34 * dir}px)`;
@@ -1368,7 +1691,7 @@ function chooseBossMove(boss) {
       if (!inBattle()) return orig.flashHit.apply(this, arguments);
       const t = CO.lastTarget;
       let id = null;
-      if (t && t === bossChar()) id = 'co-img-b';
+      if (t && state.teams.p2.indexOf(t) >= 0) id = 'co-img-b' + state.teams.p2.indexOf(t);
       else if (t) { const i = state.teams.p1.indexOf(t); if (i === CO.front[0]) id = 'co-img-0'; else if (i === CO.front[1]) id = 'co-img-1'; }
       const img = id && byId(id);
       if (!img) return;
@@ -1393,6 +1716,8 @@ function chooseBossMove(boss) {
     el.addEventListener('click', e => {
       const t = e.target && e.target.closest ? e.target.closest('[data-swap]') : null;
       if (t) W.performSwap('p1', Number(t.getAttribute('data-swap')), false);
+      const f = e.target && e.target.closest ? e.target.closest('[data-focus]') : null;
+      if (f && isMyTurn()) { CO.focus = Number(f.getAttribute('data-focus')); W.updateArena(); }
     });
     return el;
   }
@@ -1406,6 +1731,10 @@ function chooseBossMove(boss) {
     (ch.controlEffects || []).forEach(e => bits.push(`${e.type === 'freeze' ? '❄️' : e.type === 'charm' ? '💕' : e.type === 'fear' ? '😨' : e.type === 'slow' ? '🐌' : '⚠️'}${e.type}(${e.remaining})`));
     (ch.debuffEffects || []).forEach(d => bits.push(`⬇️${String(d.stat).toUpperCase()}-${d.value}(${d.remaining})`));
     try { if (isInvulnerable(ch)) bits.push('✨INVULNERABLE'); } catch (e) { /* ignorar */ }
+    if (ch.noSwap > 0) bits.push(`⛓️ENCADENADO(${ch.noSwap})`);
+    if (ch.doom) bits.push(`💀CONDENA(${ch.doom.rounds})`);
+    if (ch.guardTurns > 0) bits.push(`🛡️GUARDIA(${ch.guardTurns})`);
+    if (ch.hp <= 0 && ch.reviveIn > 0) bits.push(`⏳REVIVE EN ${ch.reviveIn}`);
     return bits.join(' · ');
   }
 
@@ -1443,21 +1772,31 @@ function chooseBossMove(boss) {
     if (!boss || !state.teams.p1.length) return;
     const order = CO.order.length ? CO.order.map((id, i) =>
       `<span class="co-ord${i === CO.pos ? ' now' : ''}${i < CO.pos ? ' done' : ''}">${orderLabel(id)}</span>`).join('<i>›</i>') : '';
-    const bp = boss.phases && boss.phaseIdx ? ` · ${'🔥'.repeat(Math.min(3, boss.phaseIdx))}` : '';
+    const multi = bosses().length > 1;
+    const focus = pickFocus();
+    const tier = bossById(CO.bossId).tier;
+    const bossPanel = (b, i) => {
+      const bp = b.phases && b.phaseIdx ? ` · ${'🔥'.repeat(Math.min(3, b.phaseIdx))}` : '';
+      const focused = multi && b.hp > 0 && focus === i;
+      const clickable = multi && b.hp > 0 && isMyTurn();
+      return `<div class="co-boss${CO.cur === bId(i) ? ' co-turn' : ''}${b.hp <= 0 ? ' co-ko' : ''}${focused ? ' co-focus' : ''}${clickable ? ' co-click' : ''}"${clickable ? ` data-focus="${i}"` : ''}>
+          <div class="co-tag">JEFE ${stars(tier)}${bp}${focused ? ' · 🎯' : ''}</div>
+          <div class="co-fighter co-bigfighter"><img id="co-img-b${i}" src="${esc(b.img)}" alt=""></div>
+          <div class="co-name">${esc(b.name)}</div>
+          <div class="hpbar co-bosshp"><i style="width:${hpPct(b)}%"></i></div>
+          <div class="co-stats">${esc(statusLine(b))}</div>
+        </div>`;
+    };
+    const stageTag = bossDef().duo ? `<div class="co-stage">${CO.stage === 2 ? '🌌 FASE 2 — ' + esc(bossDef().stage2.name) : '⚔️ FASE 1 — ' + esc(bossDef().name)}</div>` : '';
     el.innerHTML = `
       <div class="co-top"><div class="co-order">${order}</div></div>
-      <div class="co-grid">
+      ${stageTag}
+      <div class="co-grid${multi ? ' co-duo' : ''}">
         <div class="co-allies">
           <div class="co-front">${allyPanel(0)}${allyPanel(1)}</div>
           <div class="co-reserves">${reserveStrip(0)}${reserveStrip(1)}</div>
         </div>
-        <div class="co-boss${CO.cur === 'boss' ? ' co-turn' : ''}${boss.hp <= 0 ? ' co-ko' : ''}">
-          <div class="co-tag">JEFE ${stars(bossById(CO.bossId).tier)}${bp}</div>
-          <div class="co-fighter co-bigfighter"><img id="co-img-b" src="${esc(boss.img)}" alt=""></div>
-          <div class="co-name">${esc(boss.name)}</div>
-          <div class="hpbar co-bosshp"><i style="width:${hpPct(boss)}%"></i></div>
-          <div class="co-stats">${esc(statusLine(boss))}</div>
-        </div>
+        <div class="co-bossbox${multi ? ' co-two' : ''}">${bosses().map(bossPanel).join('')}</div>
       </div>`;
   }
 
@@ -1466,8 +1805,8 @@ function chooseBossMove(boss) {
     if (!area) return;
     area.innerHTML = '';
     if (CO.cur === null || CO.cur === undefined) { area.innerHTML = '<div class="small">Preparando el combate…</div>'; return; }
-    if (CO.cur === 'boss') {
-      area.innerHTML = `<div class="small">👹 Turno de ${esc(bossChar().name)}…</div>`;
+    if (isBossTurn()) {
+      area.innerHTML = `<div class="small">👹 Turno de ${esc(curBoss() ? curBoss().name : 'jefe')}…</div>`;
       return;
     }
     const k = CO.cur;
@@ -1480,6 +1819,21 @@ function chooseBossMove(boss) {
     const title = document.createElement('div');
     title.innerHTML = `<strong>${esc(seatName(k))} — ${esc(actor.name)} (activo)</strong>`;
     area.appendChild(title);
+    const aliveB = aliveBossIdx();
+    if (aliveB.length > 1) {
+      const row = document.createElement('div');
+      row.className = 'co-swaprow';
+      row.innerHTML = '<div class="small" style="margin:6px 0 4px;width:100%">🎯 Objetivo de los ataques a un objetivo (también puedes pulsar al jefe):</div>';
+      aliveB.forEach(i => {
+        const b = bosses()[i];
+        const bt = document.createElement('button');
+        bt.className = 'swap-btn' + (pickFocus() === i ? ' co-focusbtn' : '');
+        bt.textContent = `${pickFocus() === i ? '🎯 ' : ''}${b.name} (${b.hp}/${b.maxHp})${b.guardTurns > 0 ? ' 🛡️' : ''}`;
+        bt.onclick = () => { CO.focus = i; W.updateArena(); };
+        row.appendChild(bt);
+      });
+      area.appendChild(row);
+    }
     actor.moves.forEach(m => {
       const btn = document.createElement('button');
       btn.className = 'move-btn';
@@ -1489,6 +1843,13 @@ function chooseBossMove(boss) {
       btn.onclick = () => W.onUseMove('p1', m.id);
       area.appendChild(btn);
     });
+    if (actor.noSwap > 0) {
+      const note = document.createElement('div');
+      note.className = 'small';
+      note.style.margin = '8px 0 4px';
+      note.textContent = `⛓️ ${actor.name} está ENCADENADO: no puedes cambiarlo durante ${actor.noSwap} turno(s) suyo(s).`;
+      area.appendChild(note);
+    }
     const reserve = slotRange(k).filter(i => canSwap(k, i));
     if (reserve.length) {
       const row = document.createElement('div');
@@ -1515,7 +1876,7 @@ function chooseBossMove(boss) {
     const b = bossById(CO.bossId);
     let title, sub = '', rewards = null;
     if (result === 'win') {
-      title = `🏆 ¡${b.name} derrotado!`;
+      title = `🏆 ¡${finalName(b)} derrotado!`;
       sub = CO.local ? 'Práctica terminada (sin recompensas).' : '¡Gran trabajo en equipo!';
       if (!CO.rewarded) { CO.rewarded = true; rewards = grantRewards(b); CO.rewardsInfo = rewards; }
       try { if (!CO.local && W.SFX) W.SFX.play('enhorabuena'); } catch (e) { /* ignorar */ }
@@ -1665,7 +2026,21 @@ function chooseBossMove(boss) {
     .co-rw img.sk-coin-i{width:22px;height:22px}
     .co-skin{border:1px solid var(--c,#fbbf24);box-shadow:0 0 16px rgba(251,191,36,.2)}
     .co-skin img{width:54px;height:54px;object-fit:cover;border-radius:10px}
-    @media (max-width:820px){.co-grid{grid-template-columns:1fr}.co-fighter{height:150px}.co-bigfighter{height:200px}}`;
+    .co-bossbox{display:flex;flex-direction:column;gap:12px;min-width:0}
+    .co-bossbox.co-two{display:grid;grid-template-columns:1fr 1fr}
+    .co-grid.co-duo{grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr)}
+    .co-bossbox.co-two .co-bigfighter{height:190px}
+    .co-boss.co-click{cursor:pointer}
+    .co-boss.co-click:hover{transform:translateY(-2px)}
+    .co-boss.co-focus{border-color:rgba(244,63,94,.85);box-shadow:0 0 0 2px rgba(244,63,94,.35)}
+    .co-boss.co-focus.co-turn{box-shadow:0 0 0 2px rgba(251,146,60,.85),0 0 22px rgba(251,146,60,.28)}
+    .swap-btn.co-focusbtn{border-color:rgba(244,63,94,.8);background:rgba(244,63,94,.16)}
+    .co-stage{text-align:center;margin:-2px 0 10px;font-size:12px;font-weight:800;letter-spacing:.1em;color:#e9d5ff;text-transform:uppercase}
+    .co-duoimg{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+    .co-duoimg img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px}
+    #co-banner{position:fixed;left:50%;top:16%;transform:translateX(-50%) scale(.9);padding:16px 28px;border-radius:16px;background:linear-gradient(180deg,#3b0764,#0b0620);border:1px solid rgba(192,132,252,.7);box-shadow:0 0 40px rgba(168,85,247,.45);color:#f5d0fe;font-weight:900;font-size:22px;letter-spacing:.06em;text-align:center;z-index:125;opacity:0;pointer-events:none;transition:opacity .4s,transform .4s;max-width:90vw}
+    #co-banner.show{opacity:1;transform:translateX(-50%) scale(1)}
+    @media (max-width:820px){.co-grid.co-duo{grid-template-columns:1fr}.co-grid{grid-template-columns:1fr}.co-fighter{height:150px}.co-bigfighter{height:200px}}`;
     document.head.appendChild(st);
   }
 
@@ -1673,11 +2048,11 @@ function chooseBossMove(boss) {
     const wins = loadProg().wins[b.id] || 0;
     const R = b.rewards;
     return `<div class="co-bosscard${b.id === CO.bossId ? ' sel' : ''}" data-boss="${esc(b.id)}">
-      <img src="${esc(b.img)}" alt="">
+      ${b.duo ? `<div class="co-duoimg">${b.members.map(m => `<img src="${esc(m.img)}" alt="">`).join('')}</div>` : `<img src="${esc(b.img)}" alt="">`}
       <h4>${esc(b.name)}</h4>
       <div class="co-st">${stars(b.tier)}</div>
       <small>${esc(b.tagline)}</small>
-      <small>❤️ ${fmt(b.hp)} HP · ⚔️ ${b.atk} · 🛡️ ${b.def}</small>
+      <small>${b.duo ? `❤️ ${b.members.map(m => fmt(m.hp)).join(' + ')} HP · ⚔️ ${b.atk} · 🛡️ ${b.def}<br>🌌 Fase final: ${esc(b.stage2.name)} (❤️ ${fmt(b.stage2.hp)})` : `❤️ ${fmt(b.hp)} HP · ⚔️ ${b.atk} · 🛡️ ${b.def}`}</small>
       <small class="co-rwd">🪙 ${fmt(R.coins)} · 📦 ${R.chests} · 1ª vez: +🪙${fmt(R.firstCoins)} +📦${R.firstChests} + skin</small>
       <small>${wins > 0 ? `✅ Derrotado ${wins} ${wins === 1 ? 'vez' : 'veces'}` : '🆕 Aún sin derrotar'}</small>
     </div>`;
