@@ -236,27 +236,27 @@
       rewards: { coins: 600, chests: 3, firstCoins: 600, firstChests: 3, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.26 }
     },
 	{
-      id: 'coopboss_zombie_chef', name: 'Zombie Chef', icon: '👨‍🍳', c1: '#7c3aed', c2: '#12062b', tier: 3,
+      id: 'coopboss_zombie_chef', name: 'Chef Zombie Nazi', icon: '👨‍🍳', c1: '#7c3aed', c2: '#12062b', tier: 3,
       img: 'bosses_cooperativo/zombie_chef.png',
       music: 'bosses_cooperativo/music/zombie_chef.mp3',
-      tagline: "Ex school cafeteria chef who's got revived by Clyde with the power of toxic alien goo in a form of Nazi Zombie.",
+      tagline: "El antiguo chef de la cafetería de South Park, revivido por Clyde en forma de un zombie nazi.",
       hp: 1100, atk: 27, def: 20, spd: 15, ccResist: 0.7,
       phases: [
-        { at: 0.1, log: 'Zombie Chef is furious! Speed increases massively!', spd: 10 }
+        { at: 0.1, log: '¡Chef está furioso! ¡Su velocidad aumenta abismalmente!', spd: 10 }
       ],
       moves: [
-        { id: 'chef1', name: 'Spatula Attack', power: 27, acc: 0.7, baseCooldown: 1, type: 'attack',
-          desc: 'Swings his giant cooking spatula and strikes you.' },
-        { id: 'chef2', name: 'Chocolate Salty Balls', power: 14, acc: 0.95, baseCooldown: 1, type: 'attack',
+        { id: 'chef1', name: 'Ataque De Espatula', power: 27, acc: 0.7, baseCooldown: 1, type: 'attack',
+          desc: 'Chef golpea con su enorme espatula de cocina.' },
+        { id: 'chef2', name: 'Bolas De Chocolate Saladas', power: 14, acc: 0.95, baseCooldown: 1, type: 'attack',
           effects: [{ type: 'damageOverTime', status: 'poison', value: 7, duration: 2, prob: 0.85 }, { type: 'healReduction', value: 30, duration: 2 }],
-          desc: 'Pulls out chocolate salty balls from his chest cavity inflicts and hurles them at you, dealing poison damage and reducing healing.' },
-        { id: 'chef3', name: 'Hello Children (Zombie Bite)', power: 90, acc: 0.5, baseCooldown: 4, type: 'attack', aiWeight: 0.8,
+          desc: 'Chef se saca sus bolas de chocolate saladas del pecho y las arroja, provocando daño de veneno y reduciendo la curación.' },
+        { id: 'chef3', name: '¡Hola Niños! (Mordida Zombie)', power: 90, acc: 0.5, baseCooldown: 4, type: 'attack', aiWeight: 0.8,
           effects: [{ type: 'lifesteal', value: 90, duration: 1 }, { type: 'selfHealPct', value: 0.02 }],
-          desc: 'Chef lunges forward to bite one of your characters.' },
-        { id: 'chef4', name: 'ULTRA: Flaming Suicide Rush', power: 40, acc: 0.95, baseCooldown: 99, type: 'attack', aoe: true, ult: true, 
+          desc: 'Chef se abalanza para morder a uno de sus oponentes.' },
+        { id: 'chef4', name: 'ULTRA: Embestida Suicida Ardiente', power: 40, acc: 0.95, baseCooldown: 99, type: 'attack', aoe: true, ult: true, 
 		  selfDestruct: true, finalAt: 0.1,
           effects: [{ type: 'damageOverTime', status: 'burn', value: 8, duration: 2, prob: 1 }],
-          desc: 'Zombie Chef ignites himself and charges at both opponents, inflicting massive damage and burning them. He dies after the attack.' }
+          desc: 'Chef se prende fuego a sí mismo y embiste contra sus oponentes, inflingiendo un daño masivo y quemandolos. Muere tras este ataque.' }
       ],
       rewards: { coins: 0, chests: 0, firstCoins: 600, firstChests: 3, skinAllow: ['rare', 'epic', 'legend'], repeatSkinChance: 0.26 }
     },
@@ -305,13 +305,13 @@
       id: 'coopboss_gemelos', name: 'Nahamah y Lilith', icon: '👿', c1: '#7c3aed', c2: '#1e0a3c', tier: 5,
       duo: true,
       music: 'bosses_cooperativo/music/gemelos.mp3',
-      tagline: 'Dos hermanas demoníacas a la vez: Nahamah, la sangre, y Lilith, el hielo. Si una cae puede volver… y al final se fusionan.',
+      tagline: 'Dos hermanos demoníacos a la vez: Nahamah, la sangre, y Lilith, el hielo. Si una cae puede volver… y al final se fusionan.',
       reviveAfter: 3, reviveHpPct: 0.4, reviveMax: 1, mournAtk: 3, mournSpd: 2,
       members: [
         {
           id: 'coopboss_nahamah', name: 'Nahamah', icon: '🩸', c1: '#dc2626', c2: '#2a0606',
           img: 'bosses_cooperativo/nahamah.jpg',
-          hp: 880, atk: 26, def: 14, spd: 21, ccResist: 0.7,
+          hp: 700, atk: 23, def: 13, spd: 16, ccResist: 0.5,
           phases: [
             { at: 0.4, log: 'Nahamah se desata: ¡más ATK!', atk: 3 }
           ],
@@ -333,22 +333,22 @@
         {
           id: 'coopboss_lilith', name: 'Lilith', icon: '❄️', c1: '#38bdf8', c2: '#0c1a3a',
           img: 'bosses_cooperativo/lilith.jpg',
-          hp: 840, atk: 25, def: 15, spd: 19, ccResist: 0.7,
+          hp: 700, atk: 21, def: 11, spd: 13, ccResist: 0.5,
           phases: [
             { at: 0.4, log: 'Lilith se enfurece: ¡más velocidad y ATK!', atk: 2, spd: 3 }
           ],
           moves: [
             { id: 'lili1', name: 'Cadenas Gélidas', power: 24, acc: 0.95, baseCooldown: 2, type: 'attack', special: 'chains',
-              effects: [{ type: 'slow', value: 20, duration: 2, prob: 0.8 }],
+              effects: [{ type: 'slow', value: 5, duration: 2, prob: 0.8 }],
               desc: 'Un golpe helado que ralentiza y ENCADENA: el objetivo no podrá ser cambiado por la reserva durante 2 turnos suyos.' },
             { id: 'lili2', name: 'Ventisca Lunar', power: 13, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
               effects: [{ type: 'freeze', prob: 0.25, duration: 1 }, { type: 'accuracyDown', value: 10, duration: 2 }],
               desc: 'Una ventisca sobre el frente. Puede congelar y resta precisión.' },
             { id: 'lili3', name: 'Velo Gemelo', power: 0, acc: 1, baseCooldown: 5, type: 'support', aiWeight: 0.9, special: 'guard',
-              effects: [{ type: 'shield', value: 60 }, { type: 'special' }],
+              effects: [{ type: 'shield', value: 20 }, { type: 'special' }],
               desc: 'Gana escudo y protege a su hermana: los ataques dirigidos a ella se desvían a Lilith durante 2 rondas.' },
             { id: 'lili4', name: 'ULTRA: Condena de Medianoche', power: 22, acc: 0.9, baseCooldown: 7, type: 'attack', aoe: true, ult: true, special: 'doom',
-              effects: [{ type: 'slow', value: 15, duration: 2, prob: 0.7 }],
+              effects: [{ type: 'slow', value: 10, duration: 2, prob: 0.7 }],
               desc: 'Daño en área y CONDENA a los dos del frente: en 3 rondas perderán el 35 % de su vida máx. Se rompe si Lilith cae.' }
           ]
         }
@@ -358,25 +358,25 @@
         img: 'bosses_cooperativo/combined.jpg',
         music: 'bosses_cooperativo/music/combined.mp3',
         intro: '¡Nahamah y Lilith se funden en un solo ser! FUSIÓN DEMONÍACA: las rondas se reinician y los supervivientes recuperan toda su vida.',
-        hp: 1500, atk: 29, def: 17, spd: 21, ccResist: 0.8,
+        hp: 700, atk: 22, def: 13, spd: 17, ccResist: 0.5,
         phases: [
           { at: 0.6, log: 'La Fusión Demoníaca se estabiliza: ¡más ATK!', atk: 3 },
           { at: 0.3, log: '¡La Fusión Demoníaca se desgarra! Más ATK y SPD, y ataca DOS veces por ronda.', atk: 2, spd: 2, actions: 2 }
         ],
         moves: [
-          { id: 'fus1', name: 'Garra Dual', power: 28, acc: 0.95, baseCooldown: 0, type: 'attack',
+          { id: 'fus1', name: 'Garra Dual', power: 26, acc: 0.95, baseCooldown: 0, type: 'attack',
             effects: [{ type: 'damageOverTime', status: 'bleed', value: 5, duration: 3, prob: 0.55 }, { type: 'debuff', stat: 'spd', value: 3, duration: 2 }],
             desc: 'Un zarpazo de sangre y hielo contra uno del frente. Puede sangrar y reduce su SPD.' },
           { id: 'fus2', name: 'Aullido Dual', power: 14, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
             effects: [{ type: 'freeze', prob: 0.2, duration: 1 }, { type: 'healReduction', value: 25, duration: 2 }, { type: 'accuracyDown', value: 10, duration: 2 }],
             desc: 'Un aullido doble sobre el frente: puede congelar, resta precisión y reduce la curación.' },
           { id: 'fus3', name: 'Espejo Abisal', power: 0, acc: 1, baseCooldown: 5, type: 'support', aiWeight: 0.8,
-            effects: [{ type: 'shield', value: 90 }, { type: 'tempDef', value: 4, duration: 2 }, { type: 'reflectDamage', value: 30, duration: 2 }],
-            desc: 'Escudo, más DEF y reflejo del 30 % del daño recibido durante 2 turnos.' },
+            effects: [{ type: 'shield', value: 20 }, { type: 'tempDef', value: 4, duration: 2 }, { type: 'reflectDamage', value: 20, duration: 2 }],
+            desc: 'Escudo, más DEF y reflejo del 20 % del daño recibido durante 2 turnos.' },
           { id: 'fus4', name: 'Cadenas del Abismo', power: 15, acc: 0.95, baseCooldown: 4, type: 'attack', aoe: true, special: 'chains', aiWeight: 0.9,
-            effects: [{ type: 'slow', value: 15, duration: 2, prob: 0.7 }],
+            effects: [{ type: 'slow', value: 8, duration: 2, prob: 0.7 }],
             desc: 'Encadena a los dos del frente: no podrán cambiar de personaje durante 2 turnos suyos.' },
-          { id: 'fus5', name: 'ULTRA: Cataclismo Gemelo', power: 33, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
+          { id: 'fus5', name: 'ULTRA: Cataclismo Gemelo', power: 30, acc: 0.9, baseCooldown: 6, type: 'attack', aoe: true, ult: true,
             effects: [{ type: 'damageOverTime', status: 'bleed', value: 5, duration: 3, prob: 0.9 }, { type: 'healReduction', value: 30, duration: 2 }],
             desc: 'Un cataclismo de sangre y hielo sobre el frente. Sangrado casi seguro y menos curación.' }
         ]

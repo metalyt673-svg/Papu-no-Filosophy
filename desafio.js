@@ -17,6 +17,7 @@
                                castelo-vandana.mp3
        (Friend usa "music": desafio/20th century boys.mp3)
        (Musashi usa "music": desafio/musashi miyamoto.mp3)
+       (Korosensei usa "music": desafio/Bye_bye_YESTERDAY.mp3)
    Si falta el archivo de un boss se usa combate.mp3; si tampoco está, no suena
    nada. Volumen y "música activada" se toman de la Configuración del juego.
 
@@ -30,6 +31,7 @@
        personajes/mckraken2.jpg → retrato de la segunda fase de McKraken
        personajes/friend_20thcenturyboys.jpg → retrato de Friend
        personajes/musashi miyamoto.jpg → retrato de Musashi Miyamoto
+       personajes/korosensei.jpg → retrato de Korosensei
 
    Además de los 3 niveles de dificultad (Normal/Difícil/Pesadilla), cada boss
    puede tener un 4º modo opcional: "Equipo temático". Usa SIEMPRE los mismos
@@ -260,6 +262,38 @@
           effects: [{ type: 'debuff', stat: 'def', value: 5, duration: 2, prob: 1.0 },
                     { type: 'stun', prob: 0.25, duration: 1 }] }
       ]
+    },
+    /* Korosensei (Assassination Classroom). El profesor más rápido del mundo (Mach 20):
+       muy veloz y difícil de acertar, se cura y se limpia los debuffs, pero con poca
+       vida: si lo ralentizas y le aguantas el ritmo, cae.
+       Canción: desafio/Bye_bye_YESTERDAY.mp3 (campo "music", sin .mp3). */
+    {
+      id: 'korosensei',
+      name: 'Korosensei',
+      img: 'personajes/korosensei.jpg',
+      music: 'Bye_bye_YESTERDAY',
+      classes: ['control', 'soporte'],
+      hp: 330, atk: 23, def: 16, spd: 24,
+      moves: [
+        { id: 'kor1', name: 'Golpe de Tentáculo', power: 21, acc: 0.98, baseCooldown: 0, type: 'attack',
+          desc: 'Un tentáculo veloz como el rayo golpea al objetivo antes de que pueda reaccionar.', effect: null },
+        { id: 'kor2', name: 'Velocidad Mach 20', power: 0, acc: 1, baseCooldown: 4, type: 'support',
+          desc: 'Acelera hasta Mach 20: gana mucha velocidad y precisión durante 3 turnos.',
+          effects: [{ type: 'tempSpd', value: 6, duration: 3 },
+                    { type: 'accuracyUp', value: 15, duration: 3 }] },
+        { id: 'kor3', name: 'Lluvia de Golpes', power: 15, acc: 0.95, baseCooldown: 3, type: 'attack', aoe: true,
+          desc: 'Golpea a todo el equipo rival a velocidad tan alta que los deja mareados y les resta precisión.',
+          effects: [{ type: 'accuracyDown', value: 12, duration: 2, prob: 0.85 }] },
+        { id: 'kor4', name: 'Muda de Piel', power: 0, acc: 1, baseCooldown: 5, type: 'support',
+          desc: 'Se deshace de su piel vieja: se limpia los debuffs, gana escudo y recupera algo de vida.',
+          effects: [{ type: 'cleanse', value: 2 },
+                    { type: 'shield', value: 25 },
+                    { type: 'selfHealPct', value: 0.06 }] },
+        { id: 'kor5', name: 'Tentáculos de Antimateria', power: 33, acc: 0.88, baseCooldown: 5, type: 'attack',
+          desc: 'Su técnica más peligrosa: tentáculos de antimateria que quiebran la defensa y pueden ralentizar al objetivo.',
+          effects: [{ type: 'debuff', stat: 'def', value: 6, duration: 2, prob: 1.0 },
+                    { type: 'slow', value: 20, duration: 2, prob: 0.5 }] }
+      ]
     }
   ];
 
@@ -290,6 +324,10 @@
     { id: 'musashi', emoji: '⚔️', title: 'El espadachín invicto que regresó de entre los muertos.',
       reward: { coins: 120, boxes: 1 },
       intro: 'Dicen que jamás perdió un duelo. Ha vuelto al mundo moderno con sus dos espadas y solo busca un rival digno. Es rápido y letal, pero apenas aguanta golpes: no le des tiempo a respirar.',
+      themeTeam: [] },
+    { id: 'korosensei', emoji: '🐙', title: 'El profesor más rápido del mundo.',
+      reward: { coins: 200, boxes: 2 },
+      intro: 'Un misterioso profesor amarillo con sonrisa permanente que se mueve a Mach 20 y amenaza con destruir el planeta. Es veloz, escurridizo y se cura solo: no lo subestimes… pero tampoco dejes de intentar eliminarlo.',
       themeTeam: [] }
   ];
 
