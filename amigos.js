@@ -12,6 +12,9 @@
      enviáis vuestro perfil público y, mientras la conexión siga abierta, cada
      cambio (una victoria, un favorito nuevo...) se reenvía solo.
 
+   MARCOS: el marco equipado (campo  marco  del perfil público) se dibuja alrededor del
+   icono en la lista y en el perfil del amigo (requiere marcos.js cargado antes que perfil.js).
+
    INSTALACIÓN (juego.html), DESPUÉS de perfil.js:
        <script src="amigos.js" defer></script>
    (perfil.js debe ser la versión que trae  PERFIL.snapshot ; viene incluida.)
@@ -130,6 +133,7 @@
     return {
       uid: /^[a-z0-9]{8,40}$/.test(r.uid) ? r.uid : '',
       name, avatar: id(r.avatar),
+      marco: /^[A-Za-z0-9_-]{1,40}$/.test(r.marco) ? r.marco : null,
       favs: [0, 1, 2].map(i => id(Array.isArray(r.favs) ? r.favs[i] : null)),
       points: n(r.points), likes: n(r.likes), fame: r.fame !== false,
       rank: { name: s(rk.name, 20), icon: s(rk.icon, 6), rgb, pct: Math.min(100, n(rk.pct)),
@@ -338,6 +342,9 @@
     Object.keys(conns).forEach(k => { if (conns[k] && conns[k].open) targets.add(conns[k]); });
     targets.forEach(c => { try { if (c.open) c.send(msg); } catch (e) { /* ignorar */ } });
   }
+
+  // Al cambiar de marco se avisa a los amigos conectados sin esperar al siguiente ciclo
+  document.addEventListener('marcos:change', () => { try { pushIfChanged(); } catch (e) { /* ignorar */ } });
 
   function tick() {
     startPeer();                                  // también reacciona a cambios de nombre
@@ -615,9 +622,13 @@
   function imgTag(src, alt, fb, cls) {
     return `<img src="${esc(src)}" alt="${esc(alt)}" data-fb="${esc(fb)}" data-cls="${esc(cls || '')}" loading="lazy" decoding="async">`;
   }
+  /* Marco del amigo: solo si existe en el catálogo local de marcos.js (si no, se ve sin marco). */
+  const frameOf = snap => (snap && window.MARCOS && typeof window.MARCOS.valid === 'function' && window.MARCOS.valid(snap.marco)) ? snap.marco : null;
   function avatarHTML(snap, fb) {
     const c = snap && charById(snap.avatar);
-    return c ? imgTag(c.img, c.name, fb || '🎮') : (fb || '🎮');
+    const inner = c ? imgTag(c.img, c.name, fb || '🎮') : (fb || '🎮');
+    const fr = frameOf(snap);
+    return fr ? window.MARCOS.avatar(inner, fr) : inner;
   }
 
   function statusHTML() {
@@ -640,7 +651,7 @@
       ? `<span class="am-rk">${esc(s.rank.icon)} ${esc(s.rank.name)}</span><small>${s.points} puntos de gloria</small>`
       : '<small>Sin datos todavía</small>';
     return `<div class="am-card${on ? '' : ' off'}" data-open="${esc(f.key)}" style="--rank-rgb:${rgb}" role="button" tabindex="0">
-      <div class="am-av">${avatarHTML(s)}<span class="am-dot${on ? ' on' : ''}"></span></div>
+      <div class="am-av${frameOf(s) ? ' mk-host' : ''}">${avatarHTML(s)}<span class="am-dot${on ? ' on' : ''}"></span></div>
       <div class="am-info"><b>${esc(f.name)}</b>${sub}
         <small>${on ? '🟢 En línea' : '⚫ Visto ' + ago(f.seen)}</small>
         ${f.warn ? '<span class="am-warn">⚠️ Otra persona usa este nombre</span>' : ''}</div>
@@ -704,7 +715,7 @@
     return head + `
       <section class="am-hero" style="--rank-rgb:${rk.rgb}">
         <div class="am-hero-bg" id="am-hero-bg"></div>
-        <div class="am-bigav">${avatarHTML(s)}</div>
+        <div class="am-bigav${frameOf(s) ? ' mk-host' : ''}">${avatarHTML(s)}</div>
         <div class="am-hid">
           <h3 class="am-name">${esc(s.name)}</h3>
           <div><span class="am-live ${on ? 'on' : 'off'}">${on ? '🟢 En directo: se actualiza solo' : '⚫ Datos de ' + ago(f.seen) + ' (sin conexión)'}</span></div>

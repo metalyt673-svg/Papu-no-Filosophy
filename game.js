@@ -1648,7 +1648,7 @@ async function resolveMove(playerKey, moveId){
 // (buffs, curas, escudo, contraataque). Antes solo se aplicaban los efectos
 // dirigidos al rival (debuffs/estados), por lo que un ataque que debilitaba
 // al enemigo y a la vez bufaba al lanzador (p. ej. Ryuk) ignoraba el buff.
-const ATTACK_SELF_EFFECT_TYPES = ['heal','shield','tempDef','tempSpd','tempAtk','selfHealPct','counter','accuracyUp','cleanse','invulnerable'];
+const ATTACK_SELF_EFFECT_TYPES = ['heal','shield','tempDef','tempSpd','tempAtk','selfHealPct','healTeam','counter','accuracyUp','cleanse','invulnerable'];
 function applyAttackSelfEffects(actor, move, effects){
   if(!actor || actor.hp <= 0) return;
   (effects || []).forEach(e => {
@@ -1747,6 +1747,12 @@ function applyEffect(actor, target, move) {
       }else{
         cleanseDebuffs(actor, e, actor);
       }
+    }
+
+    else if (e.type === 'healTeam') {
+      // Cura a TODO el equipo vivo del lanzador (útil en ataques que además curan al equipo).
+      const key = getKeyOfTarget(actor);
+      (key ? getAliveChars(key) : [actor]).forEach(c => applyHealing(actor, c, e.value, move.name));
     }
 
     else if (e.type === 'selfHealPct') {

@@ -12,6 +12,25 @@
 const PATCH_NOTES = [
 
 {
+  version: 'v1.13',
+  date: '20/11/26',
+  summary: 'Revamp de healers: curaciones en área para el equipo, más variedad (limpiar debufos, escudos) y arreglo de varias curas que no funcionaban. Las cantidades de curación se mantienen: la cura en área es menor por aliado.',
+  changes: [
+{ type: 'nuevo',  target: 'Sistema - Ataques que curan al equipo', desc: 'Los ataques pueden curar ahora a todo el equipo (antes solo al lanzador).' },
+{ type: 'ajuste', target: 'Estes - Moonlight Revelation', desc: 'Ahora cura 24 HP a TODO el equipo y elimina 1 debufo de cada aliado (antes solo se curaba a sí mismo un 15%).' },
+{ type: 'bug',    target: 'Floryn - Jardín de la Esperanza / Luz de la Esperanza', desc: 'Ahora afectan de verdad a todo el equipo. Jardín: +5 DEF y 8 HP. Luz: 24 HP (antes 35 a un aliado) y +6 ATQ.' },
+{ type: 'bug',    target: 'Floryn - Semilla de Vida', desc: 'Corregido: se curaba a sí misma. Ahora cura 28 HP al aliado elegido.' },
+{ type: 'bug',    target: 'Pancha Peluda - Tsunami Peludo', desc: 'Corregido: la curación no se aplicaba. Ahora, además de debilitar al enemigo, cura 18 HP a todo el equipo.' },
+{ type: 'ajuste', target: 'Hibiscus - Healing Field', desc: 'Ahora cura 14 HP a todo el equipo (antes 26 a un aliado) y da +5 DEF (antes +8). Cooldown de 3 a 4 turnos.' },
+{ type: 'buff',   target: 'Hibiscus - ULTI: Advanced Treatment', desc: 'Además de sus 48 HP, elimina 2 debufos del aliado.' },
+{ type: 'ajuste', target: 'Mimosa - Sanación Real (ULT)', desc: 'Ahora cura 24 HP y da +4 VEL a todo el equipo (antes 45 HP a un aliado).' },
+{ type: 'ajuste', target: 'Aqua - Curación Divina', desc: 'Además de curar 28 HP al aliado, purifica 1 debufo. Cooldown de 3 a 4 turnos.' },
+{ type: 'ajuste', target: 'Spanish Miku - Espíritu de la Fiesta', desc: 'Ahora afecta a todo el equipo: +7 DEF (antes +10) y 8 HP. Cooldown de 3 a 4 turnos.' }
+  ]
+},
+
+
+{
   version: 'v1.12',
   date: '05/11/26',
   summary: 'REVAMP de Shiori Novella: pasa a ser una soporte-debilitadora mucho más sólida, con pasiva propia, habilidades más fiables y dos efectos que no funcionaban arreglados.',

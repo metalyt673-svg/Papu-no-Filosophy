@@ -57,6 +57,11 @@
     { id: 'secre3', charId: 'secre', name: 'Secre · kimono', img: 'personajes/secre3.jpg', rarity: 'epic' },
     { id: 'secre_maid', charId: 'secre', name: 'Secre · Maid', img: 'personajes/secre4.jpg', rarity: 'event' },
     { id: 'secre5', charId: 'secre', name: 'Secre · Magia sellada', img: 'personajes/secre5.jpg', rarity: 'legend' },
+    { id: 'secre6', charId: 'secre', name: 'Secre · Diablita Sketch', img: 'personajes/secre6.jpg', rarity: 'epic' },
+    { id: 'secre7', charId: 'secre', name: 'Secre · Devil Bird', img: 'personajes/secre7.jpg', rarity: 'epic' },
+    { id: 'secre8', charId: 'secre', name: 'Secre · Thoughtful', img: 'personajes/secre8.jpg', rarity: 'rare' },
+    { id: 'secre9', charId: 'secre', name: 'Secre · Night Sparkle', img: 'personajes/secre9.jpg', rarity: 'legend' },
+    { id: 'secre10', charId: 'secre', name: 'Secre · Crimson Seal', img: 'personajes/secre10.jpg', rarity: 'legend' },
 
     /* ——— Belerick ——— */
     { id: 'belerick1', charId: 'belerick', name: "Belerick · Tiger's Claw", img: 'personajes/belerick1.jpg', rarity: 'common' },
@@ -965,12 +970,12 @@
     { id: 'typhon10',        charId: 'typhon', name: 'Typhon · Snow Night',       img: 'personajes/typhon10.jpg', rarity: 'legend' },
 
     /* ——— Rades ——— */
-    { id: 'rades1',          charId: 'rades', name: 'Rades · Inferno Gaze',      img: 'personajes/rades1.jpg', rarity: 'legend' },
-    { id: 'rades2',          charId: 'rades', name: 'Rades · Shout',             img: 'personajes/rades2.jpg', rarity: 'epic' },
-    { id: 'rades3',          charId: 'rades', name: 'Rades · Purple Flame',      img: 'personajes/rades3.jpg', rarity: 'legend' },
-    { id: 'rades4',          charId: 'rades', name: 'Rades · Soul Burst',        img: 'personajes/rades4.jpg', rarity: 'legend' },
-    { id: 'rades5',          charId: 'rades', name: 'Rades · Manga',             img: 'personajes/rades5.jpg', rarity: 'epic' },
-    { id: 'rades6',          charId: 'rades', name: 'Rades · Grin',              img: 'personajes/rades6.jpg', rarity: 'rare' },
+    { id: 'rades1',          charId: 'rades_spirito', name: 'Rades · Inferno Gaze',      img: 'personajes/rades1.jpg', rarity: 'legend' },
+    { id: 'rades2',          charId: 'rades_spirito', name: 'Rades · Shout',             img: 'personajes/rades2.jpg', rarity: 'epic' },
+    { id: 'rades3',          charId: 'rades_spirito', name: 'Rades · Purple Flame',      img: 'personajes/rades3.jpg', rarity: 'legend' },
+    { id: 'rades4',          charId: 'rades_spirito', name: 'Rades · Soul Burst',        img: 'personajes/rades4.jpg', rarity: 'legend' },
+    { id: 'rades5',          charId: 'rades_spirito', name: 'Rades · Manga',             img: 'personajes/rades5.jpg', rarity: 'epic' },
+    { id: 'rades6',          charId: 'rades_spirito', name: 'Rades · Grin',              img: 'personajes/rades6.jpg', rarity: 'rare' },
 
         // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
   ];

@@ -22,6 +22,10 @@
    esos modos; solo la batalla libre necesita registrarse aquí (se engancha a
    checkKO de game.js y solo cuenta combates que no sean de otros modos).
 
+   MARCOS DE PERFIL (marcos.js, que debe cargarse ANTES que este archivo):
+     el marco equipado se dibuja alrededor del icono (chip y perfil), hay un botón
+     «🎖️ Marco» para cambiarlo y viaja en snapshot().marco para que lo vean los amigos.
+
    DÓNDE AJUSTAR COSAS:
      - Rangos y puntos de gloria:  RANKS y computePoints()
      - Modos de batalla libre:     FREE_MODES
@@ -492,6 +496,16 @@
     }
   }
 
+  /* ---------- Marcos (marcos.js) ---------- */
+  function frameId() {
+    try { return window.MARCOS && typeof window.MARCOS.equipped === 'function' ? window.MARCOS.equipped() : null; }
+    catch (e) { return null; }
+  }
+  function framed(inner) {
+    const id = frameId();
+    return id ? window.MARCOS.avatar(inner, id) : inner;
+  }
+
   function renderChip() {
     const menu = byId('main-menu');
     if (!menu) return;
@@ -510,7 +524,7 @@
     const av = P.avatar && charById(P.avatar);
     chip.style.setProperty('--rank-rgb', g.rank.cur.rgb);
     chip.innerHTML = `
-      <span class="pf-chip-av">${av ? imgTag(av.img, av.name, '🎮') : '🎮'}</span>
+      <span class="pf-chip-av${frameId() ? ' mk-host' : ''}">${framed(av ? imgTag(av.img, av.name, '🎮') : '🎮')}</span>
       <span class="pf-chip-txt"><b>${esc(P.name || 'Jugador')}</b><small>${g.rank.cur.icon} ${esc(g.rank.cur.name)} · Mi perfil</small></span>`;
   }
 
@@ -521,9 +535,9 @@
     return `
     <section class="pf-hero" id="pf-hero" style="--rank-rgb:${cur.rgb}">
       <div class="pf-hero-bg" id="pf-hero-bg"></div>
-      <button class="pf-avatar" id="pf-avatar-btn" title="Cambiar icono">
+      <button class="pf-avatar${frameId() ? ' mk-on' : ''}" id="pf-avatar-btn" title="Cambiar icono">
         <span class="pf-ring"></span>
-        <span class="pf-avatar-img">${av ? imgTag(av.img, av.name, '🎮') : '🎮'}</span>
+        <span class="pf-avatar-img${frameId() ? ' mk-host' : ''}">${framed(av ? imgTag(av.img, av.name, '🎮') : '🎮')}</span>
         <span class="pf-avatar-edit">🖼️</span>
       </button>
       <div class="pf-id">
@@ -536,6 +550,7 @@
         </div>
         <div class="pf-xp"><i id="pf-xp-fill" style="width:${reduceMotion() ? pct : 0}%" data-pct="${pct}"></i></div>
         <div class="pf-xp-label">${next ? `${g.points} / ${next.min} para ser ${next.icon} ${esc(next.name)}` : '¡Has alcanzado el rango máximo!'}</div>
+        ${window.MARCOS ? `<button type="button" class="class-btn" id="pf-frame-btn" style="margin-top:10px">🎖️ Marco${frameId() ? ': ' + esc(window.MARCOS.nameOf(frameId())) : ''}</button>` : ''}
         <div class="pf-hint">Ganas gloria con victorias en batalla libre (1), capítulos de Historia (3), medallas del Desafío (6), pisos del Infierno (4) y cajas del Inventario (1-50 cada una).</div>
       </div>
     </section>`;
@@ -732,6 +747,11 @@
     // Eventos
     byId('pf-back').addEventListener('click', closePerfil);
     byId('pf-avatar-btn').addEventListener('click', () => openPicker('avatar'));
+    const fb = byId('pf-frame-btn');
+    if (fb) fb.addEventListener('click', () => {
+      const a = P.avatar && charById(P.avatar);
+      window.MARCOS.openPicker({ avatar: a ? imgTag(a.img, a.name, '🎮') : '🎮' });
+    });
     byId('pf-name').addEventListener('input', e => {
       P.name = e.target.value.slice(0, NAME_MAX);
       saveProfile();
@@ -862,6 +882,13 @@
     installHooks();
     renderChip();
 
+    // Al equipar o quitar un marco se repinta el chip y, si está abierto, el perfil
+    document.addEventListener('marcos:change', () => {
+      renderChip();
+      const sc = byId('perfil-screen');
+      if (sc && sc.style.display === 'flex') renderPerfil();
+    });
+
     // El chip se refresca cada vez que se vuelve al menú (p. ej. tras un combate)
     const menu = byId('main-menu');
     if (menu && window.MutationObserver) {
@@ -878,7 +905,7 @@
   function snapshot() {
     const g = gather();
     return {
-      name: P.name, avatar: P.avatar, favs: P.favs.slice(),
+      name: P.name, avatar: P.avatar, marco: frameId(), favs: P.favs.slice(),
       points: g.points,
       rank: { min: g.rank.cur.min, name: g.rank.cur.name, icon: g.rank.cur.icon, rgb: g.rank.cur.rgb, pct: g.rank.pct,
         nextName: g.rank.next ? g.rank.next.name : '', nextIcon: g.rank.next ? g.rank.next.icon : '', nextMin: g.rank.next ? g.rank.next.min : 0 },

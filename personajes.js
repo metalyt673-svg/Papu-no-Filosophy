@@ -3846,19 +3846,13 @@ const CHARACTERS = [
       name: 'Healing Field',
       power: 0,
       acc: 1.0,
-      desc: 'Hibiscus crea un campo médico que cura a un aliado y aumenta temporalmente su DEF.',
-      baseCooldown: 3,
+      desc: 'Hibiscus crea un campo médico que cura 14 HP a todo el equipo y aumenta su DEF +5 durante 3 turnos.',
+      baseCooldown: 4,
+      aoe: true,
       type: 'support',
       effects: [
-        {
-          type: 'heal',
-          value: 26
-        },
-        {
-          type: 'tempDef',
-          value: 8,
-          duration: 3
-        }
+        { type: 'heal', value: 14 },
+        { type: 'tempDef', value: 5, duration: 3 }
       ]
     },
 
@@ -3884,19 +3878,13 @@ const CHARACTERS = [
       name: 'ULTI: Advanced Treatment',
       power: 0,
       acc: 1.0,
-      desc: 'Hibiscus concentra todo su conocimiento médico para realizar un tratamiento intensivo, restaurando una gran cantidad de HP y aumentando temporalmente la DEF del objetivo.',
+      desc: 'Hibiscus concentra todo su conocimiento médico para realizar un tratamiento intensivo: restaura 48 HP a un aliado, elimina 2 debufos y aumenta su DEF +7 durante 3 turnos.',
       baseCooldown: 6,
       type: 'support',
       effects: [
-        {
-          type: 'heal',
-          value: 48
-        },
-        {
-          type: 'tempDef',
-          value: 7,
-          duration: 3
-        }
+        { type: 'heal', value: 48 },
+        { type: 'cleanse', target: 'ally', count: 2 },
+        { type: 'tempDef', value: 7, duration: 3 }
       ]
     }
   ]
@@ -4280,27 +4268,13 @@ const CHARACTERS = [
       name: 'TÉCNICA DEFINTIIVA: Tsunami Peludo',
       power: 30,
       acc: 0.91,
-      desc: 'La Pancha libera todo su pelaje de golpe, creando una enorme tormenta que debilita al oponente mientras su energía curativa restaura al equipo.',
+      desc: 'La Pancha libera todo su pelaje de golpe, creando una enorme tormenta que debilita al oponente (-6 ATK, ralentiza) mientras su energía curativa restaura 18 HP a todo el equipo.',
       baseCooldown: 7,
       type: 'attack',
       effects: [
-        {
-          type: 'debuff',
-          stat: 'atk',
-          value: 6,
-          duration: 3,
-          prob: 1.0
-        },
-        {
-          type: 'slow',
-          value: 6,
-          duration: 2,
-          prob: 1.0
-        },
-        {
-          type: 'heal',
-          value: 0.18
-        }
+        { type: 'debuff', stat: 'atk', value: 6, duration: 3, prob: 1.0 },
+        { type: 'slow', value: 6, duration: 2, prob: 1.0 },
+        { type: 'healTeam', value: 18 }
       ]
     }
   ]
@@ -6211,13 +6185,13 @@ const CHARACTERS = [
       name: 'Curación Divina',
       power: 0,
       acc: 1.0,
-      desc: 'Aqua utiliza su poder divino para restaurar parte de sus propios puntos de vida.',
-      baseCooldown: 3,
+      desc: 'Aqua utiliza su poder divino para curar 28 HP a un aliado y purificar 1 debufo.',
+      baseCooldown: 4,
       type: 'support',
-      effect: {
-        type: 'heal',
-        value: 28
-      }
+      effects: [
+        { type: 'heal', value: 28 },
+        { type: 'cleanse', target: 'ally', count: 1 }
+      ]
     },
 
     {
@@ -9993,14 +9967,14 @@ const CHARACTERS = [
       name: 'Jardín de la Esperanza',
       power: 0,
       acc: 1.0,
-      desc: 'Floryn invoca el poder de su santuario para fortalecer a todo su equipo. Los aliados obtienen +5 DEF durante 3 turnos.',
+      desc: 'Floryn invoca el poder de su santuario: todo el equipo recupera 8 HP y obtiene +5 DEF durante 3 turnos.',
       baseCooldown: 4,
+      aoe: true,
       type: 'support',
-      effect: {
-        type: 'tempDef',
-        value: 5,
-        duration: 3
-      }
+      effects: [
+        { type: 'heal', value: 8 },
+        { type: 'tempDef', value: 5, duration: 3 }
+      ]
     },
 
     {
@@ -10008,13 +9982,12 @@ const CHARACTERS = [
       name: 'Semilla de Vida',
       power: 0,
       acc: 1.0,
-      desc: 'Floryn libera una poderosa energía vital sobre el aliado con menos HP, restaurando una parte importante de su salud.',
+      desc: 'Floryn libera una poderosa energía vital sobre un aliado, restaurando 28 HP.',
       baseCooldown: 5,
       type: 'support',
-      effect: {
-        type: 'selfHealPct',
-        value: 0.25
-      }
+      effects: [
+        { type: 'heal', value: 28 }
+      ]
     },
 
     {
@@ -10022,18 +9995,14 @@ const CHARACTERS = [
       name: 'Luz de la Esperanza',
       power: 0,
       acc: 1.0,
-      desc: 'Floryn desata todo el poder de su reliquia. Todos los aliados recuperan una gran cantidad de HP y reciben +6 ATK durante 2 turnos.',
+      desc: 'Floryn desata todo el poder de su reliquia. Todos los aliados recuperan 24 HP y reciben +6 ATK durante 2 turnos.',
       baseCooldown: 7,
+      aoe: true,
       type: 'support',
-      effect: {
-        type: 'heal',
-        value: 35,
-        secondary: {
-          type: 'tempAtk',
-          value: 6,
-          duration: 2
-        }
-      }
+      effects: [
+        { type: 'heal', value: 24 },
+        { type: 'tempAtk', value: 6, duration: 2 }
+      ]
     }
 
   ]
@@ -11617,14 +11586,14 @@ const CHARACTERS = [
       name: 'Espíritu de la Fiesta',
       power: 0,
       acc: 1.0,
-      desc: 'La alegría de su actuación fortalece la defensa de un aliado durante 3 turnos.',
-      baseCooldown: 3,
+      desc: 'La alegría de su actuación anima a todo el equipo: 8 HP y +7 DEF durante 3 turnos.',
+      baseCooldown: 4,
+      aoe: true,
       type: 'support',
-      effect: {
-        type: 'tempDef',
-        value: 10,
-        duration: 3
-      }
+      effects: [
+        { type: 'heal', value: 8 },
+        { type: 'tempDef', value: 7, duration: 3 }
+      ]
     },
 
     {
@@ -12915,10 +12884,14 @@ const CHARACTERS = [
       name: 'Moonlight Revelation',
       power: 0,
       acc: 1.0,
-      desc: 'Desata la energía lunar suprema, curando a todo el equipo por un gran porcentaje de la vida máxima.',
+      desc: 'Desata la energía lunar suprema: cura 24 HP a todo el equipo y elimina 1 debufo de cada aliado.',
       baseCooldown: 6,
+      aoe: true,
       type: 'support',
-      effect: { type:'selfHealPct', value: 0.15 } 
+      effects: [
+        { type: 'heal', value: 24 },
+        { type: 'cleanse', target: 'ally', count: 1 }
+      ]
     }
   ]
 },
@@ -13842,12 +13815,13 @@ const CHARACTERS = [
       name: 'Sanación Real (ULT)',
       power: 0,
       acc: 1.0,
-      desc: 'Cura 45 HP y aumenta SPD +4 durante 2 turnos a un aliado.',
+      desc: 'Cura 24 HP y aumenta SPD +4 durante 2 turnos a todo el equipo.',
       baseCooldown: 6,
+      aoe: true,
       type: 'support',
       effects: [
-        { type:'heal', value:45 },
-        { type:'tempSpd', value:4, duration:2 }
+        { type: 'heal', value: 24 },
+        { type: 'tempSpd', value: 4, duration: 2 }
       ]
     }
   ]

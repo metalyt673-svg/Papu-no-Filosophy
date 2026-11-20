@@ -11,6 +11,11 @@
    (lo gestiona emotes.js con Emotes.rollChest). Se ven y equipan en
    Glosario > Emotes.
 
+   MARCOS: cada caja abierta tiene además un 20 % de dar un marco de perfil
+   (lo gestiona marcos.js con MARCOS.rollChest; se equipan desde el Perfil).
+   Requiere marcos.js cargado ANTES de perfil.js en juego.html. Si falta,
+   el inventario funciona igual, solo que sin marcos.
+
    NO dan caja: Historia, Desafío, Infierno, Torneo, PvP local ni Multijugador
    (solo cuenta la batalla libre "Jugador vs IA" y "Jugador vs IA con baneos").
 
@@ -345,6 +350,20 @@
     sc.addEventListener('click', onClick);
   }
 
+  function framesChanceHint() {
+    return window.MARCOS && window.MARCOS.chance ? ` Además, cada caja tiene un ${Math.round(window.MARCOS.chance * 100)} % de dar un marco de perfil 🎖️.` : '';
+  }
+
+  function framesTile() {
+    const M = window.MARCOS;
+    if (!M || typeof M.list !== 'function') return '';
+    try {
+      const all = M.list().filter(f => f.active !== false || M.owns(f.id));
+      const have = all.filter(f => M.owns(f.id)).length;
+      return `<div class="inv-tile"><b>🎖️ ${have}/${all.length}</b><span>Marcos de perfil (equípalos en tu Perfil)</span></div>`;
+    } catch (e) { return ''; }
+  }
+
   function rankHTML(sp) {
     if (!sp) return '';
     const rk = sp.rank;
@@ -353,7 +372,7 @@
         <span class="pf-points"><b>${fmt(sp.points)}</b> puntos de gloria</span></div>
       <div class="pf-xp"><i style="width:${rk.pct}%"></i></div>
       <div class="pf-xp-label">${rk.nextMin ? `${fmt(sp.points)} / ${fmt(rk.nextMin)} para ser ${esc(rk.nextIcon)} ${esc(rk.nextName)}` : '¡Rango máximo!'}</div>
-      <div class="inv-hint">Cada caja da entre ${GLORY_MIN} y ${GLORY_MAX} puntos de gloria al abrirla. Las ganas al terminar una partida contra la IA (con o sin baneos).</div>
+      <div class="inv-hint">Cada caja da entre ${GLORY_MIN} y ${GLORY_MAX} puntos de gloria al abrirla. Las ganas al terminar una partida contra la IA (con o sin baneos).${framesChanceHint()}</div>
     </section>`;
   }
 
@@ -416,6 +435,7 @@
         <div class="inv-tile"><b>+${fmt(S.total)}</b><span>Gloria ganada con cajas</span></div>
         <div class="inv-tile"><b>${S.best ? '+' + S.best : '—'}</b><span>Mejor caja</span></div>
         <div class="inv-tile"><b>${fmt(S.earned)}</b><span>Cajas conseguidas en total</span></div>
+        ${framesTile()}
         ${window.SKINS ? `<div class="inv-tile"><b>${window.SKINS.coinImg()} ${fmt(window.SKINS.coins())}</b><span>Monedas</span></div>` : ''}
       </div>
       ${hist}`;
@@ -483,7 +503,10 @@
     let emotes = [];
     try { emotes = window.Emotes && typeof window.Emotes.rollChest === 'function' ? window.Emotes.rollChest(n) : []; }
     catch (e) { emotes = []; }
-    showReveal({ results, before, after, left: S.boxes, bonus, emotes });
+    let frames = [];
+    try { frames = window.MARCOS && typeof window.MARCOS.rollChest === 'function' ? window.MARCOS.rollChest(n) : []; }
+    catch (e) { frames = []; }
+    showReveal({ results, before, after, left: S.boxes, bonus, emotes, frames });
   }
 
   function showReveal(d) {
@@ -529,6 +552,11 @@
         <span><b>😀 ¡Emote nuevo!</b><small>Equípalo en Glosario → Emotes</small></span></div>`).join('')}</div>`;
   }
 
+  function framesHTML(list) {
+    try { return list && list.length && window.MARCOS && typeof window.MARCOS.describe === 'function' ? window.MARCOS.describe(list) : ''; }
+    catch (e) { return ''; }
+  }
+
   function doReveal() {
     const d = revealData, stage = byId('inv-stage');
     if (!d || !stage || stage.dataset.done) return;
@@ -544,6 +572,7 @@
       ${many ? `<div class="inv-chips">${d.results.map(p => `<i${p === max && p >= 45 ? ' class="top"' : ''}>+${p}</i>`).join('')}</div>` : ''}
       ${window.SKINS && d.bonus ? window.SKINS.describeBonus(d.bonus) : ''}
       ${emotesHTML(d.emotes)}
+      ${framesHTML(d.frames)}
     </div>`;
     countUp(byId('inv-num'), total);
     byId('inv-msg').textContent = !many && total >= 45 ? '¡Caja de oro! 🌟' : (!many && total <= 5 ? 'Mala suerte… la próxima será mejor.' : '');
