@@ -1,14 +1,14 @@
 @echo off
 setlocal
 
-rem Run the server from the folder containing this batch file and juego.html. It's better to use index.html but this works too.
+rem Run the server from the folder containing this batch file and juego.html.
 cd /d "%~dp0"
 set "PORT=8050"
 
 rem Check that the Windows Python launcher is available.
 where py >nul 2>&1
 if errorlevel 1 (
-    echo Python was not found. Install Python 3 with the Python Launcher (py.exe).
+    echo Python was not found. Install Python 3 and the Python launcher.
     pause
     exit /b 1
 )
