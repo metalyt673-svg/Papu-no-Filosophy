@@ -47,9 +47,12 @@
       .dmg-tip .dt-warn{color:#f9a8d4}
       .dmg-ghost{position:absolute; inset:2px; pointer-events:none; border-radius:999px; overflow:hidden}
       .dmg-ghost b{position:absolute; top:0; bottom:0; display:block}
-      .dmg-ghost .g-min{background:rgba(239,68,68,.85); animation:dmgPulse 1s ease-in-out infinite}
-      .dmg-ghost .g-rng{background:repeating-linear-gradient(45deg,rgba(239,68,68,.45) 0 4px,rgba(239,68,68,.2) 4px 8px)}
-      @keyframes dmgPulse{50%{opacity:.55}}
+      /* Blanco con rayas oscuras: contrasta con la barra verde, amarilla y roja */
+      .dmg-ghost .g-min{background:#f8fafc; box-shadow:0 0 0 1px rgba(15,23,42,.55), 0 0 8px rgba(255,255,255,.65);
+        animation:dmgPulse 1s ease-in-out infinite}
+      .dmg-ghost .g-rng{background:repeating-linear-gradient(45deg,rgba(248,250,252,.92) 0 4px,rgba(15,23,42,.6) 4px 8px);
+        box-shadow:0 0 0 1px rgba(15,23,42,.45)}
+      @keyframes dmgPulse{50%{opacity:.6}}
     `;
     document.head.appendChild(st);
   }

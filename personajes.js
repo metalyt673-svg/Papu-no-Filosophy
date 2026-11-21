@@ -13072,7 +13072,7 @@ const CHARACTERS = [
       power: 0,
       acc: 1.0,
       desc: 'Refuerza su estructura metálica, aumentando temporalmente su DEF.',
-      baseCooldown: 4,
+      baseCooldown: 3,
       type: 'support',
       effect: { type:'tempDef', value:12, duration:2 }
     },
