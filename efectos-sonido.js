@@ -24,6 +24,22 @@
     // ejemplo: win:  { src: 'efectos de sonido/win.mp3',  volume: 0.8 },
   };
 
+  /* Sonidos de combate (los reproduce sonidos-batalla.js).
+     Archivos en:  efectos de sonido/battle_effects/<nombre>.mp3   ·   en SFX se llaman «btl_<nombre>». */
+  const CARPETA_BATALLA = 'efectos de sonido/battle_effects/';
+  const SONIDOS_BATALLA = {
+    attack: 0.6, attack1: 0.6, attack2: 0.6, attack3: 0.6, attack4: 0.6, attack5: 0.6, attack6: 0.6, attack7: 0.6,
+    tecnique: 0.6, tecnique1: 0.6, tecnique2: 0.6, tecnique3: 0.6, tecnique4: 0.6,
+    tecnique5: 0.6, tecnique6: 0.6, tecnique7: 0.6, tecnique8: 0.6, tecnique9: 0.6,
+    critical_hit: 0.8, dash: 0.45, swap: 0.55, passive_on: 0.65,
+    buff_on: 0.6, buff_on1: 0.6, buff_off: 0.55,
+    debuff_on: 0.6, debuff_on1: 0.6, debuff_off: 0.55, debuff_off1: 0.55,
+    heal: 0.6, heal1: 0.6, continuos_damage: 0.45
+  };
+  Object.keys(SONIDOS_BATALLA).forEach(n => {
+    SONIDOS['btl_' + n] = { src: CARPETA_BATALLA + n + '.mp3', volume: SONIDOS_BATALLA[n] };
+  });
+
   const PREFS_KEY = 'sfx_prefs';
   let prefs = { enabled: true, volume: 1 };
   try { Object.assign(prefs, JSON.parse(localStorage.getItem(PREFS_KEY) || '{}')); } catch (e) { /* sin preferencias */ }
