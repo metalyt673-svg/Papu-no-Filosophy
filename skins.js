@@ -71,6 +71,14 @@
     { id: 'albedo27', charId: 'albedo', name: 'Albedo · Black Gown', img: 'personajes/albedo27.jpg', rarity: 'legend' },
     { id: 'albedo_wedding', charId: 'albedo', name: 'Albedo · Wedding', img: 'personajes/albedo28.jpg', rarity: 'event' },
     { id: 'albedo29', charId: 'albedo', name: 'Albedo · Succubus Bat', img: 'personajes/albedo29.jpg', rarity: 'legend' },
+    { id: 'albedo30', charId: 'albedo', name: 'Albedo · Sketch', img: 'personajes/albedo30.png', rarity: 'epic' },
+    { id: 'albedo31', charId: 'albedo', name: 'Albedo · Dark Feathers', img: 'personajes/albedo31.png', rarity: 'legend' },
+    { id: 'albedo_idol', charId: 'albedo', name: 'Albedo · Idol', img: 'personajes/albedo32.jpeg', rarity: 'event' },
+    { id: 'albedo33', charId: 'albedo', name: 'Albedo · White Gaze', img: 'personajes/albedo33.jpg', rarity: 'epic' },
+    { id: 'albedo34', charId: 'albedo', name: 'Albedo · Golden Seduction', img: 'personajes/albedo34.jpg', rarity: 'legend' },
+    { id: 'albedo35', charId: 'albedo', name: 'Albedo · Rock Band', img: 'personajes/albedo35.png', rarity: 'epic' },
+    { id: 'albedo36', charId: 'albedo', name: 'Albedo · White Gold', img: 'personajes/albedo36.jpg', rarity: 'legend' },
+    { id: 'albedo37', charId: 'albedo', name: 'Albedo · Night Glow', img: 'personajes/albedo37.jpg', rarity: 'legend' },
 
     /* ——— Secre ——— */
     { id: 'secre1', charId: 'secre', name: 'Secre · Atuendo default', img: 'personajes/secre1.jpg', rarity: 'common' },
@@ -83,6 +91,8 @@
     { id: 'secre8', charId: 'secre', name: 'Secre · Thoughtful', img: 'personajes/secre8.jpg', rarity: 'rare' },
     { id: 'secre9', charId: 'secre', name: 'Secre · Night Sparkle', img: 'personajes/secre9.jpg', rarity: 'legend' },
     { id: 'secre10', charId: 'secre', name: 'Secre · Crimson Seal', img: 'personajes/secre10.jpg', rarity: 'legend' },
+    { id: 'secre11', charId: 'secre', name: 'Secre · Summer Vacation', img: 'personajes/secre11.jpg', rarity: 'legend' },
+
 
     /* ——— Belerick ——— */
     { id: 'belerick1', charId: 'belerick', name: "Belerick · Tiger's Claw", img: 'personajes/belerick1.jpg', rarity: 'common' },
@@ -1184,7 +1194,8 @@
     albedo_summer2: true,
     albedo_maid2: true,
     albedo_bunny: true,
-    albedo_wedding: true
+    albedo_wedding: true,
+    albedo_idol: true
   };
 
   const RARITY = {
@@ -1196,7 +1207,7 @@
   };
   const PRICES = { common: 150, rare: 300, epic: 600, legend: 1500, event: 2000 };       // monedas
   const RARITY_WEIGHT = { common: 5, rare: 3, epic: 1.3, event: 0.2, legend: 0.5 };       // % de cada RAREZA en los cofres (no por skin). Si una rareza no tiene skins disponibles, el resto se reparte hasta sumar 100 %
-  const COINS_MIN = 150, COINS_MAX = 450;                        // monedas por cofre
+  const COINS_MIN = 15, COINS_MAX = 45;                        // monedas por cofre
   const SKIN_CHANCE = 0.12;                                    // 12 % de que un cofre dé una skin
   const CHEST_PRICE = 50;                                      // cofre normal de la tienda (monedas)
   /* COFRES Y PAQUETES DE SKINS GARANTIZADAS DE LA TIENDA (siempre dan skins que aún no tengas).

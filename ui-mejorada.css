@@ -1,0 +1,275 @@
+/* ui-mejorada.css
+   Mejoras visuales del juego. Se carga al FINAL de <body> (después de todos los
+   estilos de juego.html y de los que inyectan los módulos), y los selectores
+   llevan el prefijo «html body» para ganar en especificidad sin tocar el resto.
+   Para desactivarlo todo: quita las líneas de ui-mejorada.css / ui-mejorada.js
+   de juego.html. */
+
+/* =====================================================================
+   1) MENÚ PRINCIPAL
+   ===================================================================== */
+
+/* El icono ⚔ quedaba descentrado: dentro del grid de 2 columnas ocupaba solo la 1.ª */
+html body #main-menu .main-menu-card::before{
+  grid-column:1 / -1;
+  justify-self:center;
+}
+
+/* Jerarquía: los modos de juego son lo principal; glosario/notas/soporte/config
+   pasan a un estilo secundario (translúcido) para que no compitan con ellos. */
+html body #main-menu #menu-glossary,
+html body #main-menu #menu-patchnotes,
+html body #main-menu #menu-support,
+html body #main-menu #menu-settings{
+  background:rgba(255,255,255,.035);
+  border-color:rgba(148,163,184,.18);
+  color:#cbd5e1;
+  font-weight:600;
+  box-shadow:none;
+}
+html body #main-menu #menu-glossary:hover,
+html body #main-menu #menu-patchnotes:hover,
+html body #main-menu #menu-support:hover,
+html body #main-menu #menu-settings:hover{
+  background:rgba(139,92,246,.14);
+  border-color:rgba(167,139,250,.45);
+  color:#fff;
+}
+
+/* Botones principales: mejor feedback al pulsar / navegar con teclado */
+html body #main-menu .menu-btn{transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease,background .15s ease}
+html body #main-menu .menu-btn:active{transform:translateY(1px) scale(.99)}
+html body #main-menu .menu-btn:focus-visible,
+html body .class-btn:focus-visible,
+html body .move-btn:focus-visible{
+  outline:2px solid #c4b5fd;
+  outline-offset:2px;
+}
+
+/* Si falta la portada del Modo Historia, que el marco no quede como un cuadro negro vacío */
+html body .story-poster-frame{
+  background:
+    radial-gradient(circle at 50% 30%,rgba(251,191,36,.14),transparent 62%),
+    linear-gradient(180deg,#0b1427,#050a16);
+}
+
+/* =====================================================================
+   2) PANTALLA DE SELECCIÓN
+   ===================================================================== */
+
+/* Botones "Ver todos / Elegir por clase" estáticos: duplicaban a los que
+   dibuja renderPanel() dentro de la lista. Se ocultan (el contador
+   «Seleccionados: 0/3» se conserva). */
+html body .selector-row > div > div:nth-child(2) > .class-btn{display:none}
+html body .selector-row > div > div:nth-child(2){margin-bottom:6px !important}
+
+/* La lista tenía dos cajas con scroll anidadas (#pX-list y su .char-list
+   interior), por eso solo se veían ~3 personajes. Ahora hay UNA sola zona de
+   scroll, más alta. */
+html body #p1-list.char-list,
+html body #p2-list.char-list{
+  display:block;
+  min-height:0;
+  max-height:none;
+  overflow:visible;
+  padding:0;
+  border:0;
+  background:none;
+}
+html body #p1-list .char-list,
+html body #p2-list .char-list{
+  min-height:260px;
+  max-height:min(56vh,500px);
+  justify-content:flex-start;
+}
+
+/* Botones de la barra interior con el mismo tamaño/estilo que el resto */
+html body .selector-row .class-btn{
+  padding:7px 13px;
+  font-size:13px;
+  border-radius:10px;
+}
+
+/* Contra la IA el equipo rival se elige solo: se quita por completo el cuadro
+   de la IA durante la selección y el del jugador ocupa todo el ancho.
+   (En combate el equipo de la IA vuelve a verse: ahí no se aplica .pve-mode:not(.in-battle).) */
+html body.pve-mode:not(.in-battle) .selector-row{grid-template-columns:minmax(0,1fr)}
+html body.pve-mode:not(.in-battle) .selector-row > div:last-child{display:none}
+
+/* =====================================================================
+   3) COMBATE
+   ===================================================================== */
+
+/* --- El panel de selección pasa a ser un "equipo" compacto con barras de vida --- */
+html body.in-battle .selector-row{
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  padding:12px 14px;
+}
+html body.in-battle .selector-row > div{padding:12px}
+html body.in-battle .selector-row > div > *:not(.slots){display:none !important}
+
+html body.in-battle .selector-row .slots{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:0;
+}
+html body.in-battle #p1-slots::before,
+html body.in-battle #p2-slots::before{
+  grid-column:1 / -1;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+html body.in-battle #p1-slots::before{content:"Equipo · Jugador 1";color:#7dd3fc}
+html body.in-battle #p2-slots::before{content:"Equipo · Jugador 2 / IA";color:#f9a8d4}
+
+html body.in-battle .slot{
+  width:auto;
+  height:auto;
+  flex-direction:column;
+  gap:6px;
+  padding:9px 8px 10px;
+  overflow:hidden;
+}
+html body.in-battle .slot.empty{display:none}
+html body.in-battle .slot img{width:54px;height:54px}
+html body.in-battle .slot.active{border-color:rgba(167,139,250,.9)}
+html body.in-battle .slot.kod::after{
+  content:"KO";
+  position:absolute;
+  top:6px;
+  right:6px;
+  padding:1px 6px;
+  border-radius:999px;
+  background:rgba(239,68,68,.85);
+  color:#fff;
+  font-size:10px;
+  font-weight:800;
+}
+
+.slot-meta{width:100%;display:grid;gap:4px;text-align:center}
+.slot-name{
+  font-size:11px;
+  font-weight:700;
+  color:#dbe7f7;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.slot-hp{height:6px;border-radius:999px;background:#0e182b;overflow:hidden}
+.slot-hp > i{
+  display:block;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#4ade80,#16a34a);
+  transition:width .3s ease;
+}
+.slot-hp > i[data-lvl="mid"]{background:linear-gradient(90deg,#fbbf24,#d97706)}
+.slot-hp > i[data-lvl="low"]{background:linear-gradient(90deg,#fb7185,#dc2626)}
+.slot-hpnum{font-size:10px;color:#8da0bb}
+
+/* --- Arena --- */
+html body .battle-arena{min-height:0}
+html body .fighter-box{height:clamp(190px,30vh,260px)}
+
+/* Indica de quién es el turno */
+html body .team-panel[data-side] > .small{transition:all .2s ease}
+html body .team-panel[data-side].is-turn > .small{
+  color:#fff;
+  background:rgba(139,92,246,.20);
+  border-color:rgba(167,139,250,.7);
+  box-shadow:0 0 18px rgba(139,92,246,.30);
+}
+html body .team-panel[data-side="p1"].is-turn .fighter-box{
+  border-color:rgba(56,189,248,.55);
+  box-shadow:0 0 36px rgba(56,189,248,.16);
+}
+html body .team-panel[data-side="p2"].is-turn .fighter-box{
+  border-color:rgba(244,114,182,.55);
+  box-shadow:0 0 36px rgba(244,114,182,.16);
+}
+html body .team-panel[data-side]:not(.is-turn) .fighter-box img{opacity:.92}
+
+/* Barra de vida: más legible y con color según la vida restante */
+html body .hpbar{height:16px;width:min(380px,92%)}
+html body .hpbar > i{transition:width .35s ease,background .25s ease}
+html body .hpbar > i[data-lvl="mid"]{
+  background:linear-gradient(90deg,#fbbf24,#f59e0b 55%,#d97706);
+  box-shadow:0 0 12px rgba(245,158,11,.30);
+}
+html body .hpbar > i[data-lvl="low"]{
+  background:linear-gradient(90deg,#fb7185,#ef4444 55%,#b91c1c);
+  box-shadow:0 0 12px rgba(239,68,68,.35);
+}
+
+/* Estadísticas en "chips" en vez de una línea de texto corrida */
+.stats .chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.stat-chip{
+  padding:3px 9px;
+  border:1px solid rgba(148,163,184,.18);
+  border-radius:999px;
+  background:rgba(255,255,255,.03);
+  color:#c3d0e4;
+  font-size:11.5px;
+  font-weight:700;
+  line-height:1.4;
+}
+.stat-chip.hp{color:#86efac;border-color:rgba(74,222,128,.30);background:rgba(74,222,128,.08)}
+.stat-chip.shield{color:#93c5fd;border-color:rgba(96,165,250,.30);background:rgba(96,165,250,.08)}
+.stat-chip.atk{color:#fda4af}
+.stat-chip.def{color:#a5b4fc}
+.stat-chip.spd{color:#fde68a}
+.stat-chip.status{color:#fcd34d;border-color:rgba(251,191,36,.32);background:rgba(251,191,36,.09)}
+
+/* --- Habilidades en 2 columnas (cabecera y "Cambiar personaje" a ancho completo) --- */
+html body .moves-area{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+html body .moves-area > :not(.move-btn){grid-column:1 / -1}
+html body .moves-area .move-btn{margin-bottom:0}
+
+/* --- Registro --- */
+html body .log{height:clamp(220px,34vh,380px)}
+
+/* =====================================================================
+   4) MÓVIL / PANTALLAS PEQUEÑAS
+   ===================================================================== */
+@media (max-width:900px){
+  html body .moves-area{grid-template-columns:1fr}
+}
+
+@media (max-width:640px){
+  /* Cabecera: botones en rejilla de 2 en vez de romperse en 3 líneas */
+  html body .game-header{flex-direction:column;align-items:stretch;gap:12px}
+  html body .game-header > div:last-child{justify-content:stretch !important}
+  html body .game-header > div:last-child > .small{display:none}
+  html body .game-header .class-btn{
+    flex:1 1 calc(50% - 8px);
+    white-space:nowrap;
+    padding:9px 8px;
+  }
+
+  /* Arena: los dos luchadores lado a lado (antes se apilaban y ocupaban 2 pantallas) */
+  html body .battle-arena,
+  html body .arena{
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    padding:12px 8px;
+  }
+  html body .team-panel{padding:6px 2px}
+  html body .fighter-box{height:150px;border-radius:18px}
+  html body .stat-chip{padding:2px 7px;font-size:10.5px}
+
+  html body.in-battle .selector-row{grid-template-columns:1fr}
+  html body.in-battle .slot img{width:44px;height:44px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html body .slot.active,
+  html body .turn-info::before{animation:none}
+}
