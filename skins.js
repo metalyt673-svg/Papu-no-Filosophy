@@ -50,6 +50,27 @@
     { id: 'albedo6', charId: 'albedo', name: 'Albedo · Yukata', img: 'personajes/albedo6.jpg', rarity: 'epic' },
     { id: 'albedo7', charId: 'albedo', name: 'Albedo · Pink Tank', img: 'personajes/albedo7.jpg', rarity: 'rare' },
     { id: 'albedo8', charId: 'albedo', name: 'Albedo · Gothic Gown', img: 'personajes/albedo8.jpg', rarity: 'legend' },
+    { id: 'albedo9', charId: 'albedo', name: 'Albedo · Soft Wings', img: 'personajes/albedo9.jpg', rarity: 'epic' },
+    { id: 'albedo10', charId: 'albedo', name: 'Albedo · Brat Casual', img: 'personajes/albedo10.png', rarity: 'epic' },
+    { id: 'albedo_maid', charId: 'albedo', name: 'Albedo · Maid', img: 'personajes/albedo11.png', rarity: 'event' },
+    { id: 'albedo_summer', charId: 'albedo', name: 'Albedo · Summer', img: 'personajes/albedo12.png', rarity: 'event' },
+    { id: 'albedo13', charId: 'albedo', name: 'Albedo · Neon Brazil', img: 'personajes/albedo13.png', rarity: 'epic' },
+    { id: 'albedo14', charId: 'albedo', name: 'Albedo · Lakers', img: 'personajes/albedo14.png', rarity: 'epic' },
+    { id: 'albedo15', charId: 'albedo', name: 'Albedo · Brazil Crop', img: 'personajes/albedo15.png', rarity: 'epic' },
+    { id: 'albedo_summer2', charId: 'albedo', name: 'Albedo · Green Summer', img: 'personajes/albedo16.png', rarity: 'event' },
+    { id: 'albedo17', charId: 'albedo', name: 'Albedo · Picnic', img: 'personajes/albedo17.png', rarity: 'epic' },
+    { id: 'albedo18', charId: 'albedo', name: 'Albedo · Route 66', img: 'personajes/albedo18.png', rarity: 'epic' },
+    { id: 'albedo19', charId: 'albedo', name: 'Albedo · White Blouse', img: 'personajes/albedo19.png', rarity: 'rare' },
+    { id: 'albedo20', charId: 'albedo', name: 'Albedo · Black Latex', img: 'personajes/albedo20.png', rarity: 'legend' },
+    { id: 'albedo21', charId: 'albedo', name: 'Albedo · Gothic Chair', img: 'personajes/albedo21.png', rarity: 'legend' },
+    { id: 'albedo_maid2', charId: 'albedo', name: 'Albedo · Blue Maid', img: 'personajes/albedo22.png', rarity: 'event' },
+    { id: 'albedo23', charId: 'albedo', name: 'Albedo · Gym', img: 'personajes/albedo23.png', rarity: 'epic' },
+    { id: 'albedo_bunny', charId: 'albedo', name: 'Albedo · Bunny', img: 'personajes/albedo24.png', rarity: 'event' },
+    { id: 'albedo25', charId: 'albedo', name: 'Albedo · Cathedral', img: 'personajes/albedo25.jpg', rarity: 'legend' },
+    { id: 'albedo26', charId: 'albedo', name: 'Albedo · Green Gown', img: 'personajes/albedo26.jpg', rarity: 'legend' },
+    { id: 'albedo27', charId: 'albedo', name: 'Albedo · Black Gown', img: 'personajes/albedo27.jpg', rarity: 'legend' },
+    { id: 'albedo_wedding', charId: 'albedo', name: 'Albedo · Wedding', img: 'personajes/albedo28.jpg', rarity: 'event' },
+    { id: 'albedo29', charId: 'albedo', name: 'Albedo · Succubus Bat', img: 'personajes/albedo29.jpg', rarity: 'legend' },
 
     /* ——— Secre ——— */
     { id: 'secre1', charId: 'secre', name: 'Secre · Atuendo default', img: 'personajes/secre1.jpg', rarity: 'common' },
@@ -977,6 +998,19 @@
     { id: 'rades5',          charId: 'rades_spirito', name: 'Rades · Manga',             img: 'personajes/rades5.jpg', rarity: 'epic' },
     { id: 'rades6',          charId: 'rades_spirito', name: 'Rades · Grin',              img: 'personajes/rades6.jpg', rarity: 'rare' },
 
+    /* ——— Insomna ——— */
+    { id: 'insomna1',        charId: 'insomna', name: 'Insomna · Classic',           img: 'personajes/insomna1.png', rarity: 'common' },
+    { id: 'insomna2',        charId: 'insomna', name: 'Insomna · Hypnotic',           img: 'personajes/insomna2.png', rarity: 'legend' },
+    { id: 'insomna3',        charId: 'insomna', name: 'Insomna · Ghostly',            img: 'personajes/insomna3.jpg', rarity: 'epic' },
+    { id: 'insomna4',        charId: 'insomna', name: 'Insomna · Annoyed',            img: 'personajes/insomna4.jpg', rarity: 'rare' },
+    { id: 'insomna5',        charId: 'insomna', name: 'Insomna · Ring',               img: 'personajes/insomna5.jpg', rarity: 'epic' },
+    { id: 'insomna6',        charId: 'insomna', name: 'Insomna · Cute Ring',          img: 'personajes/insomna6.jpg', rarity: 'rare' },
+    { id: 'insomna7',        charId: 'insomna', name: 'Insomna · Purple Surge',       img: 'personajes/insomna7.jpg', rarity: 'legend' },
+    { id: 'insomna8',        charId: 'insomna', name: 'Insomna · Flash',              img: 'personajes/insomna8.jpg', rarity: 'epic' },
+    { id: 'insomna9',        charId: 'insomna', name: 'Insomna · Finger Guns',        img: 'personajes/insomna9.jpg', rarity: 'epic' },
+    { id: 'insomna10',       charId: 'insomna', name: 'Insomna · Fan Attack',         img: 'personajes/insomna10.jpg', rarity: 'epic' },
+    { id: 'insomna11',       charId: 'insomna', name: 'Insomna · School',             img: 'personajes/insomna11.jpg', rarity: 'epic' },
+
         // { id: 'yami1', charId: 'yami', name: 'Yami · Skin 1', img: 'personajes/yami1.jpg', rarity: 'common' },
   ];
 
@@ -1144,7 +1178,13 @@
     izumi_summer: true,
     typhon_summer: true,
     typhon_summer2: true,
-    typhon_cheer: true
+    typhon_cheer: true,
+    albedo_maid: true,
+    albedo_summer: true,
+    albedo_summer2: true,
+    albedo_maid2: true,
+    albedo_bunny: true,
+    albedo_wedding: true
   };
 
   const RARITY = {
@@ -1156,7 +1196,7 @@
   };
   const PRICES = { common: 150, rare: 300, epic: 600, legend: 1500, event: 2000 };       // monedas
   const RARITY_WEIGHT = { common: 5, rare: 3, epic: 1.3, event: 0.2, legend: 0.5 };       // % de cada RAREZA en los cofres (no por skin). Si una rareza no tiene skins disponibles, el resto se reparte hasta sumar 100 %
-  const COINS_MIN = 15, COINS_MAX = 45;                        // monedas por cofre
+  const COINS_MIN = 150, COINS_MAX = 450;                        // monedas por cofre
   const SKIN_CHANCE = 0.12;                                    // 12 % de que un cofre dé una skin
   const CHEST_PRICE = 50;                                      // cofre normal de la tienda (monedas)
   /* COFRES Y PAQUETES DE SKINS GARANTIZADAS DE LA TIENDA (siempre dan skins que aún no tengas).

@@ -10,7 +10,10 @@
 
    INSTALACIÓN (juego.html), ANTES de perfil.js:
        <script src="marcos.js" defer></script>
-   Las imágenes van en la carpeta  marcos/  (mismo nombre y extensión .PNG).
+   Las imágenes van en la carpeta  marcos/ . Por defecto un marco usa  id + .PNG ; si el
+   archivo se llama distinto (otra extensión, nombre con espacios...) pon  file:'nombre.ext'.
+   Si una imagen trae fondo sólido (blanco, negro...) en vez de transparencia, se borra sola
+   al cargarla; funciona servido por http(s), no abriendo el HTML con doble clic (file://).
 
    DÓNDE AJUSTAR COSAS:
      - Probabilidad por caja:                 CHEST_CHANCE
@@ -67,13 +70,49 @@
     { id: 'BISO4551', name: '1.5 Aniversario',    rarity: 'evento', active: true },
     { id: 'HKNY8184', name: 'Feliz Aniversario',  rarity: 'evento', active: true },
     { id: 'BDAK0591', name: 'Alas doradas',       rarity: 'legendaria' },
-    { id: 'OEIU4690', name: 'Corona azul y oro',  rarity: 'legendaria' }
+    { id: 'OEIU4690', name: 'Corona azul y oro',  rarity: 'legendaria' },
+
+    /* Marcos con nombre propio: file = archivo dentro de marcos/ (el id no lleva espacios). */
+    { id: 'break',       file: 'break.jpg',        name: 'Break',        rarity: 'comun' },
+    { id: 'dark',        file: 'dark.jpg',         name: 'Oscuro',       rarity: 'comun' },
+    { id: 'square',      file: 'square.jpg',       name: 'Cuadrado',     rarity: 'comun' },
+    { id: 'water',       file: 'water.png',        name: 'Agua',         rarity: 'comun' },
+    { id: 'silver',      file: 'silver.png',       name: 'Silver',       rarity: 'comun' },
+    { id: 'casino',      file: 'casino.png',       name: 'Casino',       rarity: 'comun' },
+    { id: 'secre',       file: 'secre.png',        name: 'Secre',        rarity: 'comun' },
+    { id: 'arche',       file: 'arche.png',        name: 'Arche',        rarity: 'comun' },
+    { id: 'demonns',     file: 'demonns.png',      name: 'Demonios',     rarity: 'rara' },
+    { id: 'dorothy',     file: 'dorothy.png',      name: 'Dorothy',      rarity: 'rara' },
+    { id: 'charmy',      file: 'charmy.png',       name: 'Charmy',       rarity: 'rara' },
+    { id: 'kira',        file: 'kira.png',         name: 'Kira',         rarity: 'rara' },
+    { id: 'natch',       file: 'natch.png',        name: 'Natch',        rarity: 'rara' },
+    { id: 'sally',       file: 'sally.png',        name: 'Sally',        rarity: 'rara' },
+    { id: 'tiny-king',   file: 'tiny king.png',    name: 'Tiny King',    rarity: 'rara' },
+    { id: 'tiny-nero',   file: 'tiny nero.jpg',    name: 'Tiny Nero',    rarity: 'rara' },
+    { id: 'lighter',     file: 'lighter.png',      name: 'Lighter',      rarity: 'rara' },
+    { id: 'litch',       file: 'litch.png',        name: 'Litch',        rarity: 'rara' },
+    { id: 'black-bulls', file: 'black bulls.png',  name: 'Black Bulls',  rarity: 'epica' },
+    { id: 'gikku',       file: 'gikku.png',        name: 'Gikku',        rarity: 'epica' },
+    { id: 'picanero',    file: 'picanero.png',     name: 'Picanero',     rarity: 'epica' },
+    { id: 'wolf',        file: 'wolf.png',         name: 'Lobo',         rarity: 'epica' },
+    { id: 'lumiere',     file: 'lumiere.png',      name: 'Lumiere',      rarity: 'epica' },
+    { id: 'nero',        file: 'nero.jpg',         name: 'Nero',         rarity: 'epica' },
+    { id: 'noelle',      file: 'noelle.png',       name: 'Noelle',       rarity: 'epica' },
+    { id: 'vanessa',     file: 'vanessa.png',      name: 'Vanessa',      rarity: 'epica' },
+    { id: 'yuno',        file: 'yuno.png',         name: 'Yuno',         rarity: 'epica' },
+    { id: 'fest',        file: 'fest.jpg',         name: 'Festival',     rarity: 'evento', active: true },
+    { id: 'salamander',  file: 'salamander.png',   name: 'Salamander',   rarity: 'legendaria' },
+    { id: 'wizard-king', file: 'wizard king.jpg',  name: 'Wizard King',  rarity: 'legendaria' },
+    { id: 'yami',        file: 'yami.jpg',         name: 'Yami',         rarity: 'legendaria' },
+    { id: 'yami-dark',   file: 'yami dark.png',    name: 'Yami Dark',    rarity: 'legendaria' },
+    { id: 'zagred',      file: 'zagred.png',       name: 'Zagred',       rarity: 'legendaria' },
+    { id: 'king',        file: 'king.png',         name: 'King',         rarity: 'legendaria' }
   ];
 
   /* ---------------- utilidades ---------------- */
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
   const frameById = id => (typeof id === 'string' ? FRAMES.find(f => f.id === id) || null : null);
-  const srcOf = f => FOLDER + f.id + EXT;
+  const srcOf = f => FOLDER + encodeURI(f.file || (f.id + EXT));
   const reduceMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const rarOf = f => RARITIES[f.rarity] || RARITIES.comun;
 
@@ -150,6 +189,149 @@
     return out;
   }
 
+  /* ---------------- fondo opaco -> transparente ----------------
+     Algunas imagenes (sobre todo los .jpg) traen un fondo solido en vez de transparencia y
+     taparian el icono. La primera vez que se carga un marco se detecta (esquinas opacas y de un
+     mismo color) y se borra el fondo de fuera y el del centro del aro; el resultado se guarda en
+     memoria. Si el navegador no deja leer la imagen (p. ej. al abrir juego.html con doble clic,
+     file://), el marco se muestra tal cual. */
+  const KEY_TOL = 48, KEY_SOFT = 30;
+
+  /*KEY_START*/
+  function keyOutBackground(d, w, h) {
+    const N = w * h;
+    const dist2 = (i, c) => { const dr = d[i * 4] - c[0], dg = d[i * 4 + 1] - c[1], db = d[i * 4 + 2] - c[2]; return dr * dr + dg * dg + db * db; };
+    const colorAt = i => [d[i * 4], d[i * 4 + 1], d[i * 4 + 2]];
+    const kill = new Uint8Array(N);
+    const refs = [null, null, null];
+    const queue = new Int32Array(N);
+    const t2 = KEY_TOL * KEY_TOL;
+
+    const flood = (seeds, ref, label) => {
+      let head = 0, tail = 0;
+      const visit = q => { if (!kill[q] && d[q * 4 + 3] >= 200 && dist2(q, ref) <= t2) { kill[q] = label; queue[tail++] = q; } };
+      seeds.forEach(visit);
+      while (head < tail) {
+        const p = queue[head++], x = p % w;
+        if (x > 0) visit(p - 1);
+        if (x < w - 1) visit(p + 1);
+        if (p >= w) visit(p - w);
+        if (p < N - w) visit(p + w);
+      }
+    };
+    const count = label => { let n = 0; for (let i = 0; i < N; i++) if (kill[i] === label) n++; return n; };
+    const undo = label => { for (let i = 0; i < N; i++) if (kill[i] === label) kill[i] = 0; };
+
+    // 1) fondo de fuera: las 4 esquinas opacas y de un mismo color
+    const corners = [0, w - 1, (h - 1) * w, N - 1];
+    if (corners.every(i => d[i * 4 + 3] >= 230)) {
+      const c0 = colorAt(corners[0]);
+      if (corners.every(i => dist2(i, c0) <= 40 * 40)) { refs[1] = c0; flood(corners, c0, 1); }
+    }
+    // 2) fondo del centro del aro: solo si es blanco, negro o del mismo color que el de fuera
+    const ci = (h >> 1) * w + (w >> 1);
+    if (d[ci * 4 + 3] >= 230) {
+      const rc = colorAt(ci);
+      const white = Math.min(rc[0], rc[1], rc[2]) >= 215, dark = Math.max(rc[0], rc[1], rc[2]) <= 45;
+      const likeOuter = refs[1] && dist2(ci, refs[1]) <= 60 * 60;
+      if (white || dark || likeOuter) { refs[2] = rc; flood([ci], rc, 2); }
+    }
+    // comprobaciones de cordura: si se borra casi nada o casi todo, no era un fondo
+    if (count(1) > N * 0.6) undo(1);
+    const inner = count(2);
+    if (inner && (inner < N * 0.03 || inner > N * 0.8)) undo(2);
+    let killed = 0;
+    for (let i = 0; i < N; i++) if (kill[i]) killed++;
+    if (killed < N * 0.02 || killed > N * 0.92) return false;
+
+    // 3) borde suave: junto a lo borrado, cada pixel mezclado con el fondo se convierte en el color
+    //    del aro con transparencia parcial (así no queda un halo claro alrededor)
+    const nearKilled = p => {
+      const x = p % w, y = (p / w) | 0;
+      for (let dy = -2; dy <= 2; dy++) {
+        const ny = y + dy; if (ny < 0 || ny >= h) continue;
+        for (let dx = -2; dx <= 2; dx++) {
+          const nx = x + dx; if (nx < 0 || nx >= w) continue;
+          const k = kill[ny * w + nx]; if (k) return k;
+        }
+      }
+      return 0;
+    };
+    const edges = [];
+    for (let p = 0; p < N; p++) {
+      if (kill[p]) continue;
+      const lab = nearKilled(p);
+      if (lab) edges.push(p, lab);
+    }
+    const out = [];
+    for (let e = 0; e < edges.length; e += 2) {
+      const p = edges[e], ref = refs[edges[e + 1]], x = p % w, y = (p / w) | 0;
+      const dd = Math.sqrt(dist2(p, ref));
+      let ink = p, best = dd;                              // pixel mas lejano del fondo en 7x7 = color del aro
+      for (let dy = -3; dy <= 3; dy++) {
+        const ny = y + dy; if (ny < 0 || ny >= h) continue;
+        for (let dx = -3; dx <= 3; dx++) {
+          const nx = x + dx; if (nx < 0 || nx >= w) continue;
+          const q = ny * w + nx;
+          if (kill[q]) continue;
+          const dq = Math.sqrt(dist2(q, ref));
+          if (dq > best) { best = dq; ink = q; }
+        }
+      }
+      const cov = best > 1 ? Math.max(0.08, Math.min(1, dd / best)) : 1;
+      if (cov < 0.97 && best >= KEY_TOL) out.push(p, ink, cov);
+    }
+    for (let e = 0; e < out.length; e += 3) {
+      const p = out[e], ink = out[e + 1], cov = out[e + 2];
+      d[p * 4] = d[ink * 4]; d[p * 4 + 1] = d[ink * 4 + 1]; d[p * 4 + 2] = d[ink * 4 + 2];
+      d[p * 4 + 3] = Math.round(d[p * 4 + 3] * cov);
+    }
+    for (let p = 0; p < N; p++) if (kill[p]) d[p * 4 + 3] = 0;
+    return true;
+  }
+  /*KEY_END*/
+
+  const cleaned = {};   // id -> { state: 'busy' | 'ok' | 'same', url, p }
+
+  function cleanImage(im) {
+    const s = Math.min(1, 512 / Math.max(im.naturalWidth, im.naturalHeight));
+    const w = Math.max(1, Math.round(im.naturalWidth * s)), h = Math.max(1, Math.round(im.naturalHeight * s));
+    const cv = document.createElement('canvas');
+    cv.width = w; cv.height = h;
+    const cx = cv.getContext('2d', { willReadFrequently: true });
+    cx.drawImage(im, 0, 0, w, h);
+    const data = cx.getImageData(0, 0, w, h);          // puede lanzar SecurityError (file://)
+    if (!keyOutBackground(data.data, w, h)) return null;
+    cx.putImageData(data, 0, 0);
+    return cv.toDataURL('image/png');
+  }
+
+  function processFrame(f) {
+    if (cleaned[f.id]) return cleaned[f.id].p;
+    const st = cleaned[f.id] = { state: 'busy', url: null };
+    st.p = new Promise(res => {
+      const im = new Image();
+      im.onload = () => {
+        try { const url = cleanImage(im); st.url = url; st.state = url ? 'ok' : 'same'; }
+        catch (e) { st.state = 'same'; }
+        res(st);
+      };
+      im.onerror = () => { st.state = 'same'; res(st); };
+      im.src = srcOf(f);
+    });
+    return st.p;
+  }
+
+  /* Deja el <img> del marco con la version buena (limpia o la original) y lo hace visible */
+  function settle(im) {
+    const f = frameById(im.dataset.mk);
+    if (!f) return;
+    const st = cleaned[f.id];
+    if (!st || st.state === 'busy') { processFrame(f).then(() => settle(im)); return; }
+    if (st.url && im.getAttribute('src') !== st.url) { im.src = st.url; return; }   // su 'load' volvera aqui
+    im.classList.remove('mk-new');
+  }
+
   /* ---------------- dibujo del marco ---------------- */
   /* Envuelve el HTML de un avatar: el icono queda recortado en círculo y el marco encima.
      El contenedor que lo recibe debe llevar la clase mk-host (quita su recorte y su borde). */
@@ -157,8 +339,10 @@
     const f = frameById(frameId);
     if (!f) return innerHTML;
     const pad = Number.isFinite(f.pad) ? f.pad : DEFAULT_PAD;
+    const st = cleaned[f.id], ready = !!st && st.state !== 'busy';
+    const src = st && st.url ? st.url : srcOf(f);
     return `<span class="mk-av" style="--mk-pad:${pad}%"><span class="mk-in">${innerHTML}</span>` +
-      `<img class="mk-fr" src="${esc(srcOf(f))}" alt="" decoding="async"></span>`;
+      `<img class="mk-fr${ready ? '' : ' mk-new'}" data-mk="${esc(f.id)}" src="${esc(src)}" alt="" decoding="async" loading="lazy"></span>`;
   }
 
   function describe(list) {
@@ -262,6 +446,12 @@
     closePicker();
   }, true);
 
+  /* Al cargar un marco por primera vez: limpiar el fondo (si lo trae) y mostrarlo */
+  document.addEventListener('load', e => {
+    const t = e.target;
+    if (t && t.tagName === 'IMG' && t.classList && t.classList.contains('mk-fr') && t.classList.contains('mk-new')) settle(t);
+  }, true);
+
   /* Si falta una imagen, el avatar se queda sin marco en vez de mostrar un icono roto */
   document.addEventListener('error', e => {
     const t = e.target;
@@ -285,7 +475,8 @@
       .mk-av .mk-in > img{width:100%; height:100%; object-fit:cover; object-position:center 18%; border-radius:0}
       .mk-av .mk-fr{position:absolute; left:-6%; top:-6%; width:112%; height:112%; max-width:none;
         object-fit:contain; object-position:center; border-radius:0; transform:none !important;
-        pointer-events:none; z-index:2; filter:drop-shadow(0 2px 5px rgba(0,0,0,.5))}
+        pointer-events:none; z-index:2; filter:drop-shadow(0 2px 5px rgba(0,0,0,.5)); transition:opacity .12s}
+      .mk-av .mk-fr.mk-new{opacity:0}
 
       /* aviso al abrir cajas */
       .mk-got{display:flex; flex-direction:column; align-items:center; gap:8px; margin-top:10px; width:100%;

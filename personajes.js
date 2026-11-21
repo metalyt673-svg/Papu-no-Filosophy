@@ -17,6 +17,83 @@ const CHARACTERS = [
 
 
 {
+  id: 'insomna',
+  name: 'Insomna',
+  img: 'personajes/insomna.jpg',
+  classes: ['debilitador'],
+  hp: 100,
+  atk: 19,
+  def: 10,
+  spd: 24,
+  passive: {
+    type: 'unpredictable',
+    name: 'Imprevisible',
+    desc: 'Sus ataques tienen +30% de probabilidad de golpe crítico, pero los ataques enemigos contra ella también tienen +20% de probabilidad de crítico.',
+    dealt: 30,
+    taken: 20
+  },
+
+  moves: [
+    {
+      id: 'insomna1',
+      name: 'Derribo',
+      power: 16,
+      acc: 0.97,
+      desc: 'Insomna derriba al rival de un empujón y puede reducir su SPD durante 2 turnos. Ataque básico.',
+      baseCooldown: 0,
+      type: 'attack',
+      effects: [
+        { type: 'debuff', stat: 'spd', value: 3, duration: 2, prob: 0.35 }
+      ]
+    },
+    {
+      id: 'insomna2',
+      name: 'Ventisca',
+      power: 14,
+      acc: 0.92,
+      desc: 'Un viento helado azota al rival: poco daño, pero reduce su SPD durante 3 turnos y su precisión durante 2.',
+      baseCooldown: 3,
+      type: 'attack',
+      effects: [
+        { type: 'debuff', stat: 'spd', value: 5, duration: 3 },
+        { type: 'accuracyDown', value: 10, duration: 2 }
+      ]
+    },
+    {
+      id: 'insomna3',
+      name: 'Insomnio',
+      power: 0,
+      acc: 0.95,
+      desc: 'Insomna deja al rival sin dormir: no hace daño, pero reduce un poco su ATK, DEF, SPD y precisión durante 3 turnos.',
+      baseCooldown: 4,
+      type: 'debuff',
+      effects: [
+        { type: 'debuff', stat: 'atk', value: 3, duration: 3 },
+        { type: 'debuff', stat: 'def', value: 3, duration: 3 },
+        { type: 'debuff', stat: 'spd', value: 3, duration: 3 },
+        { type: 'accuracyDown', value: 8, duration: 3 }
+      ]
+    },
+    {
+      id: 'insomna4',
+      name: 'ULTRA: No dormirás más',
+      power: 22,
+      acc: 0.95,
+      desc: 'Como Insomnio, pero con daño: golpea al rival y reduce su ATK, DEF, SPD y precisión durante 3 turnos.',
+      baseCooldown: 8,
+      type: 'attack',
+      effects: [
+        { type: 'debuff', stat: 'atk', value: 4, duration: 3 },
+        { type: 'debuff', stat: 'def', value: 4, duration: 3 },
+        { type: 'debuff', stat: 'spd', value: 4, duration: 3 },
+        { type: 'accuracyDown', value: 10, duration: 3 }
+      ]
+    }
+  ]
+},
+
+
+{
   id: 'ricksanchez',
   name: 'Rick Sanchez',
   img: 'personajes/rick_sanchez.jpg',

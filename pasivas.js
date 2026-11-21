@@ -29,6 +29,11 @@
                        healPercent, readyDesc   último es AoE (daña a todos los enemigos vivos) y el personaje se
                                                 cura healPercent de su vida máxima. Mientras el golpe está
                                                 "cargado" la habilidad se marca como AoE y muestra readyDesc.
+     unpredictable     dealt, taken             Críticos en las dos direcciones: sus ataques ganan +dealt % de
+                                                probabilidad de crítico y los ataques enemigos contra él ganan
+                                                +taken % (el crítico base del juego es 8 %, x1.5 de daño).
+                                                Ej.: passive: { type:'unpredictable', name:'…', desc:'…',
+                                                                dealt: 30, taken: 20 }
      endTurnRecover    heal, shield, max        Al TERMINAR su turno estando activo: recupera `heal` de vida
                                                 (cantidad fija) y gana `shield` de escudo (si pones `max`,
                                                 el escudo no pasa de ese tope). No salta si se cambia por
@@ -52,7 +57,7 @@
   'use strict';
 
   const TYPES = new Set(['ultKillExtraTurn', 'dodge', 'lastStand', 'turnShield', 'turnRegen',
-    'openingShield', 'openingBuff', 'executeDamage', 'onKill', 'onHitDebuff', 'hitCooldown', 'onHitBurnAll', 'endTurnRecover', 'tripleBasic']);
+    'openingShield', 'openingBuff', 'executeDamage', 'onKill', 'onHitDebuff', 'hitCooldown', 'onHitBurnAll', 'endTurnRecover', 'tripleBasic', 'unpredictable']);
   const getPassive = (ch, type) => (ch && ch.passive && ch.passive.type === type) ? ch.passive : null;
   const pname = ch => (ch.passive && ch.passive.name) || 'Pasiva';
   const enemyOf = key => key === 'p1' ? 'p2' : 'p1';
@@ -216,12 +221,36 @@ const hitCdTurn = new WeakMap();    // personaje -> último turno en que hitCool
     };
   }
 
+  /* Imprevisible (unpredictable): game.js calcula el crítico con getCritChance(atacante), que no
+     conoce al objetivo. Se guarda aquí el objetivo del golpe en curso para sumar también el
+     bonus de «recibe más críticos» (los contraataques anidados guardan y restauran el suyo). */
+  let critTarget = null;
+
+  function hookCrit() {
+    const _crit = window.getCritChance;
+    if (typeof _crit !== 'function') return;
+    window.getCritChance = function (actor) {
+      let c = _crit.apply(this, arguments);
+      try {
+        const up = getPassive(actor, 'unpredictable');
+        if (up) c += (Number(up.dealt) || 0) / 100;
+        const dn = getPassive(critTarget, 'unpredictable');
+        if (dn) c += (Number(dn.taken) || 0) / 100;
+      } catch (e) { console.warn('[pasivas.js]', e); }
+      return Math.max(0, Math.min(1, c));
+    };
+  }
+
   function hookDamage() {
     const _dmg = window.applyDamage;
     window.applyDamage = function (actor, target, move) {
       const before = target ? target.hp : 0;
       const frac = (target && target.maxHp) ? before / target.maxHp : 1;
-      const r = _dmg.apply(this, arguments);
+      const prevCritTarget = critTarget;
+      critTarget = target || null;
+      let r;
+      try { r = _dmg.apply(this, arguments); }
+      finally { critTarget = prevCritTarget; }
       try {
         if (target && before > 0 && actor && typeof state !== 'undefined' && state.phase === 'battle') {
           afterHit(actor, target, move, before, frac);
@@ -442,6 +471,9 @@ const hitCdTurn = new WeakMap();    // personaje -> último turno en que hitCool
     '⚡ electrizado': '⚡ electrified',
     '⚡ La descarga eléctrica de {0} se propaga a todo su equipo.':
       '⚡ {0}\'s electric discharge spreads to the whole team.',
+    'Imprevisible': 'Unpredictable',
+    'Sus ataques tienen +30% de probabilidad de golpe crítico, pero los ataques enemigos contra ella también tienen +20% de probabilidad de crítico.':
+      'Her attacks have +30% critical hit chance, but enemy attacks against her also have +20% critical hit chance.',
     'Patrocinio Oficial': 'Official Sponsorship',
     'Al comenzar su primer turno en combate gana 25 de escudo.':
       'At the start of his first turn in battle he gains 25 shield.'
@@ -453,7 +485,7 @@ const hitCdTurn = new WeakMap();    // personaje -> último turno en que hitCool
       console.warn('[pasivas.js] no se encontró el motor de combate; pasivas desactivadas');
       return;
     }
-    hookDamage(); hookResolve(); hookTurnStart(); hookAccuracy(); hookEndTurn(); hookUI();
+    hookCrit(); hookDamage(); hookResolve(); hookTurnStart(); hookAccuracy(); hookEndTurn(); hookUI();
     console.log('[pasivas.js] pasivas de evento activas');
   }
 
