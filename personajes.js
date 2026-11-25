@@ -13014,7 +13014,7 @@ const CHARACTERS = [
       power: 0,
       acc: 1.0,
       desc: 'Los enemigos afectados quedan debilitados, reduciendo su ATK.',
-      baseCooldown: 4
+      baseCooldown: 4,
       type: 'support',
       effects: [ { type:'debuff', stat:'atk', value:6, prob:1.0 ,
         duration: 2},
@@ -13037,6 +13037,7 @@ const CHARACTERS = [
         { type:'debuff', stat:'spd', value:10, prob:1.0 ,
         duration: 3},
         { type:'lifesteal', value:25, duration: 2}
+		]
     }
   ]
 },
