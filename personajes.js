@@ -2848,7 +2848,7 @@ const CHARACTERS = [
       effects: [
         {
           type: 'selfHealPct',
-          value: 0.6
+          value: 0.4
         },
         {
           type: 'tempDef',
@@ -12977,8 +12977,8 @@ const CHARACTERS = [
   name: 'Gloo',
   img: 'personajes/gloo.png', 
   classes: ['defensor', 'debilitador'],
-  hp: 170,
-  atk: 22,
+  hp: 145,
+  atk: 18,
   def: 32,
   spd: 14,
 
@@ -12986,13 +12986,15 @@ const CHARACTERS = [
     {
       id: 'pegajosidad',
       name: 'Pegajosidad',
-      power: 25,
+      power: 22,
       acc: 0.95,
       desc: 'Gloo golpea al enemigo y aplica lentitud con su gel pegajoso.',
       baseCooldown: 0,
       type: 'attack',
-      effect: { type:'debuff', stat:'spd', value:6, prob:1.0 ,
-        duration: 2}
+      effects: [ { type:'debuff', stat:'spd', value:6, prob:1.0 ,
+        duration: 2},
+       { type:'lifesteal', value:5, duration:2 }
+         ]
     },
 
     {
@@ -13003,7 +13005,7 @@ const CHARACTERS = [
       desc: 'Gloo se divide en fragmentos que reducen el daño recibido y aumentan su DEF.',
       baseCooldown: 3,
       type: 'support',
-      effect: { type:'tempDef', value:12, duration:2 }
+      effect: { type:'tempDef', value:10, duration:2 }
     },
 
     {
@@ -13012,23 +13014,29 @@ const CHARACTERS = [
       power: 0,
       acc: 1.0,
       desc: 'Los enemigos afectados quedan debilitados, reduciendo su ATK.',
-      baseCooldown: 3,
+      baseCooldown: 4
       type: 'support',
-      effect: { type:'debuff', stat:'atk', value:6, prob:1.0 ,
+      effects: [ { type:'debuff', stat:'atk', value:6, prob:1.0 ,
+        duration: 2},
+          { type:'debuff', stat:'spd', value:8, prob:1.0,
+        duration: 3},
+          { type:'debuff', stat:'def', value:6, prob:1.0,
         duration: 2}
+        ]
     },
 
     {
       id: 'monstruo_pega_pega',
       name: 'Ultimate: Monstruo Pega-pega',
-      power: 45,
+      power: 28,
       acc: 0.9,
-      desc: 'Gloo se adhiere a un enemigo, absorbiendo parte de su vida y reduciendo fuertemente su DEF.',
+      desc: 'Gloo se adhiere a un enemigo, absorbiendo parte de su vida y reduciendo fuertemente su SPD.',
       baseCooldown: 6,
       type: 'attack',
-      effect: 
-        { type:'debuff', stat:'def', value:10, prob:1.0 ,
-        duration: 3}
+      effects: [
+        { type:'debuff', stat:'spd', value:10, prob:1.0 ,
+        duration: 3},
+        { type:'lifesteal', value:25, duration: 2}
     }
   ]
 },
