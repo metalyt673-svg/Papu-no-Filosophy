@@ -1158,6 +1158,8 @@
 "Maka: ¡ESA ES! ¡¡PERO BUEEENOOOO!!": "Maka: THAT'S IT! BUT GREEEAAAT!!",
 "Negro: Ni me he despeinado.": "Negro: I haven't even messed up my hair.",
 "— FIN —": "— THE END —",
+"Sus ataques tienen +30% de probabilidad de golpe crítico, pero los ataques enemigos contra él también tienen +20% de probabilidad de crítico.": "His attacks have +30% critical hit chance, but enemy attacks against him also have +20% critical hit chance.",
+"Aumenta temporalmente el ATK, SPD y la probabilidad de crítico de todo el equipo.": "Temporarily increases the whole team's ATK, SPD and critical hit chance.",
 "Revamp de healers: curaciones en área para el equipo, más variedad (limpiar debufos, escudos) y arreglo de varias curas que no funcionaban. Las cantidades de curación se mantienen: la cura en área es menor por aliado.": "Healer revamp: area heals for the team, more variety (debuff cleansing, shields) and a fix for several heals that weren't working. Healing amounts are kept: the area heal is smaller per ally.",
 "nuevo": "new",
 "Sistema - Ataques que curan al equipo": "System - Attacks that heal the team",

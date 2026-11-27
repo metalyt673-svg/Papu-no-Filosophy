@@ -51,6 +51,39 @@
   const RE_CURA = /heal|regen|lifesteal|life_steal|drain|cura|vida|robo/i;
   // Nueva ronda (respaldo por el registro de combate).
   const RE_RONDA = /(?:^|[^a-záéíóúñ])(?:ronda|round)\s*\d+/i;
+  
+  /* ---------- SFX ---------- */
+  
+	const GET_SFX_LIST_BY_TYPE = {
+	  attack: (move, type) => {
+		  if (type == "basico") return LISTAS.basico;
+		  else if (type == "ulti") return [...LISTAS.basico, ...LISTAS.tecnica];
+		  
+		  return LISTAS.tecnica;
+	  },
+	  debuff: () => LISTAS.tecnica
+	};
+
+	const SPECIAL_SFX = {
+	  // moveId: soundName
+	  
+	}; // Add moves here that should have special SFX
+	
+	function playMoveSFX(move, type) {
+		if (!move) return null;
+		
+		const special = SPECIAL_SFX[move.id];
+		
+		if (special) return "btl_" + special;
+		
+		const soundList = GET_SFX_LIST_BY_TYPE[move.type];
+		
+		if (!soundList) return null;
+		
+		const sound = soundList(move, type);
+		
+		return elegir(sound);
+	}
 
   /* ---------- utilidades ---------- */
   const ultimoIdx = new Map();
@@ -102,24 +135,26 @@
   let cur = null;
   function contexto(actor, move) {
     if (!actor || !move) return null;
-    return { actor, tipo: tipoDe(actor, move), disparada: false, cura: false, buff: false, debuff: false };
+    return { actor, move, tipo: tipoDe(actor, move), disparada: false, cura: false, buff: false, debuff: false };
   }
 
   // Sonido del golpe: solo para habilidades de daño, una vez por habilidad.
-  function disparar(actor) {
-    const c = cur;
-    if (!c || c.disparada || actor !== c.actor) return;
-    c.disparada = true;
-    if (c.tipo === 'basico') sonar(elegir(LISTAS.basico));
-    else if (c.tipo === 'tecnica') sonar(elegir(LISTAS.tecnica));
-    else if (c.tipo === 'ulti') sonar(elegir(Math.random() < 0.5 ? LISTAS.basico : LISTAS.tecnica)); // UNO solo
-    else return;   // apoyo: no hace sonido de golpe
-    carril = Math.max(carril, performance.now() + 260);
+  function disparar(c) {
+    const sonido = playMoveSFX(c.move, c.tipo);
+
+	if (!sonido) return;
+
+	c.disparada = true;
+
+	sonar(sonido);
+
+	carril = Math.max(carril, performance.now() + 260);
   }
 
   // Al terminar una habilidad de APOYO suena lo que hizo: curar, o mejora y/o debilitar.
   function finalizar(c) {
     if (!c || c.tipo !== 'apoyo') return;
+	
     if (c.cura) { encolar('heal', LISTAS.heal, 400); return; }
     if (c.buff) encolar('buffOn', LISTAS.buffOn, 350);
     if (c.debuff) encolar('debuffOn', LISTAS.debuffOn, 350);
@@ -188,7 +223,7 @@
     // 2) Golpes (solo habilidades de daño) y contraataques
     envolver('applyDamage', orig => function (actor, target, move) {
       if (enCombate()) {
-        disparar(actor);
+        disparar(cur);
         if (move && move._isCounter) encolar('contra', LISTAS.basico, 300);
       }
       return orig.apply(this, arguments);
@@ -206,7 +241,7 @@
     ['applyEffect', 'applyDebuff', 'applyStatusEffect', 'applySpecialEffect'].forEach(nombre => {
       envolver(nombre, orig => function (actor, target) {
         if (!enCombate()) return orig.apply(this, arguments);
-        disparar(actor);
+        disparar(cur);
         if (prof > 0) return orig.apply(this, arguments);
         const c = cur;
         const sujetos = [];
