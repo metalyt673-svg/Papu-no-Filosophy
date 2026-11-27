@@ -4081,7 +4081,7 @@ const CHARACTERS = [
   id: 'nicktula',
   name: 'Nicktula',
   img: 'personajes/nictula.png',
-  classes: ['soporte', 'control', 'mago'],
+  classes: ['mago', 'soporte'],
   hp: 122,
   atk: 27,
   def: 16,
@@ -4153,7 +4153,7 @@ const CHARACTERS = [
   id: 'negro',
   name: 'Negro',
   img: 'personajes/negro.png',
-  classes: ['soporte', 'sanador', 'control'],
+  classes: ['sanador', 'soporte', 'control'],
   hp: 128,
   atk: 22,
   def: 18,
@@ -4216,7 +4216,7 @@ const CHARACTERS = [
   id: 'orcasitas',
   name: 'Orcasitas',
   img: 'personajes/orcasitas.png',
-  classes: ['atacante', 'control', 'debilitador'],
+  classes: ['atacante', 'control'],
   hp: 120,
   atk: 30,
   def: 14,
@@ -4278,7 +4278,7 @@ const CHARACTERS = [
   id: 'pancha_peluda',
   name: 'Pancha Peluda',
   img: 'personajes/pancha peluda.png',
-  classes: ['sanador', 'debilitador', 'soporte'],
+  classes: ['defensor', 'sanador'],
 
   hp: 128,
   atk: 27,
@@ -4443,7 +4443,7 @@ const CHARACTERS = [
   id: 'maka_monster',
   name: 'Maka Monster',
   img: 'personajes/maka monster.png',
-  classes: ['sanador', 'soporte', 'control'],
+  classes: ['atacante', 'sanador'],
 
   hp: 130,
   atk: 25,
@@ -4675,7 +4675,7 @@ const CHARACTERS = [
   id: 'senor_holograma',
   name: 'Señor Holograma',
   img: 'personajes/señor holograma.png',
-  classes: ['soporte', 'control', 'mago'],
+  classes: ['defensor', 'debilitador'],
 
   hp: 126,
   atk: 30,
@@ -4771,7 +4771,7 @@ const CHARACTERS = [
   id: 'paya',
   name: 'Paya',
   img: 'personajes/paya.png',
-  classes: ['atacante', 'control', 'soporte'],
+  classes: ['atacante', 'debilitador'],
 
   hp: 116,
   atk: 30,
@@ -5063,7 +5063,7 @@ const CHARACTERS = [
   id: 'simon',
   name: 'Simons',
   img: 'personajes/simon.jpg',
-  classes: ['mago', 'control', 'soporte'],
+  classes: ['mago', 'control'],
 
   hp: 118,
   atk: 30,
@@ -5161,7 +5161,7 @@ const CHARACTERS = [
   id: 'carlos',
   name: 'Carlos',
   img: 'personajes/carlos.jpg',
-  classes: ['mago', 'control', 'debilitador'],
+  classes: ['soporte', 'control'],
 
   hp: 124,
   atk: 30,
@@ -5259,7 +5259,7 @@ const CHARACTERS = [
   id: 'presi',
   name: 'El Presi',
   img: 'personajes/presi.jpg',
-  classes: ['atacante', 'defensor', 'control'],
+  classes: ['defensor', 'control'],
 
   hp: 140,
   atk: 30,
@@ -5363,7 +5363,7 @@ const CHARACTERS = [
   id: 'calvencio',
   name: 'Calvencio',
   img: 'personajes/calvencio.jpg',
-  classes: ['mago', 'control', 'soporte'],
+  classes: ['atacante', 'soporte'],
 
   hp: 114,
   atk: 30,
@@ -5461,7 +5461,7 @@ const CHARACTERS = [
   id: 'adam',
   name: 'Adam',
   img: 'personajes/adam.jpg',
-  classes: ['atacante', 'defensor', 'control'],
+  classes: ['atacante', 'defensor'],
 
   hp: 138,
   atk: 30,
@@ -5551,7 +5551,7 @@ const CHARACTERS = [
   id: 'guti',
   name: 'Guti',
   img: 'personajes/guti.jpg',
-  classes: ['mago', 'atacante', 'debilitador'],
+  classes: ['mago', 'debilitador'],
 
   hp: 116,
   atk: 30,
@@ -5650,7 +5650,7 @@ const CHARACTERS = [
   id: 'papudo',
   name: 'Papudo',
   img: 'personajes/papudo.jpg',
-  classes: ['mago', 'debilitador', 'control'],
+  classes: ['defensor', 'control'],
 
   hp: 121,
   atk: 28,
@@ -5749,7 +5749,7 @@ const CHARACTERS = [
   id: 'butifarra',
   name: 'Butifarra',
   img: 'personajes/butifarra.jpg',
-  classes: ['mago', 'control', 'debilitador'],
+  classes: ['atacante', 'debilitador'],
 
   hp: 118,
   atk: 30,
@@ -5846,7 +5846,7 @@ const CHARACTERS = [
   id: 'dopiko',
   name: 'Dopiko',
   img: 'personajes/dopiko.jpg',
-  classes: ['atacante', 'debilitador', 'defensor'],
+  classes: ['atacante'],
 
   hp: 135,
   atk: 30,
@@ -5935,20 +5935,20 @@ const CHARACTERS = [
   id: 'santi',
   name: 'Santi',
   img: 'personajes/santi.jpg',
-  classes: ['control', 'debilitador', 'atacante'],
+  classes: ['atacante'],
 
-  hp: 122,
-  atk: 30,
-  def: 16,
+  hp: 125,
+  atk: 26,
+  def: 20,
   spd: 19,
 
   moves: [
     {
       id: 'santi1',
-      name: 'Corte Del Camarada',
-      power: 25,
+      name: 'Golpe Del Camarada',
+      power: 24,
       acc: 0.97,
-      desc: 'Santi realiza un corte inesperado con su hoz a su oponente mientras proclama que el poder pertenece al colectivo.',
+      desc: 'Santi golpea al oponente mientras proclama que el Estado debe caer.',
       baseCooldown: 0,
       type: 'attack',
       effect: null
@@ -5958,72 +5958,71 @@ const CHARACTERS = [
       id: 'santi2',
       name: 'Divagación Desconcertante',
       power: 25,
-      acc: 0.94,
-      desc: 'Santi desata una ofensiva coordinada mientras que discute sobre femboys, desconcertando al oponente y reduciendo temporalmente su ATK.',
+      acc: 0.98,
+      desc: 'Santi desata una ofensiva contra el oponente mientras divaga sobre femboys y Marx, robando parte de su SPD.',
       baseCooldown: 3,
       type: 'attack',
       effects: [
         {
           type: 'debuff',
-          stat: 'atk',
-          value: 8,
-          duration: 3,
-          prob: 1.0
+          stat: 'spd',
+          value: 7,
+          duration: 2
         },
         {
-          type: 'slow',
-          value: 10,
-          duration: 2,
-          prob: 1.0
+          type: 'tempSpd',
+          value: 7,
+          duration: 2
         }
       ]
     },
 
     {
       id: 'santi3',
-      name: 'Apoyo Socialista',
+      name: '¡No Es Mala Para La Salud!',
       power: 0,
       acc: 1.0,
-      desc: 'Santi comparte sus recursos con sus aliados y adquiere su defensa colectiva, aumentando temporalmente su DEF y ATK (usable en aliados).',
+      desc: 'Santi bebe una Monster en medio de la batalla para aumentar su ATK y SPD, con el coste de reducir su DEF por 3 turnos (usable en aliados).',
       baseCooldown: 4,
       type: 'support',
       effects: [
         {
-          type: 'tempDef',
+          type: 'tempSpd',
           value: 8,
           duration: 3
         },
         {
           type: 'tempAtk',
-          value: 6,
+          value: 8,
           duration: 3
+        },
+        {
+          type: 'debuff',
+          stat: 'def',
+          value: 6,
+          duration: 3,
+          onBuffTarget: true
         }
+
       ]
     },
 
     {
       id: 'santi4',
-      name: 'TÉCNICA DEFINITIVA: Gambare, Gambare~',
-      power: 32,
-      acc: 0.90,
-      desc: 'En un momento de apuro, Santi manifiesta una fuerza interior, que no logra controlar del todo, y libera una tormenta de cortes malditos que debilita al oponente y le aplica sangrado.',
+      name: 'TÉCNICA DEFINITIVA: Amor En Equipo',
+      power: 29,
+      acc: 0.95,
+      desc: 'Santi suelta a sus invocaciones, Astolfo y Marx, para que le ayuden a llevar a cabo un ataque de gran magnitud contra su oponente y reducir su DEF',
       baseCooldown: 7,
       type: 'attack',
-      effects: [
+      effect: 
         {
           type: 'debuff',
           stat: 'def',
           value: 7,
           duration: 3,
-          prob: 1.0
-        },
-        {
-          type: 'bleed',
-          value: 8,
-          duration: 3,
-          prob: 0.85
+          prob: 0.95
         }
-      ]
     }
   ]
 },
@@ -7271,7 +7270,7 @@ const CHARACTERS = [
   name: 'Isaac Moriah',
   img: 'personajes/isac.png',
 
-  classes: ['mago', 'atacante', 'debilitador'],
+  classes: ['mago', 'debilitador'],
 
   hp: 150,
   atk: 30,
@@ -13042,7 +13041,7 @@ const CHARACTERS = [
   ]
 },
   {
-  id: 'johnson_ml',
+  id: 'johnson_mlb',
   name: 'Johnson',
   img: 'personajes/jhonson.png',
   classes: ['defensor', 'soporte'],

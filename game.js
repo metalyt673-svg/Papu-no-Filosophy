@@ -1723,6 +1723,14 @@ function applyEffect(actor, target, move) {
       }
     }
 
+    else if (e.type === 'debuff' && e.onBuffTarget) {
+      // Debuff como "coste" de una habilidad de apoyo: recae sobre quien recibe
+      // los bufos de la habilidad (el propio lanzador o el aliado elegido).
+      // Es opt-in: los debuffs de apoyo pensados para el enemigo no llevan
+      // 'onBuffTarget' y siguen sin aplicarse al aliado.
+      applyDebuff(actor, target, e);
+    }
+
     else if (e.type === 'counter') {
       // Contraataque: siempre afecta al propio lanzador.
       const duration = Math.max(1, Number(e.duration) || 1);
